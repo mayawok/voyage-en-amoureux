@@ -34,6 +34,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.26** : la remarque « trop haut, moins stable » (`towHigh`) ne vient plus que du dépanneur qui remet le Cherokee sur ses roues après un retournement (`tow.flip`), plus pour une crevaison.
 **2.25** : pneus basse pression réalistes (diamètre constant, bas aplati et flancs bombés, la roue descend un peu) ; toutes les émoticônes (271) remplacées par ~110 icônes maison ; deux pop-ups d'affilée : bouton bleu « Suivant (n) » qui enchaîne sans refermer.
 **2.24** : une station sur deux est une **Vito** (bleu nuit et jaune, `stnVito`, `stnName`), les textes « Total » sont devenus génériques (« station-service ») ; espacement automatique : Marcel et les magasins sont repoussés s'ils tombent à moins de 520 d'une station, d'un garage, d'un magasin ou d'un camp.
 **2.23** : le chien n'apparaissait pas dans `CS.dogf` (`dogDraw` le masque tant que `dogGone()`, contourné par `window.__dogF`) ; étiquettes du décor (station, garage, magasins…) et panneaux masqués pendant les cinématiques (`body.cine`) ; analyse de terrain : Mila demande, le Cherokee s'arrête, Andrea répond, puis le mini-jeu s'ouvre. Attention : `GAME_DATE` doit être l'heure réelle de publication (les versions 2.16 à 2.22 portaient une heure en avance).

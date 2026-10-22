@@ -4602,7 +4602,7 @@ try{CS.sub.L=(function(o){return function(){const L=o();L.push([33.5,'a','Si on 
 function onFerry(){try{if(fv)return true;const G=ferG;return !!(G&&G.lv===level&&G.on&&c.x>G.Q1-40&&c.x<G.Q2+40&&SV.frL!==level&&G.board)}catch(e){return false}}
 uiPick=(function(o){return function(){o();try{if(onFerry()){for(const el of[pumpEl,garEl,sbEl,mbEl,restEl,pickEl,actEl,gid('tow'),slpB])if(el&&el.style.display!=='none')el.style.display='none';sbCtx=null}}catch(e){}}})(uiPick);
 // dépanneuse : remarque si le Cherokee est réhaussé
-function towHigh(tw){const up=SV.up||{};if(((up.susp||0)+(up.wheel||0))<=0||tw.hiSaid)return;tw.hiSaid=1;const t=tw.flip?'🚚 Le dépanneur : « Avec une rehausse pareille, pas étonnant qu’il se soit couché ! Plus c’est haut, moins c’est stable. »':'🚚 Le dépanneur : « Il est drôlement haut, votre Cherokee ! Plus c’est haut, moins c’est stable : méfiez-vous dans les dévers. »';setTimeout(()=>{try{note(t,4.4)}catch(e){}},tw.flip?4000:300)}
+function towHigh(tw){const up=SV.up||{};if(!tw.flip||((up.susp||0)+(up.wheel||0))<=0||tw.hiSaid)return;tw.hiSaid=1;const t=tw.flip?'🚚 Le dépanneur : « Avec une rehausse pareille, pas étonnant qu’il se soit couché ! Plus c’est haut, moins c’est stable. »':'🚚 Le dépanneur : « Il est drôlement haut, votre Cherokee ! Plus c’est haut, moins c’est stable : méfiez-vous dans les dévers. »';setTimeout(()=>{try{note(t,4.4)}catch(e){}},tw.flip?4000:300)}
 // contact coupé : le levier repasse en 2H
 var ignPrev=false;
 mgTick=(function(o){return function(dt){o(dt);try{if(ignPrev&&!ign&&st.gear!==0){st.gear=0}ignPrev=!!ign}catch(e){}}})(mgTick);
@@ -5360,6 +5360,6 @@ openCard=(function(o){return function(cd){o(cd);try{const b=gid('cdGo');const nx
 (function(){const b=gid('cdGo');b.addEventListener('pointerdown',e=>{if(!b.classList.contains('nx')||!cdNextReady())return;e.preventDefault();e.stopImmediatePropagation();const f=curCd&&curCd.cb;curCd=null;if(f)try{f()}catch(er){}snd('click');const box=gid('card').querySelector('.cd');box.style.transition='none';box.style.opacity='.0';openCard(cardQ.shift());requestAnimationFrame(()=>{box.style.transition='opacity .2s';box.style.opacity='1'})},true)})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.25',GAME_DATE='22/10/2026 à 18h30';
+const GAME_VER='2.26',GAME_DATE='22/10/2026 à 17h50';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
