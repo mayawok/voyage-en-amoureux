@@ -5076,8 +5076,27 @@ CALLS.papa=[[['p','Allô ma fille ? C’est papa. Alors, ce Cherokee, il tient l
 CALLS.parents=[[['m','Coucou vous deux ! Comment vont Rafalou et Petit Tonnerre ?'],['p','Tu es sur haut-parleur ! Rafalou va bien, et le petit est de plus en plus curieux.'],['p','Il suit sa mère partout dans le pré.'],['m','Envoyez-moi une photo, ils me manquent !'],['p','Promis. Et vous, faites attention sur la route.'],['m','Bisous à tous les deux ❤️']]];
 CALLS.maman.push([['p','Coucou Mila ! Devine qui est à côté de moi, au bord du pré ?'],['m','Rafalou ! Et Petit Tonnerre ? Comment ils vont ?'],['p','Très bien. Le petit a voulu goûter mon écharpe ce matin.'],['m','Fais-leur un câlin pour moi, maman. Bisous ❤️']]);
 CALLS.mamie.push([['m','Allô mamie ? Comment va tonton moustachu ?'],['p','Ah, lui ! Toujours fidèle à sa moustache, tu le connais.'],['m','Fais-lui un bisou de ma part.'],['p','Je n’y manquerai pas. Profitez bien de votre voyage.'],['m','Gros bisous mamie ❤️']],[['p','Ma petite Mila ! Tonton moustachu est passé me voir, il demande de tes nouvelles.'],['m','Dis-lui que tout va bien, qu’on est vers {lieu} !'],['p','Il va être content. Faites bien attention à vous.'],['m','Je t’embrasse fort, mamie ❤️']]);
+
+// ===== 2.20 : écran titre animé derrière le menu =====
+(function(){const m=gid('menu');if(!m)return;const cv2=document.createElement('canvas');cv2.id='ttl';cv2.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:0';m.insertBefore(cv2,m.firstChild);const st=document.createElement('style');st.textContent='#menu{background:#120c08!important;justify-content:flex-end!important;padding-right:max(4vw,env(safe-area-inset-right))!important}#menu .card{position:relative;z-index:1;width:min(380px,50vw)!important;background:rgba(243,231,205,.93)!important;box-shadow:0 10px 40px rgba(0,0,0,.45)}'+(navigator.standalone?'#mhint{display:none!important}':'');document.head.appendChild(st)})();
+function ttlDraw(t){const cv2=gid('ttl');if(!cv2)return;const w=Math.round(W*DPR),h=Math.round(HH*DPR);if(cv2.width!==w||cv2.height!==h){cv2.width=w;cv2.height=h}const x=cv2.getContext('2d'),k=HH/420,Wd=W/k,gy=330,tm=t/1000;x.setTransform(DPR*k,0,0,DPR*k,0,0);
+const sk=x.createLinearGradient(0,0,0,gy);sk.addColorStop(0,'#2b2550');sk.addColorStop(.55,'#c86a6a');sk.addColorStop(1,'#f5b878');x.fillStyle=sk;x.fillRect(0,0,Wd,420);
+for(let i=0;i<50;i++){x.globalAlpha=.25+.5*Math.abs(Math.sin(tm*.7+i));x.fillStyle='#fff';x.fillRect(hh2(i)*Wd,hh2(i+40)*150,1.5,1.5)}x.globalAlpha=1;
+x.fillStyle='#ffd27a';x.beginPath();x.arc(Wd*.7,gy-48,38,0,7);x.fill();
+x.fillStyle='#4a3e5a';x.beginPath();x.moveTo(0,gy-40);for(let X=0;X<=Wd;X+=30)x.lineTo(X,gy-70-28*Math.sin(X*.007+1)-12*Math.sin(X*.021));x.lineTo(Wd,gy-20);x.lineTo(0,gy-20);x.fill();
+const sea=x.createLinearGradient(0,gy-30,0,gy+20);sea.addColorStop(0,'#3d6fa0');sea.addColorStop(1,'#24507a');x.fillStyle=sea;x.fillRect(0,gy-30,Wd,50);x.strokeStyle='rgba(255,220,160,.55)';x.lineWidth=1.5;for(let i=0;i<14;i++){const xx=Wd*.55+((i*53+tm*10)%(Wd*.35)),yy=gy-24+(i%5)*8;x.beginPath();x.moveTo(xx,yy);x.lineTo(xx+14,yy);x.stroke()}
+// tour génoise sur son promontoire
+const tx=Wd*.12;x.fillStyle='#3a2e3a';x.beginPath();x.moveTo(tx-90,gy);x.lineTo(tx-30,gy-60);x.lineTo(tx+40,gy-56);x.lineTo(tx+110,gy);x.fill();x.fillStyle='#6a5a5a';x.fillRect(tx-14,gy-140,30,84);x.fillStyle='#5a4a4a';x.fillRect(tx-19,gy-148,40,10);for(let i=0;i<5;i++)x.fillRect(tx-19+i*9,gy-156,5,8);x.fillStyle='#2a2028';x.fillRect(tx-2,gy-118,7,12);
+x.fillStyle='#c9a46a';x.fillRect(0,gy,Wd,420-gy);x.fillStyle='#b8935a';x.fillRect(0,gy,Wd,5);
+// le Cherokee traverse l'écran, puis revient
+const per=24,u=((tm%per)/per),ez=q=>q*q*(3-2*q),cx=u<.3?-160+ez(u/.3)*(Wd*.32+160):u<.75?Wd*.32:Wd*.32+ez((u-.75)/.25)*(Wd*.75);const sv={g};try{g=x;x.save();x.translate(cx,gy-4);x.scale(1.6,1.6);x.translate(-cx,-(gy-4));cherokeeSide(cx,gy-4);x.restore()}catch(e){}finally{g=sv.g}
+if(u<.3||u>.75){x.fillStyle='rgba(200,170,120,.35)';for(let i=0;i<6;i++){const q=(tm*2+i/6)%1;x.beginPath();x.arc(cx-110-q*60,gy-6-q*14,5+q*12,0,7);x.fill()}}if(u>=.3&&u<=.75){for(let i=0;i<3;i++){const q=((tm*.5+i/3)%1);const hx=cx-20+i*14,hy=gy-120-q*40;x.globalAlpha=1-q;x.fillStyle='#e8334a';x.beginPath();x.moveTo(hx,hy+4);x.bezierCurveTo(hx-7,hy-1,hx-4,hy-7,hx,hy-3);x.bezierCurveTo(hx+4,hy-7,hx+7,hy-1,hx,hy+4);x.fill()}x.globalAlpha=1}
+// mouettes
+x.strokeStyle='#2a2028';x.lineWidth=1.6;for(let i=0;i<4;i++){const bx=(Wd*.35+i*140+tm*24)%Wd,by=90+(i%2)*26+Math.sin(tm*2.5+i)*6,wv=Math.sin(tm*7+i)*3;x.beginPath();x.moveTo(bx-7,by-wv);x.lineTo(bx,by);x.lineTo(bx+7,by-wv);x.stroke()}
+const vg=x.createRadialGradient(Wd/2,210,120,Wd/2,210,Wd*.75);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.45)');x.fillStyle=vg;x.fillRect(0,0,Wd,420)}
+loop=(function(o){return function(t){o(t);try{const m=gid('menu');if(m&&m.style.display!=='none'&&m.style.display!=='')ttlDraw(t)}catch(e){}}})(loop);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.19',GAME_DATE='22/10/2026 à 17h05';
+const GAME_VER='2.20',GAME_DATE='22/10/2026 à 17h20';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
