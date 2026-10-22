@@ -32,21 +32,9 @@
 5. **Cinématiques à ajouter** :
    - les bidons près du château de Coasina ;
    - le chien retrouvé (arrêt après avoir vu son collier au sol) ;
-   - le faon : arrivée devant le vétérinaire, puis cinématique d'auscultation où il dit qu'il ne peut rien faire ;
    - le faux dépanneur qui repart, et l'on découvre qu'il a volé des choses ;
    - garder les cinématiques de fin de chapitre qui rappellent la journée.
-6. **Bugs** :
-   - faon : un pop-up annonce sa mort avant d'arriver chez le vétérinaire, et deux bulles redondantes se chevauchent en roulant ;
-   - enterrement à Arrivadu : écrire « faon » sur la tombe (ou équivalent) ; le village flotte en l'air, il manque la colline ;
-   - fin : le camion blanc passe devant le Cherokee au lieu de derrière ;
-   - changement de roue : il ne reprend pas le modèle de jante choisi ;
-   - le capot s'ouvre souvent le soir sans raison ;
-   - la roue de secours sur le capot doit bouger avec le capot ;
-   - roue de secours arrière : forme rectangulaire (housse) et mauvais sens ;
-   - la bulle « Dormir ici » cache Andrea quand on croise les Parisiens ;
-   - en dormant dans un tunnel, les personnages passent derrière le décor ;
-   - dans les cinématiques de fin de chapitre, la bulle du bas est trop haute et cache les personnages.
-7. **Réglages et gameplay** :
+6. **Réglages et gameplay** :
    - supprimer le délai de 15 s entre deux pop-ups et trouver une autre solution (file d'attente intelligente) ;
    - aucun magasin ni interaction pendant la traversée en bac ;
    - au contact coupé, le levier repasse en 2H ;
@@ -55,9 +43,10 @@
    - mini-jeu courroie : dire qu'elle « a sauté » ;
    - atelier : régler l'orientation des phares et la dureté des amortisseurs ;
    - environ 30 % de surnoms et de mots d'amour en moins dans les dialogues.
-8. **Propositions à faire** (sans coder d'abord) :
+7. **Propositions faites (v2.01), en attente du choix de l'utilisateur** :
    - de l'humour dans l'histoire : Andrea aime l'humour noir, Mila l'humour bienveillant ;
    - des économies de batterie iPhone (ex. supprimer la double piste terre/bitume, devenue inutile).
 
 ## Déjà fait récemment
+**2.01** : 10 bugs corrigés — faon (arrêt chez la vétérinaire + cinématique `CS.veto`, plus de pastille 🦌 en double), tombe « FAON » et colline sous le village d'Arrivadu, camion blanc derrière le Cherokee (et synchronisé avec la narration), jante choisie reprise au changement de roue (`rimOnly()`), capot ouvert le soir seulement s'il y a une raison (`nightRep()`, `SV.hotD`), roue de secours sur le capot qui suit le capot (`hoodOpen()`), roue arrière vue de profil sous housse (`spareBack()`), bulle « Dormir ici » masquée pendant qu'on parle, pas de nuit dans un tunnel (`noSleep`), narration des fins de chapitre en bas de l'écran.
 Vitesse en chiffres, treuil à côté, boost en double tapotement sur l'accélérateur ; essuie-glaces seulement sous la pluie ; fondus du décor minutés avec hystérésis ; pneus basse pression aplatis seulement en bas ; animal au sol dans les prélèvements ; bouchon vraiment bloquant ; pas de surnoms pendant les appels ; pas d'échantillon pour les animaux sans intérêt ; suspensions 35 % plus fermes ; son retravaillé ; atelier Corse 4x4 ; rejouabilité et surprises ; grottes, ours, sous-marin, bac réel.
