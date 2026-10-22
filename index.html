@@ -4800,7 +4800,7 @@ M.after=win=>{if(win){SV.hearts+=2;note('🧪 Analyse réussie ! +2 ❤',2.6)}el
 mgxOpen(M)}
 // le premier résultat de prélèvement du chapitre passe par l'analyse de terrain de Mila
 smpDone=(function(o){return function(sp,inst){try{if(!inst&&SV.tubeL!==level&&!(SV.smp&&SV.smp[sp])&&chP()<.97){if(MGX||cs||paused||cardOpen||hl||pz||stopReq||sayT>0||night||crashed||work||onFerry()){if(SV.smpP&&SV.smpP[sp])SV.smpP[sp].t=4;return}
-SV.tubeL=level;sayT=0;say('Les échantillons sont prêts. Arrête-toi deux minutes, je fais une analyse de terrain !',3.4,1);stopReq={x:c.x+Math.max(160,Math.abs(v.x)*.8),cb:()=>setTimeout(()=>tubeOpen(()=>o(sp,inst)),300)};if(SV.smpP&&SV.smpP[sp])SV.smpP[sp].t=99999;return}}catch(e){}return o(sp,inst)}})(smpDone);
+SV.tubeL=level;sayT=0;say('Andrea, les échantillons sont prêts ! Tu peux t’arrêter ? Je voudrais faire une analyse de terrain.',3.6,1);setTimeout(()=>{try{stopReq={x:c.x+Math.max(220,Math.abs(v.x)*1.2),cb:()=>{say('Voilà, on est arrêtés. Le labo est à toi !',2.6,0);setTimeout(()=>tubeOpen(()=>o(sp,inst)),2400)}}}catch(e){}},2600);if(SV.smpP&&SV.smpP[sp])SV.smpP[sp].t=99999;return}}catch(e){}return o(sp,inst)}})(smpDone);
 mgTick=(function(o){return function(dt){o(dt);try{if(!MGX&&!stopReq&&SV.smpP)for(const k of Object.keys(SV.smpP))if(SV.smpP[k].t>9999)SV.smpP[k].t=3}catch(e){}}})(mgTick);
 
 // ===== 2.07 : mission remorque (obligatoire, une par chapitre) =====
@@ -5164,8 +5164,12 @@ g=x;try{wxDraw(tm)}finally{g=g0}x.restore()}catch(e){}}
 mgxFrame=(function(o){return function(t){o(t);try{if(MGX&&MGX.k!=='tube'){const cv2=gid('mgxc');wxOver(cv2.getContext('2d'),W,HH,t/1000)}}catch(e){}}})(mgxFrame);
 hlTick=(function(o){return function(t){o(t);try{if(hl)wxOver(hlX,W,HH,t/1000)}catch(e){}}})(hlTick);
 pzTick=(function(o){return function(dt,tm){o(dt,tm);try{if(pz&&pzCv){const W0=W,H0=HH;W=pzCv.width/DPR;HH=pzCv.height/DPR;try{wxOver(pzCx,W,HH,tm)}finally{W=W0;HH=H0}}}catch(e){}}})(pzTick);
+
+// ===== 2.23 : chien visible dans sa cinématique, étiquettes du décor masquées en cinématique =====
+try{const d0=CS.dogf.draw;CS.dogf.draw=function(){window.__dogF=1;try{return d0.apply(this,arguments)}finally{window.__dogF=0}}}catch(e){}
+(function(){const st=document.createElement('style');st.textContent='body.cine #pump,body.cine #gar,body.cine #rest,body.cine #sb,body.cine #mb,body.cine #pick,body.cine #slpb,body.cine #tow,body.cine #act,body.cine #dogp,body.cine #obj,body.cine #mis,body.cine #tut,body.cine #note{display:none!important}';document.head.appendChild(st)})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.22',GAME_DATE='22/10/2026 à 18h25';
+const GAME_VER='2.23',GAME_DATE='22/10/2026 à '+'17h40';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
