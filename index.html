@@ -5,8 +5,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Voyage en amoureux">
-<link rel="apple-touch-icon" sizes="180x180" href="icon.png?v=237">
-<link rel="icon" type="image/png" href="icon.png?v=237">
+<link rel="apple-touch-icon" sizes="180x180" href="icon.png?v=238">
+<link rel="icon" type="image/png" href="icon.png?v=238">
 <meta name="theme-color" content="#7b1a26">
 <title>Voyage en amoureux</title>
 <style>
@@ -807,7 +807,7 @@ gid('snd').addEventListener('click',toggleSnd);
 gid('menub').addEventListener('click',()=>{if(!paused)openMenu()});
 towEl.addEventListener('pointerdown',e=>{e.preventDefault();callTow()});
 garEl.addEventListener('pointerdown',e=>{e.preventDefault();if(garNear()&&Math.hypot(v.x,v.y)<25&&!paused)openShop()});
-function makeIcon(){try{const k=document.createElement('canvas');k.width=k.height=180;const x=k.getContext('2d');
+function makeIcon(){return;try{const k=document.createElement('canvas');k.width=k.height=180;const x=k.getContext('2d');
 const gr=x.createLinearGradient(0,0,0,180);gr.addColorStop(0,'#7cc8f0');gr.addColorStop(.6,'#f7e3bd');gr.addColorStop(1,'#bf9560');x.fillStyle=gr;x.fillRect(0,0,180,180);
 x.fillStyle='#8a6a40';x.beginPath();x.moveTo(0,140);x.lineTo(60,112);x.lineTo(120,126);x.lineTo(180,100);x.lineTo(180,180);x.lineTo(0,180);x.fill();
 x.fillStyle='#8f2230';x.beginPath();x.moveTo(24,128);x.lineTo(24,92);x.lineTo(34,66);x.lineTo(112,64);x.lineTo(130,92);x.lineTo(160,98);x.lineTo(160,128);x.fill();
@@ -5617,6 +5617,6 @@ CH.epic={bpm:140,chords:[[50,[0,3,7]],[46,[0,4,7]],[48,[0,4,7]],[45,[0,4,7]]],
 mel:[74,0,74,77,81,0,79,77,77,0,74,0,77,0,81,0,79,0,79,76,72,0,76,79,81,0,0,0,76,0,73,0],arp:1,pad:1,bass8:1,perc:1,pulse:1,trem:1,lead:'square',ml:1.5,vol:.17};
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.37',GAME_DATE='22/10/2026 à 22h36';
+const GAME_VER='2.38',GAME_DATE='22/10/2026 à 23h01';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
