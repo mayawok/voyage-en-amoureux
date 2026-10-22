@@ -28,6 +28,7 @@
 (Rien en attente.)
 
 ## Règles permanentes de l'utilisateur
+- **Graphismes toujours élaborés**, y compris dans les cinématiques et les mini-jeux : décors en plusieurs plans (ciel en dégradé, nuages, reliefs, premier plan détaillé), personnages et véhicules soignés, effets (poussière, fumée, éclaboussures), rien de « placeholder ».
 - **Pas de système de dégâts ni de surchauffe** (supprimés en 2.27 : `dmg` toujours 0, `temp` plafonnée à 60, plus de panne par surchauffe, barres masquées). Les crevaisons programmées (`flatAt`) et les pannes mécaniques scénarisées restent.
 - **Aucune émoticône visible** : toutes sont remplacées automatiquement par des icônes maison (`HI` dessins SVG, `EM2I` correspondance émoticône → icône, `FLAG` pour les drapeaux). En HTML par un `MutationObserver` (l'émoticône d'origine reste dans un `<title>`, donc `textContent` est inchangé) ; sur le canevas par la surcharge de `fillText`/`measureText`. Toute nouvelle émoticône utilisée doit avoir sa correspondance dans `EM2I` (sinon elle devient un point jaune).
 - **Les mini-jeux suivent la météo générale** (pluie, orage, neige, brouillard) : tout nouveau mini-jeu en extérieur doit appeler `wxOver(ctx,w,h,tm)` sur son canevas.
@@ -35,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.33** : tracteurs (`tractorDraw`, garés au bord des champs `trcPark`, ou croisés sur la route `trcL` avec remorque de paille). Événement du plateau du Coscione au chapitre de l'Ospedale (après la révélation de Noxacorp au chap. 7), entre 14 et 40 % : un berger crie « Regardez ! Regardez ! » (`noxWorld`, arrêt obligatoire) → cinématique `CS.nox1` (camionnette Noxacorp, hommes en combinaison et mouflon, le Cherokee fonce, évite le mouflon, percute un rocher et fume, Mila saute sur un cheval) → mini-jeu de poursuite à cheval façon « dinosaure » (`horseOpen` : toucher pour sauter les rochers, murets, troncs, pozzines, buissons ; rattraper la camionnette, 5 faux pas max) → `CS.nox2` (tracteur et agriculteurs barrent la route, Lucia arrête le conducteur, +5 ❤, preuve N-12) ou `CS.nox3` (la camionnette s'échappe, Mila a relevé la plaque).
 **2.32** : lettrage blanc sur les flancs des pneus, au choix à l'atelier (`SV.cus.tireT`, `TIRET` : Aucun, ALL TERRAIN, TOUT TERRAIN, CORSE 4X4, MONTAGNU · MT — marque inventée, pas de vraie marque), dessiné en arc des deux côtés et qui tourne avec la roue (`tireText`).
 **2.31** : jantes encore réduites (`rimR()` = 17×0,44, le dessin de la jante est mis à l'échelle), roue du changement de roue à 0,46 R.
 **2.30** : jantes à taille fixe (`rimR()` = rayon d'une jante 15 pouces) : en 33″ et 35″ c'est le flanc du pneu qui grandit, pas la jante ; même proportion pour la roue du mini-jeu de changement de roue.
