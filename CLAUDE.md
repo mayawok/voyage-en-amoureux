@@ -7,7 +7,7 @@
 - L'utilisateur n'est pas développeur : réponses en français, simples, avec des réserves honnêtes (« testé sur ordinateur seulement »). Pas de faux souvenirs inventés, pas d'argent mentionné pour le couple.
 
 ## Technique
-- **Tout le jeu est dans `index.html`** (plus `icon.png`, l'icône d'écran d'accueil 180×180) (un seul fichier, environ 800 Ko, canvas 2D + Web Audio synthétisé, aucun fichier externe).
+- **Tout le jeu est dans `index.html`** (plus `icon.png`, l'icône d'écran d'accueil 180×180, et `sw.js`, le service worker du mode hors connexion) (un seul fichier, environ 800 Ko, canvas 2D + Web Audio synthétisé, aucun fichier externe).
 - Déploiement : chaque push sur `main` part automatiquement sur Netlify (`netlify.toml`). On pousse directement sur `main`, sans PR.
 - **Version : 2.xx.** Constantes `GAME_VER` et `GAME_DATE` en fin de fichier, affichées dans le menu. Les incrémenter à chaque livraison ; `GAME_DATE` contient la date **et l'heure de publication** (ex. `22/10/2026 à 16h20`, heure de Paris).
 - Style du code : on ajoute des blocs `// ===== 2.xx : ... =====` à la fin du script et on surcharge les fonctions par réaffectation (`f=(function(o){return function(){...o()...}})(f)`). Les déclarations `function` sont réaffectables. Attention à la TDZ (`let`/`const`) : définir les variables globales tôt (ex. après `let W,HH,DPR,S;`).
@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.40** : jeu jouable sans connexion (`sw.js` : réseau d'abord avec copie gardée en cache, la nouvelle version arrive dès qu'il y a du réseau ; en-tête `no-cache` pour `/sw.js` dans `netlify.toml` ; changer `C='va-cache-N'` seulement si besoin de vider le cache). Sauvegarde de secours dans le menu (`#mbak`, panneau `#bak`, objet `BAK`) : enregistrer un fichier .json (feuille de partage iPhone), copier un code `VA2:` (gzip + base64) ou `VA1:`, restaurer depuis un fichier ou un code collé, avec confirmation et résumé (chapitre, cœurs, date), puis rechargement.
 **2.39** : l'iPhone affichait un « V » blanc sur fond bordeaux (icône introuvable) : l'icône est maintenant intégrée directement dans `index.html` (lien `apple-touch-icon` en `data:image/png;base64`, copie de `icon.png`). Pour changer d'icône, régénérer ce lien. Site en ligne : https://voyagedesamoureux.netlify.app/
 **2.38** : l'ancienne fonction `makeIcon()` (icône basique « Voyage en amoureux » générée au chargement et ajoutée en dernier, donc prioritaire sur iPhone) est désactivée : seule `icon.png` sert d'icône.
 **2.37** : nouvelle icône d'écran d'accueil détaillée, sans texte (`icon.png` 180×180, dessinée en 1024 puis réduite) : coucher de soleil étoilé, tour génoise en pierres sur la falaise, mer scintillante, Cherokee bordeaux réhaussé avec barre de LED allumée sur la galerie, roue de secours « sac à dos » à l'arrière, jantes bronze, treuil, silhouettes du chien, de Mila et d'Andrea, cœurs. Liens `icon.png?v=237` pour forcer le rechargement. Sur iPhone, il faut supprimer puis remettre le raccourci pour voir une nouvelle icône.

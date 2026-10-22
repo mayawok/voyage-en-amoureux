@@ -5615,8 +5615,52 @@ pzOpen=(function(o){return function(k){const r=o.apply(this,arguments);setTimeou
 // ===== 2.35 : musique épique de la poursuite à cheval =====
 CH.epic={bpm:140,chords:[[50,[0,3,7]],[46,[0,4,7]],[48,[0,4,7]],[45,[0,4,7]]],
 mel:[74,0,74,77,81,0,79,77,77,0,74,0,77,0,81,0,79,0,79,76,72,0,76,79,81,0,0,0,76,0,73,0],arp:1,pad:1,bass8:1,perc:1,pulse:1,trem:1,lead:'square',ml:1.5,vol:.17};
+
+// ===== 2.40 : jeu sans connexion + sauvegarde de secours =====
+try{EM2I['💾']='shield';EM2I['📤']='mail';EM2I['📥']='doc'}catch(e){}
+try{if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}catch(e){}
+const BAK={
+ data(){try{saveTrip()}catch(e){}return JSON.stringify({app:'voyage-en-amoureux',v:1,ver:GAME_VER,date:new Date().toISOString(),trip:localStorage.getItem(SKEY),set:localStorage.getItem(PKEY),best:localStorage.getItem('best4x4')})},
+ async code(){const txt=BAK.data(),u8=new TextEncoder().encode(txt);let pre='VA1:',bytes=u8;
+  try{if(typeof CompressionStream!=='undefined'){const cs=new Blob([u8]).stream().pipeThrough(new CompressionStream('gzip'));bytes=new Uint8Array(await new Response(cs).arrayBuffer());pre='VA2:'}}catch(e){bytes=u8;pre='VA1:'}
+  let b='';for(let i=0;i<bytes.length;i+=8192)b+=String.fromCharCode.apply(null,bytes.subarray(i,i+8192));return pre+btoa(b)},
+ async parse(str){str=(str||'').trim().replace(/\s+/g,'');let txt;
+  if(str.startsWith('{'))txt=str;else{const pre=str.slice(0,4),bin=atob(str.slice(4)),u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);
+   if(pre==='VA2:'){const ds=new Blob([u8]).stream().pipeThrough(new DecompressionStream('gzip'));txt=await new Response(ds).text()}else if(pre==='VA1:')txt=new TextDecoder().decode(u8);else throw 0}
+  const o=JSON.parse(txt);if(!o||o.app!=='voyage-en-amoureux'||!o.trip)throw 0;JSON.parse(o.trip);return o},
+ restore(o){localStorage.setItem(SKEY,o.trip);if(o.set)localStorage.setItem(PKEY,o.set);if(o.best)localStorage.setItem('best4x4',o.best);try{inGame=false}catch(e){}setTimeout(()=>location.reload(),900)},
+ summary(o){try{const t=JSON.parse(o.trip);return 'Chapitre '+(((t.lvl||1)-1)%10+1)+' · '+(t.hearts||0)+' ❤ · enregistrée le '+new Date(o.date).toLocaleDateString('fr-FR')}catch(e){return ''}}
+};
+(function(){const st=document.createElement('style');st.textContent=`#bak{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(10,6,4,.72);padding:10px;box-sizing:border-box}
+#bak .bw{width:min(560px,96vw);max-height:calc(100vh - 20px);overflow:auto;background:#2b2018;border:1px solid rgba(255,255,255,.12);color:var(--cream,#f6ead6);border-radius:18px;padding:14px 18px;box-sizing:border-box;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+#bak h2{margin:0 0 4px;font-size:20px;text-align:center}#bak p{margin:6px 0;font-size:13.5px;line-height:1.35;opacity:.9}
+#bak .row{display:flex;gap:8px;margin-top:8px}#bak .row .b{flex:1;margin:0!important}
+#bak textarea{width:100%;box-sizing:border-box;height:46px;border-radius:10px;border:0;padding:8px;font:12px/1.3 Menlo,monospace;background:rgba(255,255,255,.92);color:#222;margin-top:6px;resize:none}
+#bak .msg{min-height:18px;font-weight:800;color:#ffd77a;text-align:center;margin-top:6px;font-size:14px}
+#bak .sep{height:1px;background:rgba(255,255,255,.15);margin:10px 0}`;document.head.appendChild(st);
+const d=document.createElement('div');d.id='bak';d.innerHTML=`<div class="bw"><h2>💾 Sauvegarde de secours</h2>
+<p>Ton voyage est gardé dans Safari. Si tu effaces les données du site ou changes de téléphone, il serait perdu : fais une sauvegarde de temps en temps.</p>
+<div class="row"><button class="b rdy" id="bkfile">📤 Enregistrer un fichier</button><button class="b" id="bkcopy">📋 Copier le code</button></div>
+<div class="sep"></div><p><b>Récupérer un voyage</b> : choisis le fichier de sauvegarde, ou colle le code ci-dessous.</p>
+<div class="row"><button class="b" id="bkpick">📥 Choisir un fichier</button><button class="b" id="bkpaste">Restaurer le code collé</button></div>
+<textarea id="bktx" placeholder="Colle ici ton code de sauvegarde (il commence par VA)"></textarea>
+<input type="file" id="bkin" accept=".json,.txt,application/json,text/plain" style="display:none">
+<div class="msg" id="bkmsg"></div><div class="row"><button class="b" id="bkclose">Fermer</button></div></div>`;document.body.appendChild(d);
+const msg=t=>{gid('bkmsg').textContent=t};let pend=null;
+const ask=o=>{pend=o;msg('Remplacer le voyage actuel par : '+BAK.summary(o)+' ? Touche encore « Restaurer » pour confirmer.')};
+const doRestore=o=>{msg('Voyage récupéré ! Le jeu redémarre…');BAK.restore(o)};
+gid('bkclose').onclick=()=>{d.style.display='none';pend=null;msg('')};
+gid('bkfile').onclick=async()=>{try{const txt=BAK.data(),nm='voyage-en-amoureux-'+new Date().toISOString().slice(0,10)+'.json',f=new File([txt],nm,{type:'application/json'});
+ if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Sauvegarde Voyage en amoureux'});msg('Sauvegarde prête. Range-la dans Fichiers, Notes ou envoie-la-toi.')}
+ else{const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=nm;document.body.appendChild(a);a.click();a.remove();msg('Fichier enregistré dans tes téléchargements.')}}catch(e){if(e&&e.name==='AbortError')msg('');else msg('Impossible de créer le fichier : utilise « Copier le code ».')}};
+gid('bkcopy').onclick=async()=>{try{const c=await BAK.code();gid('bktx').value=c;try{await navigator.clipboard.writeText(c);msg('Code copié ! Colle-le dans Notes ou envoie-le-toi par message.')}catch(e){gid('bktx').select();msg('Le code est dans la case : sélectionne-le et copie-le.')}}catch(e){msg('Erreur pendant la création du code.')}};
+gid('bkpick').onclick=()=>{pend=null;gid('bkin').value='';gid('bkin').click()};
+gid('bkin').onchange=async()=>{const f=gid('bkin').files[0];if(!f)return;try{const o=await BAK.parse(await f.text());ask(o);gid('bkpaste').textContent='Restaurer'}catch(e){msg('Ce fichier n’est pas une sauvegarde du jeu.')}};
+gid('bkpaste').onclick=async()=>{if(pend){const o=pend;pend=null;doRestore(o);return}try{const o=await BAK.parse(gid('bktx').value);ask(o);gid('bkpaste').textContent='Restaurer'}catch(e){msg('Code invalide : vérifie qu’il est complet.')}};
+const mb=document.createElement('button');mb.className='b';mb.id='mbak';mb.textContent='💾 Sauvegarde de secours';const nw=gid('mnew');nw.parentNode.insertBefore(mb,nw);
+mb.addEventListener('click',e=>{e.stopPropagation();pend=null;msg('');gid('bkpaste').textContent='Restaurer le code collé';gid('bktx').value='';d.style.display='flex'})})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.39',GAME_DATE='22/10/2026 à 23h19';
+const GAME_VER='2.40',GAME_DATE='22/10/2026 à 23h24';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
