@@ -4277,7 +4277,7 @@ applyUp=(function(o){return function(){SV.up.susp=Math.max(0,Math.min(SV.up.susp
 // roue : modèles de jante, couleur, pneu qui s'écrase
 wheel=function(x,y,r){const sq=Math.min(R*.22,(window.__sq||0)*1.1),Rt=R;g.save();g.translate(x,y+sq);if(sq>.15){const fy=R-sq,hw=Math.sqrt(Math.max(0,R*R-fy*fy));g.save();g.fillStyle='#141210';g.beginPath();g.moveTo(-hw-sq*.55,fy);g.quadraticCurveTo(-hw-sq*.9,fy-sq*1.2,-R*.92,fy-sq*2.2);g.lineTo(R*.92,fy-sq*2.2);g.quadraticCurveTo(hw+sq*.9,fy-sq*1.2,hw+sq*.55,fy);g.closePath();g.fill();g.restore();g.beginPath();g.rect(-R-4,-R-4,2*R+8,R+4+fy);g.clip()}g.rotate(r);
 g.fillStyle='#141210';g.beginPath();g.arc(0,0,Rt,0,7);g.fill();g.strokeStyle='#2b2724';g.lineWidth=1.6;for(let k=0;k<20;k++){g.rotate(Math.PI/10);g.beginPath();g.moveTo(Rt-2.2,0);g.lineTo(Rt+.4,0);g.stroke()}
-rimOnly();g.restore()};
+try{tireText()}catch(e){}rimOnly();g.restore()};
 function rimOnly(){const rc=(SV.cus&&SV.cus.rimC)||'#c9ccd2',m=(SV.cus&&SV.cus.rimM)||0,rr2=17*.64;g.save();g.scale(rimR()/rr2,rimR()/rr2);const rg=g.createRadialGradient(-3,-3,1,0,0,rr2);rg.addColorStop(0,mixC(rc,'w',.3));rg.addColorStop(1,mixC(rc,'k',.22));
 if(m===2){g.fillStyle=mixC(rc,'k',.45);g.beginPath();g.arc(0,0,rr2+1.5,0,7);g.fill();g.fillStyle=rg;g.beginPath();g.arc(0,0,rr2-1.2,0,7);g.fill();g.fillStyle=mixC(rc,'k',.5);g.beginPath();g.arc(0,0,rr2*.62,0,7);g.fill();g.fillStyle='#d8d8d8';for(let k=0;k<12;k++){const q=k*Math.PI/6;g.beginPath();g.arc(Math.cos(q)*(rr2-.2),Math.sin(q)*(rr2-.2),.9,0,7);g.fill()}}
 else{g.fillStyle=rg;g.beginPath();g.arc(0,0,rr2,0,7);g.fill()}
@@ -5426,8 +5426,15 @@ const fix=L=>{for(const q of L)if(PI[q[0]])q[1]=prodIc(PI[q[0]])};fix(PZ_IT);for
 (function(){const st=document.createElement('style');st.textContent='.sbb .e .ic{width:30px;height:30px;stroke-width:1.4}';document.head.appendChild(st)})();
 // ===== 2.30 : jantes de taille fixe, les grands pneus ont des flancs plus hauts =====
 function rimR(){return 17*.44}
+
+// ===== 2.32 : lettrage blanc sur les flancs des pneus (option de l'atelier) =====
+const TIRET={'':'Aucun',at:'ALL TERRAIN',tt:'TOUT TERRAIN',c4:'CORSE 4X4',mt:'MONTAGNU · MT'};
+function tireText(){const k=(SV.cus&&SV.cus.tireT)||'';if(!k)return;const txt=TIRET[k],r0=rimR(),r1=R,rm=(r0+r1)/2,fs=Math.max(2.2,(r1-r0)*.5);g.save();g.fillStyle='rgba(245,245,240,.92)';g.font='900 '+fs.toFixed(1)+'px Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';
+for(const st0 of[-Math.PI/2,Math.PI/2]){const n=txt.length,f2=Math.min(fs,Math.PI*.78*rm/(n*.66)),span=n*f2*.66/rm,a0=st0-span/2;g.font='900 '+f2.toFixed(1)+'px Arial,sans-serif';for(let i=0;i<n;i++){const an=a0+span*(i+.5)/n;g.save();g.rotate(an);g.translate(rm,0);g.rotate(Math.PI/2);g.fillText(txt[i],0,0);g.restore()}}g.restore()}
+cusRows=(function(o){return function(){const r=o(),C=SV.cus;const i=r.findIndex(q=>q[0].indexOf('Pression des pneus')>=0);r.splice(i>=0?i+1:r.length,0,['✍️ Lettrage des pneus','gratuit · inscription blanche sur les flancs',Object.keys(TIRET).map(k=>['tireT',k,TIRET[k],0,(C.tireT||'')===k])]);return r}})(cusRows);
+cusPick=(function(o){return function(k,v){if(k==='tireT'){SV.cus.tireT=v;snd('click');try{cusRender()}catch(e){}saveTrip();return}return o(k,v)}})(cusPick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.31',GAME_DATE='22/10/2026 à 18h30';
+const GAME_VER='2.32',GAME_DATE='22/10/2026 à 18h35';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>

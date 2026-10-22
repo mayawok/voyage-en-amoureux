@@ -35,6 +35,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.32** : lettrage blanc sur les flancs des pneus, au choix à l'atelier (`SV.cus.tireT`, `TIRET` : Aucun, ALL TERRAIN, TOUT TERRAIN, CORSE 4X4, MONTAGNU · MT — marque inventée, pas de vraie marque), dessiné en arc des deux côtés et qui tourne avec la roue (`tireText`).
 **2.31** : jantes encore réduites (`rimR()` = 17×0,44, le dessin de la jante est mis à l'échelle), roue du changement de roue à 0,46 R.
 **2.30** : jantes à taille fixe (`rimR()` = rayon d'une jante 15 pouces) : en 33″ et 35″ c'est le flanc du pneu qui grandit, pas la jante ; même proportion pour la roue du mini-jeu de changement de roue.
 **2.29** : une icône dessinée propre à chaque produit des commerces (16 : 3 pizzas, café, et les 12 produits corses ; `HI.p_*`, `prodIc()`), affichée en grand sur les boutons d'achat.
