@@ -220,7 +220,7 @@ body.cine #intro,body.cine #note,body.cine #place{display:none!important}
 <div id="clk"><div class="lcd"><span id="cmp">E</span><span id="tm">07:00</span><span id="tmp">--°C</span><span id="lim">CAMP AVANT 20:00</span></div></div>
 <div id="info"></div>
 <div id="hud"><div id="dist">0 m</div><div id="sub"></div><div id="bio" style="font-size:14px;font-weight:700"></div><div id="shp">🐑 0</div><div id="bars"><div class="bar" style="display:none"><i id="tb"></i></div>Chocs<div class="bar"><i id="db"></i></div></div><div id="warn"></div><div id="camp"></div></div>
-<div id="hint">Démarre (clé), puis GAZ. 4L dans les grosses côtes, plein aux stations Total !</div>
+<div id="hint">Démarre (clé), puis GAZ. 4L dans les grosses côtes, plein aux stations-service !</div>
 <div id="over"><h2>Renversé !</h2><p id="res"></p><p id="rec"></p><button class="b" id="again">Rejouer</button><br><button class="b" id="restart" style="display:none;margin-top:8px;font-size:15px">Tout recommencer</button></div>
 <button class="b" id="act"></button>
 <button class="b wait" id="pump">⛽ Plein</button>
@@ -330,7 +330,7 @@ const bname=alt=>alt<80?'Plage':BI[bi(alt+110)].n;
 // Sol : [adhérence gauche, droite, nom, type]. Boue/verglas seulement dans les creux et les fonds de vallée
 function Z(x){
 if(bridgeAt(x)>=0)return[1,1,'Pont','bridge'];if(fordAt(x))return[.8,.8,'Gué','ford'];if(slipAt(x)){let gp=(st.gear===1||st.gear===3)?(st.gear===3?.3:.27):.14;if(boostT>0)gp+=.14;return[gp,gp,'Côte glissante','slip']}if(deepAt(x))return[.3,.3,'Boue profonde','mud'];
-if(stns.some(m=>x>m.a&&x<m.b))return[1,1,'Station Total','dry'];
+{const sm=stns.find(m=>x>m.a&&x<m.b);if(sm)return[1,1,'Station '+stnName(sm.x),'dry']}
 if(gars.some(m=>x>m.a&&x<m.b))return[1,1,'Corse 4x4','dry'];
 if(tunAt(x)>=0)return[1,1,'Tunnel','dry'];
 if(nearC(x))return[1,1,'Camp','dry'];
@@ -361,8 +361,8 @@ park:['Gare-toi près de la pompe mon cœur !','Colle-toi bien à la pompe, voil
 engFirst:['Coupe d’abord le moteur, mon cœur !','On coupe le contact avant de faire le plein, hein !','Clé sur off, sinon ça va pas le faire !'],
 full:['Le réservoir est déjà plein, on file !','Il est plein à craquer, on repart !','On vient de le remplir, bêta !'],
 refuelStart:['Je mets le frein à main et on fait le plein','Frein à main, contact coupé, et hop, on remplit !','Je serre le frein à main, je prends le pistolet !','§Je tiens la portière, fais le plein tranquille !'],
-empty:['Y a plus une goutte, faut aller à une station Total !','Réservoir à sec… une Total, vite !','On n’a plus d’essence mon cœur, direction une Total !'],
-dry:['Panne sèche ! Sors le treuil, on rejoint une station Total !','Plus d’essence ! Le treuil, vite, on se fait tirer jusqu’à une Total !','On est à sec… allez, treuil et courage jusqu’à la Total !'],
+empty:['Y a plus une goutte, faut aller à une station-service !','Réservoir à sec… une station, vite !','On n’a plus d’essence mon cœur, direction une station !'],
+dry:['Panne sèche ! Sors le treuil, on rejoint une station-service !','Plus d’essence ! Le treuil, vite, on se fait tirer jusqu’à une station !','On est à sec… allez, treuil et courage jusqu’à la station !'],
 stall:['Zut, ça cale ! Passe en 4L pour les grosses côtes !','Oups, le moteur cale… en 4L ça passera mieux !','Ça cale dans la montée ! La courte, mon cœur, la courte !'],
 tankDone:['Plein fait, on repart !','Voilà, le plein est fait, direction l’aventure !','Réservoir plein, on peut y aller !','§Ça y est, tout est plein, on file !'],
 hot:['Mince on surchauffe, je devrais avoir les pièces pour réparer','Ça chauffe, ça chauffe… je crois que c’est la pompe à eau !','Fumée sous le capot ! Gare-toi, je sors ma boîte à outils','§Ça sent le chaud, mon cœur, arrête-toi !'],
@@ -388,8 +388,8 @@ pizza:['Oh, Chez Marcel ! On s’arrête manger une pizza ?','Ça sent la pizza,
 pizzaR:['§Bonne idée ! Je me gare devant le camion et je coupe le contact.','§Marcel fait les meilleures pizzas de l’île, on s’arrête !','§J’ai faim aussi ! Arrêtons-nous juste devant.'],
 hb:['Oups, j’ai oublié de desserrer le frein à main !','Le frein à main est encore serré, mon cœur !','Ça tire… c’est le frein à main, non ?','§Chéri, tu as oublié le frein à main !'],
 engOff:['Le moteur est coupé, tourne la clé mon cœur !','On est en panne ? Non, juste la clé à tourner !','§Le contact est coupé, tourne la clé !','La clé, la clé ! Le moteur est à l’arrêt !'],
-fuelAhead:['On s’arrête faire le plein mon cœur ?','Une station Total devant, on fait le plein ?','§Le réservoir baisse, on s’arrête à la Total ?','Tiens, une Total ! Un petit plein avant de repartir ?'],
-lowFuel:['Y a presque plus d’essence, on cherche une Total !','L’aiguille est dans le rouge, mon cœur !','§Il reste plus grand-chose dans le réservoir…','Il faut vraiment trouver une station Total, là !'],
+fuelAhead:['On s’arrête faire le plein mon cœur ?','Une station-service devant, on fait le plein ?','§Le réservoir baisse, on s’arrête à la station ?','Tiens, une station ! Un petit plein avant de repartir ?'],
+lowFuel:['Y a presque plus d’essence, on cherche une station !','L’aiguille est dans le rouge, mon cœur !','§Il reste plus grand-chose dans le réservoir…','Il faut vraiment trouver une station-service, là !'],
 hotC:['Ça fume ! Arrête-toi, je change la pompe à eau…','Le moteur chauffe, on s’immobilise, je répare !','§Ça sent le brûlé, on s’arrête vite !'],
 flatC:['On a crevé ! Arrête-toi, on change la roue !','Un pneu à plat, on s’arrête tout de suite !','§Ça bringuebale… arrête-toi, c’est crevé !'],
 rockZone:['Les cailloux, vas-y mollo sinon on crève !','Doucement sur les cailloux, mon cœur !','§Les pneus vont souffrir, ralentis !','Ça caillasse devant, on y va tranquille !'],
@@ -503,7 +503,7 @@ const wxIcon=()=>({rain:'🌧️',snow:'❄️',fog:'🌫️',storm:'⛈️'})[w
 let barkT=0,barkTx='Ouaf !',barkN=0,tow=null,trafT=30,tutS=0,tutT=0;const traf=[];
 function bark(){if(night||barkT>0||paused)return;barkT=1.1;barkTx=['Ouaf !','Wouf wouf !','Ouaf ouaf !','Wouf !'][barkN++%4];snd('bark')}
 function callTow(){if(tow||night||crashed||!started)return;if(purse()<15){sayK('towNo',3);return}tow={x:c.x-560,ph:0,t:0};sayK('towCall',3);snd('hornFar')}
-const TUT=['👇 Tourne la clé (en bas à gauche) pour démarrer','👇 Appuie sur GAZ (à droite). FREIN pour ralentir','👇 Appuie sur GAZ (à droite). FREIN pour ralentir','⛽ Surveille l’essence : stations Total. Levier sur 4L dans les grosses côtes'];
+const TUT=['👇 Tourne la clé (en bas à gauche) pour démarrer','👇 Appuie sur GAZ (à droite). FREIN pour ralentir','👇 Appuie sur GAZ (à droite). FREIN pour ralentir','⛽ Surveille l’essence : stations-service. Levier sur 4L dans les grosses côtes'];
 function tutTick(dt){if(SET.tut||!inGame||paused||crashed||night){tutEl.style.display='none';return}
 let ok=false;const d=dist();
 if(tutS===0)ok=!!ign;else if(tutS===1)ok=true;else if(tutS===2)ok=d>=8;else{tutT+=dt;ok=tutT>14}
@@ -1403,7 +1403,7 @@ const hrN=hourNow(),nightT=hrN>=19.5,cpN=camps.some(m=>c.x>m.a-60&&c.x<m.b+60);c
 const op=obsP.find(q=>c.x>q.x-170&&c.x<q.x+90&&obsUseful(q)),sm=op?null:shp.find(m=>c.x>m.x+10&&c.x<m.x+250);if(op)cx={x:op.x,y:op.y-70,it:[['obs','🔭','Observer',0]],key:'o'+op.x};else 
 if(sm)cx={x:sm.x+145,y:sm.y-96,it:sm.k==='food'?[['umenu','🛒','Entrer chez Utile',0]]:shopItems(sm),key:'s'+sm.x+(carry?'c':'')+(sm.extra?'e':'')};
 else{const m=PLT()?null:stns.find(q=>c.x>q.x+40&&c.x<q.x+240);
-if(m)cx={x:m.x+150,y:m.y-84,it:[['stmenu','🏪','Boutique Total',0]],key:'t'+m.x};
+if(m)cx={x:m.x+150,y:m.y-84,it:[['stmenu','🏪','Boutique auto',0]],key:'t'+m.x};
 else{const j=pzJ();if(j!=null){const px=pzX(j);cx={x:px+10,y:T(px+10)-84,it:PZ_IT,key:'p'+j,mar:1}}}}}}
 if(!cx){sbEl.style.display='none';mbEl.style.display='none';sbCtx=null;ctxKey='';return}
 if(ctxKey!==cx.key){ctxKey=cx.key;if(cx.mar){mLine=marcelLine()}}
@@ -1425,7 +1425,7 @@ restEl.addEventListener('pointerdown',e=>{e.preventDefault();const m=restNear();
 // ---- missions ----
 const MISS=[
 {id:'os',need:'os',e:'🦴',n:'un os',who:0,t:'Le chien a perdu son os !',q:'Le chien a perdu son os… il boude depuis ce matin !',h:'À l’animalerie',shop:'pet',find:['rock'],r:8,ok:'§Regarde comme il remue la queue !'},
-{id:'huile',need:'huile',e:'🛢️',n:'un bidon d’huile',who:1,t:'Le voyant d’huile clignote !',q:'Le voyant d’huile clignote… il nous faut un bidon !',h:'À la station Total',shop:'stn',find:['log'],r:8,ok:'Ouf, le moteur ronronne à nouveau !'},
+{id:'huile',need:'huile',e:'🛢️',n:'un bidon d’huile',who:1,t:'Le voyant d’huile clignote !',q:'Le voyant d’huile clignote… il nous faut un bidon !',h:'À la station-service',shop:'stn',find:['log'],r:8,ok:'Ouf, le moteur ronronne à nouveau !'},
 {id:'tente',need:'tente',e:'⛺',n:'une tente',who:0,t:'On a oublié la tente !',q:'On a oublié la tente au dernier camp, mon cœur…',h:'Au camping shop',shop:'camp',find:['rock'],r:10,ok:'§Super, on dormira à la belle étoile !'},
 {id:'rust',need:'rust',e:'🩹',n:'des rustines',who:1,t:'Plus une seule rustine !',q:'Plus une seule rustine dans la boîte à gants !',h:'Au magasin de pneus',shop:'tire',find:['log'],r:7,ok:'Parfait, on est tranquilles pour les crevaisons.'},
 {id:'amp',need:'amp',e:'💡',n:'une ampoule',who:0,t:'Un phare faiblit…',q:'Notre phare faiblit… une ampoule de rechange, vite !',h:'Au magasin de feux',shop:'lite',find:['rock'],r:7,ok:'§Là, on y voit clair !'},
@@ -1436,7 +1436,7 @@ const MISS=[
 {id:'lampe',need:'lampe',e:'🔦',n:'une lampe torche',who:0,t:'Il faut une lampe torche',q:'Il nous faut une lampe torche pour la nuit !',h:'Au camping shop',shop:'camp',find:['rock'],r:6,ok:'§Maintenant on voit dans le noir !'},
 {id:'cle',need:'cle',e:'🔧',n:'une clé de 13',who:1,t:'Le pare-chocs se dévisse !',q:'Le pare-chocs se dévisse, une clé de 13 !',h:'À la quincaillerie',shop:'hard',find:['log'],r:7,ok:'Bien serré, il ne bougera plus !'},
 {id:'croq',need:'croq',e:'🥫',n:'des croquettes',who:1,t:'Plus de croquettes !',q:'Plus de croquettes pour le chien, on en trouve où ?',h:'À l’animalerie',shop:'pet',find:['log'],r:8,ok:'Gamelle pleine, chien heureux !'},
-{id:'jerry',need:'jerry',e:'⛽',n:'un jerrican',who:0,t:'Un jerrican de secours',q:'Prenons un jerrican de secours, on sera tranquilles.',h:'À la station Total',shop:'stn',find:['rock'],r:8,ok:'§Un bon réflexe, mon cœur !'}];
+{id:'jerry',need:'jerry',e:'⛽',n:'un jerrican',who:0,t:'Un jerrican de secours',q:'Prenons un jerrican de secours, on sera tranquilles.',h:'À la station-service',shop:'stn',find:['rock'],r:8,ok:'§Un bon réflexe, mon cœur !'}];
 const WHO={m:['MILA','#7b3fa0'],a:['ANDREA','#b5532a'],n:['','#555'],v:['','#2b5d3a']};
 const CHAP=[
 {p:'Village de Sari · la tortue d’Hermann',fin:'Village de Sari',e:'🐢',totem:['tortue','🐢','Tortue d’Hermann',1,'ground'],
@@ -1520,7 +1520,7 @@ if(mis.kind==='rescue'){
  if(mis.stage===0){if(!inj){let x=c.x+1900,n=0;while((nearC(x)||wetRange(x-150,x+150)||rockW(x)>0||bridgeAt(x)>=0||tunNear(x)||obs.some(o=>Math.abs(o.x-x)<250))&&n++<60)x+=90;inj={x,e:mis.e}}else if(c.x>inj.x+500){inj.x=c.x+1800}}
  if(mis.age>480){mis=null;SV.mis=null;misCD=60;inj=null;carry=null;note('Tant pis, quelqu’un d’autre le trouvera…')}}
 else if(SV.inv[mis.need]){doneMission()}else if(mis.age>(mis.kind==='photo'?700:260)){mis=null;SV.mis=null;misCD=(false)?30:40;note('Tant pis, on se débrouillera…')}}
-if(mis){const h='<b>'+mis.e+' '+mis.t+'</b><small>'+(mis.kind==='rescue'&&mis.stage===1?'Amène-le chez le vétérinaire 🩺':mis.h)+'</small>';if(e.dataset.h!==h){e.innerHTML=h;e.dataset.h=h}e.style.display='block'}else if(SV.sabo){const h='<b>🔧 Cherokee saboté !</b><small>Puissance réduite · pièce à la station Total</small>';if(e.dataset.h!==h){e.innerHTML=h;e.dataset.h=h}e.style.display='block'}else{e.style.display='none';e.dataset.h=''}}
+if(mis){const h='<b>'+mis.e+' '+mis.t+'</b><small>'+(mis.kind==='rescue'&&mis.stage===1?'Amène-le chez le vétérinaire 🩺':mis.h)+'</small>';if(e.dataset.h!==h){e.innerHTML=h;e.dataset.h=h}e.style.display='block'}else if(SV.sabo){const h='<b>🔧 Cherokee saboté !</b><small>Puissance réduite · pièce à la station-service</small>';if(e.dataset.h!==h){e.innerHTML=h;e.dataset.h=h}e.style.display='block'}else{e.style.display='none';e.dataset.h=''}}
 function missionFind(type){return;if(!mis||mis.kind==='rescue'||SV.inv[mis.need]||!mis.find.includes(type)||Math.random()>.65)return;SV.inv[mis.need]=1;snd('ding');note('🔎 Trouvé dans le décor : '+mis.n+' !')}
 // ---- animal blessé ----
 function injDraw(x0,x1,tm){if(!inj||inj.x<x0-60||inj.x>x1+60)return;const x=inj.x,y=T(x);g.save();g.fillStyle='rgba(255,90,110,'+(.18+.1*Math.sin(tm*4))+')';g.beginPath();g.arc(x,y-14,24+Math.sin(tm*4)*2,0,7);g.fill();g.font='30px sans-serif';g.textAlign='center';g.textBaseline='alphabetic';g.fillText(inj.e,x,y-2);g.fillStyle='#fff';g.beginPath();g.arc(x+16,y-38,9,0,7);g.fill();g.fillStyle='#e8334a';g.fillRect(x+13,y-45,6,14);g.fillRect(x+9,y-41,14,6);g.restore()}
@@ -2407,7 +2407,7 @@ const CEND=[[['m','Premier jour d’étude : douze tortues observées. Trois sor
 function finishTick(){if(!started||night||es||chEnd||fn||(SV.finDone&&chIdx()===CHAP.length-1))return;if(c.x>=MAP_L-520&&(!stopReq||!stopReq.fin)){stopReq={x:MAP_L-90,fin:1,cb:()=>{chEnd=1;v.x=v.y=0;w=0;st.gas=0;st.hb=1;const ii=chIdx();fadeTo(()=>burOr(ii))}}}if(c.x>=MAP_L-40){chEnd=1;v.x=v.y=0;w=0;st.gas=0;st.hb=1;const ii=chIdx();fadeTo(()=>burOr(ii))}}
 function openEnd(i){es={i,t:0,li:-1,lt:0,end:0};esT0=0;paused=true;document.body.classList.add('cine');gid('esx').style.display='none';snd('chime')}
 function closeEnd(){const i=es.i;es=null;document.body.classList.remove('cine');gid('esx').style.display='none';paused=false;last=performance.now();
-if(i===CHAP.length-1){chEnd=1;SV.finDone=1;stopReq=null;endStory();saveTrip();return}journalPopup(i);level++;try{chapReset()}catch(e){}SV.clk=8;chEnd=0;if(i===3||i===6)SV.sabo={shop:'stn',it:['fixsab','🔧','Pièce de rechange',3]};saveTrip();if(SV.sabo&&(i===3||i===6))setTimeout(()=>{cardQ.push({t:'Au réveil… le Cherokee a été saboté !',L:[['a','Quelqu’un a coupé une durite et dévissé le filtre cette nuit… On roule à puissance réduite.'],['m',(SV.csd&&SV.csd.lucia)?'Noxacorp. Ils veulent nous ralentir.':'Ceux qui couvrent le N-12. Ils veulent nous ralentir. Trouvons une station Total pour la pièce de rechange.']]})},2500)}
+if(i===CHAP.length-1){chEnd=1;SV.finDone=1;stopReq=null;endStory();saveTrip();return}journalPopup(i);level++;try{chapReset()}catch(e){}SV.clk=8;chEnd=0;if(i===3||i===6)SV.sabo={shop:'stn',it:['fixsab','🔧','Pièce de rechange',3]};saveTrip();if(SV.sabo&&(i===3||i===6))setTimeout(()=>{cardQ.push({t:'Au réveil… le Cherokee a été saboté !',L:[['a','Quelqu’un a coupé une durite et dévissé le filtre cette nuit… On roule à puissance réduite.'],['m',(SV.csd&&SV.csd.lucia)?'Noxacorp. Ils veulent nous ralentir.':'Ceux qui couvrent le N-12. Ils veulent nous ralentir. Trouvons une station-service pour la pièce de rechange.']]})},2500)}
 gid('esx').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(es)closeEnd()});
 cv.addEventListener('pointerdown',()=>{if(es&&es.li>=0&&!es.end)es.lt=99});
 function esTick(t){const dt=esT0?Math.min(.05,(t-esT0)/1000):0;esT0=t;if(!es)return;es.t+=dt;const k=HH/420,Wd=W/k,gy=330,tm=t/1000,L=CEND[es.i]||[];g.setTransform(DPR*k,0,0,DPR*k,0,0);
@@ -2475,7 +2475,7 @@ cam.x+=((night?(c.x+170)*(1-NZ)+(night.m.x+(night.m.car?160:120))*NZ:tow&&tow.fl
 if(fb){try{fbTick(t)}catch(e){window.__showErr&&window.__showErr('sous-marin '+e.message)}}else if(cs){try{csTick(t)}catch(e){window.__showErr('cine '+e.message)}}else if(hel){try{helTick(t)}catch(e){window.__showErr('helico '+e.message)}}else if(bur){try{burTick(t)}catch(e){window.__showErr('adieu '+e.message)}}else if(ot){try{otTick(t)}catch(e){window.__showErr('outro '+e.message)}}else if(es){try{esTick(t)}catch(e){window.__showErr('fin chap '+e.message)}}else if(fn){try{fnTick(t)}catch(e){window.__showErr('fin '+e.message)}}else if(hl){try{hlTick(t)}catch(e){window.__showErr('aide '+e.message)}}else if(bz){try{bzTick(t)}catch(e){window.__showErr('bzh '+e.message)}}else if(bt){try{boatTick(t)}catch(e){window.__showErr('boat '+e.message)}}else if(obv){try{obTick(t)}catch(e){window.__showErr('obs '+e.message)}}else try{draw()}catch(e){window.__showErr('draw '+e.message)}
 {const m=stns.find(s=>s.x+105>cam.x-W*.35/S-100&&s.x+105<cam.x+W*.65/S+100);
 if(m&&!night&&!crashed){const sp3=Math.hypot(v.x,v.y),near=!!stnNear();pumpEl.style.display='block';pumpEl.style.left=Math.round(scr.ox+(m.x+105)*S)+'px';pumpEl.style.top=Math.round(scr.oy+(m.y-165)*S)+'px';
-let lb,rd=0;if(refuel)lb='Plein '+Math.round(fuel*100)+' %';else if(!near)lb='⛽ Station Total';else if(sp3>=25)lb='⛽ Arrête-toi';else if(ign)lb='⛽ Coupe le moteur';else if(fuel>.98)lb='⛽ Réservoir plein';else{lb='⛽ Faire le plein';rd=1}
+let lb,rd=0;if(refuel)lb='Plein '+Math.round(fuel*100)+' %';else if(!near)lb='⛽ Station '+stnName(m.x);else if(sp3>=25)lb='⛽ Arrête-toi';else if(ign)lb='⛽ Coupe le moteur';else if(fuel>.98)lb='⛽ Réservoir plein';else{lb='⛽ Faire le plein';rd=1}
 if(pumpEl.textContent!==lb)pumpEl.textContent=lb;pumpEl.className='b'+(rd?' rdy':' wait')}else pumpEl.style.display='none'}
 {const m=gars.find(s=>s.x+170>cam.x-W*.35/S-100&&s.x+170<cam.x+W*.65/S+100);
 if(m&&!night&&!crashed){const sp3=Math.hypot(v.x,v.y),near=!!garNear();garEl.style.display='block';garEl.style.left=Math.round(scr.ox+(m.x+170)*S)+'px';garEl.style.top=Math.round(scr.oy+(m.y-132)*S)+'px';
@@ -3296,7 +3296,7 @@ for(const p of lampPts(v0,v1)){const x=p[0]+(p[2]?0:10),y=p[1]+(p[2]?0:10),R=p[2
 if(!p[2]){g.fillStyle='rgba(255,220,150,'+(.12*k)+')';g.beginPath();g.moveTo(x-3,y);g.lineTo(x+3,y);g.lineTo(x+30,T(x)+10);g.lineTo(x-30,T(x)+10);g.fill()}}
 g.restore();g.globalCompositeOperation='source-over'}
 
-// ===== v68 : magasins regroupés : station Total (tout pour la voiture) + supérette Utile =====
+// ===== v68 : magasins regroupés : station-service (tout pour la voiture) + supérette Utile =====
 var CARK=['tire','susp','lite','hard'],storeK=null;
 SHOPS.food={n:'UTILE',e:'🛒',c:'#d42a2a',it:[['course','🛒','Courses',2],['eau','💧','Eau',1],['sandw','🥪','Sandwichs',2],['fruit','🍑','Fruits',1],['the','🧋','Thé glacé',2],['cafe','☕','Café',1],['matcha','🍵','Matcha latte',2],['croq','🥫','Croquettes',2],['os','🦴','Os pour le chien',1],['lampe','🔦','Lampe torche',3]]};
 var ITD={course:'De quoi manger pour la journée',eau:'Hydrate l’équipage',sandw:'Ça cale bien pour la route',fruit:'Un petit en-cas frais',the:'Mila n’a plus sommeil',croq:'Le chien est ravi',os:'Le chien est ravi',lampe:'Un peu plus de lumière la nuit',huile:'Moteur plus heureux',jerry:'+35 % de carburant',rust:'Répare une crevaison',spare:'Deux réparations de pneu',amor:'Répare et rehausse un peu',cale:'Passe mieux les obstacles',amp:'Phares plus puissants',fog:'Mieux voir sous la pluie',corde:'Treuil prêt tout de suite',cle:'Petites réparations',gonf:'Plus d’adhérence (2 min)',plein:'Remplit le réservoir',pelle:'Dégage deux fois plus vite'};
@@ -3305,7 +3305,7 @@ var urgT=0;function urgentShop(){if(!started||night||paused||!inGame)return;let 
 function stnList(){const L=[['plein','⛽','Faire le plein',0],['huile','🛢️','Huile moteur',3],['jerry','⛽','Jerrican',4],['gonf','💨','Gonflage pneus',1],['rust','🩹','Rustines',3],['spare','🛞','Roue de secours',8],['amor','🔩','Amortisseur',4],['cale','⬆️','Cales hautes',6],['amp','💡','Ampoule renforcée',2],['fog','🌫️','Antibrouillard',3],['pelle','⛏️','Pelle',3]];
 if(mis&&mis.item&&CARK.indexOf(mis.shop)>=0&&!SV.inv[mis.need])L.unshift(mis.item);if(SV.sabo&&CARK.indexOf(SV.sabo.shop)>=0)L.unshift(SV.sabo.it);return L}
 function storeList(){if(storeK==='stn')return stnList();const m=storeK;let L=SHOPS.food.it.slice();if(m&&m.extra)L.unshift(m.extra);if(SV.sabo&&m&&m.k===SV.sabo.shop)L.unshift(SV.sabo.it);return L}
-function openStore(kind,m){storeK=kind==='stn'?'stn':m;paused=true;st.gas=0;st.brake=0;try{ptr.clear()}catch(e){}gid('shop').style.display='flex';gid('shop').querySelector('h1').textContent=kind==='stn'?'⛽ Station Total · boutique auto':'🛒 Utile · votre supérette';storeRender();snd('chime')}
+function openStore(kind,m){storeK=kind==='stn'?'stn':m;paused=true;st.gas=0;st.brake=0;try{ptr.clear()}catch(e){}gid('shop').style.display='flex';gid('shop').querySelector('h1').textContent=kind==='stn'?'⛽ Station '+stnName((stnNear()||{x:0}).x)+' · boutique auto':'🛒 Utile · votre supérette';storeRender();snd('chime')}
 function storeRender(){gid('purse').textContent='Tes cœurs : '+purse()+' ❤'+(storeK==='stn'?'   ·   ⛽ '+Math.round(fuel*100)+' %':'   ·   🍞 '+Math.round((SV.food??1)*100)+' %');
 const L=storeList();let h='<div style="grid-column:1/-1;font:800 12px Arial;letter-spacing:1.5px;opacity:.7;margin-top:4px">'+(storeK==='stn'?'CARBURANT & PIÈCES':'ÉPICERIE')+'</div>';
 h+=L.map((q,i)=>'<div class="it"><span class="ic">'+q[1]+'</span><span class="tx"><b>'+q[2]+'</b><small>'+(ITD[q[0]]||'Pour la mission en cours')+'</small></span><button class="b'+(q[3]>purse()?' wait':' rdy')+'" data-q="'+i+'">'+(q[3]?q[3]+' ❤':'Gratuit')+'</button></div>').join('');
@@ -5168,8 +5168,27 @@ pzTick=(function(o){return function(dt,tm){o(dt,tm);try{if(pz&&pzCv){const W0=W,
 // ===== 2.23 : chien visible dans sa cinématique, étiquettes du décor masquées en cinématique =====
 try{const d0=CS.dogf.draw;CS.dogf.draw=function(){window.__dogF=1;try{return d0.apply(this,arguments)}finally{window.__dogF=0}}}catch(e){}
 (function(){const st=document.createElement('style');st.textContent='body.cine #pump,body.cine #gar,body.cine #rest,body.cine #sb,body.cine #mb,body.cine #pick,body.cine #slpb,body.cine #tow,body.cine #act,body.cine #dogp,body.cine #obj,body.cine #mis,body.cine #tut,body.cine #note{display:none!important}';document.head.appendChild(st)})();
+
+// ===== 2.24 : une station sur deux est une Vito ; pas deux commerces au même endroit =====
+function stnVito(x){return (Math.round(x/100)+(SV.seed||0)+level)%2===1}
+function stnName(x){return stnVito(x)?'Vito':'Total'}
+station=(function(o){return function(m,tm){if(!stnVito(m.x))return o(m,tm);const x=m.x,y=m.y;
+g.fillStyle='#8a867e';g.fillRect(x-24,y-2,284,7);
+// totem bleu nuit et jaune
+g.fillStyle='#4a4a4a';g.fillRect(x-32,y-140,6,140);g.fillStyle='#14306b';g.beginPath();g.roundRect(x-66,y-170,72,44,8);g.fill();g.fillStyle='#ffcf1f';g.beginPath();g.arc(x-48,y-148,11,0,7);g.fill();g.fillStyle='#14306b';g.beginPath();g.moveTo(x-54,y-153);g.lineTo(x-48,y-141);g.lineTo(x-42,y-153);g.lineWidth=3;g.strokeStyle='#14306b';g.stroke();g.fillStyle='#fff';g.font='italic 900 17px sans-serif';g.textAlign='left';g.fillText('VITO',x-34,y-141);
+g.fillStyle='#111';g.fillRect(x-66,y-124,72,20);g.fillStyle='#7fd7ff';g.font='bold 11px sans-serif';g.textAlign='center';g.fillText('1,87  1,76',x-30,y-110);
+// auvent arrondi
+g.fillStyle='#b9c0c8';g.fillRect(x+16,y-94,6,92);g.fillRect(x+190,y-94,6,92);g.fillStyle='#14306b';g.beginPath();g.roundRect(x+2,y-112,208,20,10);g.fill();g.fillStyle='#ffcf1f';g.fillRect(x+2,y-98,208,4);g.fillStyle='#fff';g.font='italic 900 12px sans-serif';g.fillText('VITO',x+106,y-100);
+g.fillStyle='#d9f2ff';g.fillRect(x+60,y-90,40,3);g.fillRect(x+120,y-90,40,3);
+for(const px of[x+105,x+150]){g.fillStyle='#14306b';g.beginPath();g.roundRect(px-9,y-48,18,46,4);g.fill();g.fillStyle='#ffcf1f';g.fillRect(px-9,y-48,18,6);g.fillStyle='#0c0c0c';g.fillRect(px-6,y-38,12,9);g.fillStyle='#7fd7ff';g.fillRect(px-4,y-36,8,2.5);g.strokeStyle='#222';g.lineWidth=2;g.beginPath();g.moveTo(px+9,y-26);g.quadraticCurveTo(px+17,y-18,px+13,y-4);g.stroke()}
+// petite boutique en pierre
+g.fillStyle='#cfc6b4';g.fillRect(x+214,y-62,62,60);g.fillStyle='#14306b';g.fillRect(x+210,y-70,70,9);g.fillStyle='#ffcf1f';g.fillRect(x+210,y-62,70,2);g.fillStyle='#8fc4d8';g.fillRect(x+220,y-52,26,22);g.fillStyle='#3a2e24';g.fillRect(x+254,y-44,14,42)}})(station);
+// espacement : Marcel, magasins, stations, garages, points d'observation et camps ne se superposent plus
+mgTick=(function(o){return function(dt){o(dt);try{const busy=(x,self)=>stns.some(q=>q!==self&&Math.abs(q.x+110-x)<520)||gars.some(q=>q!==self&&Math.abs(q.x+170-x)<520)||shp.some(q=>q!==self&&Math.abs(q.x+120-x)<520)||camps.some(q=>q!==self&&Math.abs(q.x+120-x)<520);
+for(const q of pzL){if(q.x>c.x+700&&busy(q.x+60,null)){let n=0;while(busy(q.x+60,null)&&n++<20)q.x+=250}}
+for(const m of shp){if(m.x>c.x+700&&(stns.some(q=>Math.abs(q.x+110-(m.x+120))<520)||gars.some(q=>Math.abs(q.x+170-(m.x+120))<520))){let n=0;while(n++<20&&(stns.some(q=>Math.abs(q.x+110-(m.x+120))<520)||gars.some(q=>Math.abs(q.x+170-(m.x+120))<520))){m.x+=250;m.a+=250;m.b+=250}m.y=T(m.x+110)}}}catch(e){}}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.23',GAME_DATE='22/10/2026 à '+'17h40';
+const GAME_VER='2.24',GAME_DATE='22/10/2026 à 17h55';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
