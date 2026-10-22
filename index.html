@@ -4556,9 +4556,9 @@ function gradC(key,x0,y0,x1,y1,stops){const id=x0+','+y0+','+x1+','+y1+'|'+stops
 function starLayer(){const k=W+'x'+HH+'x'+DPR;if(!starCv||starKey!==k){starKey=k;starCv=document.createElement('canvas');starCv.width=Math.ceil(W*DPR);starCv.height=Math.ceil(HH*.8*DPR);const x=starCv.getContext('2d');x.scale(DPR,DPR);for(let i=0;i<260;i++){if(i%9===0)continue;const r=hs(i+5)<.1?2.6:hs(i+9)<.4?1.8:1.2;x.globalAlpha=.4+.6*Math.abs(Math.sin(i*1.7));x.fillStyle=i%7===0?'#ffe9c0':'#fff';x.fillRect(hs(i)*W,hs(i+77)*HH*.78,r,r)}}g.drawImage(starCv,0,0,W,HH*.8)}
 function cineOn(){try{return !!(cs||bur||es||hel||fb||ot||fn||bz||bt||night)}catch(e){return false}}
 function calmNow(){try{if(cineOn()||hl||pz)return false;const mo=gid('menu');if((mo&&mo.style.display!=='none')||cardOpen||chQ||paused)return true;if(!started)return true;return Math.hypot(v.x,v.y)<4&&!st.gas&&!st.brake&&!winch&&!work&&!tow&&!stopReq&&boostT<=0&&startT<=0}catch(e){return false}}
-loop=(function(o){return function(t){const iv=calmNow()?1000/30:1000/60;if(fpsLast&&t-fpsLast<iv-3&&t>=fpsLast){requestAnimationFrame(loop);return}fpsLast=t;o(t)}})(loop);
+// 2.11 : plus de limite d'images (demande de l'utilisateur : saccades)
 drawDash=(function(o){return function(tm){let sig='';try{sig=[Math.round(dv.spd),Math.round(dv.rpm/40),Math.round(dv.lev*40),Math.round(dv.key*40),Math.round(dv.hb*30),Math.round(dv.fuel*200),Math.round(dv.cool),Math.round(dv.oil*20),Math.round(dv.volt*10),Math.round(lit*30),st.gas,st.brake,st.hb,ign,lampOn,typeof wipOn!=='undefined'?wipOn:0,gearTxt,lcd.join('|'),wbEl.className,wbEl.textContent,bbEl.className,bbEl.textContent,W,HH,Adark>.3,started,night?1:0].join(';')}catch(e){sig=Math.random()+''}
-const busy=sayT>0||Math.hypot(v.x,v.y)>2||(typeof wipOn!=='undefined'&&wipOn)||winch||boostT>0;if(!busy&&sig===dashSig&&tm-dashLastT<1/15&&tm>=dashLastT)return;dashSig=sig;dashLastT=tm;o(tm)}})(drawDash);
+const busy=sayT>0||Math.hypot(v.x,v.y)>2||(typeof wipOn!=='undefined'&&wipOn)||winch||boostT>0;dashSig=sig;dashLastT=tm;o(tm)}})(drawDash);
 
 // ===== 2.02 : humour — Andrea (humour noir), Mila (humour bienveillant) =====
 const JOKE={
@@ -5001,6 +5001,6 @@ if(c.x>s-900&&c.x<s&&!stopReq&&SV.brAsk!==level+':'+Math.floor(playT/20)){SV.brA
 mgTick=(function(o){return function(dt){o(dt);brWorld()}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.10',GAME_DATE='22/10/2026';
+const GAME_VER='2.11',GAME_DATE='22/10/2026';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
