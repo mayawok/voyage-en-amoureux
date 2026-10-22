@@ -25,9 +25,10 @@
 - Tests : Playwright headless (`NODE_PATH=/opt/npm-tools/node_modules`), avec `requestAnimationFrame` neutralisé et la boucle avancée à la main par `loop(t)`. L'écran d'intro dure environ 8 s réelles : attendre avant les captures.
 
 ## Reste à faire (demandes de l'utilisateur, par priorité)
-- « Allure pro » (proposé, en cours) : icônes dessinées à la place des emojis, palette fixe des panneaux, objectif réduit à une ligne, écran titre animé, générique de fin, icône d'écran d'accueil, passe de vérification chapitre par chapitre. L'utilisateur a une limite d'usage serrée : avancer par petites étapes.
+- « Allure pro » (proposé, en cours) : icônes dessinées à la place des emojis, palette fixe des panneaux, écran titre animé, générique de fin, icône d'écran d'accueil, passe de vérification chapitre par chapitre. L'utilisateur a une limite d'usage serrée : avancer par petites étapes.
 
 ## Déjà fait récemment
+**2.13** : objectif sur une ligne (le détail `<small>` se déplie au toucher pendant 5 s).
 **2.12** : allure pro, 1re étape — une seule police (Avenir Next) pour toute l'interface HTML, boutons qui s'enfoncent au toucher, transitions douces ; astuces (`#tut`, conseil boost) seulement aux chapitres 1 et 2, et l'astuce s'efface pendant qu'on parle.
 **2.11** : limite d'images supprimée (plus de 30/60 i/s forcés, tableau de bord redessiné à chaque image) : l'utilisateur avait des saccades. Ne pas remettre de limitation d'images. Les autres économies de la 2.02 (piste unique, étoiles pré-dessinées, ciel en cache) restent.
 **2.10** : les objets de mission (huile, thé, ampoule…) ne se trouvent plus dans la nature (`missionFind` désactivé), uniquement dans les magasins ; indices `h:` mis à jour.

@@ -5009,8 +5009,11 @@ boostHintTick=(function(o){return function(){if(level>2){boostHint=1;return}retu
 mgTick=(function(o){return function(dt){o(dt);try{if(level>2&&tutEl.style.display!=='none')tutEl.style.display='none';
 // une info à la fois : l'astuce s'efface quand quelqu'un parle ou qu'une note s'affiche
 const busy=sayT>0||gid('note').classList.contains('on');tutEl.style.opacity=busy?'0':'1'}catch(e){}}})(mgTick);
+
+// ===== 2.13 : objectif sur une ligne, détail au toucher =====
+(function(){const st=document.createElement('style');st.textContent=`#obj small{display:none}#obj.open small{display:block}#obj{pointer-events:auto;cursor:pointer}`;document.head.appendChild(st);const o=gid('obj');if(o)o.addEventListener('pointerdown',e=>{e.stopPropagation();o.classList.toggle('open');clearTimeout(o.__t);if(o.classList.contains('open'))o.__t=setTimeout(()=>o.classList.remove('open'),5000)})})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.12',GAME_DATE='22/10/2026';
+const GAME_VER='2.13',GAME_DATE='22/10/2026';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
