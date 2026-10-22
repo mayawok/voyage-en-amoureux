@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.44** : décors élaborés pour deux mini-jeux — touristes (`tourBG` : ciel, soleil, nuages qui avancent, montagnes en deux plans, mer au loin dans les chapitres côtiers, maisons en pierre avec volets et fleurs, clocher avec cloche et horloge, place pavée en perspective, fontaine qui coule, terrasse de café avec parasols, oliviers, pigeons, pots de fleurs) et pont (`brBG` : montagnes, pins, falaises avec strates, cascade, rivière avec remous et rochers, herbe et fleurs, panneau de danger). Fonctions communes `bgSky`, `bgMount`, `bgPine`, `bgOlive`.
 **2.43** : 
 - Rien ne se superpose : `occAt(x,r,skip)` (ferme, magasins, stations, garages, camps, PNJ, puzzles, mission remorque, touristes, Noxacorp, pont cassé) ; la mission remorque, les touristes et Noxacorp attendent un endroit libre (le magasin agricole tombait sur la « Sauvegarde des oiseaux »).
 - Tracteurs : garés seulement sur terrain plat et libre (plus de tracteur qui flotte au pied d'un talus), deux fois moins nombreux ; ceux qui roulent sont plus rares (toutes les 2 min 40 à 4 min 40), suivent la pente et n'apparaissent jamais si un bac, un pont, un gué, un tunnel, une grotte ou un talus est sur leur chemin (`trcPathOK`).
