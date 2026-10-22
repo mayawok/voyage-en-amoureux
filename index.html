@@ -4673,8 +4673,90 @@ musScene=(function(o){return function(){try{if(cs){if(cs.k==='coas'||cs.k==='spy
 // déclenchement de la scène des bidons, après les ruines de Coasina
 function coasWorld(){try{if(cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd)return;SV.csd=SV.csd||{};if(chIdx()!==1||SV.csd.coas||SV.csq_coas===level)return;const f=chP();if(f>=.81&&f<.95){SV.csq_coas=level;say('Arrêtons-nous au pied du castellu, la vue doit être belle d’en bas.',3.4,1);stopReq={x:c.x+320,cb:()=>setTimeout(()=>fadeTo(()=>openCine('coas')),400)}}}catch(e){}}
 mgTick=(function(o){return function(dt){o(dt);coasWorld()}})(mgTick);
+
+// ===== 2.05 : cadre commun des nouveaux mini-jeux (écran plein, espace virtuel 800×450) =====
+var MGX=null,mgxT0=0;
+(function(){const st=document.createElement('style');st.textContent=`#mgx{position:fixed;inset:0;z-index:70;display:none;background:#1b1a18;touch-action:none;user-select:none;-webkit-user-select:none}
+#mgx canvas{position:absolute;inset:0;width:100%;height:100%}
+#mgxu{position:absolute;inset:0;pointer-events:none;font-family:"Avenir Next",Arial,sans-serif}
+#mgxu .mb{pointer-events:auto;border:0;border-radius:14px;padding:10px 16px;font:800 15px Arial,sans-serif;background:rgba(255,255,255,.92);color:#223;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+#mgxu .mb.go{background:#ffd24a}#mgxu .mb.ok{background:#5fe08a}#mgxu .mb.no{background:#ff8a7a}
+#mgxu .ans{display:block;width:100%;text-align:left;margin:0 0 7px;font:700 15px Arial,sans-serif;line-height:1.25;padding:9px 12px}
+#mgxu .tr{pointer-events:none;background:rgba(255,250,235,.95);color:#3a3020;border-radius:12px;padding:8px 12px;font:600 13px Arial,sans-serif;line-height:1.3}`;document.head.appendChild(st);
+const d=document.createElement('div');d.id='mgx';d.innerHTML='<canvas id="mgxc"></canvas><div id="mgxu"></div>';document.body.appendChild(d);
+const P=e=>{const r=d.getBoundingClientRect();return[(e.clientX-r.left),(e.clientY-r.top)]};
+d.addEventListener('pointerdown',e=>{if(!MGX||e.target.closest('.mb'))return;e.preventDefault();const p=P(e),v=mgxV(p[0],p[1]);try{MGX.down&&MGX.down(v[0],v[1],e)}catch(er){}});
+d.addEventListener('pointermove',e=>{if(!MGX)return;const p=P(e),v=mgxV(p[0],p[1]);try{MGX.move&&MGX.move(v[0],v[1],e)}catch(er){}});
+d.addEventListener('pointerup',e=>{if(!MGX)return;const p=P(e),v=mgxV(p[0],p[1]);try{MGX.up&&MGX.up(v[0],v[1],e)}catch(er){}});
+d.addEventListener('pointercancel',e=>{if(!MGX)return;try{MGX.up&&MGX.up(-1,-1,e)}catch(er){}})})();
+function mgxK(){const k=Math.min(W/800,HH/450);return{k,ox:(W-800*k)/2,oy:(HH-450*k)/2}}
+function mgxV(px,py){const q=mgxK();return[(px-q.ox)/q.k,(py-q.oy)/q.k]}
+function mgxOpen(def){MGX=def;mgxT0=0;paused=true;st.gas=0;st.brake=0;try{ptr.clear()}catch(e){}gid('mgx').style.display='block';gid('mgxu').innerHTML='';try{def.start&&def.start()}catch(e){window.__showErr&&window.__showErr('mg '+e.message)}snd('chime')}
+function mgxClose(win){const M=MGX;MGX=null;gid('mgx').style.display='none';gid('mgxu').innerHTML='';paused=false;last=performance.now();try{M&&M.after&&M.after(win)}catch(e){}saveTrip()}
+function mgxUI(html){gid('mgxu').innerHTML=html}
+function mgxBtn(id,fn){const b=gid(id);if(b)b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();fn()})}
+function mgxFrame(t){const dt=mgxT0?Math.min(.05,(t-mgxT0)/1000):0;mgxT0=t;if(!MGX)return;const cv2=gid('mgxc'),w=Math.round(W*DPR),h=Math.round(HH*DPR);if(cv2.width!==w||cv2.height!==h){cv2.width=w;cv2.height=h}const x=cv2.getContext('2d'),q=mgxK();x.setTransform(DPR,0,0,DPR,0,0);x.clearRect(0,0,W,HH);x.setTransform(DPR*q.k,0,0,DPR*q.k,DPR*q.ox,DPR*q.oy);try{MGX.tick&&MGX.tick(dt,t/1000);MGX.draw&&MGX.draw(x,t/1000)}catch(e){window.__showErr&&window.__showErr('mg '+e.message)}}
+loop=(function(o){return function(t){o(t);if(MGX)mgxFrame(t)}})(loop);
+calmNow=(function(o){return function(){if(MGX)return false;return o()}})(calmNow);
+// dessiner un personnage du jeu sur le canevas du mini-jeu
+function onCtx(x,fn){const g0=g;g=x;try{fn()}finally{g=g0}}
+
+// ===== 2.05 : mini-jeu « les touristes » =====
+// Mila : anglais (phrases complexes) ou coréen (mots simples) ; Andrea : italien (simple) ou allemand (très simple).
+const TOURQ={
+en:[{q:'Excuse me, would you happen to know whether the road up to the Genoese tower is passable for a small rental car, or should we leave it here?',fr:'Excusez-moi, sauriez-vous si la route qui monte à la tour génoise passe avec une petite voiture de location, ou faut-il la laisser ici ?',a:['It gets very rough after the bridge, so I’d park here and walk the last kilometre.','Yes, the tower was built by the Genoese in the sixteenth century.','I’m afraid I have never driven a rental car in my life.'],afr:'Ça devient très mauvais après le pont : je me garerais ici et je ferais le dernier kilomètre à pied.',ok:'Thank you so much, that’s really helpful!'},
+{q:'We noticed several dead fish near the river mouth this morning. Is that something that happens often around here?',fr:'Nous avons vu plusieurs poissons morts près de l’embouchure ce matin. C’est fréquent, par ici ?',a:['No, it isn’t normal at all. Could you show me exactly where you saw them? I’m studying a pollutant.','Fishing is forbidden here on Sundays.','The river mouth is about two hours away by boat.'],afr:'Non, ce n’est pas normal du tout. Vous pouvez me montrer où exactement ? J’étudie un polluant.',ok:'Of course — just below the old mill, on the left bank.',clue:'Les touristes ont vu des poissons morts sous le vieux moulin, rive gauche. Encore un point pour la carte du N-12.'},
+{q:'Our GPS keeps telling us to turn left into what looks like a goat path. Should we trust it?',fr:'Notre GPS nous dit sans arrêt de tourner à gauche dans ce qui ressemble à un chemin de chèvres. On lui fait confiance ?',a:['Definitely not. Stay on this track: the village is about five kilometres further on.','Goats are actually excellent climbers.','I would rather not turn left before lunch.'],afr:'Surtout pas. Restez sur cette piste : le village est à environ cinq kilomètres.',ok:'Phew! We were about to do it. Thanks!'},
+{q:'Is there anywhere nearby where we could buy some water and maybe something to eat before the hike?',fr:'Y a-t-il un endroit près d’ici pour acheter de l’eau, et peut-être de quoi manger avant la randonnée ?',a:['There’s a small grocery shop in the next village, just past the church.','The hike takes about three hours in total.','I never eat before swimming.'],afr:'Il y a une petite épicerie au prochain village, juste après l’église.',ok:'Perfect, thank you! Enjoy your trip!'},
+{q:'Yesterday a man in a yellow protective suit was spraying something next to the stream. Do you think we should be worried?',fr:'Hier, un homme en combinaison jaune pulvérisait quelque chose au bord du ruisseau. Vous pensez qu’il faut s’inquiéter ?',a:['Possibly. Did you see a logo or a vehicle? It could really help my investigation.','Yellow suits you very well, actually.','The stream dries up every summer anyway.'],afr:'Peut-être. Vous avez vu un logo ou un véhicule ? Ça aiderait vraiment mon enquête.',ok:'A white van, no name on it. It drove off towards the hills.',clue:'Un homme en combinaison jaune pulvérisait près d’un ruisseau, avec une camionnette blanche sans inscription. Toujours le même mode opératoire.'},
+{q:'Sorry to bother you, we have been driving in circles for an hour. Which way is the sea?',fr:'Désolés de vous déranger, on tourne en rond depuis une heure. La mer, c’est par où ?',a:['Keep heading downhill and you’ll reach the coast road in about ten minutes.','The sea is lovely and warm at this time of year.','I love driving in circles too, it’s relaxing.'],afr:'Continuez à descendre et vous rejoindrez la route côtière en dix minutes environ.',ok:'Downhill, of course! Thank you!'}],
+ko:[{q:'안녕하세요! 바다가 어디에 있어요?',fr:'Bonjour ! Où est la mer ?',a:['저기요! 오른쪽이에요.','네, 맛있어요.','저는 배고파요.'],afr:'Là-bas ! C’est à droite.',ok:'감사합니다!'},
+{q:'물 있어요?',fr:'Vous avez de l’eau ?',a:['네, 여기 있어요.','아니요, 바다예요.','좋은 아침이에요.'],afr:'Oui, en voici.',ok:'고마워요!'},
+{q:'사진 찍어 주세요!',fr:'Prenez-nous en photo, s’il vous plaît !',a:['네, 좋아요! 하나, 둘, 셋!','아니요, 배고파요.','화장실이 저기 있어요.'],afr:'Oui, avec plaisir ! Un, deux, trois !',ok:'와! 감사합니다!'},
+{q:'이 동물 이름이 뭐예요?',fr:'Comment s’appelle cet animal ?',a:['거북이예요.','고양이예요.','커피예요.'],afr:'C’est une tortue.',ok:'거북이! 귀여워요!'},
+{q:'강에서 이상한 냄새가 나요.',fr:'Il y a une odeur bizarre qui vient de la rivière.',a:['정말요? 어디예요? 보여 주세요.','네, 맛있어요.','안녕히 주무세요.'],afr:'Vraiment ? Où ça ? Montrez-moi.',ok:'저기요, 다리 밑에요.',clue:'Des touristes coréens ont senti une odeur chimique sous un pont. Mila note l’endroit pour un prélèvement.'}],
+it:[{q:'Scusi, dov’è il distributore di benzina?',fr:'Excusez-moi, où est la station-service ?',a:['Sempre dritto, dopo il ponte.','Sì, mi piace la pizza.','Sono le tre e mezza.'],afr:'Tout droit, après le pont.',ok:'Grazie mille!'},
+{q:'La nostra macchina non parte. Può aiutarci?',fr:'Notre voiture ne démarre pas. Vous pouvez nous aider ?',a:['Certo! Apro il cofano e guardo.','No, grazie, non ho fame.','La spiaggia è molto bella.'],afr:'Bien sûr ! J’ouvre le capot et je regarde.',ok:'Che gentile! Grazie!'},
+{q:'C’è un camion bianco senza nome che passa ogni notte. Lo conosce?',fr:'Il y a un camion blanc sans nom qui passe toutes les nuits. Vous le connaissez ?',a:['No, ma è strano. Dove va il camion?','Buona notte!','Mi piace il gelato.'],afr:'Non, mais c’est bizarre. Où va ce camion ?',ok:'Verso la vecchia cava, sulla collina.',clue:'Un camion blanc sans inscription monte chaque nuit vers la vieille carrière. Encore lui.'},
+{q:'Quanto è lontano Bonifacio?',fr:'Bonifacio, c’est loin d’ici ?',a:['Circa un’ora in macchina.','È molto buono.','Mi chiamo Andrea.'],afr:'Environ une heure en voiture.',ok:'Perfetto, grazie!'},
+{q:'Possiamo fare una foto con il vostro cane?',fr:'On peut faire une photo avec votre chien ?',a:['Certo, lui adora le foto!','No, il cane non parla italiano.','Sì, la macchina è rossa.'],afr:'Bien sûr, il adore les photos !',ok:'Che bello! Grazie!'}],
+de:[{q:'Hallo! Wo ist der Strand?',fr:'Bonjour ! Où est la plage ?',a:['Da! Links.','Ja, danke.','Ich bin müde.'],afr:'Là ! À gauche.',ok:'Danke schön!'},
+{q:'Wasser, bitte?',fr:'De l’eau, s’il vous plaît ?',a:['Ja, hier, bitte.','Nein, rot.','Guten Morgen.'],afr:'Oui, tenez.',ok:'Danke!'},
+{q:'Ist der Weg gut für unser Auto?',fr:'Le chemin est bon pour notre voiture ?',a:['Nein, der Weg ist schlecht.','Das Auto ist rot.','Ich trinke Kaffee.'],afr:'Non, le chemin est mauvais.',ok:'Oh! Danke!'},
+{q:'Wo ist das Dorf?',fr:'Où est le village ?',a:['Da oben. Zehn Minuten.','Das Dorf ist blau.','Ja, gut.'],afr:'Là-haut. Dix minutes.',ok:'Super, danke!'},
+{q:'Wie spät ist es?',fr:'Quelle heure est-il ?',a:['Es ist drei Uhr.','Es ist rot.','Ich heiße Andrea.'],afr:'Il est trois heures.',ok:'Danke schön!'}]};
+const TOURL={en:['🇬🇧','anglais',1],ko:['🇰🇷','coréen',1],it:['🇮🇹','italien',0],de:['🇩🇪','allemand',0]};
+function tourLang(ci){return['en','it','ko','de'][(ci+(SV.seed||0))%4]}
+function tourPick(lang){SV.tq=SV.tq||{};const used=SV.tq[lang]||[],B=TOURQ[lang];let free=B.map((_,i)=>i).filter(i=>!used.includes(i));if(!free.length){SV.tq[lang]=[];free=B.map((_,i)=>i)}const i=free[Math.floor(Math.random()*free.length)];SV.tq[lang]=(SV.tq[lang]||[]).concat([i]);return B[i]}
+function tourOpen(){const ci=chIdx(),lang=tourLang(ci),L=TOURL[lang],Q=tourPick(lang),who=L[2];const order=[0,1,2].sort(()=>Math.random()-.5);
+const T={k:'tour',lang,Q,who,order,res:null,t:0,
+start(){T.ui()},
+ui(){const nm=who?'Mila':'Andrea';let h='<div style="position:absolute;left:4%;right:4%;top:3%;display:flex;justify-content:space-between;align-items:center"><span class="tr" style="font-weight:800">'+L[0]+' Des touristes · '+nm+' répond en '+L[1]+'</span></div>';
+h+='<div style="position:absolute;right:3%;width:52%;top:15%;bottom:4%;overflow:auto">';
+h+='<div style="background:#fff;border-radius:16px;padding:12px 14px;font:700 17px Arial,sans-serif;color:#222;margin-bottom:10px;line-height:1.3">« '+Q.q+' »</div>';
+if(!T.res){h+='<div class="tr" style="margin-bottom:8px">Quelle est la bonne réponse ?</div>';for(const i of order)h+='<button class="mb ans" data-i="'+i+'">'+Q.a[i]+'</button>'}
+else{const good=T.res==='ok';for(const i of order){const cl=i===0?'ok':(i===T.pick?'no':'');h+='<button class="mb ans '+cl+'" style="opacity:'+(i===0||i===T.pick?1:.55)+'">'+(i===0?'✅ ':i===T.pick?'❌ ':'')+Q.a[i]+'</button>'}
+h+='<div class="tr" style="margin:4px 0 8px"><b>Traduction :</b> « '+Q.fr+' »<br><b>Bonne réponse :</b> « '+Q.afr+' »</div><button class="mb go" id="tourgo">Continuer ▶</button>'}
+h+='</div>';mgxUI(h);
+if(!T.res)gid('mgxu').querySelectorAll('.ans').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();T.answer(+b.dataset.i)}));else mgxBtn('tourgo',()=>mgxClose(T.res==='ok'))},
+answer(i){if(T.res)return;T.pick=i;T.t=0;if(i===0){T.res='ok';snd('ding');vib(20)}else{T.res=Math.random()<.5?'sad':'mad';snd('click')}T.ui()},
+tick(dt){T.t+=dt},
+draw(x,tm){const sk=x.createLinearGradient(0,0,0,450);sk.addColorStop(0,'#9fd0ec');sk.addColorStop(1,'#f3e7cf');x.fillStyle=sk;x.fillRect(-400,-200,1600,900);x.fillStyle='#c9b48a';x.fillRect(-400,330,1600,400);x.fillStyle='#7da560';x.beginPath();x.moveTo(-400,330);for(let i=0;i<=24;i++)x.lineTo(-400+i*70,300-20*Math.abs(Math.sin(i*1.7)));x.lineTo(1200,330);x.fill();
+onCtx(x,()=>grp(200,334,2,()=>{const cols=[['#e86a5a','#2f4f7a',1,'#e3c27a',0,3,1],['#4a8fd0','#5a4a3a',0,'#3a2a1a',1,3,0],['#f2c230','#3a6a4a',1,'#a85a2a',0,0,1]];for(let i=0;i<3;i++){const px=120+i*30,bob=T.res==='ok'?Math.abs(Math.sin(tm*7+i))*3:0;npcFig(px,334-bob,cols[i],!T.res&&i===0,tm)}
+person(252,334,who?1:0,{f:-1,a1:T.res==='ok'?2.4:.4})}));
+// bulle de pensée : émotion des touristes
+if(T.res){const em=T.res==='ok'?'😊':T.res==='sad'?'😢':'😠';x.font='38px serif';x.textAlign='center';x.textBaseline='middle';for(let i=0;i<3;i++)x.fillText(em,40+i*60,190+Math.sin(tm*4+i)*4);
+x.fillStyle='rgba(255,255,255,.95)';rr(x,10,96,320,62,14);x.fill();x.fillStyle='#222';x.font='700 15px Arial';x.textAlign='center';const msg=T.res==='ok'?'« '+Q.ok+' »':T.res==='sad'?'Les touristes ont l’air perdus et tristes…':'Les touristes repartent, fâchés.';const words=msg.split(' ');let ln='',ly=116;const lines=[];for(const w of words){const tt=ln?ln+' '+w:w;if(x.measureText(tt).width>270&&ln){lines.push(ln);ln=w}else ln=tt}lines.push(ln);lines.slice(0,3).forEach((l,i)=>x.fillText(l,170,ly+i*18))}}};
+T.after=win=>{SV.tourL=level;if(win){SV.hearts+=2;note('🌍 Bonne réponse ! Les touristes sont ravis. +2 ❤',3);if(Q.clue)cardQ.push({t:'🔎 Un indice grâce aux touristes',L:[['n',Q.clue],[who?'m':'a',who?'Je note tout. Chaque témoin compte.':'Tu vois, parler leur langue, ça ouvre des portes.']]});else say(who?'Ils étaient adorables. J’adore pouvoir aider.':'Voilà des touristes contents. Et un peu de pratique, en plus !',3,who)}else{say(who?'Oups… je crois que je n’ai pas bien compris leur question.':'Bon… mon '+(lang==='it'?'italien':'allemand')+' a besoin de vacances, lui aussi.',3.4,who)}saveTrip()};
+mgxOpen(T)}
+// déclenchement : une fois par chapitre, des touristes font signe au bord de la route
+var tourWX=null;
+function tourWorld(){try{if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd)return;if(SV.tourL===level||onFerry()||jokeSad())return;const f=chP();if(f<.3||f>.6)return;if(typeof storyBusy==='function'&&storyBusy())return;
+SV.tourL=level;const lang=tourLang(chIdx()),who=TOURL[lang][2];tourWX=c.x+420;say(who?'Des touristes nous font signe… On s’arrête, je vais voir ce qu’ils veulent.':'Des touristes agitent les bras ! Je m’arrête, je vais leur parler.',3.4,who);stopReq={x:c.x+330,cb:()=>setTimeout(()=>{tourOpen()},350)}}catch(e){}}
+mgTick=(function(o){return function(dt){o(dt);tourWorld()}})(mgTick);
+npcDraw=(function(o){return function(tm){o(tm);try{if(tourWX!=null&&Math.abs(tourWX-c.x)<1500){const cols=[['#e86a5a','#2f4f7a',1,'#e3c27a',0,3,1],['#4a8fd0','#5a4a3a',0,'#3a2a1a',1,3,0],['#f2c230','#3a6a4a',1,'#a85a2a',0,0,1]];for(let i=0;i<3;i++){const px=tourWX+i*26;npcFig(px,T(px),cols[i],SV.tourL===level&&!MGX&&c.x<tourWX-100,tm)}}}catch(e){}}})(npcDraw);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.04',GAME_DATE='22/10/2026';
+const GAME_VER='2.05',GAME_DATE='22/10/2026';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
