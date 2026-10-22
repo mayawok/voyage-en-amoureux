@@ -5659,8 +5659,32 @@ gid('bkin').onchange=async()=>{const f=gid('bkin').files[0];if(!f)return;try{con
 gid('bkpaste').onclick=async()=>{if(pend){const o=pend;pend=null;doRestore(o);return}try{const o=await BAK.parse(gid('bktx').value);ask(o);gid('bkpaste').textContent='Restaurer'}catch(e){msg('Code invalide : vérifie qu’il est complet.')}};
 const mb=document.createElement('button');mb.className='b';mb.id='mbak';mb.textContent='💾 Sauvegarde de secours';const nw=gid('mnew');nw.parentNode.insertBefore(mb,nw);
 mb.addEventListener('click',e=>{e.stopPropagation();pend=null;msg('');gid('bkpaste').textContent='Restaurer le code collé';gid('bktx').value='';d.style.display='flex'})})();
+
+// ===== 2.42 : souvenirs du voyage + bouton Passer =====
+const SOUV=[
+ {id:'bzh',ok:()=>chIdx()>=2,L:[['a','Tu te souviens quand on a quitté la Bretagne ? On ne savait pas du tout dans quoi on s’embarquait.'],['m','Si on m’avait dit qu’on finirait à enquêter sur un poison… Et pourtant, je ne changerais rien.']]},
+ {id:'coas',ok:()=>SV.csd&&SV.csd.coas&&chIdx()>=2,L:[['a','Tu te rappelles les bidons cachés sous les cistes, au castellu de Coasina ?'],['m','Sans le flair du chien, on ne les aurait jamais trouvés. Il mérite une médaille.']]},
+ {id:'faon',ok:()=>SV.csd&&SV.csd.veto&&chIdx()>=3,L:[['m','Je repense souvent au faon d’Arrivadu… Il était si petit.'],['a','On n’a pas pu le sauver. Mais grâce à lui, on sait ce qu’on cherche. On le fait aussi pour lui.']]},
+ {id:'hel',ok:()=>chIdx()>HEL_CH,L:[['m','Quand le Puma de Mathis est apparu au-dessus de la neige, à Bavella… j’ai cru rêver.'],['a','Mathis, toujours là au bon moment. Quand tout ça sera fini, on l’invite à la maison.']]},
+ {id:'spy',ok:()=>SV.csd&&SV.csd.spy&&SV.spy!==level,L:[['a','Depuis le coup de la bougie débranchée, je regarde chaque voiture en panne de travers.'],['m','Et pourtant, tu t’arrêtes toujours pour aider. C’est pour ça que je t’aime.']]},
+ {id:'luc',ok:()=>chIdx()>4,L:[['m','Lucia risque sa carrière pour nous depuis la chapelle de Piana.'],['a','Le jour où tout ça sera fini, on lui doit un sacré repas.']]},
+ {id:'nox',ok:()=>chIdx()>6,L:[['a','Noxacorp… Quand Lucia a enfin prononcé ce nom, sur le port de Saint-Florent, j’ai eu froid dans le dos.'],['m','Au moins, maintenant, on sait contre qui on se bat.']]},
+ {id:'bats',ok:()=>SV.csd&&SV.csd.bats&&chIdx()>7,L:[['m','Les chauves-souris de la grotte, en Sardaigne… des centaines, endormies au-dessus de nos têtes.'],['a','Toi, tu étais aux anges. Moi, je protégeais surtout mes cheveux.']]},
+ {id:'sub',ok:()=>SV.csd&&SV.csd.sub&&SV.subL!==level,L:[['a','Un petit sous-marin jaune, en pleine traversée… Je n’y croyais pas.'],['m','La mer est pleine de surprises. Comme toi.']]},
+ {id:'dog',ok:()=>SV.csd&&SV.csd.dogf&&SV.dogFoundL!==level,L:[['m','Quand j’ai vu son collier dans la boue… j’ai eu tellement peur de ne jamais le revoir.'],['a','Regarde-le, à l’arrière. Il a déjà tout oublié, lui.']]},
+ {id:'ours2',ok:()=>SV.csd&&SV.csd.ours&&chIdx()>8,L:[['m','Je n’arrive toujours pas à y croire. Un ours, dans nos phares, en Corse…'],['a','Ni moi. Et le hayon non plus, il n’y croit toujours pas.']]},
+ {id:'cheval',ok:()=>SV.noxWin===1&&SV.noxL!=null&&SV.noxL!==level,L:[['a','Toi, au galop sur le plateau du Coscione… Je n’oublierai jamais cette image.'],['m','Et toi, planté à côté du Cherokee qui fumait contre son rocher !']]},
+ {id:'cheval0',ok:()=>SV.noxWin===0&&chIdx()>8,L:[['m','Cette camionnette… elle m’a filé entre les doigts, au Coscione.'],['a','Mais tu as relevé la plaque. Avec ça, Lucia finira par les coincer.']]}
+];
+try{for(const S of SOUV)for(const l of S.L)JOKE_SET.add(l[1])}catch(e){}
+var souvT=0;
+function souvTick(dt){try{if(!started||night||crashed||paused||introT>0||cardOpen||hl||pz||cs||dt<=0)return;if(jokeSad()||Math.hypot(v.x,v.y)<30)return;
+SV.jk=SV.jk||{};SV.jk.mem=SV.jk.mem||{};souvT+=dt;if(souvT<190)return;if(talkQ.length||sayT>0||(typeof storyBusy==='function'&&storyBusy()))return;if(typeof jokeT==='number'&&jokeT<60)return;
+const S=SOUV.find(q=>!SV.jk.mem[q.id]&&q.ok());souvT=0;if(!S)return;SV.jk.mem[S.id]=1;for(const l of S.L)talkQ.push(l);saveTrip()}catch(e){}}
+mgTick=(function(o){return function(dt){o(dt);souvTick(dt)}})(mgTick);
+setInterval(()=>{try{const b=gid('bzs');if(b&&b.style.display!=='none'&&!bz&&!fn)b.style.display='none'}catch(e){}},400);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.41',GAME_DATE='22/10/2026 à 23h30';
+const GAME_VER='2.42',GAME_DATE='22/10/2026 à 23h41';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
