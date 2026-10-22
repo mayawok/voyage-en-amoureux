@@ -30,6 +30,7 @@
 - « Allure pro » (proposé, en cours) : icônes dessinées à la place des emojis, palette fixe des panneaux, écran titre animé, générique de fin, passe de vérification chapitre par chapitre. L'utilisateur a une limite d'usage serrée : avancer par petites étapes.
 
 ## Déjà fait récemment
+**2.15** : touristes — le bouton « Continuer » restait hors de l'écran avec les longues phrases anglaises (défilement bloqué) : bouton fixé en bas à gauche, seules la réponse choisie et la bonne restent affichées, panneau défilable.
 **2.14** : icône d'écran d'accueil `icon.png` (Cherokee, tour génoise, coucher de soleil, cœur).
 **2.13** : objectif sur une ligne (le détail `<small>` se déplie au toucher pendant 5 s).
 **2.12** : allure pro, 1re étape — une seule police (Avenir Next) pour toute l'interface HTML, boutons qui s'enfoncent au toucher, transitions douces ; astuces (`#tut`, conseil boost) seulement aux chapitres 1 et 2, et l'astuce s'efface pendant qu'on parle.

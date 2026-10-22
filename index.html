@@ -4735,12 +4735,12 @@ function tourOpen(){const ci=chIdx(),lang=tourLang(ci),L=TOURL[lang],Q=tourPick(
 const T={k:'tour',lang,Q,who,order,res:null,t:0,
 start(){T.ui()},
 ui(){const nm=who?'Mila':'Andrea';let h='<div style="position:absolute;left:4%;right:4%;top:3%;display:flex;justify-content:space-between;align-items:center"><span class="tr" style="font-weight:800">'+L[0]+' Des touristes · '+nm+' répond en '+L[1]+'</span></div>';
-h+='<div style="position:absolute;right:3%;width:52%;top:15%;bottom:4%;overflow:auto">';
+h+='<div style="position:absolute;right:3%;width:52%;top:15%;bottom:4%;overflow:auto;pointer-events:auto;touch-action:pan-y;-webkit-overflow-scrolling:touch">';
 h+='<div style="background:#fff;border-radius:16px;padding:12px 14px;font:700 17px Arial,sans-serif;color:#222;margin-bottom:10px;line-height:1.3">« '+Q.q+' »</div>';
 if(!T.res){h+='<div class="tr" style="margin-bottom:8px">Quelle est la bonne réponse ?</div>';for(const i of order)h+='<button class="mb ans" data-i="'+i+'">'+Q.a[i]+'</button>'}
-else{const good=T.res==='ok';for(const i of order){const cl=i===0?'ok':(i===T.pick?'no':'');h+='<button class="mb ans '+cl+'" style="opacity:'+(i===0||i===T.pick?1:.55)+'">'+(i===0?'✅ ':i===T.pick?'❌ ':'')+Q.a[i]+'</button>'}
-h+='<div class="tr" style="margin:4px 0 8px"><b>Traduction :</b> « '+Q.fr+' »<br><b>Bonne réponse :</b> « '+Q.afr+' »</div><button class="mb go" id="tourgo">Continuer ▶</button>'}
-h+='</div>';mgxUI(h);
+else{for(const i of order){if(i!==0&&i!==T.pick)continue;const cl=i===0?'ok':'no';h+='<button class="mb ans '+cl+'" style="font-size:14px;padding:7px 10px">'+(i===0?'✅ ':'❌ ')+Q.a[i]+'</button>'}
+h+='<div class="tr" style="margin:4px 0 8px"><b>Traduction :</b> « '+Q.fr+' »<br><b>Bonne réponse :</b> « '+Q.afr+' »</div>'}
+h+='</div>';if(T.res)h+='<button class="mb go" id="tourgo" style="position:absolute;left:4%;bottom:5%;font-size:18px;padding:12px 22px">Continuer ▶</button>';mgxUI(h);
 if(!T.res)gid('mgxu').querySelectorAll('.ans').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();T.answer(+b.dataset.i)}));else mgxBtn('tourgo',()=>mgxClose(T.res==='ok'))},
 answer(i){if(T.res)return;T.pick=i;T.t=0;if(i===0){T.res='ok';snd('ding');vib(20)}else{T.res=Math.random()<.5?'sad':'mad';snd('click')}T.ui()},
 tick(dt){T.t+=dt},
@@ -5016,6 +5016,6 @@ const busy=sayT>0||gid('note').classList.contains('on');tutEl.style.opacity=busy
 (function(){const st=document.createElement('style');st.textContent=`#obj small{display:none}#obj.open small{display:block}#obj{pointer-events:auto;cursor:pointer}`;document.head.appendChild(st);const o=gid('obj');if(o)o.addEventListener('pointerdown',e=>{e.stopPropagation();o.classList.toggle('open');clearTimeout(o.__t);if(o.classList.contains('open'))o.__t=setTimeout(()=>o.classList.remove('open'),5000)})})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.14',GAME_DATE='22/10/2026';
+const GAME_VER='2.15',GAME_DATE='22/10/2026';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
