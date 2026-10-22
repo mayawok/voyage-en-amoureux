@@ -237,6 +237,7 @@ body.cine #intro,body.cine #note,body.cine #place{display:none!important}
 <button class="b rdy" id="mgo" data-a="go">▶ Reprendre</button>
 <button class="b" id="msnd" data-a="snd"></button>
 <button class="b" id="mfs" data-a="fs">⛶ Plein écran</button>
+<button class="b" id="mdiff" data-a="diff">🎚 Difficulté</button>
 <button class="b" id="mnew" data-a="new">🆕 Nouveau voyage</button>
 <p id="mhint"></p></div></div>
 <div id="shop"><div class="card"><h1>🛒 Boutique</h1><div id="purse"></div><div id="items"></div><button class="b rdy" id="sclose" data-a="close">Repartir</button></div></div>
@@ -5095,8 +5096,32 @@ if(u<.3||u>.75){x.fillStyle='rgba(200,170,120,.35)';for(let i=0;i<6;i++){const q
 x.strokeStyle='#2a2028';x.lineWidth=1.6;for(let i=0;i<4;i++){const bx=(Wd*.35+i*140+tm*24)%Wd,by=90+(i%2)*26+Math.sin(tm*2.5+i)*6,wv=Math.sin(tm*7+i)*3;x.beginPath();x.moveTo(bx-7,by-wv);x.lineTo(bx,by);x.lineTo(bx+7,by-wv);x.stroke()}
 const vg=x.createRadialGradient(Wd/2,210,120,Wd/2,210,Wd*.75);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.45)');x.fillStyle=vg;x.fillRect(0,0,Wd,420)}
 loop=(function(o){return function(t){o(t);try{const m=gid('menu');if(m&&m.style.display!=='none'&&m.style.display!=='')ttlDraw(t)}catch(e){}}})(loop);
+
+// ===== 2.21 : trois niveaux de difficulté =====
+const DIFF=[{n:'Balade',e:'🌼',s:'Pour profiter de l’histoire',d:'Cœurs ×1,5 · faim et essence durent plus longtemps · le Cherokee s’abîme moins · mini-jeux plus doux',h:1.5,f:.6,fu:.65,dm:.6,tb:-1},
+{n:'Aventure',e:'🧭',s:'L’équilibre conseillé',d:'Le jeu tel qu’il a été pensé',h:1,f:1,fu:1,dm:1,tb:0},
+{n:'Expédition',e:'🏔️',s:'Pour les vrais baroudeurs',d:'Cœurs ×0,7 · on a faim et soif d’essence plus vite · le Cherokee s’abîme plus · mini-jeux plus durs',h:.7,f:1.4,fu:1.35,dm:1.4,tb:1}];
+function DF(){return DIFF[SV&&SV.diff!=null?SV.diff:1]||DIFF[1]}
+function diffLabel(){const q=DF();gid('mdiff').textContent='🎚 Difficulté : '+q.e+' '+q.n}
+menuRender=(function(o){return function(){o();try{diffLabel()}catch(e){}}})(menuRender);
+gid('menu').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.dataset.a!=='diff')return;SV.diff=((SV.diff!=null?SV.diff:1)+1)%3;diffLabel();snd('click');saveTrip()});
+function diffAsk(){if(SV.diff!=null||chQ)return;choice('diffc','Quel voyage voulez-vous vivre ?','Vous pourrez changer la difficulté à tout moment dans le menu ⚙.',DIFF.map(q=>[q.e+' '+q.n+' · '+q.s,q.d]),i=>{SV.diff=i;saveTrip();if(window.__bzHold){bz=window.__bzHold;window.__bzHold=null;paused=true;document.body.classList.add('cine')}else note(DIFF[i].e+' Difficulté : '+DIFF[i].n,2.6)})}
+newTrip=(function(o){return function(){o();try{SV.diff=null;const bz0=bz;if(bz0){bz=null;window.__bzHold=bz0}diffAsk()}catch(e){}}})(newTrip);
+var __bzHold=null;
+// effets : on corrige chaque variation (cœurs gagnés, faim, essence, dégâts) selon le niveau
+var dfH=null,dfF=null,dfU=null,dfD=null;
+loop=(function(o){return function(t){o(t);try{if(SV.diff==null&&inGame&&!paused&&introT<=0&&!cardOpen&&!chQ&&gid('menu').style.display==='none'&&!MGX&&!cs)diffAsk()}catch(e){}}})(loop);
+mgTick=(function(o){return function(dt){o(dt);try{const q=DF();
+if(dfH!=null&&SV.hearts>dfH){SV.hearts=dfH+Math.max(1,Math.round((SV.hearts-dfH)*q.h))}dfH=SV.hearts;
+if(dfF!=null&&SV.food<dfF&&dfF-SV.food<.05)SV.food=dfF-(dfF-SV.food)*q.f;dfF=SV.food;
+if(dfU!=null&&fuel<dfU&&dfU-fuel<.05)fuel=dfU-(dfU-fuel)*q.fu;dfU=fuel;
+if(dfD!=null&&dmg>dfD&&dmg<1)dmg=Math.min(.999,dfD+(dmg-dfD)*q.dm);dfD=dmg}catch(e){}}})(mgTick);
+// mini-jeux
+tubeGen=(function(o){return function(nc,cap){return o(Math.max(3,Math.min(8,nc+DF().tb)),cap)}})(tubeGen);
+trlOpen=(function(o){return function(a){try{if((SV.diff??1)===0){SV.trlTry=SV.trlTry||{};SV.trlTry[level]=Math.max(SV.trlTry[level]||0,3)}}catch(e){}return o(a)}})(trlOpen);
+brOpen=(function(o){return function(a){try{if((SV.diff??1)===0){SV.brFail=SV.brFail||{};SV.brFail[level]=Math.max(SV.brFail[level]||0,1)}}catch(e){}return o(a)}})(brOpen);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.20',GAME_DATE='22/10/2026 à 17h20';
+const GAME_VER='2.21',GAME_DATE='22/10/2026 à 17h45';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
