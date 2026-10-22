@@ -4999,8 +4999,18 @@ laneCol=(function(o){return function(z,side,alt,x){const s=x!=null?brkOn():-1;if
 function brWorld(){try{const s=brkOn();if(s<0)return;if(c.x>s-180&&!MGX){c.x=Math.min(c.x,s-180);if(v.x>0)v.x=0}if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||work||chEnd)return;
 if(c.x>s-900&&c.x<s&&!stopReq&&SV.brAsk!==level+':'+Math.floor(playT/20)){SV.brAsk=level+':'+Math.floor(playT/20);sayT=0;say('Stop ! Le pont de bois est cassé… Il va falloir le réparer nous-mêmes.',3.4,0);stopReq={x:s-200,cb:()=>setTimeout(()=>brOpen(),350)}}}catch(e){}}
 mgTick=(function(o){return function(dt){o(dt);brWorld()}})(mgTick);
+
+// ===== 2.12 : allure plus « pro » — une police unique, astuces seulement au début, une info à la fois =====
+(function(){const st=document.createElement('style');st.textContent=`body,button,input,#card,#card *,#menu,#menu *,#shop,#shop *,#cus,#cus *,#mgxu,#mgxu *,#pzv,#pzv *,#obj,#mis,#note,#tut,#docv,#docv *{font-family:"Avenir Next","Helvetica Neue",Arial,sans-serif!important}
+#card,#menu .card,#cus .cw,#tut,#note,#obj,#mis{transition:opacity .25s ease,transform .25s ease}
+button:active,.b:active,.mb:active{transform:translateY(2px) scale(.98)}`;document.head.appendChild(st)})();
+// astuces : seulement pendant les deux premiers chapitres
+boostHintTick=(function(o){return function(){if(level>2){boostHint=1;return}return o()}})(boostHintTick);
+mgTick=(function(o){return function(dt){o(dt);try{if(level>2&&tutEl.style.display!=='none')tutEl.style.display='none';
+// une info à la fois : l'astuce s'efface quand quelqu'un parle ou qu'une note s'affiche
+const busy=sayT>0||gid('note').classList.contains('on');tutEl.style.opacity=busy?'0':'1'}catch(e){}}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.11',GAME_DATE='22/10/2026';
+const GAME_VER='2.12',GAME_DATE='22/10/2026';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>

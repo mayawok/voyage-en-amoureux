@@ -25,9 +25,10 @@
 - Tests : Playwright headless (`NODE_PATH=/opt/npm-tools/node_modules`), avec `requestAnimationFrame` neutralisé et la boucle avancée à la main par `loop(t)`. L'écran d'intro dure environ 8 s réelles : attendre avant les captures.
 
 ## Reste à faire (demandes de l'utilisateur, par priorité)
-(Toutes les demandes de la liste sont faites. Voir ci-dessous.)
+- « Allure pro » (proposé, en cours) : icônes dessinées à la place des emojis, palette fixe des panneaux, objectif réduit à une ligne, écran titre animé, générique de fin, icône d'écran d'accueil, passe de vérification chapitre par chapitre. L'utilisateur a une limite d'usage serrée : avancer par petites étapes.
 
 ## Déjà fait récemment
+**2.12** : allure pro, 1re étape — une seule police (Avenir Next) pour toute l'interface HTML, boutons qui s'enfoncent au toucher, transitions douces ; astuces (`#tut`, conseil boost) seulement aux chapitres 1 et 2, et l'astuce s'efface pendant qu'on parle.
 **2.11** : limite d'images supprimée (plus de 30/60 i/s forcés, tableau de bord redessiné à chaque image) : l'utilisateur avait des saccades. Ne pas remettre de limitation d'images. Les autres économies de la 2.02 (piste unique, étoiles pré-dessinées, ciel en cache) restent.
 **2.10** : les objets de mission (huile, thé, ampoule…) ne se trouvent plus dans la nature (`missionFind` désactivé), uniquement dans les magasins ; indices `h:` mis à jour.
 **2.09** : construction de pont (`brOpen`, grille aimantée, poutres de 2,3 cases maximum, budget `4n+1`, test avec le Cherokee et calcul de treillis `brSolve` : effondrement si trop souple, casse au-delà de `CAP`, couleurs de contrainte). Un grand pont de bois par chapitre entre 40 et 88 % est cassé (`brkS`, `brkOn`, `brkDraw`) et bloque la route jusqu'à la réparation (`brWorld`) ; au 2e échec, bouton « Idée d'Andrea » qui pose une solution.
