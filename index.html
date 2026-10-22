@@ -4289,7 +4289,7 @@ g.fillStyle=mixC(rc,'k',.15);g.beginPath();g.arc(0,0,3,0,7);g.fill();g.fillStyle
 function sqOf(i){const C=SV.cus||{};return Math.min(4.6,((tyL[i]||0)/350)*(C.psi?1.9:.6))}
 // accessoires sur le Cherokee (repère de la carrosserie)
 function cusAcc(tm){const C=SV.cus||{};if(C.roof==='jerry'){for(const [x,col] of[[-47,'#c8382c'],[-37,'#3a7a3a'],[-27,'#c8382c']]){g.fillStyle=col;g.fillRect(x,-46,8,9.5);g.fillStyle=mixC(col,'k',.3);g.fillRect(x+1,-44,6,1.2);g.fillRect(x+1,-40.5,6,1.2);g.fillStyle='#222';g.fillRect(x+2,-48,4,2.2)}}
-else if(C.roof==='tent'){g.fillStyle='#4a4a46';g.fillRect(-52,-48,58,11);g.fillStyle='#8a8460';g.fillRect(-51,-47,56,8.5);g.fillStyle='#6d6a4c';g.fillRect(-51,-43.5,56,1.4);g.fillStyle='#c8b37a';g.fillRect(-49,-46,5,2);g.strokeStyle='#888';g.lineWidth=1;g.beginPath();g.moveTo(-53,-37);g.lineTo(-56,-18);g.moveTo(-50,-37);g.lineTo(-53,-18);for(let k=0;k<4;k++){g.moveTo(-55.5+k*.0,-33+k*4.5);g.lineTo(-52.5,-33+k*4.5)}g.stroke()}
+else if(C.roof==='tent'&&tentOpen()){tentOpenDraw()}else if(C.roof==='tent'){g.fillStyle='#4a4a46';g.fillRect(-52,-48,58,11);g.fillStyle='#8a8460';g.fillRect(-51,-47,56,8.5);g.fillStyle='#6d6a4c';g.fillRect(-51,-43.5,56,1.4);g.fillStyle='#c8b37a';g.fillRect(-49,-46,5,2);g.strokeStyle='#888';g.lineWidth=1;g.beginPath();g.moveTo(-53,-37);g.lineTo(-56,-18);g.moveTo(-50,-37);g.lineTo(-53,-18);for(let k=0;k<4;k++){g.moveTo(-55.5+k*.0,-33+k*4.5);g.lineTo(-52.5,-33+k*4.5)}g.stroke()}
 if(C.spare==='back')spareBack(-58,-14,R*.82);
 else if(C.spare==='hood'){g.save();if(hoodOpen()){g.translate(39.5,-30);g.rotate(Math.atan2(-26,9))}else{g.translate(44,-19.5);g.rotate(Math.atan2(4,25))}g.fillStyle='#151311';g.beginPath();g.ellipse(0,0,13,4.2,0,0,7);g.fill();g.fillStyle=CCv.rim;g.beginPath();g.ellipse(0,-1,7,1.8,0,0,7);g.fill();g.restore()}}
 // 2.01 : roue de secours arrière vue de profil, sous sa housse ; capot ouvert seulement s'il y a une raison
@@ -4961,9 +4961,9 @@ help(){B.nodes=B.nodes.filter(q=>q.fix);B.beams=[];const id=(x,y)=>{let i=B.node
 for(let i=0;i<n;i++)add(XL+i*S,Y,XL+(i+1)*S,Y);for(let i=0;i<n;i++)add(XL+i*S,Y+2*S,XL+(i+1)*S,Y+2*S);for(let i=1;i<n;i++)add(XL+i*S,Y,XL+i*S,Y+2*S);for(let i=0;i<n;i++){if(i<n/2)add(XL+i*S,Y+2*S,XL+(i+1)*S,Y);else add(XL+i*S,Y,XL+(i+1)*S,Y+2*S)}B.say('Andrea : « Une poutre en bas, des triangles partout. Comme un vieux pont de chemin de fer ! »')},
 deckAt(x){for(let i=0;i<B.beams.length;i++){const q=B.beams[i],A=B.nodes[q.a],C=B.nodes[q.b];if(A.y===Y&&C.y===Y){const a=Math.min(A.x,C.x),b=Math.max(A.x,C.x);if(x>=a-.5&&x<=b+.5)return{i,A:A.x<C.x?q.a:q.b,C:A.x<C.x?q.b:q.a,t:(x-a)/(b-a||1)}}}return null},
 test(){if(!B.beams.length){B.say('Il n’y a encore aucune poutre !');return}B.mode='test';B.car=XL-160;B.sel=-1;B.ui();snd('engine')},
-fail(why){B.res=why;B.mode='done';B.fails++;SV.brFail=SV.brFail||{};SV.brFail[level]=B.fails;snd('thud');vib([60,30,60]);setTimeout(()=>B.ui(),900)},
+fail(why){try{const U=B.stress?B.stress.U:null,ex=Math.min(8,25/Math.max(.001,B.stress?B.stress.maxU:1)),P=i=>{const q=B.nodes[i];if(!U)return[q.x,q.y];const d=U(i);return[q.x+d[0]*ex,q.y+d[1]*ex]},fx=B.fallX||400;B.fb=B.beams.map((q,i)=>{const a=P(q.a),b=P(q.b),mx=(a[0]+b[0])/2,near=Math.abs(mx-fx);return{a,b,vx:(mx-fx)*.25+(Math.random()-.5)*30,vr:(Math.random()-.5)*3,d:i===B.brk?0:Math.min(1.2,near/260)}})}catch(e){B.fb=null}B.res=why;B.mode='done';B.fails++;SV.brFail=SV.brFail||{};SV.brFail[level]=B.fails;snd('thud');vib([60,30,60]);setTimeout(()=>B.ui(),2200)},
 tick(dt,tm){B.t+=dt;if(B.msgT>0)B.msgT-=dt;if(B.mode==='test'){B.car+=dt*80;const cx=B.car;let load=[];if(cx>XL&&cx<XR){const d=B.deckAt(cx);if(!d){B.fallX=cx;B.fail('Il manque un morceau de route : le Cherokee est tombé !');return}load=[[d.A,0,100*(1-d.t)],[d.C,0,100*d.t]]}
-const r=brSolve(B.nodes,B.beams,load);B.stress=r;if(r.maxU>4){B.fail('Le pont s’effondre : il n’est pas assez rigide. Ajoute des triangles !');B.fallX=cx;return}let wi=-1,wf=0;r.f.forEach((f,i)=>{if(Math.abs(f)>wf){wf=Math.abs(f);wi=i}});if(wf>CAP){B.brk=wi;B.fallX=cx;B.fail('Une poutre a cassé : le pont est trop faible. Rends-le plus profond !');return}
+const r=brSolve(B.nodes,B.beams,load);B.stress=r;if(cx<XL+12)return;if(r.maxU>4){B.fail('Le pont s’effondre : il n’est pas assez rigide. Ajoute des triangles !');B.fallX=cx;return}let wi=-1,wf=0;r.f.forEach((f,i)=>{if(Math.abs(f)>wf){wf=Math.abs(f);wi=i}});if(wf>CAP){B.brk=wi;B.fallX=cx;B.fail('Une poutre a cassé : le pont est trop faible. Rends-le plus profond !');return}
 if(cx>XR+160){B.mode='done';B.res='win';snd('chime');vib(40);B.ui()}}if(B.res&&B.res!=='win')B.fallT+=dt},
 draw(x,tm){const sk=x.createLinearGradient(0,0,0,450);sk.addColorStop(0,'#9fd0ec');sk.addColorStop(1,'#e8f0e0');x.fillStyle=sk;x.fillRect(-400,-200,1600,900);
 // ravin
@@ -4974,14 +4974,14 @@ x.strokeStyle='rgba(60,40,20,.5)';x.lineWidth=5;x.beginPath();x.moveTo(XL,Y+2);x
 // grille aimantée
 if(B.mode==='edit'){for(let i=0;i<=n;i++)for(let j=-2;j<=3;j++){const gx=XL+i*S,gy=Y+j*S;x.fillStyle='rgba(255,255,255,.55)';x.beginPath();x.arc(gx,gy,2.4,0,7);x.fill()}
 if(B.sel>=0){const A=B.nodes[B.sel];x.strokeStyle='rgba(255,210,74,.35)';x.lineWidth=1;x.beginPath();x.arc(A.x,A.y,MAXL,0,7);x.stroke()}}
-const U=B.stress?B.stress.U:null,ex=8,P=i=>{const q=B.nodes[i];if(!U)return[q.x,q.y];const d=U(i);return[q.x+d[0]*ex,q.y+d[1]*ex]};
+const U=B.stress?B.stress.U:null,ex=Math.min(8,25/Math.max(.001,B.stress?B.stress.maxU:1)),P=i=>{const q=B.nodes[i];if(!U)return[q.x,q.y];const d=U(i);return[q.x+d[0]*ex,q.y+d[1]*ex]};
 const falling=B.res&&B.res!=='win',ft=B.fallT;
-B.beams.forEach((q,i)=>{let a=P(q.a),b=P(q.b);if(falling&&(i===B.brk||Math.abs(((a[0]+b[0])/2)-(B.fallX||400))<90)){const dy=ft*ft*300;a=[a[0],a[1]+dy];b=[b[0]+(i===B.brk?20*ft:0),b[1]+dy*1.1]}
-const f=B.stress?Math.abs(B.stress.f[i])/CAP:0,deck=B.nodes[q.a].y===Y&&B.nodes[q.b].y===Y;x.strokeStyle=B.mode==='edit'?(deck?'#8a5a2a':'#a8743a'):(f<.5?'#4ec36a':f<.8?'#f2c230':f<1?'#f08a2a':'#e8453c');x.lineWidth=deck?9:6;x.lineCap='round';x.beginPath();x.moveTo(a[0],a[1]);x.lineTo(b[0],b[1]);x.stroke();if(deck&&B.mode==='edit'){x.strokeStyle='rgba(255,230,180,.35)';x.lineWidth=2;x.beginPath();x.moveTo(a[0],a[1]-2);x.lineTo(b[0],b[1]-2);x.stroke()}});
+B.beams.forEach((q,i)=>{let a=P(q.a),b=P(q.b);if(falling&&B.fb&&B.fb[i]){const f=B.fb[i],dl=Math.max(0,ft-f.d),cx0=(f.a[0]+f.b[0])/2+f.vx*dl,cy0=(f.a[1]+f.b[1])/2+340*dl*dl,ang=f.vr*dl,hx=(f.b[0]-f.a[0])/2,hy=(f.b[1]-f.a[1])/2,ca=Math.cos(ang),sa=Math.sin(ang);a=[cx0-(hx*ca-hy*sa),cy0-(hx*sa+hy*ca)];b=[cx0+(hx*ca-hy*sa),cy0+(hx*sa+hy*ca)]}
+const f=B.stress?Math.abs(B.stress.f[i])/CAP:0,deck=B.nodes[q.a].y===Y&&B.nodes[q.b].y===Y;x.strokeStyle=(B.mode==='edit'||(falling&&B.fb&&ft>.15))?(deck?'#8a5a2a':'#a8743a'):(f<.5?'#4ec36a':f<.8?'#f2c230':f<1?'#f08a2a':'#e8453c');x.lineWidth=deck?9:6;x.lineCap='round';x.beginPath();x.moveTo(a[0],a[1]);x.lineTo(b[0],b[1]);x.stroke();if(deck&&B.mode==='edit'){x.strokeStyle='rgba(255,230,180,.35)';x.lineWidth=2;x.beginPath();x.moveTo(a[0],a[1]-2);x.lineTo(b[0],b[1]-2);x.stroke()}});
 x.lineCap='butt';B.nodes.forEach((q,i)=>{const p=P(i);x.fillStyle=q.fix?'#3a3a3a':'#e8e0cc';x.beginPath();x.arc(p[0],p[1],q.fix?7:5,0,7);x.fill();if(q.fix){x.fillStyle='#ffd24a';x.font='10px serif';x.textAlign='center';x.textBaseline='middle';x.fillText('⚓',p[0],p[1]+.5)}if(i===B.sel){x.strokeStyle='#ffd24a';x.lineWidth=3;x.beginPath();x.arc(p[0],p[1],10+Math.sin(tm*6)*2,0,7);x.stroke()}});
 if(B.hover&&B.mode==='edit'){x.strokeStyle='rgba(255,255,255,.8)';x.lineWidth=1.5;x.beginPath();x.arc(B.hover.x,B.hover.y,8,0,7);x.stroke()}
 // le Cherokee
-if(B.mode!=='edit'||B.res==='win'){let cx=B.car,cy=Y-2;if(cx>XL&&cx<XR&&B.stress&&!falling){const d=B.deckAt(cx);if(d){const a=P(d.A),b=P(d.C);cy=a[1]+(b[1]-a[1])*d.t-2}}if(falling)cy+=ft*ft*320;onCtx(x,()=>grp(cx,cy,.55,()=>{try{cherokeeSide(cx,cy)}catch(e){}}))}
+if(B.mode!=='edit'||B.res==='win'){let cx=B.car,cy=Y-2;if(cx>XL&&cx<XR&&B.stress&&!falling){const d=B.deckAt(cx);if(d){const a=P(d.A),b=P(d.C);cy=a[1]+(b[1]-a[1])*d.t-2}}if(falling){const fd=B.fb?Math.max(0,ft-.25):ft;cy+=fd*fd*340}onCtx(x,()=>grp(cx,cy,.55,()=>{try{cherokeeSide(cx,cy)}catch(e){}}))}
 x.fillStyle='#223';x.font='800 14px Arial';x.textAlign='left';x.textBaseline='alphabetic';x.fillText('Poutres : '+B.beams.length+' / '+budget,20,438);
 if(B.msgT>0){x.fillStyle='rgba(30,30,30,.75)';rr(x,180,392,440,30,10);x.fill();x.fillStyle='#fff';x.font='700 13px Arial';x.textAlign='center';x.fillText(B.msg,400,412)}}};
 B.after=win=>{if(win){SV.brOK=SV.brOK||{};SV.brOK[level]=1;SV.hearts+=3;note('🌉 Pont réparé ! +3 ❤',3);setTimeout(()=>say('Le pont est comme neuf. Tu fais un sacré charpentier, toi aussi.',3.4,1),600)}saveTrip()};
@@ -5019,8 +5019,29 @@ const busy=sayT>0||gid('note').classList.contains('on');tutEl.style.opacity=busy
 placeShop=(function(o){return function(){o();try{const m=shp[shp.length-1];if(m&&cvIn(m.x+120,500)){const G=cvG;const d=G.b+700-m.x;m.x+=d;m.a+=d;m.b+=d;m.y=T(m.x+110)}}catch(e){}}})(placeShop);
 mgTick=(function(o){return function(dt){o(dt);try{for(let i=pzL.length-1;i>=0;i--)if(cvIn(pzL[i].x,400))pzL.splice(i,1);for(let i=traf.length-1;i>=0;i--)if(cvIn(traf[i].x,500))traf.splice(i,1)}catch(e){}}})(mgTick);
 objMain=(function(o){return function(){const r=o();try{if(chIdx()===7&&r[0]==='📍'){const left=Math.max(0,(MAP_L-c.x)/30000),km=left>.05?'Encore '+left.toFixed(1).replace('.',',')+' km':'Presque arrivés !';return (SV.stI||0)>=1?['🦅','Explorer la Sardaigne',km]:['⛴️','Embarquer à Bonifacio pour la Sardaigne','Le bateau part du port']}}catch(e){}return r}})(objMain);
+
+// ===== 2.17 : tente de toit ouverte la nuit, couleurs du tableau de bord la nuit, le Cherokee qui tangue =====
+function tentOpen(){try{return !!(night&&night.m&&night.m.car&&night.t>12.4)}catch(e){return false}}
+function tentOpenDraw(){const u=Math.min(1,(night.t-12.4)/1.2);g.fillStyle='#4a4a46';g.fillRect(-52,-48,58,4);
+// le toit dépliable bascule vers l'arrière, la toile se tend
+const L=58*u;g.fillStyle='#4a4a46';g.fillRect(-52-L,-48,L,3);g.fillStyle='#8a8460';g.beginPath();g.moveTo(-52-L,-46);g.lineTo(-52-L*.5,-46-30*u);g.lineTo(6,-46);g.closePath();g.fill();g.fillStyle='#6d6a4c';g.beginPath();g.moveTo(-52-L*.5,-46-30*u);g.lineTo(-52-L*.5+4,-46);g.lineTo(-52-L*.5-4,-46);g.fill();
+g.fillStyle='rgba(255,220,140,'+(.55*u)+')';g.beginPath();g.ellipse(-30,-58*u-46*(1-u)+8,7*u,5*u,0,0,7);g.fill();
+g.strokeStyle='#888';g.lineWidth=1.2;g.beginPath();g.moveTo(-52-L+4,-45);g.lineTo(-52-L+8,8);g.moveTo(-52-L+9,-45);g.lineTo(-52-L+13,8);for(let k=0;k<6;k++){const yy=-38+k*8;g.moveTo(-52-L+4.6+k*.6,yy);g.lineTo(-52-L+9.6+k*.6,yy)}g.stroke()}
+// couleurs du tableau de bord la nuit (atelier, gratuit)
+const HUDN={orange:['Orange','-14deg','255,140,40'],rouge:['Rouge','-40deg','255,60,40'],vert:['Vert','70deg','80,255,120'],bleu:['Bleu','175deg','80,170,255'],violet:['Violet','235deg','190,110,255']};
+function hudNApply(){const k=(SV.cus&&SV.cus.hudN)||'orange',q=HUDN[k]||HUDN.orange;let st=gid('hudnst');if(!st){st=document.createElement('style');st.id='hudnst';document.head.appendChild(st)}st.textContent='#dash.nt{filter:grayscale(1) sepia(1) hue-rotate('+q[1]+') saturate(3.4) brightness(1.05) contrast(1.1) drop-shadow(0 0 3px rgba('+q[2]+',.7))!important}'}
+cusRows=(function(o){return function(){const r=o(),C=SV.cus;r.push(['🌙 Tableau de bord la nuit','gratuit · la couleur des cadrans quand il fait sombre',Object.keys(HUDN).map(k=>['hudN',k,HUDN[k][0],0,(C.hudN||'orange')===k])]);return r}})(cusRows);
+cusPick=(function(o){return function(k,v){if(k==='hudN'){SV.cus.hudN=v;hudNApply();snd('click');try{cusRender()}catch(e){}saveTrip();return}return o(k,v)}})(cusPick);
+try{hudNApply()}catch(e){}
+// une nuit sur trois dans le Cherokee : il tangue doucement, vitres embuées, des petits cœurs s'envolent
+arrive=(function(o){return function(m0){o(m0);try{if(night&&night.m&&night.m.car)night.rock=((SV.nightN||0)%3===2)}catch(e){}}})(arrive);
+function rockOn(){try{return !!(night&&night.rock&&night.m&&night.m.car&&night.t>12.8&&night.t<20)}catch(e){return false}}
+truck=(function(o){return function(){if(!rockOn())return o();const t=night.t,k=Math.min(1,(t-12.8)/.8)*Math.min(1,(20-t)/.8),sv=c,sa=a;c={x:c.x,y:c.y+Math.sin(t*8.5)*1.6*k};a=a+Math.sin(t*8.5+1)*.012*k;try{o()}finally{c=sv;a=sa}}})(truck);
+carNight=(function(o){return function(m,tm){o(m,tm);try{if(!rockOn())return;const t=night.t,cx=m.x+120,y=m.y;
+g.save();g.translate(c.x,c.y);g.rotate(a);g.translate(0,8);g.fillStyle='rgba(235,240,245,'+(.55*Math.min(1,(t-12.8)/2))+')';g.beginPath();g.moveTo(-51,-19);g.lineTo(-49,-29);g.lineTo(-30,-29.5);g.lineTo(-30,-19);g.fill();g.beginPath();g.moveTo(-24,-19);g.lineTo(-24,-29.5);g.lineTo(11,-30);g.lineTo(21,-19);g.fill();g.restore();
+for(let i=0;i<7;i++){const u=((t-12.8)*.45+i/7)%1;heart(c.x-30+Math.sin(i*2.3+t*1.5)*26*u+i*6,c.y-45-u*70,3.5+u*4,(1-u)*Math.min(1,(t-12.8)/1.2)*Math.min(1,(20-t)/.8))}}catch(e){}}})(carNight);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.16',GAME_DATE='22/10/2026 à 16h20';
+const GAME_VER='2.17',GAME_DATE='22/10/2026 à 16h35';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
