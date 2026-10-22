@@ -5401,8 +5401,31 @@ npcFig(-8,-34,v.lk,Math.sin(tm*2)>.6,tm);
 if(k==='castagna'||k==='salumu'){g.fillStyle='rgba(225,225,225,.5)';for(let i=0;i<3;i++){const q=(tm*.5+i/3)%1;g.beginPath();g.arc(30+q*10,-46-q*30,3+q*5,0,7);g.fill()}}
 g.restore()}
 pizza=(function(o){return function(x0,x1,tm){const keep=pzL.slice();const mar=keep.filter(q=>pzVend(q.j)==='marcel');pzL.length=0;pzL.push(...mar);try{o(x0,x1,tm)}finally{pzL.length=0;pzL.push(...keep)}for(const q of keep){if(pzVend(q.j)==='marcel')continue;if(q.x<x0-150||q.x>x1+20||PLT())continue;try{vendDraw(q,tm)}catch(e){}}}})(pizza);
+
+// ===== 2.29 : une icône dessinée pour chaque produit des commerces =====
+Object.assign(HI,{
+p_brocciu:['br','<path fill="#c8a06a" stroke="#6a4a2a" d="M4 12h16l-2 8H6z"/><path stroke="#6a4a2a" d="M8 12l1 8M12 12v8M16 12l-1 8M5 16h14"/><path fill="#fbf8f0" stroke="#9a8a7a" d="M5 12c0-4 3-7 7-7s7 3 7 7z"/>'],
+p_tomme:['a','<path fill="currentColor" stroke="#8a6a2a" d="M3 11c0-2 4-4 9-4s9 2 9 4v5c0 2-4 4-9 4s-9-2-9-4z"/><path stroke="#8a6a2a" d="M3 11c0 2 4 4 9 4s9-2 9-4"/><path fill="#f6e2a0" stroke="#8a6a2a" d="M12 15l6-1v5l-6 1z"/>'],
+p_fiadone:['a','<path fill="#e8b94a" stroke="#8a5a2a" d="M3 15l9-9 9 9v4H3z"/><path fill="#fbeec8" stroke="#8a5a2a" d="M3 15h18v2H3z"/><path stroke="#8a5a2a" d="M8 11l1 1M14 10l1 1"/>'],
+p_figatellu:['r','<path fill="#7a2a20" stroke="#4a1a14" d="M4 16c0-6 5-10 11-10a2 2 0 0 1 0 4c-4 0-7 3-7 7a2 2 0 0 1-4-1z"/><path stroke="#c86a4a" d="M9 9l1 1M12 7.5v1.5M6.5 13l1.2.5"/>'],
+p_lonzu:['r','<rect x="3" y="8" width="13" height="8" rx="4" fill="#a8483a" stroke="#5a2a20"/><ellipse cx="17" cy="12" rx="4" ry="5" fill="#e88a7a" stroke="#5a2a20"/><path stroke="#fbe6dc" d="M15.5 10.5c1 .5 2 .5 3 0M15.5 13.5c1 .5 2 .5 3 0"/>'],
+p_coppa:['r','<circle cx="9" cy="12" r="6" fill="#c85a4a" stroke="#5a2a20"/><circle cx="16" cy="13" r="5" fill="#d86a5a" stroke="#5a2a20"/><path stroke="#fbe6dc" d="M7 10c1 1 3 1 4 0M14 12c1 1 3 1 4 0"/>'],
+p_canistr:['a','<rect x="4" y="7" width="13" height="7" rx="1.5" fill="#e8c87a" stroke="#8a6a2a"/><rect x="7" y="12" width="13" height="7" rx="1.5" fill="#f2d48a" stroke="#8a6a2a"/><path stroke="#8a6a2a" d="M9 15.5h.1M13 15.5h.1M17 15.5h.1"/>'],
+p_beignet:['a','<circle cx="12" cy="13" r="7" fill="#d89a4a" stroke="#8a5a2a"/><path stroke="#fbf6ea" stroke-width="1.6" d="M8 10l1 .5M14 9l1 1M16 14l1 .5M9 15l1 .3M12 12h.1"/>'],
+p_falcu:['g','<path fill="#4e9a5a" stroke="#2e6a3a" d="M3 14c2-6 8-9 18-8-2 9-8 13-18 8z"/><circle cx="12" cy="12" r="4.5" fill="#e8b94a" stroke="#8a5a2a"/>'],
+p_castagne:['br','<path fill="#7a4a24" stroke="#4a2a14" d="M12 4c5 3 8 7 8 10a8 6 0 0 1-16 0c0-3 3-7 8-10z"/><path fill="#e8d8b0" stroke="#4a2a14" d="M5 15a7 4 0 0 0 14 0c-3 1-11 1-14 0z"/>'],
+p_pulenda:['a','<path fill="#c8a06a" stroke="#6a4a2a" d="M3 15c0-4 4-7 9-7s9 3 9 7v2H3z"/><path stroke="#6a4a2a" d="M8 11l-1 6M13 9v8M17 11l1 6"/>'],
+p_creme:['br','<path fill="#7a4a24" stroke="#4a2a14" d="M6 8h12v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/><rect x="5" y="4" width="14" height="4" rx="1" fill="#d8352b" stroke="#8a1a14"/><rect x="8" y="12" width="8" height="5" fill="#f4ecd8" stroke="none"/>'],
+p_pizzaM:['r','<path fill="#f2c26a" stroke="#8a5a2a" d="M12 3l9 17H3z"/><path fill="#d8433a" stroke="none" d="M12 7l6.5 12h-13z"/><circle cx="11" cy="14" r="1.6" fill="#fbf6ea" stroke="none"/><circle cx="14" cy="16" r="1.4" fill="#fbf6ea" stroke="none"/><path stroke="#4e9a5a" d="M10 17l1-1"/>'],
+p_pizzaV:['g','<path fill="#f2c26a" stroke="#8a5a2a" d="M12 3l9 17H3z"/><path fill="#d8433a" stroke="none" d="M12 7l6.5 12h-13z"/><circle cx="10" cy="15" r="1.7" fill="#4e9a5a" stroke="none"/><circle cx="14" cy="13" r="1.4" fill="#e8b923" stroke="none"/><circle cx="13" cy="17" r="1.2" fill="#3a2e24" stroke="none"/>'],
+p_pizza4:['a','<path fill="#f2c26a" stroke="#8a5a2a" d="M12 3l9 17H3z"/><path fill="#f6e2a0" stroke="none" d="M12 7l6.5 12h-13z"/><circle cx="10" cy="15" r="1.4" fill="#e8b94a" stroke="none"/><circle cx="14" cy="14" r="1.4" fill="#fbf6ea" stroke="none"/><circle cx="12" cy="17.5" r="1.2" fill="#e8b94a" stroke="none"/>'],
+p_cafe:['br','<path fill="#fbf6ea" stroke="#5a3a2a" d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path fill="#5a3a2a" stroke="none" d="M6 10h9v2H6z"/><path stroke="#5a3a2a" d="M16 11h2a2 2 0 0 1 0 4h-2M9 3c0 2 2 2 2 4"/>']});
+function prodIc(n){const d=HI[n];return '<svg class="ic" viewBox="0 0 24 24" style="color:'+(HC[d[0]]||'#3a2e24')+'"><title>'+n+'</title>'+d[1]+'</svg>'}
+{const PI={brocciu:'p_brocciu',tomme:'p_tomme',fiadone:'p_fiadone',figatellu:'p_figatellu',lonzu:'p_lonzu',coppa:'p_coppa',canistr:'p_canistr',beignet:'p_beignet',falculelle:'p_falcu',castagne:'p_castagne',pulenda:'p_pulenda',cremamarr:'p_creme',pizzaM:'p_pizzaM',pizzaV:'p_pizzaV',pizza4:'p_pizza4',cafe:'p_cafe'};
+const fix=L=>{for(const q of L)if(PI[q[0]])q[1]=prodIc(PI[q[0]])};fix(PZ_IT);for(const k of VALT)fix(VEND[k].it)}
+(function(){const st=document.createElement('style');st.textContent='.sbb .e .ic{width:30px;height:30px;stroke-width:1.4}';document.head.appendChild(st)})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.28',GAME_DATE='22/10/2026 à 18h10';
+const GAME_VER='2.29',GAME_DATE='22/10/2026 à 18h20';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
