@@ -4504,4 +4504,8 @@ layerSlots=(function(o){return function(p,sw,fn,al){if(al===undefined)return o(p
 L.wmax=Math.max(L.wmax*.9997,al,.2);const n=L.wmax>.001?al/L.wmax:0;if(!L.on&&n>.62)L.on=true;else if(L.on&&n<.28)L.on=false;
 const dt=Math.min(.1,(now-L.t)/1000);L.t=now;const tg=L.on?1:0;if(L.snap){L.snap=0;L.a=tg}if(L.a<tg)L.a=Math.min(1,L.a+dt/1.4);else if(L.a>tg)L.a=Math.max(0,L.a-dt/1.4);
 const A=L.a*Math.max(L.wmax,.0001);if(A<.02)return;return o(p,sw,fn,A)}catch(e){return o(p,sw,fn,al)}}})(layerSlots);
+
+// ===== 2.00 : version affichée dans le menu =====
+const GAME_VER='2.00',GAME_DATE='22/10/2026';
+(function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
