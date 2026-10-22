@@ -1918,7 +1918,7 @@ var pendBan=null;
 function storyTick(dt){const run=started&&!night&&!crashed&&!paused&&introT<=0&&!cardOpen;if(!run)return;
 const ch=CHP();if(SV.stL!==level){SV.stL=level;SV.stI=0}
 const st2=ch.stops[SV.stI||0];if(st2&&chP()>=st2.f){SV.stI=(SV.stI||0)+1;placeBanner('📍 '+ch.p.split(' · ')[1],st2.n+' '+st2.e);snd('chime');for(const l of st2.L)talkQ.push(l);
-if(st2.fx==='boat')setTimeout(()=>openBoat(false),1800);else if(st2.fx==='boatBack')setTimeout(()=>openBoat(true),1800);else if(st2.fx==='end')endStory();saveTrip()}
+if(st2.fx==='boat')setTimeout(()=>sarCross(false),1800);else if(st2.fx==='boatBack')setTimeout(()=>sarCross(true),1800);else if(st2.fx==='end')endStory();saveTrip()}
 helpTick(dt);mechTick(dt);if(talkQ.length&&sayT<=0&&!sbCtx&&!bt&&!obv&&!hl){const l=talkQ.shift();say(l[1],3.8,l[0]==='m'?1:0);replyT=0}
 {const zt=Z(c.x)[3],sp3=Math.hypot(v.x,v.y);if(ign&&st.gas&&sp3<22&&!stalled&&!work&&(zt==='rock'||zt==='mud'||rockW(c.x)>.02))stuckT+=dt;else stuckT=Math.max(0,stuckT-dt*2);if(merCD>0)merCD-=dt;if(stuckT>7&&merCD<=0&&sayT<=0){merCD=120;stuckT=0;say('On aurait dû prendre le Mercedes…',3.8,0)}}
 if(heliOn()&&dt>0&&((performance.now()/1000*55)%((W+320)*2))<=W+320){heliT-=dt;if(heliT<=0){heliT=.12;snd('heli')}}}
@@ -5040,8 +5040,37 @@ truck=(function(o){return function(){if(!rockOn())return o();const t=night.t,k=M
 carNight=(function(o){return function(m,tm){o(m,tm);try{if(!rockOn())return;const t=night.t,cx=m.x+120,y=m.y;
 g.save();g.translate(c.x,c.y);g.rotate(a);g.translate(0,8);g.fillStyle='rgba(235,240,245,'+(.55*Math.min(1,(t-12.8)/2))+')';g.beginPath();g.moveTo(-51,-19);g.lineTo(-49,-29);g.lineTo(-30,-29.5);g.lineTo(-30,-19);g.fill();g.beginPath();g.moveTo(-24,-19);g.lineTo(-24,-29.5);g.lineTo(11,-30);g.lineTo(21,-19);g.fill();g.restore();
 for(let i=0;i<7;i++){const u=((t-12.8)*.45+i/7)%1;heart(c.x-30+Math.sin(i*2.3+t*1.5)*26*u+i*6,c.y-45-u*70,3.5+u*4,(1-u)*Math.min(1,(t-12.8)/1.2)*Math.min(1,(20-t)/.8))}}catch(e){}}})(carNight);
+
+// ===== 2.18 : Sardaigne — départ et arrivée au port, avec la mer =====
+function portScene(Wd,gy,T2,tm,dep,nm,col){const sk=g.createLinearGradient(0,0,0,gy);sk.addColorStop(0,'#7cc3ec');sk.addColorStop(1,'#f3e6cf');g.fillStyle=sk;g.fillRect(0,0,Wd,420);g.fillStyle='#ffd45a';g.beginPath();g.arc(Wd*.78,70,22,0,7);g.fill();
+// côte et ville
+g.fillStyle=col;g.beginPath();g.moveTo(0,gy-20);g.lineTo(0,gy-120);g.lineTo(Wd*.08,gy-130);g.lineTo(Wd*.2,gy-110);g.lineTo(Wd*.36,gy-60);g.lineTo(Wd*.4,gy-20);g.fill();for(let i=0;i<9;i++){const hx=Wd*.02+i*Wd*.035,hy=gy-118+Math.abs(i-4)*7;g.fillStyle=['#efe6d2','#e9dcc0','#f1e7d3'][i%3];g.fillRect(hx,hy,Wd*.03,22);g.fillStyle='#b4562d';g.fillRect(hx-1,hy-4,Wd*.03+2,4)}
+// mer
+const sea=g.createLinearGradient(0,gy-20,0,420);sea.addColorStop(0,'#2c8cc0');sea.addColorStop(1,'#14608f');g.fillStyle=sea;g.fillRect(Wd*.3,gy-20,Wd,440);g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=1.5;for(let i=0;i<16;i++){const xx=Wd*.32+((i*97+tm*18)%(Wd*.7)),yy=gy-8+(i%5)*22;g.beginPath();g.moveTo(xx,yy);g.lineTo(xx+16,yy);g.stroke()}
+// quai
+g.fillStyle='#9a9286';g.fillRect(0,gy,Wd*.42,420-gy);g.fillStyle='#b8b0a4';g.fillRect(0,gy-4,Wd*.42,8);g.fillStyle='#5a5248';for(let i=0;i<5;i++)g.fillRect(Wd*.06+i*Wd*.08,gy-14,5,10);
+// le navire : dep = il attend puis part ; sinon il arrive puis reste
+const qx=Wd*.42;let sx=qx+10;if(dep&&T2>17)sx+=Math.pow(T2-17,2)*14;if(!dep&&T2<7)sx+=Math.pow(7-T2,2)*14;const sy=gy+6+Math.sin(tm*1.4)*1.5,L=Wd*.5;
+g.fillStyle='#e9eef2';g.beginPath();g.moveTo(sx,sy-36);g.lineTo(sx+L,sy-36);g.lineTo(sx+L-24,sy+16);g.lineTo(sx+20,sy+16);g.closePath();g.fill();g.fillStyle='#1f5a8a';g.fillRect(sx+16,sy+2,L-44,9);g.fillStyle='#f4f6f8';g.fillRect(sx+L*.42,sy-82,L*.4,46);g.fillStyle='#2a3e52';for(let i=0;i<6;i++)g.fillRect(sx+L*.45+i*L*.06,sy-74,L*.04,10);g.fillStyle='#d8352b';g.fillRect(sx+L*.7,sy-104,18,24);
+g.fillStyle='#1f5a8a';g.font='800 12px Arial';g.textAlign='center';g.fillText(nm,sx+L*.3,sy-16);
+// rampe
+const rampOn=dep?T2<15.5:T2>8.5;if(rampOn&&sx<qx+20){g.fillStyle='#6a6f76';g.beginPath();g.moveTo(qx-36,gy);g.lineTo(sx+6,sy-34);g.lineTo(sx+30,sy-34);g.lineTo(qx-10,gy);g.fill()}
+// le Cherokee : il monte (départ) ou descend (arrivée)
+let cx,cy;const deck=sy-36;if(dep){const u=Math.min(1,Math.max(0,(T2-6)/7));cx=Wd*.1+(sx+L*.24-Wd*.1)*u;cy=cx<qx-30?gy:(cx<sx+30?gy+(deck-gy)*Math.min(1,(cx-(qx-30))/(sx+30-(qx-30))):deck);if(T2>17)cx+=sx-(qx+10)}
+else{const u=Math.min(1,Math.max(0,(T2-10)/7));const x0=sx+L*.24;cx=x0+(Wd*.12-x0)*u;cy=cx>sx+30?deck:(cx>qx-30?deck+(gy-deck)*Math.min(1,((sx+30)-cx)/((sx+30)-(qx-30))):gy)}
+grp(cx,cy,1,()=>{try{cherokeeSide(cx,cy)}catch(e){}});
+// mouettes
+g.strokeStyle='#2a2a30';g.lineWidth=1.4;for(let i=0;i<4;i++){const bx=(Wd*.3+i*120+tm*30)%Wd,by=80+(i%2)*30+Math.sin(tm*3+i)*5,wv=Math.sin(tm*8+i)*3;g.beginPath();g.moveTo(bx-6,by-wv);g.lineTo(bx,by);g.lineTo(bx+6,by-wv);g.stroke()}}
+CS.sarD0={mus:'boat',L:()=>[[1.5,'n','Port de Bonifacio. Le grand bateau blanc pour la Sardaigne attend, la rampe baissée.'],[6,'a','Doucement sur la rampe… Le Cherokee n’a jamais pris un bateau aussi grand.'],[11,'m','On est à bord ! Regarde la falaise, et toutes ces maisons au bord du vide.'],[16,'n','La rampe se relève. Le bateau quitte le port en douceur.']],end:21,draw:(Wd,gy,T2,tm)=>portScene(Wd,gy,T2,tm,true,'BONIFACIO ⇄ SANTA TERESA','#e9dcc0')};
+CS.sarA0={mus:'boat',L:()=>[[1.5,'n','Santa Teresa Gallura. Le bateau entre doucement dans le port.'],[6,'m','La Sardaigne ! Les rochers de granit, comme chez nous… mais en plus rose.'],[10.5,'a','La rampe descend. Allez, le Cherokee pose ses roues en Sardaigne !'],[15.5,'m','Ici, le N-12 est interdit. Si les animaux vont bien, on aura notre preuve.']],end:20,draw:(Wd,gy,T2,tm)=>portScene(Wd,gy,T2,tm,false,'BONIFACIO ⇄ SANTA TERESA','#c99a86')};
+CS.sarD1={mus:'boat',L:()=>[[1.5,'n','Port de Santa Teresa. L’heure de rentrer en Corse.'],[6,'m','Au revoir la Sardaigne… On a ce qu’il nous faut.'],[11,'a','Tout le monde à bord. Le chien en premier, comme d’habitude.'],[16,'n','Le bateau s’éloigne du quai. Les falaises de Bonifacio apparaissent déjà au loin.']],end:21,draw:(Wd,gy,T2,tm)=>portScene(Wd,gy,T2,tm,true,'SANTA TERESA ⇄ BONIFACIO','#c99a86')};
+CS.sarA1={mus:'boat',L:()=>[[1.5,'n','Bonifacio, perché sur sa falaise. Le bateau accoste.'],[6,'a','La Corse… On est à la maison.'],[10.5,'m','Le chien reconnaît l’odeur du maquis, regarde-le !'],[15.5,'n','Le Cherokee redescend sur le quai. Direction la forêt de l’Ospedale.']],end:20,draw:(Wd,gy,T2,tm)=>portScene(Wd,gy,T2,tm,false,'SANTA TERESA ⇄ BONIFACIO','#e9dcc0')};
+try{musScene=(function(o){return function(){try{if(cs&&/^sar[DA]/.test(cs.k))return 'boat'}catch(e){}return o()}})(musScene)}catch(e){}
+var btAfter=null;
+function sarCross(back){const k=back?'1':'0';CS['sarD'+k].onEnd=()=>setTimeout(()=>{btAfter=()=>setTimeout(()=>fadeTo(()=>openCine('sarA'+k)),300);openBoat(back)},300);fadeTo(()=>openCine('sarD'+k))}
+mgTick=(function(o){return function(dt){o(dt);if(btAfter&&!bt&&!cs&&!paused){const f=btAfter;btAfter=null;f()}}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.17',GAME_DATE='22/10/2026 à 16h35';
+const GAME_VER='2.18',GAME_DATE='22/10/2026 à 16h50';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
