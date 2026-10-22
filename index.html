@@ -3181,12 +3181,12 @@ var call=null;
 body.cine #call,body.intro #call,body.ncar #call{display:none!important}`;document.head.appendChild(st);const d=document.createElement('div');d.id='call';document.body.appendChild(d)})();
 function callStart(kind){const L=CALLS[kind],sc=L[(SV.callN=(SV.callN||0)+1)%L.length];const lieu=(CHP().fin||'la côte');call={kind,L:sc.map(q=>[q[0],q[1].replace('{lieu}',lieu)]),i:-1,t:0,ring:kind==='maman'?1.6:1.2};snd('ding');vib([40,60,40])}
 function callTick(dt){const el=gid('call');if(!call){if(el.style.display!=='none')el.style.display='none';return}if(paused||night)return;call.t+=dt;const mom=call.kind==='maman';
-if(call.i<0){el.style.display='block';el.innerHTML='<div class="ch"><i>📞</i>'+(mom?'Maman appelle Mila…':'Mila appelle mamie…')+'<small>appel</small></div>';if(call.t>call.ring){call.i=0;call.t=0}return}
+if(call.i<0){el.style.display='block';el.innerHTML='<div class="ch"><i>📞</i>'+({maman:'Maman appelle Mila…',mamie:'Mila appelle mamie…',papa:'Papa appelle Mila…',parents:'Mila appelle ses parents…'}[call.kind]||'Appel…')+'<small>appel</small></div>';if(call.t>call.ring){call.i=0;call.t=0}return}
 if(call.t>3.1){call.i++;call.t=0;if(call.i>=call.L.length){call=null;el.style.display='none';return}}
-const q=call.L[call.i],who=q[0]==='m'?'MILA':q[0]==='a'?'ANDREA':(mom?'MAMAN':'MAMIE'),col=q[0]==='m'?'#e7b8f0':q[0]==='a'?'#a8d0ff':'#ffd98a';
+const q=call.L[call.i],who=q[0]==='m'?'MILA':q[0]==='a'?'ANDREA':({maman:'MAMAN',mamie:'MAMIE',papa:'PAPA',parents:'PAPA & MAMAN'}[call.kind]||'MAMIE'),col=q[0]==='m'?'#e7b8f0':q[0]==='a'?'#a8d0ff':'#ffd98a';
 el.innerHTML='<div class="ch"><i style="animation:none">📱</i>'+(mom?'Maman':'Mamie')+'<small>'+(call.i+1)+'/'+call.L.length+'</small></div><div class="cl"><b style="color:'+col+'">'+who+'</b>'+q[1]+'</div>'}
 function callWorld(dt){callTick(dt);if(call||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||bt||obv||bz||fn||es||chEnd||sayT>0)return;if(SV.callL===level||(SV.helS===1||SV.helS===2))return;if(SV.callAt==null||SV.callAtL!==level){SV.callAtL=level;SV.callAt=.18+Math.random()*.55}
-if(chP()>=SV.callAt){SV.callL=level;callStart(level%2?'maman':'mamie')}}
+if(chP()>=SV.callAt){SV.callL=level;callStart(['mamie','maman','papa','parents'][(level+(SV.seed||0))%4])}}
 
 SAYP.add('lifeR');SAYP.add('torseR');
 
@@ -4815,17 +4815,17 @@ const TRL_TH=[
 {k:'eau',who:'Un berger sarde',lk:['#5a5f66','#2a2e34',1,'#2a1a10',1,2,0],where:'ferme',t:'L’eau du nuraghe',ask:'« Grazie di fermarvi ! L’eau pour mes brebis, près du nuraghe, là-haut. Mon âne est trop vieux pour porter tout ça. »',thanks:'« Grazie mille ! Vous êtes les bienvenus quand vous voulez. »'},
 {k:'moutons',who:'Une bergère',lk:['#c8502a','#4a3a2a',1,'#3a2a1a',0,2,1],where:'ferme',t:'Les brebis de l’Ospedale',ask:'« Après l’histoire de l’ours, mes brebis ne veulent plus rester dans la forêt. Vous pouvez les monter au plateau ? Tout doucement… »',thanks:'« Elles sont en sécurité. Merci, du fond du cœur. »'},
 {k:'vaches',who:'Un éleveur',lk:['#7a6a4a','#3a3a3a',3,'#c8c8c8',1,2,0],where:'ferme',t:'Les vaches de Fautea',ask:'« Un dernier service avant la plage ? Mes vaches doivent rejoindre le pré du bord de mer. Le gué est profond en ce moment. »',thanks:'« Merci, les amoureux ! Profitez bien de Fautea. »'}];
-function trlGen(ci,easy){const d=Math.min(1,ci/9)*(easy?.55:1),L=5000+ci*120;let sd=TS?TS()*13+ci*101+level*7:ci*101;const R=()=>{sd=(sd*9301+49297)%233280;return sd/233280};
-const p1=R()*6,p2=R()*6,p3=R()*6,A1=26+40*d,A2=8+12*d,A3=60+50*d;
-const mud=[],ford=[],bump=[];const nm=2+Math.floor(ci/3);for(let i=0;i<nm;i++){const a=600+(L-1300)*(i+.3+R()*.4)/nm;mud.push([a,a+180+R()*170])}
+function trlGen(ci,easy){const d=Math.min(1,.35+ci/9)*(easy?.55:1),L=5800+ci*220;let sd=TS?TS()*13+ci*101+level*7:ci*101;const R=()=>{sd=(sd*9301+49297)%233280;return sd/233280};
+const p1=R()*6,p2=R()*6,p3=R()*6,A1=32+46*d,A2=11+14*d,A3=70+60*d;
+const mud=[],ford=[],bump=[];const nm=3+Math.floor(ci/3);for(let i=0;i<nm;i++){const a=600+(L-1300)*(i+.3+R()*.4)/nm;mud.push([a,a+180+R()*170])}
 const nf=1+(ci>=4?1:0);for(let i=0;i<nf;i++){const a=1300+(L-2400)*(i+.5)/nf+R()*200;ford.push([a,a+200])}
-const nb=6+ci;for(let i=0;i<nb;i++)bump.push(500+R()*(L-1000));
+const nb=9+Math.round(ci*1.5);for(let i=0;i<nb;i++)bump.push(500+R()*(L-1000));
 const h0=x=>{const e=Math.min(1,Math.max(0,(x-250)/400))*Math.min(1,Math.max(0,(L-200-x)/400));let y=-(Math.sin(x/240+p1)*A1+Math.sin(x/95+p2)*A2)*e;y-=(x/L)*A3*Math.sin(x/700+p3)*e;return 330+y};
-const H=x=>{let y=h0(x);for(const f of ford){if(x>f[0]&&x<f[1]){const u=(x-f[0])/(f[1]-f[0]);y+=16*Math.sin(Math.PI*u)}}for(const b of bump){const dx=x-b;if(Math.abs(dx)<20)y-=(11+8*d)*(1-Math.abs(dx)/20)}return y};
+const H=x=>{let y=h0(x);for(const f of ford){if(x>f[0]&&x<f[1]){const u=(x-f[0])/(f[1]-f[0]);y+=16*Math.sin(Math.PI*u)}}for(const b of bump){const dx=x-b;if(Math.abs(dx)<20)y-=(13+10*d)*(1-Math.abs(dx)/20)}return y};
 return{L,H,mud,ford,bump,d}}
 function trlOpen(after){const ci=chIdx(),th=TRL_TH[ci%TRL_TH.length],tries=(SV.trlTry&&SV.trlTry[level])||0,easy=tries>=3;const G0=trlGen(ci,easy);
-const live=th.k==='moutons'||th.k==='vaches',N=live?(th.k==='vaches'?2:4):Math.min(th.k==='eau'?6:5,3+Math.floor(ci/3)),allow=live?0:(ci<5||easy?1:0);
-const mu=th.k==='eau'?.32:.62,sz=th.k==='eau'?20:30,LIP=easy?14:th.k==='eau'?6:8,BL=170;
+const live=th.k==='moutons'||th.k==='vaches',N=live?(th.k==='vaches'?3:5):Math.min(th.k==='eau'?7:6,4+Math.floor(ci/3)),allow=live?0:(ci<2||easy?1:0);
+const mu=th.k==='eau'?.28:.55,sz=th.k==='eau'?20:28,LIP=easy?14:th.k==='eau'?5:7,BL=170;
 const M={k:'trl',G:G0,th,live,N,allow,mu,sz,LIP,BL,x:120,vx:0,y:0,vy:0,air:0,ang:0,rot:0,gas:0,brk:0,t:0,res:null,cam:0,items:[],lost:0,comfort:1,A:{x:0,y:0},pv:null,pp:null,fall:[],splash:[],msg:'',msgT:0,
 reset(){M.x=120;M.vx=0;M.vy=0;M.air=0;M.t=0;M.res=null;M.lost=0;M.comfort=1;M.pv=null;M.pp=null;M.fall=[];M.items=[];M.A={x:0,y:0};if(!live){for(let i=0;i<N;i++)M.items.push({u:BL-sz/2-2-i*(sz+3),z:0,du:0,dz:0,on:1})}M.y=M.G.H(M.x);M.ui()},
 start(){M.reset()},
@@ -4839,7 +4839,7 @@ inZ(Z,x){return Z.some(z=>x>z[0]&&x<z[1])},
 hitch(){const c2=Math.cos(M.ang),s2=Math.sin(M.ang),cx=M.x,cy=M.y-25;return[cx+(-62)*c2-(8)*s2,cy+(-62)*s2+(8)*c2]},
 trailer(){const hz=M.hitch(),TL=150;let wx=hz[0]-TL;for(let i=0;i<4;i++){const wy=M.G.H(wx)-11,dy=hz[1]-wy;wx=hz[0]-Math.sqrt(Math.max(1,TL*TL-dy*dy))}const wy=M.G.H(wx)-11;return{hz,wx,wy,th:Math.atan2(hz[1]-wy,hz[0]-wx)}},
 step(dt){const G=M.G,g0=900;const xr=M.x-38,xf=M.x+38,yr=G.H(xr),yf=G.H(xf),gy=(yr+yf)/2,sl=(yf-yr)/76,ca=1/Math.sqrt(1+sl*sl),sa=sl*ca;
-const mud=M.inZ(G.mud,M.x),ford=M.inZ(G.ford,M.x),grip=mud?.56:ford?.75:1,massF=live?(th.k==='vaches'?1.55:1.4):1.32;
+const mud=M.inZ(G.mud,M.x),ford=M.inZ(G.ford,M.x),grip=mud?.66:ford?.78:1,massF=live?(th.k==='vaches'?1.55:1.4):1.32;
 let acc=0;const onG=!M.air;if(onG){acc+=g0*sa*.55/massF;if(M.gas){const trac=Math.min(360*grip,g0*.66*grip*ca);acc+=trac/massF*1.3}if(M.brk){if(M.vx>4)acc-=420;else acc-=110/massF}
 const vmax=(mud?85:ford?80:125);if(M.vx>vmax)acc-=(M.vx-vmax)*3;if(M.vx<-55)acc+=(-55-M.vx)*3;acc-=M.vx*(mud?.55:ford?.6:.18);if(!M.gas&&!M.brk&&Math.abs(M.vx)<6&&Math.abs(sa)<.12)M.vx*=.9}
 M.vx+=acc*dt;M.x+=M.vx*dt;if(M.x<60){M.x=60;M.vx=Math.max(0,M.vx)}
@@ -4851,7 +4851,7 @@ if(ford&&Math.abs(M.vx)>20&&Math.random()<.5)M.splash.push({x:M.x+(Math.random()
 // remorque et chargement
 const T2=M.trailer(),bm=[(T2.hz[0]+T2.wx)/2,(T2.hz[1]+T2.wy)/2];if(M.pp){const v2=[(bm[0]-M.pp[0])/dt,(bm[1]-M.pp[1])/dt];if(M.pv){const a2=[(v2[0]-M.pv[0])/dt,(v2[1]-M.pv[1])/dt];const k=Math.min(1,dt*70);M.A.x+=(Math.max(-3000,Math.min(3000,a2[0]))-M.A.x)*k;M.A.y+=(Math.max(-3000,Math.min(3000,a2[1]))-M.A.y)*k}M.pv=v2}M.pp=bm;
 const th2=T2.th,tx=Math.cos(th2),ty=Math.sin(th2),nx=ty,ny=-tx,gex=-M.A.x,gey=g0-M.A.y,gt=gex*tx+gey*ty,gn=gex*nx+gey*ny;M.T=T2;
-if(live){const sh=Math.max(0,Math.hypot(M.A.x,M.A.y)-560)/300+Math.max(0,Math.abs(th2)-.42)*1.6+(M.jolt||0)*2;M.comfort-=sh*dt*(th.k==='vaches'?.42:.36);M.comfort=Math.min(1,M.comfort+dt*.03);M.jolt=0;if(M.comfort<=0&&!M.res){M.comfort=0;M.end('stress')}}
+if(live){const sh=Math.max(0,Math.hypot(M.A.x,M.A.y)-540)/280+Math.max(0,Math.abs(th2)-.42)*1.6+(M.jolt||0)*2;M.comfort-=sh*dt*(th.k==='vaches'?.4:.34);M.comfort=Math.min(1,M.comfort+dt*.03);M.jolt=0;if(M.comfort<=0&&!M.res){M.comfort=0;M.end('stress')}}
 else{for(const it of M.items){if(!it.on)continue;const inC=it.z<=.01;
 if(inC){if(gn>0){it.dz+=gn*dt;it.z+=it.dz*dt}else{it.dz=0;it.z=0}const N2=Math.max(0,-gn);if(Math.abs(it.du)<3&&Math.abs(gt)<=M.mu*N2)it.du=0;else{const s2=it.du!==0?Math.sign(it.du):Math.sign(gt);it.du+=(gt-s2*M.mu*.85*N2)*dt;if(s2!==0&&Math.sign(it.du)!==s2&&Math.abs(gt)<M.mu*N2)it.du=0}}
 else{it.dz+=gn*dt;it.z+=it.dz*dt;it.du+=gt*dt;if(it.z<=0){it.z=0;if(it.dz<-80)snd('click');it.dz=-it.dz*.22;if(Math.abs(it.dz)<30)it.dz=0}}
@@ -5069,8 +5069,15 @@ try{musScene=(function(o){return function(){try{if(cs&&/^sar[DA]/.test(cs.k))ret
 var btAfter=null;
 function sarCross(back){const k=back?'1':'0';CS['sarD'+k].onEnd=()=>setTimeout(()=>{btAfter=()=>setTimeout(()=>fadeTo(()=>openCine('sarA'+k)),300);openBoat(back)},300);fadeTo(()=>openCine('sarD'+k))}
 mgTick=(function(o){return function(dt){o(dt);if(btAfter&&!bt&&!cs&&!paused){const f=btAfter;btAfter=null;f()}}})(mgTick);
+
+// ===== 2.19 : appels de Mila avec son papa, ses parents (Rafalou et Petit Tonnerre) et sa mamie (tonton moustachu) =====
+CALLS.papa=[[['p','Allô ma fille ? C’est papa. Alors, ce Cherokee, il tient le coup ?'],['m','Coucou papa ! Il grimpe partout. Andrea s’en occupe très bien.'],['p','Et vous êtes où, là ?'],['m','Vers {lieu}. C’est magnifique.'],['p','Soyez prudents sur ces pistes. Je vous embrasse tous les deux.'],['m','Bisous papa ❤️']],
+[['m','Allô papa ? Tu as des nouvelles de Rafalou et de Petit Tonnerre ?'],['p','Ils vont très bien ! Le poulain gambade partout dans le pré.'],['m','Il doit encore avoir grandi… Et Rafalou ?'],['p','Elle le surveille comme le lait sur le feu. Une vraie maman.'],['m','Fais-leur une caresse de ma part. Bisous papa ❤️']]];
+CALLS.parents=[[['m','Coucou vous deux ! Comment vont Rafalou et Petit Tonnerre ?'],['p','Tu es sur haut-parleur ! Rafalou va bien, et le petit est de plus en plus curieux.'],['p','Il suit sa mère partout dans le pré.'],['m','Envoyez-moi une photo, ils me manquent !'],['p','Promis. Et vous, faites attention sur la route.'],['m','Bisous à tous les deux ❤️']]];
+CALLS.maman.push([['p','Coucou Mila ! Devine qui est à côté de moi, au bord du pré ?'],['m','Rafalou ! Et Petit Tonnerre ? Comment ils vont ?'],['p','Très bien. Le petit a voulu goûter mon écharpe ce matin.'],['m','Fais-leur un câlin pour moi, maman. Bisous ❤️']]);
+CALLS.mamie.push([['m','Allô mamie ? Comment va tonton moustachu ?'],['p','Ah, lui ! Toujours fidèle à sa moustache, tu le connais.'],['m','Fais-lui un bisou de ma part.'],['p','Je n’y manquerai pas. Profitez bien de votre voyage.'],['m','Gros bisous mamie ❤️']],[['p','Ma petite Mila ! Tonton moustachu est passé me voir, il demande de tes nouvelles.'],['m','Dis-lui que tout va bien, qu’on est vers {lieu} !'],['p','Il va être content. Faites bien attention à vous.'],['m','Je t’embrasse fort, mamie ❤️']]);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.18',GAME_DATE='22/10/2026 à 16h50';
+const GAME_VER='2.19',GAME_DATE='22/10/2026 à 17h05';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
