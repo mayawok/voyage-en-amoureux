@@ -4755,8 +4755,51 @@ function tourWorld(){try{if(MGX||cs||!started||night||crashed||paused||introT>0|
 SV.tourL=level;const lang=tourLang(chIdx()),who=TOURL[lang][2];tourWX=c.x+420;say(who?'Des touristes nous font signe… On s’arrête, je vais voir ce qu’ils veulent.':'Des touristes agitent les bras ! Je m’arrête, je vais leur parler.',3.4,who);stopReq={x:c.x+330,cb:()=>setTimeout(()=>{tourOpen()},350)}}catch(e){}}
 mgTick=(function(o){return function(dt){o(dt);tourWorld()}})(mgTick);
 npcDraw=(function(o){return function(tm){o(tm);try{if(tourWX!=null&&Math.abs(tourWX-c.x)<1500){const cols=[['#e86a5a','#2f4f7a',1,'#e3c27a',0,3,1],['#4a8fd0','#5a4a3a',0,'#3a2a1a',1,3,0],['#f2c230','#3a6a4a',1,'#a85a2a',0,0,1]];for(let i=0;i<3;i++){const px=tourWX+i*26;npcFig(px,T(px),cols[i],SV.tourL===level&&!MGX&&c.x<tourWX-100,tm)}}}catch(e){}}})(npcDraw);
+
+// ===== 2.06 : mini-jeu des tubes à essai (tri des couleurs), une fois par chapitre lors d'une analyse =====
+const TUBE_COL=['#e8453c','#3a7fd8','#f2c230','#4ec36a','#a64fd0','#f08a2a','#3fc4c8','#e86aa8'];
+function tubeSolvable(tb,cap){const key=t=>t.map(a=>a.join('')).sort().join('|');const seen=new Set();let n=0;
+const done=t=>t.every(a=>a.length===0||(a.length===cap&&a.every(v=>v===a[0])));
+const dfs=t=>{if(done(t))return true;if(++n>60000)return false;const k=key(t);if(seen.has(k))return false;seen.add(k);
+for(let i=0;i<t.length;i++){const A=t[i];if(!A.length)continue;const top=A[A.length-1];if(A.every(v=>v===top)&&A.length===cap)continue;
+for(let j=0;j<t.length;j++){if(i===j)continue;const B=t[j];if(B.length>=cap)continue;if(B.length&&B[B.length-1]!==top)continue;if(!B.length&&A.every(v=>v===top))continue;
+const c2=t.map(a=>a.slice());let m=0;while(c2[i].length&&c2[i][c2[i].length-1]===top&&c2[j].length<cap){c2[j].push(c2[i].pop());m++}if(dfs(c2))return true}}return false};return dfs(tb)}
+function tubeGen(nc,cap){for(let tries=0;tries<40;tries++){const balls=[];for(let c=0;c<nc;c++)for(let k=0;k<cap;k++)balls.push(c);for(let i=balls.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[balls[i],balls[j]]=[balls[j],balls[i]]}
+const tb=[];for(let c=0;c<nc;c++)tb.push(balls.slice(c*cap,(c+1)*cap));tb.push([]);tb.push([]);
+if(tb.slice(0,nc).some(a=>a.every(v=>v===a[0])))continue;if(tubeSolvable(tb.map(a=>a.slice()),cap))return tb}
+// secours : mélange léger garanti solvable
+const tb=[];for(let c=0;c<nc;c++)tb.push(Array(cap).fill(c));tb.push([]);tb.push([]);for(let m=0;m<nc*3;m++){const i=Math.floor(Math.random()*nc),j=(i+1+Math.floor(Math.random()*(nc+1)))%(nc+2);if(tb[i].length&&tb[j].length<cap)tb[j].push(tb[i].pop())}return tb}
+function tubeOpen(after){const ci=chIdx(),nc=Math.min(7,3+Math.floor(ci*.5)),cap=4;
+const M={k:'tube',tb:tubeGen(nc,cap),cap,sel:-1,moves:0,won:0,t:0,anim:null,hist:[],
+start(){M.start0=M.tb.map(a=>a.slice());M.ui()},
+ui(){mgxUI('<div style="position:absolute;left:3%;top:3%;right:3%;display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><span class="tr" style="font-weight:800">🧪 Analyse de terrain · range chaque réactif dans son tube<br><span style="font-weight:600">Touche un tube, puis un autre pour verser. Même couleur sur même couleur, ou dans un tube vide.</span></span><span style="display:flex;gap:6px;pointer-events:auto"><button class="mb" id="tbu">↩︎ Annuler</button><button class="mb" id="tbr">🔄 Recommencer</button><button class="mb no" id="tbs">Passer</button></span></div>'+(M.won?'<div style="position:absolute;left:0;right:0;bottom:6%;text-align:center"><button class="mb go" id="tbg" style="font-size:18px;padding:12px 22px">🎉 Analyse réussie ! Voir le résultat ▶</button></div>':''));
+mgxBtn('tbu',()=>{if(M.won||!M.hist.length)return;M.tb=M.hist.pop();M.sel=-1;snd('click')});mgxBtn('tbr',()=>{if(M.won)return;M.tb=M.start0.map(a=>a.slice());M.hist=[];M.sel=-1;M.moves=0;snd('click')});mgxBtn('tbs',()=>mgxClose(false));if(M.won)mgxBtn('tbg',()=>mgxClose(true))},
+geo(){const n=M.tb.length,perRow=n>6?Math.ceil(n/2):n,rows=Math.ceil(n/perRow),sh=rows===1?40:28,tw=rows===1?56:50,th=cap*sh+12,gap=Math.min(46,(760-perRow*tw)/(perRow+1));const P=[];for(let i=0;i<n;i++){const r=Math.floor(i/perRow),k=i%perRow,cnt=Math.min(perRow,n-r*perRow),x0=400-(cnt*tw+(cnt-1)*gap)/2;P.push({x:x0+k*(tw+gap),y:(rows===1?150:112+r*(th+30)),w:tw,h:th,sh})}return P},
+down(px,py){if(M.won||M.anim)return;const P=M.geo();const i=P.findIndex(q=>px>q.x-10&&px<q.x+q.w+10&&py>q.y-30&&py<q.y+q.h+10);if(i<0){M.sel=-1;return}
+if(M.sel<0){if(M.tb[i].length){M.sel=i;snd('click')}return}if(M.sel===i){M.sel=-1;return}
+const A=M.tb[M.sel],B=M.tb[i],top=A[A.length-1];if(B.length>=cap||(B.length&&B[B.length-1]!==top)){M.sel=B.length?i:-1;snd('click');return}
+M.hist.push(M.tb.map(a=>a.slice()));let m=0;while(A.length&&A[A.length-1]===top&&B.length<cap){B.push(A.pop());m++}M.moves++;M.anim={from:M.sel,to:i,t:0,col:top};M.sel=-1;snd('ding');
+if(M.tb.every(a=>a.length===0||(a.length===cap&&a.every(v=>v===a[0])))){M.won=1;setTimeout(()=>{snd('chime');vib(40)},300);M.ui()}},
+tick(dt){M.t+=dt;if(M.anim){M.anim.t+=dt;if(M.anim.t>.35)M.anim=null}},
+draw(x,tm){const bg=x.createLinearGradient(0,0,0,450);bg.addColorStop(0,'#2b3a44');bg.addColorStop(1,'#1c2328');x.fillStyle=bg;x.fillRect(-400,-200,1600,900);
+// paillasse
+x.fillStyle='#d9d2c2';x.fillRect(-400,400,1600,300);x.fillStyle='#b8ae98';x.fillRect(-400,396,1600,6);
+const P=M.geo();P.forEach((q,i)=>{const lift=i===M.sel?-16:0,A=M.tb[i];x.save();x.translate(0,lift);
+x.fillStyle='rgba(255,255,255,.08)';rr(x,q.x,q.y,q.w,q.h,14);x.fill();
+x.save();rr(x,q.x+4,q.y+4,q.w-8,q.h-8,11);x.clip();for(let k=0;k<A.length;k++){const yy=q.y+q.h-4-(k+1)*q.sh;x.fillStyle=TUBE_COL[A[k]];x.fillRect(q.x+4,yy,q.w-8,q.sh+1);x.fillStyle='rgba(255,255,255,.18)';x.fillRect(q.x+8,yy+3,6,q.sh-6)}x.restore();
+x.strokeStyle=i===M.sel?'#ffd24a':'rgba(230,240,245,.85)';x.lineWidth=3;rr(x,q.x,q.y,q.w,q.h,14);x.stroke();x.fillStyle='rgba(230,240,245,.85)';x.fillRect(q.x-5,q.y-4,q.w+10,5);
+if(A.length===cap&&A.every(v=>v===A[0])){x.fillStyle='#5fe08a';x.font='800 18px Arial';x.textAlign='center';x.fillText('✓',q.x+q.w/2,q.y-12)}x.restore()});
+if(M.anim){const a=P[M.anim.from],b=P[M.anim.to],u=Math.min(1,M.anim.t/.35);x.strokeStyle=TUBE_COL[M.anim.col];x.lineWidth=6*(1-u)+2;x.beginPath();x.moveTo(a.x+a.w/2,a.y-10);x.quadraticCurveTo((a.x+b.x)/2+a.w/2,Math.min(a.y,b.y)-70,b.x+b.w/2,b.y-6);x.stroke()}
+x.fillStyle='#5a5040';x.font='700 14px Arial';x.textAlign='left';x.fillText('Gestes : '+M.moves,20,438);
+}};
+M.after=win=>{if(win){SV.hearts+=2;note('🧪 Analyse réussie ! +2 ❤',2.6)}else say('Je laisse le labo finir l’analyse, on verra le résultat.',3,1);try{after&&after(win)}catch(e){}};
+mgxOpen(M)}
+// le premier résultat de prélèvement du chapitre passe par l'analyse de terrain de Mila
+smpDone=(function(o){return function(sp,inst){try{if(!inst&&SV.tubeL!==level&&!(SV.smp&&SV.smp[sp])&&chP()<.97){if(MGX||cs||paused||cardOpen||hl||pz||stopReq||sayT>0||night||crashed||work||onFerry()){if(SV.smpP&&SV.smpP[sp])SV.smpP[sp].t=4;return}
+SV.tubeL=level;sayT=0;say('Les échantillons sont prêts. Arrête-toi deux minutes, je fais une analyse de terrain !',3.4,1);stopReq={x:c.x+Math.max(160,Math.abs(v.x)*.8),cb:()=>setTimeout(()=>tubeOpen(()=>o(sp,inst)),300)};if(SV.smpP&&SV.smpP[sp])SV.smpP[sp].t=99999;return}}catch(e){}return o(sp,inst)}})(smpDone);
+mgTick=(function(o){return function(dt){o(dt);try{if(!MGX&&!stopReq&&SV.smpP)for(const k of Object.keys(SV.smpP))if(SV.smpP[k].t>9999)SV.smpP[k].t=3}catch(e){}}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.05',GAME_DATE='22/10/2026';
+const GAME_VER='2.06',GAME_DATE='22/10/2026';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
