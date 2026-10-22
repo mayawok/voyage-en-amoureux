@@ -5511,7 +5511,7 @@ g.restore();g.lineCap='butt'}
 function rockD(x,y,w,h,c1){g.fillStyle=c1||'#8d8a85';g.beginPath();g.moveTo(x-w/2,y);g.lineTo(x-w*.4,y-h*.7);g.lineTo(x-w*.1,y-h);g.lineTo(x+w*.3,y-h*.85);g.lineTo(x+w/2,y-h*.3);g.lineTo(x+w/2,y);g.closePath();g.fill();g.fillStyle='rgba(255,255,255,.18)';g.beginPath();g.moveTo(x-w*.35,y-h*.65);g.lineTo(x-w*.1,y-h*.95);g.lineTo(x+w*.05,y-h*.6);g.fill();g.fillStyle='rgba(0,0,0,.15)';g.fillRect(x-w/2,y-3,w,3)}
 // --- cinématique 1 : la scène sur le plateau, l'accident, Mila monte à cheval
 CS.nox1={mus:'tense',L:()=>[[1.5,'n','Plateau du Coscione. Derrière la crête, une camionnette blanche est garée au bord d’une pozzine.'],[6,'m','Andrea… le logo vert sur la portière. C’est Noxacorp !'],[9.5,'n','Deux hommes en combinaison maintiennent un jeune mouflon. L’un d’eux prépare une seringue.'],[14,'a','Ils ne vont pas toucher à cette bête. Accroche-toi !'],[17.5,'n','Les hommes lâchent le mouflon et sautent dans la camionnette, qui démarre en trombe.'],[20.5,'m','Attention, le mouflon !'],[22,'n','Crissement de pneus… BAM ! Le Cherokee percute un rocher.'],[25.5,'a','Ça fume… le radiateur est percé. Ils vont s’échapper !'],[29,'m','Pas question !'],[31.5,'n','Un cheval du plateau broute près de la piste. Mila saute sur son dos.'],[35.5,'m','Allez, mon beau… rattrape-les !']],end:39,
-onEnd:()=>{setTimeout(()=>horseOpen(),350)},
+onEnd:()=>{try{horseOpen()}catch(e){}},
 draw:(Wd,gy,T2,tm)=>{coscBG(Wd,gy,tm,0);const shake=T2>22&&T2<23.2?Math.sin(T2*90)*4*(23.2-T2):0;g.save();g.translate(shake,0);
 // rocher de l'accident
 const rx=Wd*.5;{const hx0=Wd*.3,rid=T2>=31.5,gall=T2>=34;let ex=hx0,ph=Math.sin(T2)*.15;if(gall){ex=hx0+Math.pow(T2-34,2)*70;ph=T2*12}g.save();g.translate(ex,gy-6);eqDraw(0,0,1.45,ph,'#7a4220',rid);g.restore()}rockD(rx,gy+4,70,46,'#7d7a75');
@@ -5572,7 +5572,7 @@ const ph=H.hy>0?1.2:tm*(H.spd/26);if(H.flash>0&&Math.floor(tm*20)%2)g.globalAlph
 const pr=1-Math.min(1,H.D/100);g.fillStyle='rgba(0,0,0,.35)';rr(g,250,84,300,12,6);g.fill();g.fillStyle='#e0a54a';rr(g,250,84,300*pr,12,6);g.fill();g.fillStyle='#223';g.font='800 13px Arial';g.textAlign='left';g.fillText('Distance : '+Math.round(H.D*3)+' m',250,114);g.textAlign='right';g.fillText('Faux pas : '+H.hits+' / 5',550,114);
 if(H.t<3.5&&!H.res){g.fillStyle='rgba(20,16,12,.7)';rr(g,280,180,240,36,12);g.fill();g.fillStyle='#fff';g.font='800 16px Arial';g.textAlign='center';g.fillText('Touche pour sauter !',400,203)}});
 }};
-H.after=win=>{SV.noxWin=win?1:0;setTimeout(()=>fadeTo(()=>openCine(win?'nox2':'nox3')),200)};
+H.after=win=>{SV.noxWin=win?1:0;blackNow();try{openCine(win?'nox2':'nox3')}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},400)};
 mgxOpen(H)}
 // --- cinématique 2 : bloqués par les agriculteurs, arrestation
 function gendCar(x,y,tm){g.save();g.translate(x,y);g.fillStyle='rgba(0,0,0,.2)';g.beginPath();g.ellipse(0,2,50,4,0,0,7);g.fill();g.fillStyle='#24407a';g.beginPath();g.moveTo(-50,-8);g.lineTo(-48,-24);g.lineTo(-26,-26);g.lineTo(-14,-40);g.lineTo(22,-40);g.lineTo(34,-26);g.lineTo(50,-22);g.lineTo(52,-8);g.closePath();g.fill();g.fillStyle='#fff';g.fillRect(-48,-20,100,4);g.font='800 7px Arial';g.fillStyle='#24407a';g.textAlign='center';g.fillText('GENDARMERIE',2,-16.5);g.fillStyle='#1c242b';g.fillRect(-10,-37,14,10);g.fillRect(8,-37,14,10);const bl=Math.floor(tm*6)%2;g.fillStyle=bl?'#3a8aff':'#1a3a7a';g.fillRect(-2,-46,6,6);g.fillStyle=bl?'#1a3a7a':'#3a8aff';g.fillRect(6,-46,6,6);if(bl){g.fillStyle='rgba(80,150,255,.25)';g.beginPath();g.arc(2,-44,26,0,7);g.fill()}for(const wx of[-30,32]){g.fillStyle='#151311';g.beginPath();g.arc(wx,-6,9,0,7);g.fill();g.fillStyle='#a8adb2';g.beginPath();g.arc(wx,-6,4,0,7);g.fill()}g.restore()}
@@ -5597,7 +5597,7 @@ onEnd:()=>{SV.noxL=level;saveTrip()},
 draw:(Wd,gy,T2,tm)=>{coscBG(Wd,gy,tm,0);g.fillStyle='#c8b58a';g.fillRect(0,gy-2,Wd,10);const vx=Wd*.75+T2*90;if(vx<Wd+200)noxVan(vx,gy+2,.9,tm,1,0);g.fillStyle='rgba(200,180,140,.4)';for(let i=0;i<6;i++){g.beginPath();g.arc(Math.min(Wd,vx)-80-i*30,gy-10-i*5,10+i*5,0,7);g.fill()}
 g.save();g.translate(Wd*.4,gy+2);eqDraw(0,0,1.7,Math.sin(T2)*.2,'#7a4220',1);g.restore();if(T2>12){const ax=Math.min(Wd*.28,-60+(T2-12)*120);grp(ax,gy,1.3,()=>{person(ax,gy,0,{f:1,a1:.3})})}}};
 try{Object.assign(ALBK,{cs_nox1:['🐴','Le Coscione','#9cbc6a','#7a4220'],cs_nox2:['🚜','Pris sur le fait','#9cbc6a','#2f7a2a']})}catch(e){}
-musScene=(function(o){return function(){try{if(cs&&cs.k==='nox1')return cs.t<14?'mystery':'tense';if(MGX&&MGX.k==='horse')return 'tense'}catch(e){}return o()}})(musScene);
+musScene=(function(o){return function(){try{if(cs&&cs.k==='nox1')return cs.t<14?'mystery':cs.t<31?'tense':'epic';if(MGX&&MGX.k==='horse')return 'epic';if(cs&&cs.k==='nox2')return cs.t<20?'epic':'win';if(cs&&cs.k==='nox3')return 'tense'}catch(e){}return o()}})(musScene);
 // --- déclenchement : un berger fait signe au bord de la route (chapitre de l'Ospedale, avant la forêt)
 var noxWX=null;
 function noxWorld(){try{if(chIdx()!==8||SV.noxL===level||SV.noxAsk===level)return;if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd||tow)return;const f=chP();if(f<.14||f>.4)return;if(typeof dogGone==='function'&&dogGone())return;
@@ -5611,8 +5611,12 @@ for(let i=0;i<14&&l.scrollHeight>l.clientHeight+1;i++){z-=.04;kids.forEach(e=>e.
 (function(){const l=document.querySelector('#pzv .pzl');if(!l)return;let q=0;const go=()=>{if(q)return;q=1;requestAnimationFrame(()=>{q=0;pzFit()});setTimeout(()=>{q=0;pzFit()},30)};
 new MutationObserver(go).observe(l,{childList:true,subtree:true,characterData:true});addEventListener('resize',go);addEventListener('orientationchange',()=>setTimeout(pzFit,300))})();
 pzOpen=(function(o){return function(k){const r=o.apply(this,arguments);setTimeout(pzFit,0);setTimeout(pzFit,200);return r}})(pzOpen);
+
+// ===== 2.35 : musique épique de la poursuite à cheval =====
+CH.epic={bpm:140,chords:[[50,[0,3,7]],[46,[0,4,7]],[48,[0,4,7]],[45,[0,4,7]]],
+mel:[74,0,74,77,81,0,79,77,77,0,74,0,77,0,81,0,79,0,79,76,72,0,76,79,81,0,0,0,76,0,73,0],arp:1,pad:1,bass8:1,perc:1,pulse:1,trem:1,lead:'square',ml:1.5,vol:.17};
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.34',GAME_DATE='22/10/2026 à 21h39';
+const GAME_VER='2.35',GAME_DATE='22/10/2026 à 21h41';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
