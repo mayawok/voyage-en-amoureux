@@ -830,7 +830,7 @@ if(ign&&!PLT()){fuel-=(.0012+(gasOn?.0058+(low?.0012:0)+(awd?.0008:0)+(boostT>0?
 if(refuel){const m=stnNear();if(m&&spd<25&&!ign&&!night){fuel+=dt*.2;if(fuel>=1){fuel=1;refuel=false;sayK('tankDone')}}else refuel=false}
 if(gasOn)temp+=RM()*((neu?3:6+(low?3:0)+(awd?1:0))+(boostT>0&&!neu?10:0))*dt;
 temp-=(4+(gasOn?0:9)+spd*.012)*dt;temp=Math.max(20,Math.min(100,temp));
-temp=Math.min(temp,80);if(temp>=100&&!stalled){stalled=true;try{SV.hotD=level}catch(e){}pumpP=0;snd('hiss');vib([80,40,80]);sayK('hot',4)}
+temp=Math.min(temp,80);if(false&&temp>=100&&!stalled){stalled=true;try{SV.hotD=level}catch(e){}pumpP=0;snd('hiss');vib([80,40,80]);sayK('hot',4)}
 let fx=0,fy=700,tq=-w*350,contact=false,inRock=false;
 for(let i=0;i<2;i++){
 tyL[i]=0;const lx=WL[i][0],ly=WL[i][1],rx=lx*ca-ly*sa,ry=lx*sa+ly*ca,px=c.x+rx,py=c.y+ry;
@@ -856,11 +856,11 @@ tq+=rx*Fny-ry*Fnx+rx*Fty-(ry+6)*Ftx;
 rot[i]+=vt/R*dt+spin*dt;if(spin>3&&Math.random()<dt*25&&drops.length<60)drops.push({x:px-8,y:T(px)-2,vx:-60-Math.random()*90,vy:-60-Math.random()*80,t:0,mud:1});
 }
 if(winch&&winch.hard){let dx=winch.ax-c.x,dy=T(winch.ax)-30-c.y;const ln=Math.hypot(dx,dy)||1;dx/=ln;dy/=ln;const vt=v.x*dx+v.y*dy,F=Math.min(1500,Math.max(0,(150-vt)*10));fx+=F*dx;fy+=F*dy;const ta=Math.atan2(T(c.x+45)-T(c.x-45),90);w*=Math.max(0,1-dt*6);a+=(ta-a)*Math.min(1,dt*3);winch.t+=dt;if(c.x>=winch.ax-60||winch.t>10){if(c.x>=winch.ax-60){setTimeout(()=>{say(WINCH_OK[Math.floor(Math.random()*WINCH_OK.length)],3.4,1);hapt(30)},300)}winch=null;wReadyAt=playT+WCD()}}else if(winch){const sl=(T(c.x+1)-T(c.x-1))/2,ln=Math.sqrt(1+sl*sl),vt=(v.x+v.y*sl)/ln,F=Math.min(1400*(1+.15*SV.up.winch+(BF.cable>0?.3:0)),Math.max(0,((winch.hard?150:230)-vt)*9*(1+.15*SV.up.winch+(BF.cable>0?.3:0))));fx+=F/ln;fy+=F*sl/ln;winch.t+=dt;if(c.x>=winch.ax-60||winch.t>(winch.hard?10:5)){winch=null;wReadyAt=playT+WCD()}}
-try{deepPhys(dt)}catch(e){}if(inRock){const ex=(spd-200)/180;if(ex>0)dmg+=ex*.425*PF()*dt;if(spd>110&&Math.random()<dt*.085*PF())dmg=1;if(dmg>=1)breakOne()}else dmg=Math.max(0,dmg-.15*dt);
+try{deepPhys(dt)}catch(e){}if(inRock){const ex=(spd-200)/180;if(ex>0)dmg=0}else dmg=Math.max(0,dmg-.15*dt);
 {const ta3=Math.atan2(T(c.x+40)-T(c.x-40),80),d3=a-ta3;if(Math.abs(d3)>.45&&c.y>T(c.x)-110){const k3=Math.min(1,(Math.abs(d3)-.45)/.5);tq-=Math.sign(d3)*k3*26000;w*=1-Math.min(.5,dt*4*k3)}}
 if(!contact){if(gasOn)tq-=12000;if(st.brake)tq+=12000;rot[0]+=(gasOn?9:2)*dt;rot[1]+=(gasOn?9:2)*dt}
 for(const o of obs){if(o.done||o.run)continue;const wd=OW[o.type][0],h=OW[o.type][1];
-if(h-4>CLR()&&c.x+58>o.x&&c.x<o.x+wd/2&&c.y+WL[0][1]+R>T(o.x+wd/2)-h+4){c.x=o.x-58;if(v.x>0){const im=v.x;if(o.type!=='sheep'&&o.type!=='van'&&im>150){dmg+=.45;snd('thud');vib(40);if(dmg>=1){if(o.type==='rock')breakOne();else dmg=0}}v.x=-im*.15}}}
+if(h-4>CLR()&&c.x+58>o.x&&c.x<o.x+wd/2&&c.y+WL[0][1]+R>T(o.x+wd/2)-h+4){c.x=o.x-58;if(v.x>0){const im=v.x;if(o.type!=='sheep'&&o.type!=='van'&&im>150){snd('thud');vib(40)}v.x=-im*.15}}}
 const rf=-26+.6*(WL[0][1]+R-39);for(const p of[[-32,rf],[30,rf]]){const qx=c.x+p[0]*ca-p[1]*sa,qy=c.y+p[0]*sa+p[1]*ca;
 if(qy>T(qx)-3&&started){crashed=true;over();return}}
 v.x+=fx*dt;v.y+=fy*dt;w+=tq/I*dt;w=Math.max(-6,Math.min(6,w));
@@ -2511,7 +2511,7 @@ dv.fuel+=(fuel-dv.fuel)*Math.min(1,dt*4);lit+=((ign?1:0)-lit)*Math.min(1,dt*3);
 const ext=Math.round(32-al*.05-(night&&night.t>night.t0?10*Math.sin(Math.PI*cl((night.t-night.t0)/NIGHT)):0));
 gearTxt='Rapport '+gn+' · '+['2H','4H','N','4L'][st.gear]+' · Ext. '+ext+' °C';extT=ext;
 const cm=curCamp&&!night?Math.max(0,Math.round((curCamp.x-c.x)/30)):-1,pc=Math.round(Math.min(100,dmg*100));
-lcd=['RAPPORT '+gn+'    '+['2H','4H','N','4L'][st.gear],Z(c.x)[2].toUpperCase().slice(0,22),('N'+level+' '+bname(al)+' '+Math.max(0,Math.round(al/10))+'M').toUpperCase().slice(0,22),(cm>=0?'CAMP '+cm+'M  ':'')+'CHOCS '+pc+'%'];
+lcd=['RAPPORT '+gn+'    '+['2H','4H','N','4L'][st.gear],Z(c.x)[2].toUpperCase().slice(0,22),('N'+level+' '+bname(al)+' '+Math.max(0,Math.round(al/10))+'M').toUpperCase().slice(0,22),(cm>=0?'CAMP '+cm+'M':'')];
 dv.hb+=((st.hb?1:0)-dv.hb)*Math.min(1,dt*9);dv.key+=(((startT>.85)?1.45:(ign?1:0))-dv.key)*Math.min(1,dt*12);dv.lev+=(GA[st.gear]-dv.lev)*Math.min(1,dt*14);
 {const hr2=hourNow(),hh=Math.floor(hr2),mn=Math.floor((hr2-hh)*60),tx=String(hh%24).padStart(2,'0')+':'+String(mn).padStart(2,'0');
 if(fr%10===0){const sl=T(c.x+30)-T(c.x-30);hdg=sl<-8?'NE':sl>8?'SE':'E'}
@@ -5098,9 +5098,9 @@ const vg=x.createRadialGradient(Wd/2,210,120,Wd/2,210,Wd*.75);vg.addColorStop(0,
 loop=(function(o){return function(t){o(t);try{const m=gid('menu');if(m&&m.style.display!=='none'&&m.style.display!=='')ttlDraw(t)}catch(e){}}})(loop);
 
 // ===== 2.21 : trois niveaux de difficulté =====
-const DIFF=[{n:'Balade',e:'🌼',s:'Pour profiter de l’histoire',d:'Cœurs ×1,5 · faim et essence durent plus longtemps · le Cherokee s’abîme moins · mini-jeux plus doux',h:1.5,f:.6,fu:.65,dm:.6,tb:-1},
+const DIFF=[{n:'Balade',e:'🌼',s:'Pour profiter de l’histoire',d:'Cœurs ×1,5 · faim et essence durent plus longtemps · mini-jeux plus doux',h:1.5,f:.6,fu:.65,dm:.6,tb:-1},
 {n:'Aventure',e:'🧭',s:'L’équilibre conseillé',d:'Le jeu tel qu’il a été pensé',h:1,f:1,fu:1,dm:1,tb:0},
-{n:'Expédition',e:'🏔️',s:'Pour les vrais baroudeurs',d:'Cœurs ×0,7 · on a faim et soif d’essence plus vite · le Cherokee s’abîme plus · mini-jeux plus durs',h:.7,f:1.4,fu:1.35,dm:1.4,tb:1}];
+{n:'Expédition',e:'🏔️',s:'Pour les vrais baroudeurs',d:'Cœurs ×0,7 · on a faim et soif d’essence plus vite · mini-jeux plus durs',h:.7,f:1.4,fu:1.35,dm:1.4,tb:1}];
 function DF(){return DIFF[SV&&SV.diff!=null?SV.diff:1]||DIFF[1]}
 function diffLabel(){const q=DF();gid('mdiff').textContent='🎚 Difficulté : '+q.e+' '+q.n}
 menuRender=(function(o){return function(){o();try{diffLabel()}catch(e){}}})(menuRender);
@@ -5358,8 +5358,13 @@ for(const s of segs){if(s[0]){const im=icImg(icName(s[1]),col);if(im.complete&&i
 function cdNextReady(){try{return cardQ.length&&(cardQ[0].now||!onFerry())}catch(e){return false}}
 openCard=(function(o){return function(cd){o(cd);try{const b=gid('cdGo');const nx=cdNextReady();b.textContent=nx?'Suivant ('+cardQ.length+') ⏭':'Continuer ▶';b.classList.toggle('nx',!!nx)}catch(e){}}})(openCard);
 (function(){const b=gid('cdGo');b.addEventListener('pointerdown',e=>{if(!b.classList.contains('nx')||!cdNextReady())return;e.preventDefault();e.stopImmediatePropagation();const f=curCd&&curCd.cb;curCd=null;if(f)try{f()}catch(er){}snd('click');const box=gid('card').querySelector('.cd');box.style.transition='none';box.style.opacity='.0';openCard(cardQ.shift());requestAnimationFrame(()=>{box.style.transition='opacity .2s';box.style.opacity='1'})},true)})();
+
+// ===== 2.27 : plus de dégâts ni de surchauffe ; panne : Mila choisit entre la réparation d'Andrea et la dépanneuse =====
+(function(){const st=document.createElement('style');st.textContent='#bars{display:none!important}';document.head.appendChild(st)})();
+mgTick=(function(o){return function(dt){o(dt);dmg=0;if(temp>60)temp=60}})(mgTick);
+ppOpen=(function(o){return function(){const ok=purse()>=15;choice('panneQ','Le moteur a calé','<b>Andrea</b> : « Je peux essayer de réparer moi-même, si tu m’aides à trouver la pièce… ou on appelle la dépanneuse. À toi de choisir, Mila. »',[['🔧 Andrea répare lui-même','Il faut retrouver la bonne pièce dans le coffre.'],['🚚 Appeler la dépanneuse · 15 ❤',ok?'Le dépanneur s’occupe de tout.':'Pas assez de cœurs pour l’instant…']],i=>{if(i===1&&ok){say('Allô ? On est en panne… Oui, on vous attend.',3.2,1);setTimeout(()=>{try{callTow()}catch(e){}},600)}else{if(i===1)say('On n’a pas assez de cœurs… Tant pis, je t’aide à chercher la pièce !',3.4,1);setTimeout(o,i===1?1200:200)}})}})(ppOpen);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.26',GAME_DATE='22/10/2026 à 17h50';
+const GAME_VER='2.27',GAME_DATE='22/10/2026 à 18h00';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
