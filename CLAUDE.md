@@ -28,11 +28,13 @@
 (Rien en attente.)
 
 ## Règles permanentes de l'utilisateur
+- **Aucune émoticône visible** : toutes sont remplacées automatiquement par des icônes maison (`HI` dessins SVG, `EM2I` correspondance émoticône → icône, `FLAG` pour les drapeaux). En HTML par un `MutationObserver` (l'émoticône d'origine reste dans un `<title>`, donc `textContent` est inchangé) ; sur le canevas par la surcharge de `fillText`/`measureText`. Toute nouvelle émoticône utilisée doit avoir sa correspondance dans `EM2I` (sinon elle devient un point jaune).
 - **Les mini-jeux suivent la météo générale** (pluie, orage, neige, brouillard) : tout nouveau mini-jeu en extérieur doit appeler `wxOver(ctx,w,h,tm)` sur son canevas.
 - Ne jamais limiter le nombre d'images par seconde.
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.25** : pneus basse pression réalistes (diamètre constant, bas aplati et flancs bombés, la roue descend un peu) ; toutes les émoticônes (271) remplacées par ~110 icônes maison ; deux pop-ups d'affilée : bouton bleu « Suivant (n) » qui enchaîne sans refermer.
 **2.24** : une station sur deux est une **Vito** (bleu nuit et jaune, `stnVito`, `stnName`), les textes « Total » sont devenus génériques (« station-service ») ; espacement automatique : Marcel et les magasins sont repoussés s'ils tombent à moins de 520 d'une station, d'un garage, d'un magasin ou d'un camp.
 **2.23** : le chien n'apparaissait pas dans `CS.dogf` (`dogDraw` le masque tant que `dogGone()`, contourné par `window.__dogF`) ; étiquettes du décor (station, garage, magasins…) et panneaux masqués pendant les cinématiques (`body.cine`) ; analyse de terrain : Mila demande, le Cherokee s'arrête, Andrea répond, puis le mini-jeu s'ouvre. Attention : `GAME_DATE` doit être l'heure réelle de publication (les versions 2.16 à 2.22 portaient une heure en avance).
 **2.22** : allure pro terminée — palette commune des panneaux (variables CSS `--pn`, `--cream`, `--acc`), icônes dessinées en SVG à la place des emojis sur les boutons du haut, le menu, l'objectif et les notes (`ICP`, `ico()`, `EMO`, `deEmo()`, `iconBtns()`) ; vérification des 10 chapitres (aucune erreur, aucun panneau qui se chevauche). Plus de flou de pare-brise hors conduite (`blurTick`) ; météo dans les mini-jeux (`wxOver` pour `mgx`, `hl`, `pz`, sauf les tubes) ; son haché à l'ouverture d'un mini-jeu corrigé (l'ordonnanceur de musique ne rattrape plus les notes en retard).
