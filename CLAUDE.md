@@ -34,17 +34,9 @@
    - le chien retrouvé (arrêt après avoir vu son collier au sol) ;
    - le faux dépanneur qui repart, et l'on découvre qu'il a volé des choses ;
    - garder les cinématiques de fin de chapitre qui rappellent la journée.
-6. **Réglages et gameplay** :
-   - supprimer le délai de 15 s entre deux pop-ups et trouver une autre solution (file d'attente intelligente) ;
-   - aucun magasin ni interaction pendant la traversée en bac ;
-   - au contact coupé, le levier repasse en 2H ;
-   - tableau de bord plus transparent ;
-   - dépanneuse : si le Cherokee est réhaussé, le dépanneur dit qu'il est trop haut et donc moins stable ;
-   - mini-jeu courroie : dire qu'elle « a sauté » ;
-   - atelier : régler l'orientation des phares et la dureté des amortisseurs ;
-   - environ 30 % de surnoms et de mots d'amour en moins dans les dialogues (fait pour `addPet` en 2.02 : 56 % au lieu de 80 % ; reste à alléger les textes écrits en dur).
 
 ## Déjà fait récemment
+**2.03** : pop-ups en file d'attente intelligente (`popOK()` : 3 s de pause, on attend un moment calme, au plus 20 s) ; rien pendant le bac (`onFerry()`) ; contact coupé → 2H ; tableau de bord plus transparent ; remarque du dépanneur si le Cherokee est réhaussé (`towHigh`) ; courroie « a sauté » ; atelier : orientation des phares (`SV.cus.aim`) et dureté des amortisseurs (`SV.cus.damp`) ; environ 35 % des surnoms écrits retirés (`lessPet()`, sauf au chapitre final).
 **2.02** : batterie — boucle limitée à 60 i/s, 30 i/s au calme (menus, cartes, choix, Cherokee à l'arrêt), toujours 60 i/s en cinématique (`calmNow()`, `cineOn()`) ; une seule piste au lieu de terre/bitume (la boue d'un seul côté n'existe plus) tracée en un seul chemin ; étoiles pré-dessinées (`starLayer()`) ; dégradé du ciel en cache (`gradC()`) ; tableau de bord redessiné seulement si une valeur change (sinon 15 i/s). Le mode « Économie » a été refusé. Humour — `JOKE` (selon la situation : boue, pluie, moutons, nuit) et deux gags qui reviennent `GAG.par` (parasites de Mila) et `GAG.jal` (Mila jalouse du Cherokee), un échange toutes les ~4 min en roulant, jamais pendant les moments tristes (`jokeSad()`), sans surnom ajouté (`JOKE_SET`) ; répliques après l'hélico, après le chien retrouvé, et dans la cinématique du sous-marin.
 **2.01** : 10 bugs corrigés — faon (arrêt chez la vétérinaire + cinématique `CS.veto`, plus de pastille 🦌 en double), tombe « FAON » et colline sous le village d'Arrivadu, camion blanc derrière le Cherokee (et synchronisé avec la narration), jante choisie reprise au changement de roue (`rimOnly()`), capot ouvert le soir seulement s'il y a une raison (`nightRep()`, `SV.hotD`), roue de secours sur le capot qui suit le capot (`hoodOpen()`), roue arrière vue de profil sous housse (`spareBack()`), bulle « Dormir ici » masquée pendant qu'on parle, pas de nuit dans un tunnel (`noSleep`), narration des fins de chapitre en bas de l'écran.
 Vitesse en chiffres, treuil à côté, boost en double tapotement sur l'accélérateur ; essuie-glaces seulement sous la pluie ; fondus du décor minutés avec hystérésis ; pneus basse pression aplatis seulement en bas ; animal au sol dans les prélèvements ; bouchon vraiment bloquant ; pas de surnoms pendant les appels ; pas d'échantillon pour les animaux sans intérêt ; suspensions 35 % plus fermes ; son retravaillé ; atelier Corse 4x4 ; rejouabilité et surprises ; grottes, ours, sous-marin, bac réel.
