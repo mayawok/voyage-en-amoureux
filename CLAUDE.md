@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.39** : l'iPhone affichait un « V » blanc sur fond bordeaux (icône introuvable) : l'icône est maintenant intégrée directement dans `index.html` (lien `apple-touch-icon` en `data:image/png;base64`, copie de `icon.png`). Pour changer d'icône, régénérer ce lien. Site en ligne : https://voyagedesamoureux.netlify.app/
 **2.38** : l'ancienne fonction `makeIcon()` (icône basique « Voyage en amoureux » générée au chargement et ajoutée en dernier, donc prioritaire sur iPhone) est désactivée : seule `icon.png` sert d'icône.
 **2.37** : nouvelle icône d'écran d'accueil détaillée, sans texte (`icon.png` 180×180, dessinée en 1024 puis réduite) : coucher de soleil étoilé, tour génoise en pierres sur la falaise, mer scintillante, Cherokee bordeaux réhaussé avec barre de LED allumée sur la galerie, roue de secours « sac à dos » à l'arrière, jantes bronze, treuil, silhouettes du chien, de Mila et d'Andrea, cœurs. Liens `icon.png?v=237` pour forcer le rechargement. Sur iPhone, il faut supprimer puis remettre le raccourci pour voir une nouvelle icône.
 **2.36** : cheveux des femmes redessinés — les cheveux longs entouraient le visage et passaient sous le menton (effet barbe). Mila (`head(k=1)`, de profil) : cheveux qui tombent dans le dos, mèche sur le front, joue rosée, bouche. PNJ femmes (`npcFig` avec `fm`) : mèches sur les côtés jusqu'aux épaules, cou dégagé, frange, joues, bouche. Ne jamais dessiner de cheveux sous le menton.
