@@ -4181,7 +4181,7 @@ rsAll();
 #pzv .pzw{gap:16px}
 #pzv .pzl{flex:0 1 390px!important;height:100%;max-height:100%;overflow:hidden!important;gap:6px;justify-content:center}
 #pzv .pzl>*{flex:0 0 auto}
-#pzv #pzq{flex:0 1 auto;min-height:50px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#pzv #pzq{flex:0 0 auto;overflow:visible}
 #pzv .pzk{font-size:12px!important;text-align:center}
 #pzv .pzt{font-size:23px!important;text-align:center}
 #pzv .pzq{font-size:15px!important;line-height:1.35!important}
@@ -5068,7 +5068,9 @@ CS.sarD1={mus:'boat',L:()=>[[1.5,'n','Port de Santa Teresa. L’heure de rentrer
 CS.sarA1={mus:'boat',L:()=>[[1.5,'n','Bonifacio, perché sur sa falaise. Le bateau accoste.'],[6,'a','La Corse… On est à la maison.'],[10.5,'m','Le chien reconnaît l’odeur du maquis, regarde-le !'],[15.5,'n','Le Cherokee redescend sur le quai. Direction la forêt de l’Ospedale.']],end:20,draw:(Wd,gy,T2,tm)=>portScene(Wd,gy,T2,tm,false,'SANTA TERESA ⇄ BONIFACIO','#e9dcc0')};
 try{musScene=(function(o){return function(){try{if(cs&&/^sar[DA]/.test(cs.k))return 'boat'}catch(e){}return o()}})(musScene)}catch(e){}
 var btAfter=null;
-function sarCross(back){const k=back?'1':'0';CS['sarD'+k].onEnd=()=>setTimeout(()=>{btAfter=()=>setTimeout(()=>fadeTo(()=>openCine('sarA'+k)),300);openBoat(back)},300);fadeTo(()=>openCine('sarD'+k))}
+function blackNow(){const fd=gid('fade');fd.style.transition='none';fd.style.opacity='1';void fd.offsetHeight;fd.style.transition=''}
+function sarCross(back){const k=back?'1':'0';CS['sarD'+k].onEnd=()=>{btAfter=()=>{blackNow();try{openCine('sarA'+k)}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},350)};openBoat(back)};fadeTo(()=>openCine('sarD'+k))}
+btB.addEventListener('pointerdown',()=>{if(btAfter&&!bt){const f=btAfter;btAfter=null;f()}});
 mgTick=(function(o){return function(dt){o(dt);if(btAfter&&!bt&&!cs&&!paused){const f=btAfter;btAfter=null;f()}}})(mgTick);
 
 // ===== 2.19 : appels de Mila avec son papa, ses parents (Rafalou et Petit Tonnerre) et sa mamie (tonton moustachu) =====
@@ -5602,8 +5604,15 @@ function noxWorld(){try{if(chIdx()!==8||SV.noxL===level||SV.noxAsk===level)retur
 SV.noxAsk=level;noxWX=c.x+560;say('Andrea, ralentis ! Ce berger nous fait de grands signes…',3.4,1);stopReq={x:c.x+420,cb:()=>setTimeout(()=>{cardQ.unshift({now:1,t:'Un berger nous arrête',L:[['v','<b>Le berger :</b> « Regardez ! Regardez, là-haut, sur le plateau ! Ils attrapent les bêtes ! »'],['m','Sur le plateau du Coscione ? On y va !']],cb:()=>setTimeout(()=>fadeTo(()=>openCine('nox1')),300)})},300)}}catch(e){}}
 mgTick=(function(o){return function(dt){o(dt);noxWorld()}})(mgTick);
 npcDraw=(function(o){return function(tm){o(tm);try{if(noxWX!=null&&SV.noxAsk===level&&SV.noxL!==level&&Math.abs(noxWX-c.x)<1500){npcFig(noxWX,T(noxWX),['#7a6a4a','#3a3a3a',3,'#c8c8c8',1,2,0],1,tm);if(c.x<noxWX-60){const y=T(noxWX)-82;g.fillStyle='rgba(255,255,255,.95)';rr(g,noxWX-70,y-18,140,24,10);g.fill();g.fillStyle='#2a1d0e';g.font='800 12px Arial';g.textAlign='center';g.textBaseline='middle';g.fillText('Regardez ! Regardez !',noxWX,y-6)}}}catch(e){}}})(npcDraw);
+
+// ===== 2.34 : panneau des mini-jeux sans défilement =====
+function pzFit(){try{const l=document.querySelector('#pzv .pzl');if(!l||gid('pzv').style.display!=='block')return;const kids=[...l.children];let z=1;kids.forEach(e=>e.style.zoom='');
+for(let i=0;i<14&&l.scrollHeight>l.clientHeight+1;i++){z-=.04;kids.forEach(e=>e.style.zoom=z)}}catch(e){}}
+(function(){const l=document.querySelector('#pzv .pzl');if(!l)return;let q=0;const go=()=>{if(q)return;q=1;requestAnimationFrame(()=>{q=0;pzFit()});setTimeout(()=>{q=0;pzFit()},30)};
+new MutationObserver(go).observe(l,{childList:true,subtree:true,characterData:true});addEventListener('resize',go);addEventListener('orientationchange',()=>setTimeout(pzFit,300))})();
+pzOpen=(function(o){return function(k){const r=o.apply(this,arguments);setTimeout(pzFit,0);setTimeout(pzFit,200);return r}})(pzOpen);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.33',GAME_DATE='22/10/2026 à 18h50';
+const GAME_VER='2.34',GAME_DATE='22/10/2026 à 21h39';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
