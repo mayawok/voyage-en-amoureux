@@ -9,7 +9,7 @@
 ## Technique
 - **Tout le jeu est dans `index.html`** (plus `icon.png`, l'icône d'écran d'accueil 180×180) (un seul fichier, environ 800 Ko, canvas 2D + Web Audio synthétisé, aucun fichier externe).
 - Déploiement : chaque push sur `main` part automatiquement sur Netlify (`netlify.toml`). On pousse directement sur `main`, sans PR.
-- **Version : 2.xx.** Constantes `GAME_VER` et `GAME_DATE` en fin de fichier, affichées dans le menu. Les incrémenter à chaque livraison.
+- **Version : 2.xx.** Constantes `GAME_VER` et `GAME_DATE` en fin de fichier, affichées dans le menu. Les incrémenter à chaque livraison ; `GAME_DATE` contient la date **et l'heure de publication** (ex. `22/10/2026 à 16h20`, heure de Paris).
 - Style du code : on ajoute des blocs `// ===== 2.xx : ... =====` à la fin du script et on surcharge les fonctions par réaffectation (`f=(function(o){return function(){...o()...}})(f)`). Les déclarations `function` sont réaffectables. Attention à la TDZ (`let`/`const`) : définir les variables globales tôt (ex. après `let W,HH,DPR,S;`).
 - Fonctions utiles :
   - `say(texte,durée,qui)` (qui : 0 = Andrea, 1 = Mila) ;
@@ -30,6 +30,7 @@
 - « Allure pro » (proposé, en cours) : icônes dessinées à la place des emojis, palette fixe des panneaux, écran titre animé, générique de fin, passe de vérification chapitre par chapitre. L'utilisateur a une limite d'usage serrée : avancer par petites étapes.
 
 ## Déjà fait récemment
+**2.16** : plus de notes « Nouvel animal croisé » ni « Nouveau souvenir dans le carnet » ; carrosserie violette ; gués : plus de pastille ni de « Tout doux », la remarque de Mila seulement si on fonce (>230) et rarement ; pop-ups sans attente (`popOK` : seulement pas pendant le bac, le treuil ou un arrêt) ; heure de publication dans le menu ; pas de magasins, de Marcel ni de voitures dans la grotte ; en-tête des tubes réduit ; objectif du chapitre Sardaigne (« Embarquer à Bonifacio », puis « Explorer la Sardaigne »).
 **2.15** : touristes — le bouton « Continuer » restait hors de l'écran avec les longues phrases anglaises (défilement bloqué) : bouton fixé en bas à gauche, seules la réponse choisie et la bonne restent affichées, panneau défilable.
 **2.14** : icône d'écran d'accueil `icon.png` (Cherokee, tour génoise, coucher de soleil, cœur).
 **2.13** : objectif sur une ligne (le détail `<small>` se déplie au toucher pendant 5 s).
