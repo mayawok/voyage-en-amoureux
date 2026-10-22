@@ -2887,7 +2887,7 @@ function wheelD(x,px,py,R,flat,rot){x.save();x.translate(px,py);
 x.fillStyle='#161616';x.beginPath();if(flat){x.moveTo(-R,0);x.arc(0,0,R,Math.PI,0);x.lineTo(R*1.02,R*.6);x.quadraticCurveTo(R*1.06,R*.93,R*.6,R*.94);x.lineTo(-R*.6,R*.94);x.quadraticCurveTo(-R*1.06,R*.93,-R*1.02,R*.6);x.closePath()}else x.arc(0,0,R,0,7);x.fill();
 x.rotate(rot||0);x.fillStyle='#2a2a2a';for(let i=0;i<28;i++){x.save();x.rotate(i*Math.PI*2/28);if(!flat||Math.sin(i*Math.PI*2/28+Math.PI/2)<.6){x.fillRect(-R*.06,-R*.995,R*.12,R*.09)}x.restore()}
 x.fillStyle='#232323';x.beginPath();x.arc(0,0,R*.8,0,7);x.fill();x.fillStyle='rgba(255,255,255,.55)';x.font='800 '+Math.round(R*.075)+'px Arial';x.textAlign='center';x.textBaseline='middle';for(const [a,tx] of[[-.6,'ALL TERRAIN'],[2.5,'4x4 · 265/75 R16']]){x.save();x.rotate(a);x.fillText(tx,0,-R*.7);x.restore()}
-{let ok=0;try{if(typeof rimOnly==='function'){const g0=g;x.save();const sc=R*.62/(gR()*.64);x.scale(sc,sc);g=x;try{rimOnly();ok=1}finally{g=g0;x.restore()}}}catch(e){}
+{let ok=0;try{if(typeof rimOnly==='function'){const g0=g;x.save();const sc=R*.5/rimR();x.scale(sc,sc);g=x;try{rimOnly();ok=1}finally{g=g0;x.restore()}}}catch(e){}
 if(!ok){const rg=x.createRadialGradient(-R*.2,-R*.2,R*.05,0,0,R*.62);rg.addColorStop(0,'#f4f6f8');rg.addColorStop(1,'#8a939b');x.fillStyle=rg;x.beginPath();x.arc(0,0,R*.6,0,7);x.fill()}}
 x.restore()}
 function gR(){try{return typeof R==='number'&&R>0?R:17}catch(e){return 17}}
@@ -4278,7 +4278,7 @@ applyUp=(function(o){return function(){SV.up.susp=Math.max(0,Math.min(SV.up.susp
 wheel=function(x,y,r){const sq=Math.min(R*.22,(window.__sq||0)*1.1),Rt=R;g.save();g.translate(x,y+sq);if(sq>.15){const fy=R-sq,hw=Math.sqrt(Math.max(0,R*R-fy*fy));g.save();g.fillStyle='#141210';g.beginPath();g.moveTo(-hw-sq*.55,fy);g.quadraticCurveTo(-hw-sq*.9,fy-sq*1.2,-R*.92,fy-sq*2.2);g.lineTo(R*.92,fy-sq*2.2);g.quadraticCurveTo(hw+sq*.9,fy-sq*1.2,hw+sq*.55,fy);g.closePath();g.fill();g.restore();g.beginPath();g.rect(-R-4,-R-4,2*R+8,R+4+fy);g.clip()}g.rotate(r);
 g.fillStyle='#141210';g.beginPath();g.arc(0,0,Rt,0,7);g.fill();g.strokeStyle='#2b2724';g.lineWidth=1.6;for(let k=0;k<20;k++){g.rotate(Math.PI/10);g.beginPath();g.moveTo(Rt-2.2,0);g.lineTo(Rt+.4,0);g.stroke()}
 rimOnly();g.restore()};
-function rimOnly(){const rc=(SV.cus&&SV.cus.rimC)||'#c9ccd2',m=(SV.cus&&SV.cus.rimM)||0,rr2=R*.64;const rg=g.createRadialGradient(-3,-3,1,0,0,rr2);rg.addColorStop(0,mixC(rc,'w',.3));rg.addColorStop(1,mixC(rc,'k',.22));
+function rimOnly(){const rc=(SV.cus&&SV.cus.rimC)||'#c9ccd2',m=(SV.cus&&SV.cus.rimM)||0,rr2=rimR();const rg=g.createRadialGradient(-3,-3,1,0,0,rr2);rg.addColorStop(0,mixC(rc,'w',.3));rg.addColorStop(1,mixC(rc,'k',.22));
 if(m===2){g.fillStyle=mixC(rc,'k',.45);g.beginPath();g.arc(0,0,rr2+1.5,0,7);g.fill();g.fillStyle=rg;g.beginPath();g.arc(0,0,rr2-1.2,0,7);g.fill();g.fillStyle=mixC(rc,'k',.5);g.beginPath();g.arc(0,0,rr2*.62,0,7);g.fill();g.fillStyle='#d8d8d8';for(let k=0;k<12;k++){const q=k*Math.PI/6;g.beginPath();g.arc(Math.cos(q)*(rr2-.2),Math.sin(q)*(rr2-.2),.9,0,7);g.fill()}}
 else{g.fillStyle=rg;g.beginPath();g.arc(0,0,rr2,0,7);g.fill()}
 const hole=mixC(rc,'k',.6);g.fillStyle=hole;
@@ -5424,8 +5424,10 @@ function prodIc(n){const d=HI[n];return '<svg class="ic" viewBox="0 0 24 24" sty
 {const PI={brocciu:'p_brocciu',tomme:'p_tomme',fiadone:'p_fiadone',figatellu:'p_figatellu',lonzu:'p_lonzu',coppa:'p_coppa',canistr:'p_canistr',beignet:'p_beignet',falculelle:'p_falcu',castagne:'p_castagne',pulenda:'p_pulenda',cremamarr:'p_creme',pizzaM:'p_pizzaM',pizzaV:'p_pizzaV',pizza4:'p_pizza4',cafe:'p_cafe'};
 const fix=L=>{for(const q of L)if(PI[q[0]])q[1]=prodIc(PI[q[0]])};fix(PZ_IT);for(const k of VALT)fix(VEND[k].it)}
 (function(){const st=document.createElement('style');st.textContent='.sbb .e .ic{width:30px;height:30px;stroke-width:1.4}';document.head.appendChild(st)})();
+// ===== 2.30 : jantes de taille fixe, les grands pneus ont des flancs plus hauts =====
+function rimR(){return 17*.56}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.29',GAME_DATE='22/10/2026 à 18h20';
+const GAME_VER='2.30',GAME_DATE='22/10/2026 à 18h25';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
