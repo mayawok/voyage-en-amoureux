@@ -35,6 +35,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.28** : deux tiers des emplacements de « Chez Marcel » deviennent des commerces corses (`VEND`, `pzVend(j)`, `vendDraw`) : U Casgiu (fromagerie : brocciu, tomme, fiadone), U Salumu (charcuterie : figatellu, lonzu, coppa), Canistrelli (biscuiterie : canistrelli, beignets au brocciu, falculelle), A Castagna (châtaignes grillées, pulenda, crème de châtaigne) ; chacun a son marchand, ses phrases et ses produits (`VFOOD` : effets sur la faim et l'énergie).
 **2.27** : dégâts et surchauffe retirés (plus de chocs qui crèvent, plus de surchauffe qui cale, plus de « CHOCS % ») ; quand le moteur cale (`ppOpen`), Mila choisit : Andrea répare (mini-jeu des pièces) ou dépanneuse à 15 ❤ (`callTow`).
 **2.26** : la remarque « trop haut, moins stable » (`towHigh`) ne vient plus que du dépanneur qui remet le Cherokee sur ses roues après un retournement (`tow.flip`), plus pour une crevaison.
 **2.25** : pneus basse pression réalistes (diamètre constant, bas aplati et flancs bombés, la roue descend un peu) ; toutes les émoticônes (271) remplacées par ~110 icônes maison ; deux pop-ups d'affilée : bouton bleu « Suivant (n) » qui enchaîne sans refermer.
