@@ -3707,7 +3707,7 @@ function bdWorld(dt){const ci=chIdx();SV.bdL=SV.bdL||{};if(ci<1||ci>8||SV.bdL[le
 const f=chP();if(!bd){if(f>=.66&&f<.8){let x=c.x+900;for(let n=0;n<40&&(occ(x)||wetRange(x-150,x+150)||bridgeAt(x)>=0||tunNear(x)||rockW(x)>0||sceneAt(x));n++)x+=120;bd={x,done:0}}return}
 if(!bd.asked&&c.x>bd.x-480){bd.asked=1;choice('panne','Un automobiliste en panne','Un homme agite les bras devant une voiture grise, capot ouvert, warnings allumés.',[['🛠️ On s’arrête l’aider','On perd un peu de temps… mais c’est la bonne chose à faire ?'],['🚙 On continue notre route','On a une enquête à mener.']],i=>{SV.bdL[level]=1;if(i===1){say('§On aurait peut-être dû s’arrêter… J’espère que quelqu’un d’autre l’aidera.',3.6,1);bd.done=1;return}
 stopReq={x:bd.x-90,cb:()=>{bd.done=1;SV.clk=(SV.clk||8)+.4;const spy=!SV.spy&&(Math.random()<.25||(ci>=4&&ci<=5&&!SV.spyTry));SV.spyTry=1;
-if(spy){SV.spy=level;const lost=Math.min(5,SV.hearts);SV.hearts-=lost;cardQ.unshift({now:1,t:'🛠️ Le dépannage',L:[['n','Andrea passe vingt minutes sous le capot. Une simple bougie débranchée… bizarre.'],['v','<b>L’automobiliste :</b> « Merci, merci ! Je file, je suis pressé. » Il démarre en trombe.'],['m','Andrea… la portière de mon côté était ouverte. Quelqu’un a fouillé mon carnet ! Et il manque '+lost+' ❤ dans la boîte à gants.'],['a','Une bougie débranchée exprès… C’était un piège. Il cherchait tes notes.'],['m','Heureusement, les échantillons étaient cachés. Mais maintenant, quelqu’un sait où on en est.']]})}
+if(spy){SV.spy=level;const lost=Math.min(5,SV.hearts);SV.hearts-=lost;SV.spyLost=lost;setTimeout(()=>fadeTo(()=>openCine('spy')),200);if(0)cardQ.unshift({now:1,t:'🛠️ Le dépannage',L:[['n','Andrea passe vingt minutes sous le capot. Une simple bougie débranchée… bizarre.'],['v','<b>L’automobiliste :</b> « Merci, merci ! Je file, je suis pressé. » Il démarre en trombe.'],['m','Andrea… la portière de mon côté était ouverte. Quelqu’un a fouillé mon carnet ! Et il manque '+lost+' ❤ dans la boîte à gants.'],['a','Une bougie débranchée exprès… C’était un piège. Il cherchait tes notes.'],['m','Heureusement, les échantillons étaient cachés. Mais maintenant, quelqu’un sait où on en est.']]})}
 else{SV.hearts+=4;cardQ.unshift({now:1,t:'🛠️ Le dépannage',L:[['n','Andrea trouve vite la panne : une durite d’essence fendue. Un peu de ruban, un collier, et le moteur repart.'],['v','<b>L’automobiliste :</b> « Vous m’avez sauvé la journée ! Tenez, prenez ça pour la route. » (+4 ❤)'],['m','Tu vois, ça valait le coup de s’arrêter.'],['a','Un mécano ne laisse jamais quelqu’un sur le bord de la route.']]})}saveTrip()}}})}
 if(bd&&c.x>bd.x+2500)bd=null}
 // --- document « suspects »
@@ -3723,7 +3723,7 @@ if(ci===5&&CHX('presse')===undefined&&SV.ev&&SV.ev[evK('chase')]&&sayT<=0&&!stop
 
 // ===== v81 : cinématiques du scénario =====
 var cs=null,csT0=0,csParts=[];
-function csBox(T2,L,Wd){let cur=null;for(const q of L)if(T2>=q[0])cur=q;if(!cur)return;const a2=Math.min(1,(T2-cur[0])/.5),WH={m:'MILA',a:'ANDREA',x:'MATHIS',l:'LUCIA',p:'LE PÊCHEUR',c:'LA CAPITAINE',v:'LA VÉTÉRINAIRE',d:'LE DÉPANNEUR',n:''},CO={m:'#e7b8f0',a:'#a8d0ff',l:'#ffd0a0',p:'#c8e09a',x:'#c8e09a',c:'#ffb27a',v:'#b8e6d2',d:'#f0d080'};const wh=WH[cur[1]]||'',col=CO[cur[1]]||'#fff';const maxW=Math.min(600,Wd-80);g.font=(cur[1]==='n'?'italic 600 ':'700 ')+'16px Georgia,serif';const words=cur[2].split(' '),lines=[];let ln='';for(const w2 of words){const tt=ln?ln+' '+w2:w2;if(g.measureText(tt).width>maxW&&ln){lines.push(ln);ln=w2}else ln=tt}lines.push(ln);
+function csBox(T2,L,Wd){let cur=null;for(const q of L)if(T2>=q[0])cur=q;if(!cur)return;const a2=Math.min(1,(T2-cur[0])/.5),WH={m:'MILA',a:'ANDREA',x:'MATHIS',l:'LUCIA',p:'LE PÊCHEUR',c:'LA CAPITAINE',v:'LA VÉTÉRINAIRE',d:'L’AUTOMOBILISTE',n:''},CO={m:'#e7b8f0',a:'#a8d0ff',l:'#ffd0a0',p:'#c8e09a',x:'#c8e09a',c:'#ffb27a',v:'#b8e6d2',d:'#f0d080'};const wh=WH[cur[1]]||'',col=CO[cur[1]]||'#fff';const maxW=Math.min(600,Wd-80);g.font=(cur[1]==='n'?'italic 600 ':'700 ')+'16px Georgia,serif';const words=cur[2].split(' '),lines=[];let ln='';for(const w2 of words){const tt=ln?ln+' '+w2:w2;if(g.measureText(tt).width>maxW&&ln){lines.push(ln);ln=w2}else ln=tt}lines.push(ln);
 const bh=22+lines.length*21+(wh?15:0),by=420-bh-10;g.globalAlpha=a2;g.fillStyle='rgba(10,12,16,.68)';rr(g,Wd/2-maxW/2-18,by,maxW+36,bh,14);g.fill();g.textAlign='center';g.textBaseline='top';let yy=by+11;if(wh){g.font='800 11px Arial';g.fillStyle=col;g.fillText(wh,Wd/2,yy);yy+=15}g.font=(cur[1]==='n'?'italic 600 ':'700 ')+'16px Georgia,serif';g.fillStyle='#fff';for(const l of lines){g.fillText(l,Wd/2,yy);yy+=21}g.globalAlpha=1}
 function grp(ox,gy,SC,fn){g.save();g.translate(ox,gy);g.scale(SC,SC);g.translate(-ox,-gy);try{fn()}catch(e){}g.restore()}
 const CS={
@@ -4028,7 +4028,7 @@ var dogWT=12,dogWI=0;
 function dogLostTick(dt){if(!dogGone()||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||cs)return;
 dogWT-=dt;if(dogWT<=0&&sayT<=0){dogWT=26+Math.random()*12;const q=DOGW[(dogWI++)%DOGW.length];say(q[1],3.6,q[0]==='m'?1:0)}
 const ft=Math.min(.9,(SV.dogLostF||.5)+.14),f=chP();if(f>=ft&&!SV.dogFoundGo&&((!stopReq&&!work&&flatW<0&&!tow)||f>.9)){SV.dogFoundGo=level;stopReq=null;const fin=()=>{SV.dogFoundL=level;SV.dogFoundGo=null;SV.hearts+=3;cardQ.unshift({now:1,t:'🐕 Le chien est retrouvé !',L:[['n','Soudain, des aboiements résonnent entre les pins.'],['m','Tu entends ?! C’est lui ! C’EST LUI !'],['n','Le chien surgit des fougères, couvert d’aiguilles de pin, la queue en hélice. Il saute dans les bras de Mila.'],['m','Tu nous as fait tellement peur… Ne refais jamais ça, tu m’entends ?'],['a','Je t’avais dit qu’il nous retrouverait. Allez, en voiture, l’aventurier !'],['n','🐕 Le chien reprend sa place dans le Cherokee. +3 ❤']]});setTimeout(()=>{try{bark()}catch(e){}},400);saveTrip()};
-if(f>.9)fin();else{say('Attends… tu as entendu ? Des aboiements !',2.6,1);stopReq={x:c.x+300,cb:fin}}}}
+if(f>.9)fin();else{sayT=0;say('Arrête-toi ! Là, au bord de la piste… c’est son collier !',3.2,1);stopReq={x:c.x+300,cb:()=>setTimeout(()=>fadeTo(()=>openCine('dogf')),300)}}}}
 
 // ===== v83 : bague, rattrapage, menu vertical =====
 function ringGem(bx,by,op,tm,Wd){g.save();g.globalAlpha=Math.min(1,op);g.fillStyle='#9b4dff';g.beginPath();g.moveTo(bx,by-14);g.lineTo(bx+3.2,by-10.5);g.lineTo(bx,by-8.4);g.lineTo(bx-3.2,by-10.5);g.closePath();g.fill();g.fillStyle='#ead8ff';g.fillRect(bx-1.2,by-12.6,1.4,1.4);
@@ -4615,8 +4615,66 @@ say=(function(o){return function(m,d,w){return o(lessPet(m),d,w)}})(say);
 openCard=(function(o){return function(cd){try{if(cd&&cd.L&&!cd.__lp){cd.__lp=1;cd.L=cd.L.map(l=>[l[0],lessPet(l[1])].concat(l.slice(2)))}}catch(e){}return o(cd)}})(openCard);
 openCine=(function(o){return function(k){o(k);try{if(cs&&cs.L)cs.L=cs.L.map(q=>[q[0],q[1],lessPet(q[2])].concat(q.slice(3)))}catch(e){}}})(openCine);
 openEnd=(function(o){return function(i){try{const L=CEND[i];if(L&&!L.__lp){L.__lp=1;for(const l of L)l[1]=lessPet(l[1])}}catch(e){}return o(i)}})(openEnd);
+
+// ===== 2.04 : cinématiques — bidons de Coasina, chien retrouvé, faux dépanneur =====
+function csSky(Wd,gy,a,b){const sk=g.createLinearGradient(0,0,0,gy);sk.addColorStop(0,a);sk.addColorStop(1,b);g.fillStyle=sk;g.fillRect(0,0,Wd,420)}
+function csBush(x,y,r,c1){g.fillStyle=c1;g.beginPath();g.arc(x,y-r*.6,r,0,7);g.arc(x-r*.8,y-r*.3,r*.7,0,7);g.arc(x+r*.8,y-r*.3,r*.75,0,7);g.fill()}
+function csDrum(x,y,tilt,cap){g.save();g.translate(x,y);g.rotate(tilt||0);g.fillStyle='#e9e6dc';g.fillRect(-9,-26,18,26);g.fillStyle='#cfcabd';g.fillRect(-9,-19,18,2.5);g.fillRect(-9,-8,18,2.5);g.fillStyle='#bdb8aa';g.beginPath();g.ellipse(0,-26,9,2.6,0,0,7);g.fill();if(cap){g.fillStyle='#4a4a46';g.fillRect(-3,-30,6,4)}else{g.fillStyle='#2a2a26';g.beginPath();g.arc(2,-26,1.8,0,7);g.fill()}g.restore()}
+CS.coas={mus:'tense',L:()=>[[1.5,'n','Au pied des ruines du castellu, le soleil descend sur la mer. Le chien file renifler dans le maquis.'],[6,'a','Il a trouvé quelque chose… Qu’est-ce que c’est que ça ?'],[9.5,'m','Des bidons. Trois, quatre… cachés sous les cistes.'],[13.5,'a','Blancs, sans aucune étiquette. Et le bouchon de celui-là a été arraché.'],[17.5,'m','Ne touche à rien sans gants. Ça sent le produit chimique.'],[21.5,'n','Mila enfile ses gants et prélève quelques gouttes au fond d’un bidon.'],[26,'a','Ce castellu a connu les sièges, les pirates… et maintenant les pollueurs. Il n’a vraiment pas de chance.'],[31,'m','Les puffins nichent juste en dessous, dans les falaises. Je garde l’échantillon pour le labo.']],end:36,
+draw:(Wd,gy,T2,tm)=>{csSky(Wd,gy,'#f2a36a','#f7d9a8');g.fillStyle='#ffd27a';g.beginPath();g.arc(Wd*.2,gy-90,26,0,7);g.fill();
+g.fillStyle='#4f8fb3';g.fillRect(0,gy-70,Wd*.55,90);g.strokeStyle='rgba(255,240,200,.5)';g.lineWidth=1.5;for(let i=0;i<10;i++){const xx=(i*83+tm*10)%(Wd*.5);g.beginPath();g.moveTo(xx,gy-50+(i%4)*12);g.lineTo(xx+14,gy-50+(i%4)*12);g.stroke()}
+// colline et ruines
+g.fillStyle='#7a6a4a';g.beginPath();g.moveTo(Wd*.38,gy+20);g.quadraticCurveTo(Wd*.6,gy-150,Wd*.8,gy-160);g.lineTo(Wd,gy-150);g.lineTo(Wd,gy+20);g.fill();
+const rx=Wd*.74,ry=gy-158;g.fillStyle='#b8a888';g.fillRect(rx-60,ry-40,26,42);g.fillRect(rx-26,ry-70,34,72);g.fillRect(rx+14,ry-30,60,32);g.fillStyle='#9c8c6c';for(let i=0;i<4;i++)g.fillRect(rx-26+i*9,ry-78,6,8);g.fillStyle='#3a3226';g.fillRect(rx-14,ry-50,8,14);g.fillRect(rx+34,ry-20,7,10);
+// puffins
+g.strokeStyle='#2a2a30';g.lineWidth=1.6;for(let i=0;i<5;i++){const bx=(Wd*.1+i*90+tm*40)%(Wd*.6),by=gy-130-(i%3)*18+Math.sin(tm*3+i)*4,wv=Math.sin(tm*8+i)*3;g.beginPath();g.moveTo(bx-7,by-wv);g.lineTo(bx,by);g.lineTo(bx+7,by-wv);g.stroke()}
+g.fillStyle='#8a7a52';g.fillRect(0,gy,Wd,420-gy);
+// maquis et bidons
+const dx=Wd*.62;csBush(dx-40,gy,22,'#4f6a3a');csDrum(dx-10,gy+2,0,T2<13.5);csDrum(dx+12,gy+3,.08,1);csDrum(dx+34,gy+2,-.05,1);csDrum(dx+54,gy+6,1.45,1);csBush(dx+80,gy+4,18,'#5d7a44');
+// Cherokee garé
+grp(Wd*.14,gy,1.35,()=>{try{cherokeeSide(Wd*.14,gy)}catch(e){}});
+// le chien, Mila, Andrea
+grp(Wd*.5,gy,1.5,()=>{const dgx=T2<6?Wd*.4+Math.min(1,T2/5)*(dx-Wd*.4-70):dx-70;try{dogDraw(Wd*.5+(dgx-Wd*.5)/1.5,gy+2,1,T2<5?'trot':'stand',tm)}catch(e){}
+const mx=Wd*.5+(T2<9?-90:(dx-110-Wd*.5)/1.5),ax=Wd*.5-70+(T2>6?Math.min(1,(T2-6)/3)*40:0);person(mx,gy,1,{f:1,a1:T2>21.5&&T2<26?1.4+Math.sin(tm*5)*.2:.3});person(ax,gy,0,{f:1,a1:T2>13.5&&T2<17?1.3:.2})});
+if(T2>31){g.fillStyle='rgba(40,20,40,'+Math.min(.25,(T2-31)/12)+')';g.fillRect(0,0,Wd,420)}}};
+CS.dogf={mus:'love',L:()=>[[1.5,'n','Un collier rouge, dans la terre humide, au bord de la piste. Andrea le ramasse.'],[6,'a','C’est bien le sien. La boucle a cédé… Il est passé par ici.'],[10,'m','Il y a des traces de pattes dans la boue. Elles partent vers les fougères !'],[14,'m','Fautea ! Fautea ! Viens, mon grand !'],[17.5,'n','Un silence… puis des aboiements, de plus en plus proches.'],[21,'m','C’est lui ! C’EST LUI !'],[24,'n','Le chien surgit des fougères, couvert d’aiguilles de pin, la queue en hélice. Il saute dans les bras de Mila.'],[29.5,'m','Tu nous as fait tellement peur… Ne refais jamais ça, tu m’entends ?'],[33.5,'a','Je t’avais dit qu’il nous retrouverait. On lui remet son collier, et en voiture !'],[38,'n','🐕 Le chien reprend sa place dans le Cherokee. +3 ❤']],end:42,
+onEnd:()=>{SV.dogFoundL=level;SV.dogFoundGo=null;SV.hearts+=3;try{bark()}catch(e){}saveTrip()},
+draw:(Wd,gy,T2,tm)=>{csSky(Wd,gy,'#bcd8e8','#eef3e6');
+for(let i=0;i<9;i++){const tx=hh2(i+3)*Wd,h=150+hh2(i+7)*90;g.fillStyle='#5a4030';g.fillRect(tx-5,gy-h,10,h);g.fillStyle=i%2?'#2f5a3a':'#3a6a44';g.beginPath();g.ellipse(tx,gy-h,40,22,0,0,7);g.fill()}
+g.fillStyle='#6a5a40';g.fillRect(0,gy,Wd,420-gy);g.fillStyle='#5a4a32';for(let i=0;i<30;i++)g.fillRect(hh2(i+40)*Wd,gy+6+hh2(i+60)*60,3,2);
+// fougères à droite
+const fx=Wd*.82;for(let i=0;i<7;i++){const x=fx+i*22-60,sh=T2>23.5&&T2<25?Math.sin(tm*30)*3:0;g.strokeStyle=i%2?'#3f7a3a':'#4f8a44';g.lineWidth=3;g.beginPath();g.moveTo(x,gy+4);g.quadraticCurveTo(x-10+sh,gy-30,x-26+sh,gy-38);g.moveTo(x,gy+4);g.quadraticCurveTo(x+12+sh,gy-28,x+28+sh,gy-34);g.stroke()}
+grp(Wd*.14,gy,1.35,()=>{try{cherokeeSide(Wd*.14,gy)}catch(e){}});
+const mx=Wd*.48,ax=Wd*.38;
+grp(Wd*.45,gy,1.5,()=>{
+// collier au sol puis dans la main d'Andrea
+const held=T2>4.5;const ax2=Wd*.45+(ax-Wd*.45)/1.5,mx2=Wd*.45+(mx-Wd*.45)/1.5;
+if(!held&&T2<33.5){g.strokeStyle='#c8302a';g.lineWidth=2.4;g.beginPath();g.ellipse(ax2+22,gy-1,7,2.4,0,0,7);g.stroke();g.fillStyle='#e0b030';g.beginPath();g.arc(ax2+28,gy-1,1.6,0,7);g.fill()}
+person(ax2,gy,0,{f:1,a1:held?1.1:.2,a2:T2<4.5&&T2>2?1.6:.1});if(held&&T2<33.5){g.strokeStyle='#c8302a';g.lineWidth=2.2;g.beginPath();g.ellipse(ax2+14,gy-31,4,6,0,0,7);g.stroke()}
+const hug=T2>27;person(mx2,gy,1,{f:1,a1:hug?2.2:T2>14&&T2<17?2.6+Math.sin(tm*6)*.2:.3,a2:hug?1.9:-.1});
+if(T2>24){const u=Math.min(1,(T2-24)/3),sx=Wd*.45+(fx-20-Wd*.45)/1.5,ex=mx2+12;const dxx=sx+(ex-sx)*u,jump=u>=1?6+Math.abs(Math.sin(tm*6))*4:Math.abs(Math.sin(u*12))*5;try{dogDraw(dxx,gy+2-jump,-1,u<1?'trot':'jump',tm)}catch(e){}}
+if(T2>33.5&&T2<38){g.strokeStyle='#c8302a';g.lineWidth=2;g.beginPath();g.arc(mx2+12,gy-24,4,0,7);g.stroke()}
+if(T2>27&&T2<34)for(let i=0;i<3;i++){const u=((T2-27)*.6+i*.33)%1;heart(mx2+4+(i-1)*8,gy-60-u*26,4+i,1-u)}});}};
+CS.spy={mus:'tense',L:()=>[[1.5,'n','Andrea passe vingt minutes sous le capot de la voiture grise. Une simple bougie débranchée… bizarre.'],[6.5,'d','« Merci, merci ! Je file, je suis pressé. »'],[9.5,'n','Il claque sa portière et démarre en trombe, sans un regard.'],[13,'a','Il aurait pu dire au revoir… Les gens pressés, je te jure.'],[16.5,'m','Andrea… la portière de mon côté est ouverte.'],[20,'m','Mon carnet a été fouillé ! Des pages ont été arrachées… et la boîte à gants est vide : il manque '+(SV.spyLost||0)+' ❤.'],[26,'a','Une bougie débranchée exprès… C’était un piège. Il cherchait tes notes.'],[30.5,'m','Heureusement, les échantillons étaient cachés dans la glacière. Mais maintenant, quelqu’un sait où on en est.'],[36,'a','La prochaine fois que quelqu’un tombe en panne, je vérifie d’abord ses poches.']],end:41,
+draw:(Wd,gy,T2,tm)=>{csSky(Wd,gy,'#8fc6e8','#e9efd8');g.fillStyle='#9aa86a';g.beginPath();g.moveTo(0,gy-40);for(let x=0;x<=Wd;x+=40)g.lineTo(x,gy-60-30*Math.sin(x*.01));g.lineTo(Wd,gy);g.lineTo(0,gy);g.fill();
+g.fillStyle='#b9a27a';g.fillRect(0,gy,Wd,420-gy);g.fillStyle='#a38d66';g.fillRect(0,gy+18,Wd,6);csBush(Wd*.05,gy,20,'#5d7a44');csBush(Wd*.95,gy,24,'#4f6a3a');
+// voiture grise
+let gx=Wd*.64;if(T2>9.5)gx+=Math.pow(T2-9.5,2)*30;if(gx<Wd+200){const open=T2<9.5;g.save();g.translate(gx,gy);g.scale(1.35,1.35);g.fillStyle='#8a8f96';g.beginPath();g.moveTo(-60,-8);g.lineTo(-56,-30);g.lineTo(-30,-32);g.lineTo(-14,-48);g.lineTo(28,-48);g.lineTo(42,-32);g.lineTo(62,-28);g.lineTo(64,-8);g.closePath();g.fill();g.fillStyle='#2a3036';g.fillRect(-10,-45,16,12);g.fillRect(10,-45,16,12);if(open){g.fillStyle='#6a6f76';g.beginPath();g.moveTo(42,-32);g.lineTo(58,-62);g.lineTo(62,-60);g.lineTo(48,-30);g.fill()}g.fillStyle='#111';for(const wx of[-38,40]){g.beginPath();g.arc(wx,-6,10,0,7);g.fill()}if(T2>9.5){g.fillStyle='rgba(200,185,150,.6)';for(let i=0;i<5;i++){g.beginPath();g.arc(-70-i*16,-6-i*2,6+i*3,0,7);g.fill()}}if(T2<9.5&&Math.floor(tm*2)%2){g.fillStyle='#ffb02e';g.fillRect(60,-26,4,4);g.fillRect(-62,-26,4,4)}g.restore()}
+// Cherokee, portière passager ouverte
+const cx=Wd*.22;grp(cx,gy,1.35,()=>{try{cherokeeSide(cx,gy)}catch(e){}if(T2>16){g.fillStyle=CCv.d;g.beginPath();g.moveTo(cx+4,gy-40);g.lineTo(cx+26,gy-50);g.lineTo(cx+26,gy-16);g.lineTo(cx+4,gy-12);g.fill();g.fillStyle='#1c242b';g.fillRect(cx+7,gy-38,14,10)}});
+if(T2>18)for(let i=0;i<6;i++){g.save();g.translate(cx+70+i*14+hh2(i)*10,gy+10+hh2(i+4)*10);g.rotate(hh2(i+2)*2-1);g.fillStyle='#f6f2e6';g.fillRect(-6,-4,12,8);g.strokeStyle='#9ab';g.lineWidth=.6;g.beginPath();g.moveTo(-4,-1);g.lineTo(4,-1);g.moveTo(-4,1.5);g.lineTo(3,1.5);g.stroke();g.restore()}
+grp(Wd*.45,gy,1.5,()=>{const S2=v2=>Wd*.45+(v2-Wd*.45)/1.5;
+// l'automobiliste : près du Cherokee, puis à sa voiture, puis parti
+if(T2<9.5){const mx=T2<5?S2(cx+110):S2(Wd*.6);npcFig(mx,gy,['#5a5f66','#2a2e34',1,'#2a1a10',0,0,0],T2>6.5&&T2<9,tm)}
+const ax0=S2(Wd*.68+100),ax=T2<11?ax0:ax0-(Math.min(1,(T2-11)/3))*(ax0-S2(cx+175));person(ax,gy,0,{f:T2<11?1:-1,a1:T2<9.5?2.6+Math.sin(tm*7)*.2:.2,a2:T2<9.5?2.4:.1});
+const mlx=T2<15?S2(Wd*.42):S2(cx+125);person(mlx,gy,1,{f:-1,a1:T2>20&&T2<26?1.5:.3})})}};
+try{Object.assign(ALBK,{cs_coas:['🛢️','Les bidons du castellu','#f2a36a','#e9e6dc'],cs_dogf:['🐕','Le chien retrouvé','#bcd8e8','#c8302a'],cs_spy:['🕵️','Le faux automobiliste','#8fc6e8','#8a8f96']})}catch(e){}
+musScene=(function(o){return function(){try{if(cs){if(cs.k==='coas'||cs.k==='spy')return 'tense';if(cs.k==='dogf')return cs.t<21?'worry':'love'}}catch(e){}return o()}})(musScene);
+// déclenchement de la scène des bidons, après les ruines de Coasina
+function coasWorld(){try{if(cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd)return;SV.csd=SV.csd||{};if(chIdx()!==1||SV.csd.coas||SV.csq_coas===level)return;const f=chP();if(f>=.81&&f<.95){SV.csq_coas=level;say('Arrêtons-nous au pied du castellu, la vue doit être belle d’en bas.',3.4,1);stopReq={x:c.x+320,cb:()=>setTimeout(()=>fadeTo(()=>openCine('coas')),400)}}}catch(e){}}
+mgTick=(function(o){return function(dt){o(dt);coasWorld()}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.03',GAME_DATE='22/10/2026';
+const GAME_VER='2.04',GAME_DATE='22/10/2026';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
