@@ -854,6 +854,7 @@ rot[i]+=vt/R*dt+spin*dt;if(spin>3&&Math.random()<dt*25&&drops.length<60)drops.pu
 }
 if(winch&&winch.hard){let dx=winch.ax-c.x,dy=T(winch.ax)-30-c.y;const ln=Math.hypot(dx,dy)||1;dx/=ln;dy/=ln;const vt=v.x*dx+v.y*dy,F=Math.min(1500,Math.max(0,(150-vt)*10));fx+=F*dx;fy+=F*dy;const ta=Math.atan2(T(c.x+45)-T(c.x-45),90);w*=Math.max(0,1-dt*6);a+=(ta-a)*Math.min(1,dt*3);winch.t+=dt;if(c.x>=winch.ax-60||winch.t>10){if(c.x>=winch.ax-60){setTimeout(()=>{say(WINCH_OK[Math.floor(Math.random()*WINCH_OK.length)],3.4,1);hapt(30)},300)}winch=null;wReadyAt=playT+WCD()}}else if(winch){const sl=(T(c.x+1)-T(c.x-1))/2,ln=Math.sqrt(1+sl*sl),vt=(v.x+v.y*sl)/ln,F=Math.min(1400*(1+.15*SV.up.winch+(BF.cable>0?.3:0)),Math.max(0,((winch.hard?150:230)-vt)*9*(1+.15*SV.up.winch+(BF.cable>0?.3:0))));fx+=F/ln;fy+=F*sl/ln;winch.t+=dt;if(c.x>=winch.ax-60||winch.t>(winch.hard?10:5)){winch=null;wReadyAt=playT+WCD()}}
 try{deepPhys(dt)}catch(e){}if(inRock){const ex=(spd-200)/180;if(ex>0)dmg+=ex*.425*PF()*dt;if(spd>110&&Math.random()<dt*.085*PF())dmg=1;if(dmg>=1)breakOne()}else dmg=Math.max(0,dmg-.15*dt);
+{const ta3=Math.atan2(T(c.x+40)-T(c.x-40),80),d3=a-ta3;if(Math.abs(d3)>.45&&c.y>T(c.x)-110){const k3=Math.min(1,(Math.abs(d3)-.45)/.5);tq-=Math.sign(d3)*k3*26000;w*=1-Math.min(.5,dt*4*k3)}}
 if(!contact){if(gasOn)tq-=12000;if(st.brake)tq+=12000;rot[0]+=(gasOn?9:2)*dt;rot[1]+=(gasOn?9:2)*dt}
 for(const o of obs){if(o.done||o.run)continue;const wd=OW[o.type][0],h=OW[o.type][1];
 if(h-4>CLR()&&c.x+58>o.x&&c.x<o.x+wd/2&&c.y+WL[0][1]+R>T(o.x+wd/2)-h+4){c.x=o.x-58;if(v.x>0){const im=v.x;if(o.type!=='sheep'&&o.type!=='van'&&im>150){dmg+=.45;snd('thud');vib(40);if(dmg>=1){if(o.type==='rock')breakOne();else dmg=0}}v.x=-im*.15}}}
@@ -1768,12 +1769,12 @@ obIcons(x,tm);if(obv.flash>0){obv.flash-=dt;x.fillStyle='rgba(255,255,255,'+Math
 if(obv.msgT>0&&!obv.end){obv.msgT-=dt;obM.textContent=obv.msg}else if(!obv.end&&obM.textContent)obM.textContent=''}
 
 // ===== v55 : passages durs + treuil, arrêt doux, PNJ, camping-car, dépanneuse, animaux malades =====
-const hardOKc={};function hardBase(j){const s=600+j*3200;if(j<2||s>MAP_L-1800)return false;for(let xx=s-120;xx<=s+520;xx+=20){if(bridgeAt(xx)>=0)return false;const m=Math.floor((xx-1520)/2000);if(m>=2&&m%3===2&&xx-(2000*m+1520)<=760)return false}return true}
+const hardOKc={};function hardBase(j){const s=600+j*3200;if(j<2||s>MAP_L-1800)return false;for(let xx=s-120;xx<=s+620;xx+=20){if(bridgeAt(xx)>=0)return false;const m=Math.floor((xx-1520)/2000);if(m>=2&&m%3===2&&xx-(2000*m+1520)<=760)return false}return true}
 function hardKeep(j){if(j<2)return false;if(hardOKc[j]===undefined)hardOKc[j]=hardBase(j)&&!hardKeep(j-1);return hardOKc[j]}
 function hardS(x){const j=Math.floor((x-600)/3200);return hardKeep(j)?600+j*3200:-1}
 function hardH(){try{return 80+14*Math.min(1,chIdx()/6)}catch(e){return 80}}
-function hardY(x){const s=hardS(x);if(s<0)return 0;const up=sm(cl((x-s-70)/90)),dn=sm(cl((x-s-250)/150));return hardH()*(up-dn)}
-function hz(x){const s=hardS(x);return s>=0&&x-s<420}
+function hardY(x){const s=hardS(x);if(s<0)return 0;const up=sm(cl((x-s-70)/90)),dn=sm(cl((x-s-250)/280));return hardH()*(up-dn)}
+function hz(x){const s=hardS(x);return s>=0&&x-s<560}
 function hardNear(x){return hz(x)||hz(x+160)||hz(x-60)}
 function hardAhead(){for(const xx of[c.x,c.x+260]){const s=hardS(xx);if(s>=0&&c.x>s-260&&c.x<s+175)return s}return-1}
 function hardTick(dt){if(!started||night||crashed||paused)return;const s=hardAhead(),dp=gid('dogp');
@@ -4798,8 +4799,116 @@ mgxOpen(M)}
 smpDone=(function(o){return function(sp,inst){try{if(!inst&&SV.tubeL!==level&&!(SV.smp&&SV.smp[sp])&&chP()<.97){if(MGX||cs||paused||cardOpen||hl||pz||stopReq||sayT>0||night||crashed||work||onFerry()){if(SV.smpP&&SV.smpP[sp])SV.smpP[sp].t=4;return}
 SV.tubeL=level;sayT=0;say('Les échantillons sont prêts. Arrête-toi deux minutes, je fais une analyse de terrain !',3.4,1);stopReq={x:c.x+Math.max(160,Math.abs(v.x)*.8),cb:()=>setTimeout(()=>tubeOpen(()=>o(sp,inst)),300)};if(SV.smpP&&SV.smpP[sp])SV.smpP[sp].t=99999;return}}catch(e){}return o(sp,inst)}})(smpDone);
 mgTick=(function(o){return function(dt){o(dt);try{if(!MGX&&!stopReq&&SV.smpP)for(const k of Object.keys(SV.smpP))if(SV.smpP[k].t>9999)SV.smpP[k].t=3}catch(e){}}})(mgTick);
+
+// ===== 2.07 : mission remorque (obligatoire, une par chapitre) =====
+// Carte à part, plus escarpée (boue, gués, cailloux), pas de treuil ; remorque plus grande que le Cherokee ; chargement à ne pas perdre.
+const TRL_TH=[
+{k:'paille',who:'Un agriculteur',lk:['#6a8f4a','#3a4a6a',3,'#5a3a20',1,0,0],where:'ferme',t:'Les bottes de paille',ask:'« Mon tracteur est en panne et mes bêtes attendent leur paille à la bergerie, là-haut. Vous pourriez me monter la remorque avec votre 4x4 ? »',thanks:'« Merci ! Sans vous, mes brebis dormaient sur la pierre ce soir. »'},
+{k:'eau',who:'Une bergère',lk:['#c8502a','#4a3a2a',1,'#3a2a1a',0,2,1],where:'magasin agricole',t:'Les bidons d’eau',ask:'« La source de la bergerie est à sec. Il faut monter ces bidons d’eau aux brebis, mais ma camionnette ne passera jamais. Vous voulez bien ? »',thanks:'« Elles vont pouvoir boire. Vous êtes des anges. »'},
+{k:'moutons',who:'Un berger',lk:['#7a6a4a','#3a3a3a',3,'#c8c8c8',1,2,0],where:'ferme',t:'La bétaillère de moutons',ask:'« Mes moutons doivent monter à l’estive avant l’orage. La bétaillère est prête, il ne manque qu’un 4x4. Doucement dans les bosses, hein ! »',thanks:'« Pas une seule bête stressée. Vous conduisez mieux que mon neveu ! »'},
+{k:'paille',who:'Une agricultrice',lk:['#3a7a6a','#3a3a4a',1,'#a85a2a',0,0,1],where:'magasin agricole',t:'Le foin pour la montagne',ask:'« Du foin pour les chevaux du refuge, tout là-haut. La piste est raide et pleine de cailloux… Vous vous sentez de le faire ? »',thanks:'« Les chevaux vont se régaler ! Merci à vous deux. »'},
+{k:'eau',who:'Un apiculteur',lk:['#f2e3b0','#6b5a3a',3,'#5a3a20',0,4,0],where:'ferme',t:'L’eau des ruches',ask:'« Mes abeilles ont soif, avec cette chaleur. Il faut monter ces bidons au rucher, sur la crête. Je vous aide à les charger ! »',thanks:'« Vous aurez un pot de miel à votre prochain passage, promis. »'},
+{k:'vaches',who:'Une éleveuse',lk:['#8a3a3a','#2f3a4a',1,'#3a2a1a',0,2,1],where:'ferme',t:'La bétaillère de vaches',ask:'« Deux vaches à ramener au pré de l’autre côté du gué. Elles sont lourdes, et elles détestent être secouées… »',thanks:'« Elles descendent toutes calmes. Chapeau ! »'},
+{k:'paille',who:'Un agriculteur',lk:['#6a8f4a','#3a4a6a',3,'#5a3a20',1,0,0],where:'magasin agricole',t:'La paille des Agriate',ask:'« Il me faut ces bottes de paille à la ferme du désert des Agriate. La piste est pleine de sable et de boue. Vous êtes partants ? »',thanks:'« Je n’y croyais plus. Merci, vraiment ! »'},
+{k:'eau',who:'Un berger sarde',lk:['#5a5f66','#2a2e34',1,'#2a1a10',1,2,0],where:'ferme',t:'L’eau du nuraghe',ask:'« Grazie di fermarvi ! L’eau pour mes brebis, près du nuraghe, là-haut. Mon âne est trop vieux pour porter tout ça. »',thanks:'« Grazie mille ! Vous êtes les bienvenus quand vous voulez. »'},
+{k:'moutons',who:'Une bergère',lk:['#c8502a','#4a3a2a',1,'#3a2a1a',0,2,1],where:'ferme',t:'Les brebis de l’Ospedale',ask:'« Après l’histoire de l’ours, mes brebis ne veulent plus rester dans la forêt. Vous pouvez les monter au plateau ? Tout doucement… »',thanks:'« Elles sont en sécurité. Merci, du fond du cœur. »'},
+{k:'vaches',who:'Un éleveur',lk:['#7a6a4a','#3a3a3a',3,'#c8c8c8',1,2,0],where:'ferme',t:'Les vaches de Fautea',ask:'« Un dernier service avant la plage ? Mes vaches doivent rejoindre le pré du bord de mer. Le gué est profond en ce moment. »',thanks:'« Merci, les amoureux ! Profitez bien de Fautea. »'}];
+function trlGen(ci,easy){const d=Math.min(1,ci/9)*(easy?.55:1),L=5000+ci*120;let sd=TS?TS()*13+ci*101+level*7:ci*101;const R=()=>{sd=(sd*9301+49297)%233280;return sd/233280};
+const p1=R()*6,p2=R()*6,p3=R()*6,A1=26+40*d,A2=8+12*d,A3=60+50*d;
+const mud=[],ford=[],bump=[];const nm=2+Math.floor(ci/3);for(let i=0;i<nm;i++){const a=600+(L-1300)*(i+.3+R()*.4)/nm;mud.push([a,a+180+R()*170])}
+const nf=1+(ci>=4?1:0);for(let i=0;i<nf;i++){const a=1300+(L-2400)*(i+.5)/nf+R()*200;ford.push([a,a+200])}
+const nb=6+ci;for(let i=0;i<nb;i++)bump.push(500+R()*(L-1000));
+const h0=x=>{const e=Math.min(1,Math.max(0,(x-250)/400))*Math.min(1,Math.max(0,(L-200-x)/400));let y=-(Math.sin(x/240+p1)*A1+Math.sin(x/95+p2)*A2)*e;y-=(x/L)*A3*Math.sin(x/700+p3)*e;return 330+y};
+const H=x=>{let y=h0(x);for(const f of ford){if(x>f[0]&&x<f[1]){const u=(x-f[0])/(f[1]-f[0]);y+=16*Math.sin(Math.PI*u)}}for(const b of bump){const dx=x-b;if(Math.abs(dx)<20)y-=(11+8*d)*(1-Math.abs(dx)/20)}return y};
+return{L,H,mud,ford,bump,d}}
+function trlOpen(after){const ci=chIdx(),th=TRL_TH[ci%TRL_TH.length],tries=(SV.trlTry&&SV.trlTry[level])||0,easy=tries>=3;const G0=trlGen(ci,easy);
+const live=th.k==='moutons'||th.k==='vaches',N=live?(th.k==='vaches'?2:4):Math.min(th.k==='eau'?6:5,3+Math.floor(ci/3)),allow=live?0:(ci<5||easy?1:0);
+const mu=th.k==='eau'?.32:.62,sz=th.k==='eau'?20:30,LIP=easy?14:th.k==='eau'?6:8,BL=170;
+const M={k:'trl',G:G0,th,live,N,allow,mu,sz,LIP,BL,x:120,vx:0,y:0,vy:0,air:0,ang:0,rot:0,gas:0,brk:0,t:0,res:null,cam:0,items:[],lost:0,comfort:1,A:{x:0,y:0},pv:null,pp:null,fall:[],splash:[],msg:'',msgT:0,
+reset(){M.x=120;M.vx=0;M.vy=0;M.air=0;M.t=0;M.res=null;M.lost=0;M.comfort=1;M.pv=null;M.pp=null;M.fall=[];M.items=[];M.A={x:0,y:0};if(!live){for(let i=0;i<N;i++)M.items.push({u:BL-sz/2-2-i*(sz+3),z:0,du:0,dz:0,on:1})}M.y=M.G.H(M.x);M.ui()},
+start(){M.reset()},
+ui(){let h='<div style="position:absolute;left:2%;top:2.5%;right:2%;display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><span class="tr" style="font-weight:800">🚜 '+th.t+'<br><span style="font-weight:600">'+(live?'Roule en douceur : les bêtes ne doivent pas paniquer.':'Ne fais rien tomber'+(allow?' (une perte permise)':'')+'. Ralentis dans les bosses !')+' Pas de treuil ici.</span></span><span style="pointer-events:auto"><button class="mb" id="trr">🔄 Recommencer</button></span></div>';
+if(M.res){h+='<div style="position:absolute;left:20%;right:20%;top:30%;text-align:center"><div class="tr" style="font-size:17px;font-weight:800;margin-bottom:10px">'+(M.res==='win'?'🎉 Arrivés à bon port !':M.res==='lost'?'😬 Trop de chargement perdu…':M.res==='stress'?'🐑 Les bêtes ont paniqué…':'')+'</div>'+(M.res==='win'?'<button class="mb go" id="trg" style="font-size:18px">Continuer ▶</button>':'<button class="mb go" id="trg2" style="font-size:18px">Réessayer 🔄</button>')+'</div>'}
+else h+='<button class="mb" id="trb" style="position:absolute;left:3%;bottom:5%;width:22%;height:24%;font-size:20px;background:rgba(255,255,255,.88)">◀ Frein<br><span style="font-size:13px">(reste appuyé pour reculer)</span></button><button class="mb go" id="trgz" style="position:absolute;right:3%;bottom:5%;width:22%;height:24%;font-size:22px">Gaz ▶</button>';
+mgxUI(h);mgxBtn('trr',()=>{M.reset();snd('click')});
+if(M.res==='win')mgxBtn('trg',()=>mgxClose(true));else if(M.res)mgxBtn('trg2',()=>{SV.trlTry=SV.trlTry||{};SV.trlTry[level]=(SV.trlTry[level]||0)+1;if(SV.trlTry[level]===3)note('Le paysan resserre les sangles et rehausse les ridelles : ce sera plus facile.',3.4);mgxClose(false)});
+else{const hold=(id,k)=>{const b=gid(id);if(!b)return;const on=e=>{e.preventDefault();e.stopPropagation();M[k]=1;try{b.setPointerCapture(e.pointerId)}catch(_){}},off=e=>{M[k]=0};b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointercancel',off);b.addEventListener('pointerleave',off)};hold('trgz','gas');hold('trb','brk')}},
+inZ(Z,x){return Z.some(z=>x>z[0]&&x<z[1])},
+hitch(){const c2=Math.cos(M.ang),s2=Math.sin(M.ang),cx=M.x,cy=M.y-25;return[cx+(-62)*c2-(8)*s2,cy+(-62)*s2+(8)*c2]},
+trailer(){const hz=M.hitch(),TL=150;let wx=hz[0]-TL;for(let i=0;i<4;i++){const wy=M.G.H(wx)-11,dy=hz[1]-wy;wx=hz[0]-Math.sqrt(Math.max(1,TL*TL-dy*dy))}const wy=M.G.H(wx)-11;return{hz,wx,wy,th:Math.atan2(hz[1]-wy,hz[0]-wx)}},
+step(dt){const G=M.G,g0=900;const xr=M.x-38,xf=M.x+38,yr=G.H(xr),yf=G.H(xf),gy=(yr+yf)/2,sl=(yf-yr)/76,ca=1/Math.sqrt(1+sl*sl),sa=sl*ca;
+const mud=M.inZ(G.mud,M.x),ford=M.inZ(G.ford,M.x),grip=mud?.56:ford?.75:1,massF=live?(th.k==='vaches'?1.55:1.4):1.32;
+let acc=0;const onG=!M.air;if(onG){acc+=g0*sa*.55/massF;if(M.gas){const trac=Math.min(360*grip,g0*.66*grip*ca);acc+=trac/massF*1.3}if(M.brk){if(M.vx>4)acc-=420;else acc-=110/massF}
+const vmax=(mud?85:ford?80:125);if(M.vx>vmax)acc-=(M.vx-vmax)*3;if(M.vx<-55)acc+=(-55-M.vx)*3;acc-=M.vx*(mud?.55:ford?.6:.18);if(!M.gas&&!M.brk&&Math.abs(M.vx)<6&&Math.abs(sa)<.12)M.vx*=.9}
+M.vx+=acc*dt;M.x+=M.vx*dt;if(M.x<60){M.x=60;M.vx=Math.max(0,M.vx)}
+// vertical : au sol ou en l'air
+const gy2=(G.H(M.x-38)+G.H(M.x+38))/2;if(M.air){M.vy+=g0*dt;M.y+=M.vy*dt;if(M.y>=gy2){const imp=M.vy;M.y=gy2;M.air=0;M.vy=0;if(imp>160){snd('thud');M.jolt=Math.min(1,imp/500);for(const it of M.items)if(it.on){it.dz+=imp*(.35+Math.random()*.35);it.z=Math.max(it.z,.5);it.du+=(Math.random()-.6)*imp*.5}}}}
+else{const gvy=(gy2-M.y)/dt;if(gvy>M.vy+g0*dt*1.05&&M.vx>60){M.air=1;M.vy=Math.min(M.vy,gvy)}else{M.vy=gvy;M.y=gy2}}
+const ta=Math.atan2(G.H(M.x+38)-G.H(M.x-38),76);M.ang+=M.air?(0-M.ang)*dt*.6:(ta-M.ang)*Math.min(1,dt*18);M.rot+=M.vx*dt/13;
+if(ford&&Math.abs(M.vx)>20&&Math.random()<.5)M.splash.push({x:M.x+(Math.random()-.5)*80,y:G.H(M.x)-4,vx:(Math.random()-.5)*60,vy:-80-Math.random()*90,t:0});
+// remorque et chargement
+const T2=M.trailer(),bm=[(T2.hz[0]+T2.wx)/2,(T2.hz[1]+T2.wy)/2];if(M.pp){const v2=[(bm[0]-M.pp[0])/dt,(bm[1]-M.pp[1])/dt];if(M.pv){const a2=[(v2[0]-M.pv[0])/dt,(v2[1]-M.pv[1])/dt];const k=Math.min(1,dt*70);M.A.x+=(Math.max(-3000,Math.min(3000,a2[0]))-M.A.x)*k;M.A.y+=(Math.max(-3000,Math.min(3000,a2[1]))-M.A.y)*k}M.pv=v2}M.pp=bm;
+const th2=T2.th,tx=Math.cos(th2),ty=Math.sin(th2),nx=ty,ny=-tx,gex=-M.A.x,gey=g0-M.A.y,gt=gex*tx+gey*ty,gn=gex*nx+gey*ny;M.T=T2;
+if(live){const sh=Math.max(0,Math.hypot(M.A.x,M.A.y)-560)/300+Math.max(0,Math.abs(th2)-.42)*1.6+(M.jolt||0)*2;M.comfort-=sh*dt*(th.k==='vaches'?.42:.36);M.comfort=Math.min(1,M.comfort+dt*.03);M.jolt=0;if(M.comfort<=0&&!M.res){M.comfort=0;M.end('stress')}}
+else{for(const it of M.items){if(!it.on)continue;const inC=it.z<=.01;
+if(inC){if(gn>0){it.dz+=gn*dt;it.z+=it.dz*dt}else{it.dz=0;it.z=0}const N2=Math.max(0,-gn);if(Math.abs(it.du)<3&&Math.abs(gt)<=M.mu*N2)it.du=0;else{const s2=it.du!==0?Math.sign(it.du):Math.sign(gt);it.du+=(gt-s2*M.mu*.85*N2)*dt;if(s2!==0&&Math.sign(it.du)!==s2&&Math.abs(gt)<M.mu*N2)it.du=0}}
+else{it.dz+=gn*dt;it.z+=it.dz*dt;it.du+=gt*dt;if(it.z<=0){it.z=0;if(it.dz<-80)snd('click');it.dz=-it.dz*.22;if(Math.abs(it.dz)<30)it.dz=0}}
+it.u+=it.du*dt;
+// ridelle avant
+if(it.u>BL-sz/2){it.u=BL-sz/2;it.du=-it.du*.2}
+// arrière : petite ridelle, sinon ça tombe
+if(it.u<sz/2){if(it.z<LIP&&it.u>-sz*.1){it.u=Math.max(it.u,sz/2);if(it.du<0)it.du=-it.du*.15}if(it.u<0||it.z>=LIP&&it.u<sz/2-2){const wp=M.bedW(it.u,it.z);it.on=0;M.lost++;M.fall.push({x:wp[0],y:wp[1],vx:M.vx*.6-40,vy:-60,r:0,t:0});snd('thud');M.msg='Oh non, '+(th.k==='eau'?'un bidon':'une botte')+' est tombé'+(th.k==='eau'?'':'e')+' !';M.msgT=2.5;if(M.lost>M.allow&&!M.res)setTimeout(()=>{if(!M.res)M.end('lost')},900)}}}
+const on=M.items.filter(i=>i.on).sort((a,b)=>a.u-b.u);for(let i=1;i<on.length;i++){const a=on[i-1],b=on[i],ov=sz-(b.u-a.u);if(ov>0&&Math.abs(a.z-b.z)<sz*.7){a.u-=ov/2;b.u+=ov/2;const m=(a.du+b.du)/2;a.du=m;b.du=m}}}
+for(const f of M.fall){f.vy+=g0*dt;f.x+=f.vx*dt;f.y+=f.vy*dt;f.r+=dt*4;const gg=G.H(f.x);if(f.y>gg-8){f.y=gg-8;f.vy=-f.vy*.3;f.vx*=.6}}
+for(const p of M.splash){p.t+=dt;p.vy+=g0*dt;p.x+=p.vx*dt;p.y+=p.vy*dt}M.splash=M.splash.filter(p=>p.t<.8);
+if(!M.res&&M.x>=G.L-160){M.end('win')}},
+bedW(u,z){const T2=M.T||M.trailer(),c2=Math.cos(T2.th),s2=Math.sin(T2.th),lx=u-30,ly=-24-z;return[T2.wx+lx*c2-ly*s2,T2.wy+lx*s2+ly*c2]},
+end(r){M.res=r;M.gas=0;M.brk=0;if(r==='win'){snd('chime');vib(40)}else snd('click');M.ui()},
+tick(dt){if(!(dt>0))return;M.t+=dt;const n=4;for(let i=0;i<n;i++){if(M.res==='win'){M.gas=0;M.brk=1}M.step(dt/n)}if(M.msgT>0)M.msgT-=dt;M.cam+=((M.x-440)-M.cam)*Math.min(1,dt*4)},
+draw(x,tm){const G=M.G,cx=M.cam;const sk=x.createLinearGradient(0,0,0,450);sk.addColorStop(0,'#8fc6e8');sk.addColorStop(1,'#eef0dc');x.fillStyle=sk;x.fillRect(-400,-200,1600,900);
+x.fillStyle='#a9bca0';x.beginPath();x.moveTo(-400,450);for(let i=-400;i<=1200;i+=30)x.lineTo(i,240-30*Math.sin((i+cx*.2)*.008)-18*Math.sin((i+cx*.2)*.021));x.lineTo(1200,450);x.fill();
+x.save();x.translate(-cx,0);
+const x0=cx-420,x1=cx+1220;x.fillStyle='#8a6a42';x.beginPath();x.moveTo(x0,700);for(let X=x0;X<=x1;X+=8)x.lineTo(X,G.H(X));x.lineTo(x1,700);x.fill();x.strokeStyle='#6f8f3a';x.lineWidth=4;x.beginPath();for(let X=x0;X<=x1;X+=8)X===x0?x.moveTo(X,G.H(X)):x.lineTo(X,G.H(X));x.stroke();
+for(const z of G.mud){if(z[1]<x0||z[0]>x1)continue;x.strokeStyle='#4a3420';x.lineWidth=9;x.beginPath();for(let X=z[0];X<=z[1];X+=8)X===z[0]?x.moveTo(X,G.H(X)+2):x.lineTo(X,G.H(X)+2);x.stroke();x.fillStyle='#3a2816';for(let X=z[0];X<z[1];X+=23)x.fillRect(X,G.H(X)-2,6,3)}
+for(const z of G.ford){if(z[1]<x0||z[0]>x1)continue;x.fillStyle='rgba(70,150,200,.7)';x.beginPath();x.moveTo(z[0],G.H(z[0])-1);for(let X=z[0];X<=z[1];X+=8)x.lineTo(X,Math.min(G.H(X),G.H(z[0])+2));for(let X=z[1];X>=z[0];X-=8)x.lineTo(X,G.H(X));x.fill();x.strokeStyle='rgba(255,255,255,.6)';x.lineWidth=1.5;for(let i=0;i<5;i++){const X=z[0]+((i*47+tm*30)%(z[1]-z[0]));x.beginPath();x.moveTo(X,G.H(z[0])+1);x.lineTo(X+12,G.H(z[0])+1);x.stroke()}}
+for(const b of G.bump){if(b<x0||b>x1)continue;x.fillStyle='#8d8a85';x.beginPath();x.ellipse(b,G.H(b)+2,16,9,0,Math.PI,0);x.fill();x.fillStyle='#a7a39c';x.beginPath();x.ellipse(b-4,G.H(b)-1,7,4,0,0,7);x.fill()}
+// panneaux départ / arrivée
+x.fillStyle='#5a3c1e';x.fillRect(G.L-150,G.H(G.L-150)-60,5,60);x.fillStyle='#f4ead0';x.fillRect(G.L-190,G.H(G.L-150)-76,84,22);x.fillStyle='#3a2a1a';x.font='800 12px Arial';x.textAlign='center';x.fillText(live?'PRÉ / ESTIVE':'BERGERIE',G.L-148,G.H(G.L-150)-61);
+{const fx=G.L-60,fy=G.H(fx);x.fillStyle='#d8c8a8';x.fillRect(fx,fy-60,110,60);x.fillStyle='#a8512a';x.beginPath();x.moveTo(fx-8,fy-60);x.lineTo(fx+55,fy-92);x.lineTo(fx+118,fy-60);x.fill()}
+const T2=M.T||M.trailer();
+// remorque
+x.save();x.translate(T2.wx,T2.wy);x.rotate(T2.th);x.fillStyle='#3a3a3a';x.fillRect(0,-4,Math.hypot(T2.hz[0]-T2.wx,T2.hz[1]-T2.wy),4);
+x.fillStyle='#6b6f74';x.fillRect(-30,-14,BL,8);
+if(live){x.fillStyle='#8a6a3a';x.fillRect(-32,-66,BL+4,54);x.fillStyle='#6b4a2a';for(let i=0;i<5;i++)x.fillRect(-32,-64+i*11,BL+4,3);x.fillStyle='#2a2016';for(let i=0;i<7;i++)x.fillRect(-24+i*23,-58,12,22);
+const n=M.N;for(let i=0;i<n;i++){const ax=-22+(i+.5)*(BL-16)/n,bob=Math.sin(tm*6+i)*(1-M.comfort)*3;if(th.k==='moutons'){x.fillStyle='#f6f3ec';x.beginPath();x.arc(ax,-42+bob,9,0,7);x.fill();x.fillStyle='#3a332c';x.beginPath();x.ellipse(ax+7,-42+bob,4,5.5,0,0,7);x.fill()}else{x.fillStyle='#f4f4f0';x.beginPath();x.ellipse(ax,-44+bob,13,10,0,0,7);x.fill();x.fillStyle='#222';x.beginPath();x.arc(ax-4,-47+bob,4,0,7);x.fill();x.fillStyle='#e8b0a8';x.beginPath();x.ellipse(ax+10,-40+bob,5,4,0,0,7);x.fill()}}}
+else{x.fillStyle='#5a5a5a';x.fillRect(BL-33,-46,5,34);x.fillRect(-31,-14-M.LIP,4,M.LIP);
+for(const it of M.items){if(!it.on)continue;const ux=it.u-30,uy=-14-it.z;if(th.k==='eau'){x.fillStyle='#3a7fd8';rr(x,ux-sz/2,uy-26,sz,26,4);x.fill();x.fillStyle='#2a5fa8';x.fillRect(ux-sz/2,uy-18,sz,3);x.fillStyle='#ddd';x.fillRect(ux-3,uy-30,6,4)}else{x.fillStyle='#e8c65a';x.fillRect(ux-sz/2,uy-20,sz,20);x.strokeStyle='#b8963a';x.lineWidth=1;for(let k=0;k<4;k++){x.beginPath();x.moveTo(ux-sz/2+3,uy-17+k*5);x.lineTo(ux+sz/2-3,uy-17+k*5);x.stroke()}x.strokeStyle='#8a5a2a';x.lineWidth=1.5;x.beginPath();x.moveTo(ux-6,uy-20);x.lineTo(ux-6,uy);x.moveTo(ux+6,uy-20);x.lineTo(ux+6,uy);x.stroke()}}}
+x.restore();x.fillStyle='#151311';x.beginPath();x.arc(T2.wx,T2.wy,11,0,7);x.fill();x.fillStyle='#8a8f96';x.beginPath();x.arc(T2.wx,T2.wy,5,0,7);x.fill();
+for(const f of M.fall){x.save();x.translate(f.x,f.y);x.rotate(f.r);if(th.k==='eau'){x.fillStyle='#3a7fd8';x.fillRect(-sz/2,-13,sz,26)}else{x.fillStyle='#e8c65a';x.fillRect(-sz/2,-10,sz,20)}x.restore()}
+// le Cherokee du jeu
+onCtx(x,()=>{const sv={c,a,v:{x:v.x,y:v.y},rot:rot.slice(),work,flatW};try{c={x:M.x+Math.sin(M.ang)*(WL[0][1]+R-2),y:M.y-Math.cos(M.ang)*(WL[0][1]+R-2)};a=M.ang;v.x=M.vx;v.y=0;rot[0]=rot[1]=M.rot;work=0;flatW=-1;truck()}catch(e){}finally{c=sv.c;a=sv.a;v.x=sv.v.x;v.y=sv.v.y;rot=sv.rot;work=sv.work;flatW=sv.flatW}});
+x.fillStyle='rgba(180,220,245,.85)';for(const p of M.splash){x.beginPath();x.arc(p.x,p.y,3,0,7);x.fill()}
+x.restore();
+// barre de progression + état
+const pr=Math.min(1,M.x/(G.L-160));x.fillStyle='rgba(0,0,0,.35)';rr(x,250,92,300,12,6);x.fill();x.fillStyle='#ffd24a';rr(x,250,92,300*pr,12,6);x.fill();x.font='18px serif';x.textAlign='center';x.textBaseline='middle';x.fillText('🏡',560,98);
+x.font='800 14px Arial';x.fillStyle='#223';x.textAlign='left';if(live){x.fillText((th.k==='vaches'?'🐄':'🐑')+' Calme des bêtes',250,120);x.fillStyle='rgba(0,0,0,.3)';rr(x,250,128,160,10,5);x.fill();x.fillStyle=M.comfort>.5?'#4ec36a':M.comfort>.25?'#f2a93b':'#e5533a';rr(x,250,128,160*Math.max(0,M.comfort),10,5);x.fill()}else x.fillText('Chargement : '+(M.N-M.lost)+' / '+M.N+(M.allow?'  (une perte permise)':''),250,122);
+if(M.inZ(G.mud,M.x)){x.fillStyle='#4a3420';x.font='800 15px Arial';x.textAlign='center';x.fillText('Boue ! Garde de l’élan',400,160)}else if(M.inZ(G.ford,M.x)){x.fillStyle='#1f6fa0';x.font='800 15px Arial';x.textAlign='center';x.fillText('Gué : doucement…',400,160)}
+if(M.msgT>0){x.fillStyle='rgba(180,40,30,.85)';rr(x,250,170,300,30,10);x.fill();x.fillStyle='#fff';x.font='800 14px Arial';x.textAlign='center';x.fillText(M.msg,400,186)}}};
+M.after=win=>{if(win){SV.trlL=level;SV.hearts+=3;cardQ.push({now:1,t:'🚜 Mission accomplie',L:[['v','<b>'+th.who+' :</b> '+th.thanks],['a',live?'Pas une bête secouée. Le Cherokee a été parfait.':'Tout est arrivé entier. Le Cherokee a tenu bon !'],['n','+3 ❤']]});saveTrip()}else{choice('trlre','La mission n’est pas finie',th.who+' compte sur vous.',[['🔄 On réessaie','On recommence la montée.'],['🔄 On réessaie, doucement cette fois','Promis, tout en douceur.']],()=>setTimeout(()=>trlOpen(after),250))}try{win&&after&&after(win)}catch(e){}};
+mgxOpen(M)}
+// déclenchement : une personne devant une ferme ou un magasin agricole nous arrête (obligatoire)
+var trlWX=null;
+function trlWorld(){try{if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd)return;if(SV.trlL===level||SV.trlAsk===level||onFerry())return;const f=chP();if(f<.16||f>.92)return;if(typeof storyBusy==='function'&&storyBusy()&&f<.85)return;
+const th=TRL_TH[chIdx()%TRL_TH.length];SV.trlAsk=level;trlWX=c.x+460;say(th.who+' nous fait de grands signes devant '+(th.where==='ferme'?'sa ferme':'le magasin agricole')+'… On s’arrête.',3.6,1);
+stopReq={x:c.x+340,cb:()=>setTimeout(()=>{cardQ.unshift({now:1,t:'🚜 '+th.who+' nous arrête',L:[['v','<b>'+th.who+' :</b> '+th.ask],['a','Une remorque plus grande que le Cherokee… sur une piste de montagne. Ça me plaît.'],['m','On ne peut pas laisser les bêtes comme ça. On y va !']],cb:()=>trlOpen()});},300)}}catch(e){}}
+mgTick=(function(o){return function(dt){o(dt);trlWorld()}})(mgTick);
+npcDraw=(function(o){return function(tm){o(tm);try{if(trlWX!=null&&Math.abs(trlWX-c.x)<1600&&SV.trlAsk===level){const th=TRL_TH[chIdx()%TRL_TH.length],bx=trlWX+40,by=T(bx);
+if(th.where==='ferme'){g.fillStyle='#d8c8a8';g.fillRect(bx,by-70,120,70);g.fillStyle='#a8512a';g.beginPath();g.moveTo(bx-10,by-70);g.lineTo(bx+60,by-104);g.lineTo(bx+130,by-70);g.fill();g.fillStyle='#5a3c1e';g.fillRect(bx+48,by-34,24,34)}
+else{g.fillStyle='#e9e2d0';g.fillRect(bx,by-64,130,64);g.fillStyle='#3a7a3a';g.fillRect(bx-4,by-78,138,16);g.fillStyle='#fff';g.font='800 10px Arial';g.textAlign='center';g.fillText('MAGASIN AGRICOLE',bx+65,by-67);g.fillStyle='#2a3036';g.fillRect(bx+14,by-44,30,24);g.fillRect(bx+86,by-44,30,24)}
+g.fillStyle='#8a6a42';g.fillRect(bx+140,by-26,60,10);g.fillStyle='#3a3a3a';g.beginPath();g.arc(bx+170,by-8,8,0,7);g.fill();
+npcFig(trlWX,T(trlWX),th.lk,SV.trlL!==level&&!MGX,tm)}}catch(e){}}})(npcDraw);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.06',GAME_DATE='22/10/2026';
+const GAME_VER='2.07',GAME_DATE='22/10/2026';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
