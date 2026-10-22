@@ -35,6 +35,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.31** : jantes encore réduites (`rimR()` = 17×0,44, le dessin de la jante est mis à l'échelle), roue du changement de roue à 0,46 R.
 **2.30** : jantes à taille fixe (`rimR()` = rayon d'une jante 15 pouces) : en 33″ et 35″ c'est le flanc du pneu qui grandit, pas la jante ; même proportion pour la roue du mini-jeu de changement de roue.
 **2.29** : une icône dessinée propre à chaque produit des commerces (16 : 3 pizzas, café, et les 12 produits corses ; `HI.p_*`, `prodIc()`), affichée en grand sur les boutons d'achat.
 **2.28** : deux tiers des emplacements de « Chez Marcel » deviennent des commerces corses (`VEND`, `pzVend(j)`, `vendDraw`) : U Casgiu (fromagerie : brocciu, tomme, fiadone), U Salumu (charcuterie : figatellu, lonzu, coppa), Canistrelli (biscuiterie : canistrelli, beignets au brocciu, falculelle), A Castagna (châtaignes grillées, pulenda, crème de châtaigne) ; chacun a son marchand, ses phrases et ses produits (`VFOOD` : effets sur la faim et l'énergie).
