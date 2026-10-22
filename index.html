@@ -846,7 +846,7 @@ const gf=.5*Math.min(z[0],z[1])+.25*(z[0]+z[1]),mu=1.15*gf*(gf>.5?1-.15*wI:1)*(1
 const share=i?(awd?.5:0):(awd?.5:1),Fd=(SV.sabo?.55:1)*(low?1000:520)*(boostT>0?1.8:1)*(flatW>=0?.45:1)*(st.hb?.2:1),vmax=(low?190:480)*(boostT>0?1.25:1)*(flatW>=0?.5:1)*(SV.cus&&SV.cus.psi?.94:1);
 let Ft=-.06*vt;
 if(gasOn&&!neu)Ft+=share*Fd*Math.min(1.5,Math.max(0,1-vt/vmax));
-if(st.brake){if(vt>12)Ft-=330*Math.min(1,vt/40);else if(!neu)Ft-=.35*(share||.2)*Fd*Math.max(0,1+vt/(vmax*.4))}
+if(st.brake){if(vt>12)Ft-=330*Math.min(1,vt/40);else if(!neu)Ft-=.62*(share||.2)*Fd*Math.max(0,1+vt/(vmax*.5))}
 if(!gasOn&&!st.brake&&!winch&&!neu&&Math.abs(vt)<10)Ft=-vt*25;
 if(st.hb&&i===0)Ft=-vt*80;
 const lim=mu*Fn,FtR=Ft;Ft=Math.max(-lim,Math.min(lim,Ft));let spin=0;if(gasOn&&!neu&&share>0&&FtR>lim)spin=Math.min(18,5+14*(FtR-lim)/Math.max(30,lim));
@@ -1440,7 +1440,7 @@ const MISS=[
 const WHO={m:['MILA','#7b3fa0'],a:['ANDREA','#b5532a'],n:['','#555'],v:['','#2b5d3a']};
 const CHAP=[
 {p:'Village de Sari · la tortue d’Hermann',fin:'Village de Sari',e:'🐢',totem:['tortue','🐢','Tortue d’Hermann',1,'ground'],
-L:[['n','Des années plus tard, Mila et Andrea reviennent en Corse… avec le même vieux Cherokee bordeaux.'],['m','La plage de Fautea… la tour génoise est toujours là. Tu te souviens, mon cœur ?'],['a','Comment oublier ? On avait vingt ans et on dormait dans la voiture.'],['m','Cette fois, je veux revoir les tortues d’Hermann dans le maquis.'],['n','Dans la boîte à gants, Andrea cache une petite boîte. Il ne dit rien… pour l’instant.']],
+L:[['n','Des années plus tard, Mila et Andrea reviennent en Corse… avec le même vieux Cherokee.'],['m','La plage de Fautea… la tour génoise est toujours là. Tu te souviens, mon cœur ?'],['a','Comment oublier ? On avait vingt ans et on dormait dans la voiture.'],['m','Cette fois, je veux revoir les tortues d’Hermann dans le maquis.'],['n','Dans la boîte à gants, Andrea cache une petite boîte. Il ne dit rien… pour l’instant.']],
 stops:[{f:.04,n:'Plage de Fautea',e:'🏖️',L:[['m','La tour génoise ! Elle surveille la mer depuis des siècles.'],['a','Rien n’a changé ici. C’est rassurant.']]},
 {f:.4,n:'Maquis de Fautea',e:'🌿',L:[['m','Ça sent l’immortelle et le ciste… l’odeur de la Corse.'],['a','Ouvre l’œil : c’est le pays des tortues d’Hermann.']]},
 {f:.78,n:'Village de Sari',e:'⛪',L:[['a','Sari ! L’église est toujours là.'],['m','Ce soir, on dort dans le Cherokee à côté de l’église. Comme avant.'],['a','Avec toi, le Cherokee est le plus bel hôtel du monde, mon amour.']]}]},
@@ -1841,8 +1841,8 @@ const NPCD=[
  {f:.24,n:'Petru, berger',lk:['#7a5a3a','#3d3a33',2,'#cfcfcf',1,2,0],t:'Je vous ai reconnus ! Tout le village parle de votre enquête… mais à voix basse.'},
  {f:.74,n:'Un ornithologue',lk:['#6b7a3a','#4a4a3a',3,'#9a9a9a',1,3,0],t:'Chut… les hérons sont timides par ici. Coupez le moteur si vous vous arrêtez !'}],
 [{f:.1,n:'Un berger de Tenda',lk:['#6a4a2a','#2f2f35',2,'#cfcfcf',1,2,0],t:'Le désert des Agriates commence là-bas. Pas un village sur des kilomètres !'},
- {f:.4,sto:1,n:'Madame Santoni',lk:['#2f2f35','#2f2f35',0,'#e8e8e8',0,4,1],L:[['v','<b>Madame Santoni :</b> « Un monsieur en costume est passé hier. Il demandait si une scientifique roulait dans un vieux Cherokee bordeaux. »'],['a','Ils nous cherchent…'],['m','Qu’ils cherchent. Mon dossier avance quand même.'],['v','<b>Madame Santoni :</b> « Je ne lui ai rien dit, ma fille. Allez, filez ! »']]},
- {f:.22,n:'Ange, garde du littoral',lk:['#4f6b3a','#3d3a33',1,'#3b2a1d',0,0,0],t:'Encore vous ! Faites attention : Marchetti pose des questions sur un Cherokee bordeaux.'},
+ {f:.4,sto:1,n:'Madame Santoni',lk:['#2f2f35','#2f2f35',0,'#e8e8e8',0,4,1],L:[['v','<b>Madame Santoni :</b> « Un monsieur en costume est passé hier. Il demandait si une scientifique roulait dans un vieux Cherokee XJ. »'],['a','Ils nous cherchent…'],['m','Qu’ils cherchent. Mon dossier avance quand même.'],['v','<b>Madame Santoni :</b> « Je ne lui ai rien dit, ma fille. Allez, filez ! »']]},
+ {f:.22,n:'Ange, garde du littoral',lk:['#4f6b3a','#3d3a33',1,'#3b2a1d',0,0,0],t:'Encore vous ! Faites attention : Marchetti pose des questions sur un vieux Cherokee.'},
  {f:.74,n:'Un plaisancier',lk:['#f4f4f4','#2f4f7a',1,'#e3c27a',0,0,0],t:'Saint-Florent est au bout de la piste. Le golfe est magnifique en fin de journée.'}],
 [{f:.15,n:'Un marin de Bonifacio',lk:['#2f4f7a','#f4f4f4',1,'#3b2a1d',1,0,0],t:'Les falaises de calcaire vues de la mer… vous allez adorer la traversée !'},
  {f:.45,sto:1,n:'Giovanna, ornithologue sarde',lk:['#4f8a5a','#3d3a33',3,'#1a1410',0,3,1],L:[['v','<b>Giovanna, ornithologue sarde :</b> « Benvenuti ! Ici, le N-12 est interdit depuis des années. Nos faucons d’Éléonore se portent très bien. »'],['m','Alors vous êtes mon groupe témoin ! Je peux comparer avec vos données ?'],['v','<b>Giovanna :</b> « Bien sûr. La nature n’a pas de frontière. »']]},
@@ -2010,13 +2010,13 @@ cistude:(x,t)=>aShell(x,t,{sh:'#2e3a2a',ed:'#1c241a',ln:'#141a12',sk:'#3a3a2c',d
 lezard:(x,t)=>{const w2=Math.sin(t*5)*3;x.strokeStyle='#5a7a30';x.lineWidth=3;x.lineCap='round';x.beginPath();x.moveTo(10,2);x.lineTo(16,9);x.moveTo(-10,2);x.lineTo(-16,9);x.moveTo(12,-2);x.lineTo(18,-8);x.moveTo(-10,-2);x.lineTo(-16,-8);x.stroke();x.lineWidth=5;x.beginPath();x.moveTo(-18,0);x.quadraticCurveTo(-34,4+w2,-50,-2);x.stroke();x.lineCap='butt';aE(x,0,0,22,6,0,'#6c8a3e');x.fillStyle='#3f5a22';for(let i=-3;i<=3;i++)aE(x,i*5,-1,1.6,1.6,0,'#3f5a22');aE(x,24,-1,8,4.5,0,'#7a9a4a');aEye(x,26,-3,1.4)},
 herisson:(x,t)=>{x.fillStyle='#2a1c12';x.fillRect(-12,6,4,5);x.fillRect(8,6,4,5);x.fillStyle='#6b5137';x.beginPath();x.moveTo(-26,8);for(let i=0;i<=12;i++){const a2=Math.PI+i*Math.PI/12,r=i%2?26:20;x.lineTo(Math.cos(a2)*r,8+Math.sin(a2)*r*.85)}x.lineTo(26,8);x.fill();x.strokeStyle='#a88a62';x.lineWidth=1.3;x.beginPath();for(let i=0;i<9;i++){const a2=Math.PI+.25+i*.32;x.moveTo(Math.cos(a2)*8,6+Math.sin(a2)*7);x.lineTo(Math.cos(a2)*19,6+Math.sin(a2)*16)}x.stroke();aP(x,[[14,0],[34,6],[14,10]],'#d8b890');aE(x,34,6,2.6,2.4,0,'#1a1410');aEye(x,22,2,1.6)},
 abeille:(x,t)=>{const f=Math.abs(Math.sin(t*40));x.globalAlpha*=.6;aE(x,-2,-10-2*f,10,6*f+2,-.4,'#dfefff');aE(x,6,-9-2*f,8,5*f+2,.3,'#dfefff');x.globalAlpha/=.6;aE(x,0,0,18,11,0,'#f2c12e');x.fillStyle='#2a1c12';x.fillRect(-8,-10,5,20);x.fillRect(2,-10,5,20);aE(x,18,-1,7,7,0,'#2a1c12');aP(x,[[-18,0],[-26,1],[-18,3]],'#2a1c12');aEye(x,21,-3,1.6)},
-huppe:(x,t)=>{x.strokeStyle='#5a3e20';x.lineWidth=3;x.beginPath();x.moveTo(-26,16);x.lineTo(26,16);x.stroke();x.fillStyle='#3a2a1a';x.fillRect(-2,8,2,8);x.fillRect(4,8,2,8);
+huppe:(x,t)=>{perchD(x,()=>{x.strokeStyle='#5a3e20';x.lineWidth=3;x.beginPath();x.moveTo(-26,16);x.lineTo(26,16);x.stroke()});x.fillStyle='#3a2a1a';x.fillRect(-2,8,2,8);x.fillRect(4,8,2,8);
 aP(x,[[-14,-2],[-34,4],[-32,10],[-12,6]],'#1a1410');x.fillStyle='#fff';x.fillRect(-30,5,4,4);aE(x,0,0,17,10,-.15,'#e0a070');for(let i=0;i<4;i++){x.fillStyle=i%2?'#f2f0ea':'#1a1410';x.fillRect(-12+i*5,-6,4,12)}
 aE(x,15,-10,8,7,0,'#e0a070');for(let i=0;i<6;i++){const a2=-2.6+i*.32;x.save();x.translate(13,-14);x.rotate(a2);aE(x,0,-7,2.6,7,0,'#e8963a');aE(x,0,-13,2.4,2.4,0,'#1a1410');x.restore()}
 x.strokeStyle='#2a1c12';x.lineWidth=2;x.beginPath();x.moveTo(22,-10);x.quadraticCurveTo(30,-9,36,-5);x.stroke();aEye(x,17,-12,1.6)},
 sittelle:(x,t)=>{x.strokeStyle='#5a3e20';x.lineWidth=3;x.beginPath();x.moveTo(-26,12);x.lineTo(26,12);x.stroke();aP(x,[[-12,-2],[-24,0],[-12,5]],'#5f7186');aE(x,0,0,16,9,-.1,'#7f93a8');aE(x,4,4,11,5,0,'#e9e1d6');aE(x,14,-7,8,7,0,'#7f93a8');aE(x,15,-3,6,4,0,'#f4f1ea');
 x.fillStyle='#14100c';x.beginPath();x.ellipse(13,-11,7,3.6,-.2,Math.PI,0);x.fill();x.fillStyle='#fff';x.fillRect(8,-9,13,1.8);x.fillStyle='#14100c';x.fillRect(9,-6.5,12,1.8);aP(x,[[21,-7],[30,-6],[21,-4]],'#555');aEye(x,17,-6,1.4)},
-chouette:(x,t)=>{const bl=(t%4)<.15;x.strokeStyle='#5a3e20';x.lineWidth=3;x.beginPath();x.moveTo(-24,22);x.lineTo(24,22);x.stroke();aE(x,0,4,17,19,0,'#9a7048');x.fillStyle='#f0e4c8';for(const [dx,dy] of[[-6,8],[5,12],[-2,16],[8,4],[-9,14]])aE(x,dx,dy,1.8,1.4,0,'#f0e4c8');aE(x,0,-14,16,13,0,'#9a7048');aE(x,-6,-14,8,8,0,'#e8d8b8');aE(x,6,-14,8,8,0,'#e8d8b8');
+chouette:(x,t)=>{const bl=(t%4)<.15;perchD(x,()=>{x.strokeStyle='#5a3e20';x.lineWidth=3;x.beginPath();x.moveTo(-24,22);x.lineTo(24,22);x.stroke()});aE(x,0,4,17,19,0,'#9a7048');x.fillStyle='#f0e4c8';for(const [dx,dy] of[[-6,8],[5,12],[-2,16],[8,4],[-9,14]])aE(x,dx,dy,1.8,1.4,0,'#f0e4c8');aE(x,0,-14,16,13,0,'#9a7048');aE(x,-6,-14,8,8,0,'#e8d8b8');aE(x,6,-14,8,8,0,'#e8d8b8');
 if(bl){x.fillStyle='#3a2a1a';x.fillRect(-10,-14,8,1.6);x.fillRect(2,-14,8,1.6)}else{aE(x,-6,-14,4.4,4.4,0,'#f2c12e');aE(x,6,-14,4.4,4.4,0,'#f2c12e');aEye(x,-6,-14,2.4);aEye(x,6,-14,2.4)}aP(x,[[-2,-9],[2,-9],[0,-4]],'#5a4a3a');x.fillStyle='#e8a030';x.fillRect(-6,20,3,3);x.fillRect(3,20,3,3)},
 lievre:(x,t)=>aQuad(x,t,{L:44,H:20,lg:9,c:'#a68058',be:'#e8dcc6',earL:18,ec:'#a68058',earT:'#2a1c12',tail:'puff',neck:.55}),
 chevre:(x,t)=>aQuad(x,t,{L:52,H:22,lg:18,c:'#4b3a2e',hd:'#5a4636',horns:'goat',hc:'#8a7658',beard:1,tail:'short',earL:6}),
@@ -2026,6 +2026,7 @@ cerf:(x,t)=>aQuad(x,t,{L:62,H:24,lg:24,c:'#8a6038',be:'#c8a878',rump:'#efe2c8',h
 sanglier:(x,t)=>aQuad(x,t,{L:58,H:26,lg:12,c:'#3d3029',snout:'pig',bristle:1,tusk:1,tail:'short',earL:7}),
 cheval:(x,t)=>aQuad(x,t,{L:64,H:24,lg:26,c:'#4a2e1c',lc:'#2a1a10',mane:'#1a1410',mn:'#1a1410',tail:'horse',snout:'long',earL:7,neck:1.05}),
 vache:(x,t)=>aQuad(x,t,{L:66,H:28,lg:20,c:'#9a6a3e',be:'#c89a6a',mz:'#e8c8a8',tail:'cow',horns:'goat',hc:'#e8dcc0',earL:5,neck:.55})};
+var perchM=null;function perchD(x,f){if(perchM){x.save();x.setTransform(perchM);f();x.restore()}else f()}
 function artA(x,id,t){const f=ART[id];if(f){x.save();f(x,t||0);x.restore()}else{x.fillStyle='#fff';x.beginPath();x.arc(0,0,20,0,7);x.fill()}}
 
 // ===== v37 : cinématique d'ouverture en Bretagne =====
@@ -2619,7 +2620,7 @@ g.fillStyle=dusk?'#2a3a2a':'#3f6b3a';for(const px of[Wd*.05,Wd*.17]){g.fillRect(
 function startOutro(){fn=null;ot={ph:'prop',t:0,beat:0,said:-1,cr:0};otT0=0;paused=true;document.body.classList.add('cine');gid('bzs').style.display='none';gid('bzx').style.display='none'}
 function otNext(){if(!ot)return;gid('bzx').style.display='none';if(ot.ph==='prop'){fadeTo(()=>{ot.ph='cred';ot.t=0})}else if(ot.ph==='cred'){fadeTo(()=>{ot.ph='tbc';ot.t=0})}else{ot=null;document.body.classList.remove('cine');gid('bzx').style.display='none';paused=false;last=performance.now();SV.outroDone=1;saveTrip();note('📓 Pour revivre un chapitre : Journal ✍️ dans le carnet de Mila',4)}}
 function credLines(){const nOb=Object.keys(OBALL).length,ph=(SV.ph||[]).length,sm=Object.keys(SV.smp||{}).length,sk=Object.keys(SV.sick||{}).length,dc=(SV.docs||[]).length;
-return[['t','Voyage en amoureux'],['s','une histoire de Mila & Andrea'],['',''],['h','Avec'],['','Mila · la scientifique'],['','Andrea · le pilote et le mécano'],['','le chien · copilote officiel'],['','le Cherokee bordeaux'],['','Rafale & Petit Tonnerre, en Bretagne'],['',''],['h','Et aussi'],['','Lucia Pieri · la gendarme intègre'],['','Clara · La Gazette de l’Île'],['','Ange, Petru, Maria, Ghjulia, Dumè'],['','Lisa, Mme Santoni, Giovanna, Antoine'],['','Marcel · les meilleures pizzas de l’île'],['','Marchetti · en prison'],['','le Conseiller · mis en examen'],['',''],['h','Le carnet de Mila'],['','📷 '+ph+' / '+nOb+' espèces photographiées'],['','🧪 '+sm+' échantillons analysés'],['','🩺 '+sk+' animaux malades repérés'],['','💚 '+(SV.help||0)+' animaux aidés'],['','📄 '+dc+' documents réunis'],['','❤ '+SV.hearts+' cœurs'],['','🗺️ 10 chapitres · de Fautea à Fautea'],['',''],['h','Merci d’avoir joué'],['s','Fautea, Corse · Bretagne']]}
+return[['t','Voyage en amoureux'],['s','une histoire de Mila & Andrea'],['',''],['h','Avec'],['','Mila · la scientifique'],['','Andrea · le pilote et le mécano'],['','le chien · copilote officiel'],['','le Cherokee XJ'],['','Rafale & Petit Tonnerre, en Bretagne'],['',''],['h','Et aussi'],['','Lucia Pieri · la gendarme intègre'],['','Clara · La Gazette de l’Île'],['','Ange, Petru, Maria, Ghjulia, Dumè'],['','Lisa, Mme Santoni, Giovanna, Antoine'],['','Marcel · les meilleures pizzas de l’île'],['','Marchetti · en prison'],['','le Conseiller · mis en examen'],['',''],['h','Le carnet de Mila'],['','📷 '+ph+' / '+nOb+' espèces photographiées'],['','🧪 '+sm+' échantillons analysés'],['','🩺 '+sk+' animaux malades repérés'],['','💚 '+(SV.help||0)+' animaux aidés'],['','📄 '+dc+' documents réunis'],['','❤ '+SV.hearts+' cœurs'],['','🗺️ 10 chapitres · de Fautea à Fautea'],['',''],['h','Merci d’avoir joué'],['s','Fautea, Corse · Bretagne']]}
 function otTick(t){const dt=otT0?Math.min(.05,(t-otT0)/1000):0;otT0=t;if(!ot)return;ot.t+=dt;const T2=ot.t,tm=t/1000,k=HH/420,Wd=W/k,gy=330;g.setTransform(DPR*k,0,0,DPR*k,0,0);
 if(ot.ph==='prop'){const sk=g.createLinearGradient(0,0,0,300);sk.addColorStop(0,'#3a2f63');sk.addColorStop(.5,'#e07a68');sk.addColorStop(1,'#ffc98a');g.fillStyle=sk;g.fillRect(0,0,Wd,420);
 g.fillStyle='#ffd88a';g.beginPath();g.arc(Wd*.7,246,40,0,7);g.fill();g.fillStyle='#4a6a96';g.fillRect(0,250,Wd,34);g.fillStyle='rgba(255,220,150,.5)';for(let i=0;i<8;i++)g.fillRect(Wd*.62+Math.sin(tm+i)*20,264+i*2.4,Wd*.16-i*6,1.5);
@@ -3407,7 +3408,7 @@ function helHurt(){SV.helS=2;ign=0;st.hb=1;vib([80,40,120]);snd('click');say('A�
 function openHeli(){hel={t:0,li:-1,parts:[]};helT0=0;paused=true;st.gas=0;document.body.classList.add('cine');let b=gid('helx');if(!b){b=document.createElement('button');b.id='helx';b.textContent='Continuer ▶';b.style.cssText='position:fixed;right:max(16px,env(safe-area-inset-right));bottom:14px;z-index:60;border:0;border-radius:14px;padding:9px 16px;font:800 14px Arial,sans-serif;background:rgba(255,255,255,.9);color:#223;display:none';document.body.appendChild(b);
 b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(!hel||hel.done)return;hel.done=1;b.style.display='none';fadeTo(()=>{hel=null;b.style.display='none';document.body.classList.remove('cine');paused=false;last=performance.now();SV.helS=3;SV.inv=SV.inv||{};SV.inv.trousse=1;SV.hearts+=3;try{albAdd('helico')}catch(e){}
 cardQ.push({t:'🚁 Mathis, le frère d’armes d’Andrea',L:[['a','Mathis et moi, on a fait nos classes ensemble à l’armée. Il n’a pas changé.'],['m','Il est tombé du ciel comme un ange gardien. Et ton doigt ?'],['a','Bien bandé, grâce à lui… et à toi.'],['n','🩹 La trousse de secours de Mathis est rangée dans le Cherokee. +3 ❤']]});saveTrip()})})}b.style.display='none';snd('chime')}
-const HELL=[[1.5,'n','Plus un bruit. Le dernier hameau, abandonné, est loin derrière. Aucune maison, aucun magasin à des kilomètres.'],[5,'m','J’appelle les secours. Tiens bon, mon cœur.'],[7.5,'p','📞 112… Allô ? Allô ?… Vous m’entendez ?'],[10.5,'p','📵 Appel interrompu · aucun réseau'],[12,'m','Ça ne passe pas… On est vraiment au milieu de nulle part.'],[15,'a','Attends… Tu entends ? Tchop… tchop… tchop…'],[19,'m','Un hélicoptère ! Là-bas, derrière la crête !'],[24,'n','Un Puma gris de l’armée de l’air s’immobilise au-dessus du Cherokee. La porte coulisse… un homme descend au treuil.'],[30,'a','Mathis ?! C’est pas vrai !'],[32.5,'x','Andrea ! Je t’ai reconnu de là-haut, toi et ton Cherokee bordeaux. On s’entraînait dans le secteur.'],[37,'x','Montre-moi ce doigt… Tiens, garde la trousse de secours. Désinfecte et bande bien serré.'],[41.5,'m','Merci… On ne savait plus quoi faire.'],[44.5,'x','Prends soin de lui, Mila. À l’armée déjà, il ne s’arrêtait jamais.'],[48.5,'a','Merci, mon frère. Je te dois une bière en Bretagne !'],[52,'n','Mathis remonte au treuil. Le Puma bat des pales au-dessus de la neige… puis disparaît derrière les aiguilles.']];
+const HELL=[[1.5,'n','Plus un bruit. Le dernier hameau, abandonné, est loin derrière. Aucune maison, aucun magasin à des kilomètres.'],[5,'m','J’appelle les secours. Tiens bon, mon cœur.'],[7.5,'p','📞 112… Allô ? Allô ?… Vous m’entendez ?'],[10.5,'p','📵 Appel interrompu · aucun réseau'],[12,'m','Ça ne passe pas… On est vraiment au milieu de nulle part.'],[15,'a','Attends… Tu entends ? Tchop… tchop… tchop…'],[19,'m','Un hélicoptère ! Là-bas, derrière la crête !'],[24,'n','Un Puma gris de l’armée de l’air s’immobilise au-dessus du Cherokee. La porte coulisse… un homme descend au treuil.'],[30,'a','Mathis ?! C’est pas vrai !'],[32.5,'x','Andrea ! Je t’ai reconnu de là-haut, toi et ton vieux Cherokee. On s’entraînait dans le secteur.'],[37,'x','Montre-moi ce doigt… Tiens, garde la trousse de secours. Désinfecte et bande bien serré.'],[41.5,'m','Merci… On ne savait plus quoi faire.'],[44.5,'x','Prends soin de lui, Mila. À l’armée déjà, il ne s’arrêtait jamais.'],[48.5,'a','Merci, mon frère. Je te dois une bière en Bretagne !'],[52,'n','Mathis remonte au treuil. Le Puma bat des pales au-dessus de la neige… puis disparaît derrière les aiguilles.']];
 function pumaD(x,y,s,tm,door,al){g.save();g.translate(x,y);g.scale(s,s);g.globalAlpha=al==null?1:al;const G='#7f8a91',Gd='#69737a',Gl='#9aa4aa';
 // queue
 g.fillStyle=G;g.beginPath();g.moveTo(40,-20);g.lineTo(150,-18);g.lineTo(158,-12);g.lineTo(40,-2);g.fill();g.fillStyle=Gd;g.beginPath();g.moveTo(140,-18);g.lineTo(150,-50);g.lineTo(162,-50);g.lineTo(158,-12);g.fill();
@@ -5456,10 +5457,10 @@ g.fillStyle='#e9c4a2';g.beginPath();g.arc(-10,-52,4.5,0,7);g.fill();g.fillStyle=
 wh(-12,19,'#e8b923');wh(32,11,'#e8b923');g.restore()}
 // --- tracteurs du décor : garés au bord des champs, et parfois sur la route
 var trcL=[],trcT=40;
-function trcPark(x0,x1,tm){for(let k=Math.floor(x0/4100)-1;k<=Math.floor(x1/4100)+1;k++){const px=k*4100+2300+hs(k+901)*800;if(px<x0-200||px>x1+200)continue;try{if(sceneAt(px)!==0||bridgeAt(px)>=0||fordAt(px)||tunAt(px)>=0||cvIn(px,600)||stns.some(q=>Math.abs(q.x+110-px)<500)||gars.some(q=>Math.abs(q.x+170-px)<500)||shp.some(q=>Math.abs(q.x+120-px)<500)||pzL.some(q=>Math.abs(q.x+60-px)<500)||chIdx()===7&&hs(k)<.5)continue}catch(e){continue}
-const y=T(px)-26;g.save();g.globalAlpha=.92;tractorDraw(px,y,.85,hs(k+3)<.5?1:-1,tm,hs(k+7)<.6,false);g.restore()}}
-function trcTick(dt){try{if(!started||night||paused||dt<=0||PLT())return;trcT-=dt;if(trcT<=0&&!cvIn(c.x+900,800)&&!onFerry()){trcT=80+Math.random()*70;trcL.push({x:c.x+W/S+260,hay:Math.random()<.7,said:0})}for(let i=trcL.length-1;i>=0;i--){const t=trcL[i];t.x-=42*dt;if(!t.said&&t.x-c.x<520&&sayT<=0){t.said=1;if(Math.random()<.5)say(Math.random()<.5?'Un tracteur en face ! Serre-toi un peu.':'Regarde, de la paille pour les bêtes de la vallée.',3,1)}if(t.x<c.x-W/S-300)trcL.splice(i,1)}}catch(e){}}
-npcDraw=(function(o){return function(tm){o(tm);try{if(night)return;const x0=cam.x-W*.6/S-200,x1=cam.x+W*.7/S+200;trcPark(x0,x1,tm);for(const t of trcL)if(t.x>x0&&t.x<x1)tractorDraw(t.x,T(t.x),.9,-1,tm,t.hay,true)}catch(e){}}})(npcDraw);
+function trcPark(x0,x1,tm){for(let k=Math.floor(x0/7000)-1;k<=Math.floor(x1/7000)+1;k++){if(hs(k+55)>.5)continue;const px=k*7000+2600+hs(k+901)*1400;if(px<x0-200||px>x1+200)continue;try{if(sceneAt(px)!==0||bridgeAt(px)>=0||fordAt(px)||tunAt(px)>=0||cvIn(px,600)||stns.some(q=>Math.abs(q.x+110-px)<500)||gars.some(q=>Math.abs(q.x+170-px)<500)||shp.some(q=>Math.abs(q.x+120-px)<500)||pzL.some(q=>Math.abs(q.x+60-px)<500)||chIdx()===7&&hs(k)<.5)continue;if(!staticFree(px,-160,160,0)||Math.abs(T(px-70)-T(px+70))>12||Math.abs(T(px)-T(px-70))>8||Math.abs(T(px)-T(px+70))>8||occAt(px,420,'trc'))continue}catch(e){continue}
+const y=Math.max(T(px-50),T(px+50),T(px))+1;g.save();tractorDraw(px,y,.85,hs(k+3)<.5?1:-1,tm,hs(k+7)<.6,false);g.restore()}}
+function trcTick(dt){try{if(!started||night||paused||dt<=0||PLT())return;trcT-=dt;if(trcT<=0&&!cvIn(c.x+900,800)&&!onFerry()){trcT=160+Math.random()*120;const sx=c.x+W/S+260;if(trcPathOK(c.x-300,sx+200))trcL.push({x:sx,hay:Math.random()<.7,said:0});else trcT=20}for(let i=trcL.length-1;i>=0;i--){const t=trcL[i];t.x-=42*dt;if(!t.said&&t.x-c.x<520&&sayT<=0){t.said=1;if(Math.random()<.5)say(Math.random()<.5?'Un tracteur en face ! Serre-toi un peu.':'Regarde, de la paille pour les bêtes de la vallée.',3,1)}if(t.x<c.x-W/S-300)trcL.splice(i,1)}}catch(e){}}
+npcDraw=(function(o){return function(tm){o(tm);try{if(night)return;const x0=cam.x-W*.6/S-200,x1=cam.x+W*.7/S+200;trcPark(x0,x1,tm);for(const t of trcL)if(t.x>x0&&t.x<x1){const y=T(t.x),an=Math.atan2(T(t.x+40)-T(t.x-40),80);g.save();g.translate(t.x,y);g.rotate(an);tractorDraw(0,0,.9,-1,tm,t.hay,true);g.restore()}}catch(e){}}})(npcDraw);
 mgTick=(function(o){return function(dt){o(dt);trcTick(dt)}})(mgTick);
 
 // --- éléments communs des scènes du Coscione
@@ -5683,8 +5684,92 @@ SV.jk=SV.jk||{};SV.jk.mem=SV.jk.mem||{};souvT+=dt;if(souvT<190)return;if(talkQ.l
 const S=SOUV.find(q=>!SV.jk.mem[q.id]&&q.ok());souvT=0;if(!S)return;SV.jk.mem[S.id]=1;for(const l of S.L)talkQ.push(l);saveTrip()}catch(e){}}
 mgTick=(function(o){return function(dt){o(dt);souvTick(dt)}})(mgTick);
 setInterval(()=>{try{const b=gid('bzs');if(b&&b.style.display!=='none'&&!bz&&!fn)b.style.display='none'}catch(e){}},400);
+
+// ===== 2.43 : rien ne se superpose (bâtiments, tracteurs, missions) =====
+function occAt(x,r,skip){try{
+ const near=q=>q!=null&&q>=0&&Math.abs(q-x)<r;
+ if(skip!=='farm'&&typeof farmX==='function'&&near(farmX()+40))return true;
+ if(typeof jamX==='function'&&near(jamX()))return true;
+ if(typeof plantX==='function'&&near(plantX()))return true;
+ if(typeof pzL!=='undefined'&&pzL&&pzL.some(q=>near(q.x+60)))return true;
+ if(typeof shp!=='undefined'&&shp.some(q=>near(q.x+120)))return true;
+ if(typeof stns!=='undefined'&&stns.some(q=>near(q.x+110)))return true;
+ if(typeof gars!=='undefined'&&gars.some(q=>near(q.x+170)))return true;
+ if(typeof camps!=='undefined'&&camps.some(q=>near(q.x+150)))return true;
+ if(typeof npcList==='function'&&npcList().some(q=>near(q.x)))return true;
+ if(skip!=='trl'&&trlWX!=null&&SV.trlAsk===level&&near(trlWX+100))return true;
+ if(skip!=='tour'&&typeof tourWX!=='undefined'&&tourWX!=null&&near(tourWX))return true;
+ if(skip!=='nox'&&typeof noxWX!=='undefined'&&noxWX!=null&&near(noxWX))return true;
+ if(typeof brkS==='function'){const b=brkS();if(b&&near(b.x!=null?b.x:b))return true}
+}catch(e){}return false}
+trlWorld=(function(o){return function(){try{if(SV.trlL!==level&&SV.trlAsk!==level&&occAt(c.x+500,560,'trl'))return}catch(e){}return o()}})(trlWorld);
+try{tourWorld=(function(o){return function(){try{if(SV.tourL!==level&&occAt(c.x+500,520,'tour'))return}catch(e){}return o()}})(tourWorld)}catch(e){}
+try{noxWorld=(function(o){return function(){try{if(SV.noxAsk!==level&&SV.noxL!==level&&chIdx()===8&&occAt(c.x+500,520,'nox'))return}catch(e){}return o()}})(noxWorld)}catch(e){}
+
+// ===== 2.43 : les oiseaux s'envolent sans leur branche =====
+artA=(function(o){return function(x,id,t){if(typeof hl!=='undefined'&&hl&&hl.end&&hl.H&&hl.H.end==='fly'&&hl.H.art===id&&x===hlX){try{const e2=hl.et,dx=e2*e2*120,dy=-(e2*e2*90+Math.sin(e2*12)*6);perchM=new DOMMatrix().translate(-dx*DPR,-dy*DPR).multiply(x.getTransform())}catch(e){perchM=null}try{return o(x,id,t)}finally{perchM=null}}return o(x,id,t)}})(artA);
+
+// ===== 2.43 : les flacons attendent que les pop-ups soient lus =====
+function uiBusy(){try{const vis=id=>{const e=gid(id);return e&&getComputedStyle(e).display!=='none'&&e.offsetWidth>0};
+return !!(cardOpen||cardQ.length||cs||MGX||hl||pz||obv||pp||bt||vis('docv')||vis('chv')||vis('nb')||vis('menu')||vis('shop')||vis('bak'))}catch(e){return false}}
+tubeOpen=(function(o){return function(after){let n=0;const go=()=>{if(uiBusy()&&n++<240){setTimeout(go,500);return}o(after)};go()}})(tubeOpen);
+
+// ===== 2.43 : fenêtres jamais bloquées ni en double =====
+(function(){const same=(a,b)=>a&&b&&a.t===b.t&&JSON.stringify(a.L)===JSON.stringify(b.L);
+const dup=(Q,it)=>it&&it.t&&(Q.some(q=>same(q,it))||same(curCd,it)||(window.__lastCd&&same(window.__lastCd,it)&&performance.now()-window.__lastCdT<15000));
+cardQ.push=function(...a){for(const it of a)if(!dup(this,it))Array.prototype.push.call(this,it);return this.length};
+cardQ.unshift=function(...a){for(const it of a.reverse())if(!dup(this,it))Array.prototype.unshift.call(this,it);return this.length};
+const b=gid('cdGo');let pdT=0;b.addEventListener('pointerdown',()=>{pdT=performance.now()},true);b.addEventListener('click',e=>{if(performance.now()-pdT<700)return;if(cardOpen&&gid('card').style.display!=='none'){e.preventDefault();closeCard()}});
+b.addEventListener('touchend',e=>{if(performance.now()-pdT<700)return;if(cardOpen&&gid('card').style.display!=='none'&&!b.classList.contains('nx')){e.preventDefault();closeCard()}},{passive:false});
+})();
+closeCard=(function(o){return function(){try{window.__lastCd=curCd;window.__lastCdT=performance.now()}catch(e){}return o.apply(this,arguments)}})(closeCard);
+
+// ===== 2.43 : le port de Saint-Florent, visible en arrivant (rendez-vous avec Lucia) =====
+var stfXc={};
+function stfX(){if(chIdx()!==6)return -1;const l=level;if(stfXc[l]!==undefined)return stfXc[l];let best=-1,bs=1e9;
+ for(let x=Math.round(MAP_L*.36/100)*100;x<MAP_L*.7;x+=100){let lo=1e9,hi=-1e9;for(let d=-600;d<=600;d+=50){const t=T(x+d);if(t<lo)lo=t;if(t>hi)hi=t}const sc=hi-lo;if(sc<bs&&staticFree(x,-450,450,100)&&!occAt(x,750,'stf')){let bad=false;try{const bk=brkS();if(bk>=0&&Math.abs(bk-x)<1500)bad=true}catch(e){}if(!bad){bs=sc;best=x}}}
+ if(best<0)best=Math.round(MAP_L*.5);stfXc[l]=best;return best}
+function stfDraw(x0,x1){const px=stfX();if(px<0||px+900<x0||px-900>x1)return;const tm=performance.now()/1000;let yt=1e9;for(let d=-700;d<=700;d+=50)yt=Math.min(yt,T(px+d));
+ const dk=(typeof night!=='undefined'&&night)||hourNow()>=19||hourNow()<7;
+ // mer du port
+ const sy=yt-62,sg=g.createLinearGradient(0,sy,0,yt);sg.addColorStop(0,dk?'#1d3a5c':'#4aa6c8');sg.addColorStop(1,dk?'#122840':'#2a7ea4');g.fillStyle=sg;g.beginPath();g.moveTo(px-700,sy);g.lineTo(px+700,sy);for(let d=700;d>=-700;d-=25)g.lineTo(px+d,T(px+d)-3);g.closePath();g.fill();
+ g.strokeStyle=dk?'rgba(255,220,150,.25)':'rgba(255,255,255,.45)';g.lineWidth=1.4;for(let i=0;i<26;i++){const xx=px-680+((i*137+tm*14*(i%2?1:-1))%1360+1360)%1360,yy=sy+8+(i*13)%40;g.beginPath();g.moveTo(xx,yy);g.lineTo(xx+14,yy);g.stroke()}
+ // jetée et phare
+ g.fillStyle='#8f8a80';g.fillRect(px+260,sy+10,420,9);g.fillStyle='#a8a296';g.fillRect(px+260,sy+8,420,3);for(let i=0;i<9;i++){g.fillStyle='#7a756c';g.beginPath();g.arc(px+280+i*46,sy+19,6,0,Math.PI);g.fill()}
+ const lx=px+650;g.fillStyle='#f2efe8';g.beginPath();g.moveTo(lx-9,sy+9);g.lineTo(lx-6,sy-40);g.lineTo(lx+6,sy-40);g.lineTo(lx+9,sy+9);g.fill();g.fillStyle='#c8382c';g.fillRect(lx-8,sy-20,16,8);g.fillRect(lx-7,sy-36,14,6);g.fillStyle='#333';g.fillRect(lx-7,sy-48,14,8);
+ if(dk){const rg=g.createRadialGradient(lx,sy-44,1,lx,sy-44,40);rg.addColorStop(0,'rgba(255,240,180,.9)');rg.addColorStop(1,'rgba(255,240,180,0)');g.fillStyle=rg;g.fillRect(lx-40,sy-84,80,80);const a=tm*1.4;g.fillStyle='rgba(255,240,180,.12)';g.beginPath();g.moveTo(lx,sy-44);g.lineTo(lx+Math.cos(a)*220,sy-44+Math.sin(a)*30-14);g.lineTo(lx+Math.cos(a)*220,sy-44+Math.sin(a)*30+14);g.fill()}else{g.fillStyle='#ffe9a0';g.fillRect(lx-5,sy-46,10,4)}
+ // maisons colorées de Saint-Florent (à gauche, au bord de l'eau)
+ const HC=[['#e8b86a','#b5532a'],['#e9a08a','#8a3a2a'],['#f2e2c4','#b5532a'],['#d9c08a','#7a4a2a'],['#c9d6c0','#a8512a']];
+ for(let i=0;i<5;i++){const hx=px-690+i*44,hw=40,hh=40+(i*17)%22,hy=sy+4;g.fillStyle=HC[i][0];g.fillRect(hx,hy-hh,hw,hh+6);g.fillStyle=HC[i][1];g.beginPath();g.moveTo(hx-3,hy-hh);g.lineTo(hx+hw/2,hy-hh-12);g.lineTo(hx+hw+3,hy-hh);g.fill();
+  for(let r=0;r<2;r++)for(let k=0;k<2;k++){g.fillStyle=dk?(hs(i*7+r*2+k)<.6?'#ffd27a':'#2a2a35'):'#3a4a5a';g.fillRect(hx+7+k*18,hy-hh+8+r*14,8,9);g.fillStyle='#5a7a3a';g.fillRect(hx+6+k*18,hy-hh+17+r*14,10,2)}}
+ g.fillStyle='rgba(0,0,0,.12)';g.fillRect(px-690,sy+8,220,3);
+ // bateaux au mouillage
+ const BT=[[-380,'#f4f1ea','#2e7dc8',1],[-250,'#2e6db8','#f4f1ea',0],[-90,'#f4f1ea','#c8382c',1],[140,'#e8c040','#2a5a8a',0],[330,'#f4f1ea','#3a8a5a',1]];
+ for(const [dx,hc,sc2,mast] of BT){const bx=px+dx,by=sy+30+Math.sin(tm*1.3+dx)*1.6,rk=Math.sin(tm*1.1+dx*.3)*.04;g.save();g.translate(bx,by);g.rotate(rk);
+  g.fillStyle=hc;g.beginPath();g.moveTo(-30,-6);g.lineTo(30,-6);g.quadraticCurveTo(34,-6,28,4);g.lineTo(-26,4);g.quadraticCurveTo(-34,-2,-30,-6);g.fill();g.fillStyle=sc2;g.fillRect(-29,-3,58,3);
+  if(mast){g.strokeStyle='#5a5048';g.lineWidth=1.6;g.beginPath();g.moveTo(0,-6);g.lineTo(0,-56);g.stroke();g.strokeStyle='rgba(90,80,72,.6)';g.lineWidth=.7;g.beginPath();g.moveTo(0,-56);g.lineTo(-26,-6);g.moveTo(0,-56);g.lineTo(26,-6);g.stroke();g.fillStyle='rgba(240,236,226,.9)';g.beginPath();g.moveTo(1,-52);g.lineTo(1,-10);g.lineTo(20,-10);g.fill()}
+  else{g.fillStyle='#f4f1ea';g.fillRect(-8,-16,18,10);g.fillStyle='#3a4a5a';g.fillRect(-5,-14,5,5);g.fillRect(2,-14,5,5)}
+  g.restore();g.fillStyle='rgba(255,255,255,.18)';g.fillRect(bx-26,by+6,52,2)}
+ // quai en pierre le long de la route, bornes
+ g.fillStyle='#8a847a';for(let d=-640;d<640;d+=40){const qy=T(px+d);g.fillRect(px+d,qy-4,40,6);g.fillStyle='rgba(0,0,0,.18)';g.fillRect(px+d+38,qy-4,2,6);g.fillStyle='#8a847a'}
+ g.fillStyle='#3a3d42';for(let d=-560;d<=560;d+=160){const qy=T(px+d);g.beginPath();g.arc(px+d,qy-6,4,Math.PI,0);g.fill();g.fillRect(px+d-4,qy-6,8,3)}
+ // panneau
+ {const sx=px-430,sy2=T(sx);g.fillStyle='#4a3a2a';g.fillRect(sx-2,sy2-40,4,40);g.fillStyle='#1f5fa8';g.fillRect(sx-62,sy2-60,124,22);g.strokeStyle='#fff';g.lineWidth=1.5;g.strokeRect(sx-59,sy2-57,118,16);g.fillStyle='#fff';g.font='bold 9px Arial';g.textAlign='center';g.fillText('PORT DE SAINT-FLORENT',sx,sy2-45)}
+ // réverbère et silhouette qui attend
+ {const rx=px+40,ry=T(rx);g.strokeStyle='#2a2d31';g.lineWidth=3;g.beginPath();g.moveTo(rx,ry);g.lineTo(rx,ry-62);g.quadraticCurveTo(rx,ry-70,rx+12,ry-70);g.stroke();g.fillStyle='#2a2d31';g.fillRect(rx+8,ry-72,12,6);
+  if(dk){const rg=g.createRadialGradient(rx+14,ry-64,1,rx+14,ry-64,70);rg.addColorStop(0,'rgba(255,214,140,.75)');rg.addColorStop(1,'rgba(255,214,140,0)');g.fillStyle=rg;g.fillRect(rx-60,ry-134,150,140);g.fillStyle='rgba(255,214,140,.16)';g.beginPath();g.moveTo(rx+8,ry-66);g.lineTo(rx+20,ry-66);g.lineTo(rx+46,ry);g.lineTo(rx-18,ry);g.fill()}
+  g.fillStyle=dk?'#ffe2a0':'#f4f0dc';g.fillRect(rx+10,ry-66,8,3);
+  if(!(SV.csd&&SV.csd.lucia)){g.fillStyle='#1c1a22';const lx2=rx+18;g.beginPath();g.arc(lx2,ry-37,4.6,0,7);g.fill();g.beginPath();g.moveTo(lx2-6,ry-31);g.lineTo(lx2+6,ry-31);g.lineTo(lx2+8,ry-12);g.lineTo(lx2-8,ry-12);g.fill();g.fillRect(lx2-4,ry-12,3,12);g.fillRect(lx2+1,ry-12,3,12);g.beginPath();g.moveTo(lx2-5,ry-40);g.quadraticCurveTo(lx2-7,ry-30,lx2-3,ry-28);g.lineTo(lx2-3,ry-38);g.fill()}}
+}
+portDraw=(function(o){return function(x0,x1){o(x0,x1);try{stfDraw(x0,x1)}catch(e){}}})(portDraw);
+mgTick=(function(o){return function(dt){try{if(chIdx()===6){const q=CSW.find(k=>k.k==='lucia'),x=stfX();if(q&&x>0)q.f=Math.max(.05,(x-380)/MAP_L)}}catch(e){}o(dt)}})(mgTick);
+objMain=(function(o){return function(){const r=o();try{if(chIdx()===6&&!(SV.csd&&SV.csd.lucia)&&!cs){const x=stfX();if(x>0&&c.x<x+200){const m=Math.max(0,Math.round((x-c.x)/30));return['⚓','Retrouver Lucia au port de Saint-Florent',m>15?'Encore '+(m>=1000?(m/1000).toFixed(1).replace('.',',')+' km':m+' m')+' · elle attend sous un réverbère':'Le port est là, on s’arrête']}}}catch(e){}return r}})(objMain);
+
+// ===== 2.43 : tracteurs et voitures ne traversent plus le bac =====
+function trcPathOK(a,b){try{const G=ferGeo();if(G&&G.on&&b>G.a-200&&a<G.b+200)return false;for(let x=a;x<=b;x+=60){if(bridgeAt(x)>=0||fordS(x)>=0||hardS(x)>=0||tunAt(x)>=0||cvIn(x,300)||rockW(x)>.02)return false}}catch(e){return false}return true}
+traf.push=function(...a){for(const f of a){try{const G=ferGeo();if(G&&G.on&&f.dir<0&&f.x>G.Q1-150&&c.x<G.Q2+150){if(SV.ferGag===level)continue;SV.ferGag=level}}catch(e){}Array.prototype.push.call(this,f)}return this.length};
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.42',GAME_DATE='22/10/2026 à 23h41';
+const GAME_VER='2.43',GAME_DATE='23/10/2026 à 00h17';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
