@@ -336,7 +336,7 @@ if(x<1400)return[1,1,'Sol sec','dry'];
 const dep=T(x)-(420-mapAlt(x))-gentle(x)*.5,hol=T(x)-(T(x-170)+T(x+170))/2;
 if(dep>30||hol>12){const ice=ALT(x)>560,gp=ice?.15:.2,n=ice?'Verglas':'Boue',ty=ice?'ice':'mud',sd=Math.floor(x/400)%3;
 if(dep>75||sd===0)return[gp,gp,n+' partout',ty];
-return sd===1?[gp,1,n+' à gauche',ty]:[1,gp,n+' à droite',ty]}
+return sd===1?[gp,gp,n+' partout',ty]:[1,1,'Sol sec','dry']}
 return[1,1,'Sol sec','dry']}
 function laneCol(z,side,alt){if(z[3]==='bridge')return'#8a6234';if(z[3]==='rock')return'#8d8a85';if(z[side]<.5)return z[3]==='ice'?'#a9dcee':'#5a3f2b';return mix('ln',alt)}
 
@@ -423,7 +423,7 @@ const t=d.pop();LK[k]=t;return t.charAt(0)==='§'?[t.slice(1),1]:[t,0]}
 function sayK(k,d=3,arg){if(sayCool>0&&!SAYP.has(k)&&k.indexOf('wx')!==0)return;const[t,w]=pickW(k);say(arg?t.replace('{n}',arg):t,d,w)}
 let sayCool=0;const SAYP=new Set(['flat','stall','dry','towCall','morning','dawn','pumpDone','wheelDone','rockDone','logDone','reply','pizzaR','mis']);
 const PETA=['ma chérie','mon cœur','mon ange','ma copine','mon amour'],PETM=['mon cœur','mon ange','mon amour','mon copain','mon chéri'];
-function addPet(m,who){if((typeof call!=='undefined'&&call)||/Mercedes|Parisiens|pas changé|Tonio|[Mm]aman|[Mm]amie|Allô/.test(m)||m.length>140||Math.random()>.8||/chérie|cœur|coeur|ange|copain|copine|amour|chéri/i.test(m))return m;const r=/\s*([!?.…]+)\s*$/.exec(m);if(!r)return m;const L=who?PETM:PETA,p=L[Math.floor(Math.random()*L.length)],base=m.slice(0,r.index),pc=r[1];return base+', '+p+((pc[0]==='!'||pc[0]==='?')?' ':'')+pc}
+function addPet(m,who){if((typeof call!=='undefined'&&call)||/Mercedes|Parisiens|pas changé|Tonio|[Mm]aman|[Mm]amie|Allô/.test(m)||m.length>140||Math.random()>.56||/chérie|cœur|coeur|ange|copain|copine|amour|chéri/i.test(m))return m;const r=/\s*([!?.…]+)\s*$/.exec(m);if(!r)return m;const L=who?PETM:PETA,p=L[Math.floor(Math.random()*L.length)],base=m.slice(0,r.index),pc=r[1];return base+', '+p+((pc[0]==='!'||pc[0]==='?')?' ':'')+pc}
 function say(m,d=2.8,who=0){m=addPet(m,who);d=Math.max(d*1.4,3+m.length*.085);sayM=m;sayT=d;sayD=d;sayWho=who;sayCool=d+24;snd('talk',who)}
 function toast(m){say(m,3)}
 const H0=7,H1=20,limitT=()=>(lvlDur+40)*(SET.mode?1.5:1),bsOf=h=>h<=20?-1.3+(h-7)*.2462:1.9+(h-20)*(3.08/11),DAYT=()=>lvlDur+40,NIGHTT=()=>(lvlDur+40)*.55,warmH=h=>Math.max(cl((8.8-h)/1.8),cl((h-16.8)/2.2));
@@ -1164,10 +1164,10 @@ const hr=hourNow();let bs;if(night){const b0=bsOf(night.h0);bs=b0+cl((night.t-ni
 const es=Math.cos(bs),dayF=sm(cl(es*1.6+.6));
 const tw=cl(1-Math.abs(es)*3.2)*.7,s0=lerpA(NT,mixA('s0',ta),dayF),s1=lerpA(lerpA(NB,mixA('s1',ta),dayF),[236,127,69],tw),s2=lerpA(NF,mixA('far',ta),dayF);
 g.setTransform(DPR,0,0,DPR,0,0);
-const sk=g.createLinearGradient(0,0,0,HH);sk.addColorStop(0,rgb(s0));sk.addColorStop(.6,rgb(s1));sk.addColorStop(1,rgb(s2));
+const sk=gradC('sky',0,0,0,HH,[[0,rgb(s0)],[.6,rgb(s1)],[1,rgb(s2)]]);
 g.fillStyle=sk;g.fillRect(0,0,W,HH);
 if(dayF<.9){const a0=cl((.9-dayF)/.45);g.globalAlpha=a0*.14;g.fillStyle='#bcd0ff';g.beginPath();g.ellipse(W*.5,HH*.3,W*.75,HH*.07,-.4,0,7);g.fill();
-for(let i=0;i<260;i++){const r=hs(i+5)<.1?2.6:hs(i+9)<.4?1.8:1.2;g.globalAlpha=a0*Math.min(1,.4+.6*Math.abs(Math.sin(tm*(1+hs(i)*3)+i)));g.fillStyle=i%7===0?'#ffe9c0':'#fff';g.fillRect(hs(i)*W,hs(i+77)*HH*.78,r,r)}
+g.globalAlpha=a0;starLayer();for(let i=0;i<260;i+=9){const r=hs(i+5)<.1?2.6:hs(i+9)<.4?1.8:1.2;g.globalAlpha=a0*Math.min(1,.4+.6*Math.abs(Math.sin(tm*(1+hs(i)*3)+i)));g.fillStyle=i%7===0?'#ffe9c0':'#fff';g.fillRect(hs(i)*W,hs(i+77)*HH*.78,r,r)}
 const sh=(tm%5)/5;if(sh<.18){const q=sh/.18;g.globalAlpha=a0*(1-q);g.strokeStyle='#fff';g.lineWidth=2;const sx=W*.7-q*W*.25,sy=HH*.1+q*HH*.2;g.beginPath();g.moveTo(sx,sy);g.lineTo(sx+40,sy-16);g.stroke()}
 g.globalAlpha=1}
 const Rx=W*.45,Ry=HH*.8,cy0=HH*.98,sx=W/2+Rx*Math.sin(bs),sy=cy0-Ry*Math.cos(bs);
@@ -1186,11 +1186,9 @@ g.fillStyle=mix('gr',ta);g.beginPath();g.moveTo(x0,yb);for(let x=x0;x<=x1;x+=10)
 for(let k=Math.floor(x0/90);k<=x1/90;k++)decor(k,x0);towerDraw(x0,x1);
 for(let k=Math.floor(x0/300);k<=x1/300;k++)animal(k,tm);
 ravines(x0,x1);
-g.lineWidth=7;
-for(let x=x0;x<x1;x+=10){const z=Z(x+5),al=ALT(x+5);
-g.strokeStyle=laneCol(z,0,al);g.beginPath();g.moveTo(x,T(x)+3);g.lineTo(x+10.5,T(x+10)+3);g.stroke();
-g.strokeStyle=laneCol(z,1,al);g.beginPath();g.moveTo(x,T(x)+10);g.lineTo(x+10.5,T(x+10)+10);g.stroke();
-if(z[3]==='rock'){g.fillStyle='#6f6c68';g.beginPath();g.arc(x+5,T(x+5)+1,3+(x%7)/3,0,7);g.fill()}}
+g.lineWidth=14;{let cur=null,rk=[];g.beginPath();
+for(let x=x0;x<x1;x+=10){const z=Z(x+5),col=laneCol(z,0,ALT(x+5));if(col!==cur){if(cur){g.strokeStyle=cur;g.stroke()}cur=col;g.beginPath();g.moveTo(x,T(x)+6.5)}g.lineTo(x+10.5,T(x+10)+6.5);if(z[3]==='rock')rk.push(x)}
+if(cur){g.strokeStyle=cur;g.stroke()}if(rk.length){g.fillStyle='#6f6c68';g.beginPath();for(const x of rk){const y=T(x+5)+1,r=3+(x%7)/3;g.moveTo(x+5+r,y);g.arc(x+5,y,r,0,7)}g.fill()}}
 if(PLT())pozz(x0,x1);const j0=Math.max(1,Math.floor((x0-700)/2000));for(let j=j0;j<j0+3;j++){const sx=600+j*2000-100;if(sx>x0&&sx<x1)sign(sx)}
 if(!PLT())parkedV(x0,x1);pizza(x0,x1,tm);bonusSheep(x0,x1,tm);rails(x0,x1);scenery(x0,x1,false,tm);for(const m of camps)if(m.b>x0&&m.a<x1)camp(m,tm);if(!PLT()){for(const m of stns)if(m.b>x0&&m.a<x1)station(m,tm);for(const m of gars)if(m.b>x0&&m.a<x1)garageDraw(m,tm)}for(const m of obsP)if(m.x>x0-80&&m.x<x1+80)obsPtDraw(m,tm);for(const m of shp)if(m.b>x0&&m.a<x1)shopDraw(m,tm);injDraw(x0,x1,tm);drawObs(x0,x1);try{spBack();decoDraw(x0,x1);trackDraw(x0,x1);portDraw(x0,x1);try{ferDraw(x0,x1)}catch(e){}try{caveMid(x0,x1)}catch(e){}try{bdDraw(x0,x1)}catch(e){}farmDraw(x0,x1);plantNpcDraw(x0,x1);jamDraw(x0,x1);farmJamTick()}catch(e){}
 tunnelDraw(x0,x1,ta);heartsDraw(x0,x1,tm);trafDraw();runDraw(tm);finishDraw();try{dustDraw()}catch(e){}truck();try{mudDraw();fordDraw(x0,x1);deepDraw(x0,x1);slipDraw(x0,x1);friendDraw()}catch(e){}try{caveFront(x0,x1)}catch(e){}smkDraw(tm);dogWalk(tm);dropDraw();towDraw();if(winch)cable();fixer(tm);refuelAnim(tm);scenery(x0,x1,true,tm);helpDraw(tm);npcDraw(tm);try{shopkDraw(tm)}catch(e){}hardDraw(x0,x1);if(chs)polCar(chs.px,chs.ph<4);workers();horn();
@@ -4548,8 +4546,52 @@ const mx=late?cx-30:cx-46;person(mx,gy,1,{f:1,a1:late?1.2:.4,a2:late?.9:-.1});pe
 if(late){g.fillStyle='rgba(30,20,40,'+Math.min(.3,(T2-39.5)/8)+')';g.fillRect(0,0,Wd,420)}}};
 musScene=(function(o){return function(){try{if(cs&&cs.k==='veto')return 'sad'}catch(e){}return o()}})(musScene);
 try{ALBK.cs_veto=['🩺','Chez la vétérinaire','#dfe9e4','#c4844a']}catch(e){}
+
+// ===== 2.02 : économies de batterie (60 i/s max, 30 i/s au calme, 60 i/s en cinématique) =====
+var gradCache={},starCv=null,starKey='',fpsLast=0,dashLastT=0,dashSig='';
+function gradC(key,x0,y0,x1,y1,stops){const id=x0+','+y0+','+x1+','+y1+'|'+stops.map(q=>q[0]+q[1]).join();const c0=gradCache[key];if(c0&&c0.id===id)return c0.gr;const gr=g.createLinearGradient(x0,y0,x1,y1);for(const q of stops)gr.addColorStop(q[0],q[1]);gradCache[key]={id,gr};return gr}
+function starLayer(){const k=W+'x'+HH+'x'+DPR;if(!starCv||starKey!==k){starKey=k;starCv=document.createElement('canvas');starCv.width=Math.ceil(W*DPR);starCv.height=Math.ceil(HH*.8*DPR);const x=starCv.getContext('2d');x.scale(DPR,DPR);for(let i=0;i<260;i++){if(i%9===0)continue;const r=hs(i+5)<.1?2.6:hs(i+9)<.4?1.8:1.2;x.globalAlpha=.4+.6*Math.abs(Math.sin(i*1.7));x.fillStyle=i%7===0?'#ffe9c0':'#fff';x.fillRect(hs(i)*W,hs(i+77)*HH*.78,r,r)}}g.drawImage(starCv,0,0,W,HH*.8)}
+function cineOn(){try{return !!(cs||bur||es||hel||fb||ot||fn||bz||bt||night)}catch(e){return false}}
+function calmNow(){try{if(cineOn()||hl||pz)return false;const mo=gid('menu');if((mo&&mo.style.display!=='none')||cardOpen||chQ||paused)return true;if(!started)return true;return Math.hypot(v.x,v.y)<4&&!st.gas&&!st.brake&&!winch&&!work&&!tow&&!stopReq&&boostT<=0&&startT<=0}catch(e){return false}}
+loop=(function(o){return function(t){const iv=calmNow()?1000/30:1000/60;if(fpsLast&&t-fpsLast<iv-3&&t>=fpsLast){requestAnimationFrame(loop);return}fpsLast=t;o(t)}})(loop);
+drawDash=(function(o){return function(tm){let sig='';try{sig=[Math.round(dv.spd),Math.round(dv.rpm/40),Math.round(dv.lev*40),Math.round(dv.key*40),Math.round(dv.hb*30),Math.round(dv.fuel*200),Math.round(dv.cool),Math.round(dv.oil*20),Math.round(dv.volt*10),Math.round(lit*30),st.gas,st.brake,st.hb,ign,lampOn,typeof wipOn!=='undefined'?wipOn:0,gearTxt,lcd.join('|'),wbEl.className,wbEl.textContent,bbEl.className,bbEl.textContent,W,HH,Adark>.3,started,night?1:0].join(';')}catch(e){sig=Math.random()+''}
+const busy=sayT>0||Math.hypot(v.x,v.y)>2||(typeof wipOn!=='undefined'&&wipOn)||winch||boostT>0;if(!busy&&sig===dashSig&&tm-dashLastT<1/15&&tm>=dashLastT)return;dashSig=sig;dashLastT=tm;o(tm)}})(drawDash);
+
+// ===== 2.02 : humour — Andrea (humour noir), Mila (humour bienveillant) =====
+const JOKE={
+mud:[[['m','La boue, c’est excellent pour la peau. Le Cherokee va être magnifique.'],['a','Lui, oui. Moi, je vais devoir le laver.']]],
+rain:[[['a','Si on finit dans le ravin, au moins on n’aura plus à chercher où dormir ce soir.'],['m','Andrea ! Regarde la route, pas le ravin.']]],
+sheep:[[['m','Elles ont la priorité. Ce sont les vraies propriétaires de la Corse.'],['a','Et elles ne mettent jamais leur clignotant.']]],
+late:[[['a','Rouler de nuit en montagne… Si un fantôme fait du stop, on ne le prend pas.'],['m','Même s’il a l’air gentil ? Il a peut-être froid.']]],
+any:[[['a','Le Cherokee a plus de pièces changées que de pièces d’origine. C’est encore le même Cherokee, tu crois ?'],['m','Bien sûr. C’est l’âme qui compte. Et la sienne sent un peu l’huile.']],
+[['a','Le jour où ce moteur me lâche, je l’enterre avec les honneurs. Avec un discours et tout.'],['m','Et moi, j’apporterai des fleurs. Il les mérite.']],
+[['a','Le GPS dit « faites demi-tour dès que possible ». Même lui veut qu’on rentre.'],['m','Il n’a jamais vu une tortue de sa vie. Il ne peut pas comprendre.']],
+[['m','Tu sais que certains parasites changent le comportement de leur hôte ?'],['a','Ça expliquerait pourquoi je te suis partout en Corse.'],['m','Non, ça, c’est autre chose. Je crois.']]]};
+const GAG={par:[[['m','Ce ver ne s’attaque pas aux humains. Enfin… presque jamais.'],['a','C’est le « presque » qui m’empêche de dormir.']],
+[['m','Bonne nouvelle : la douve du foie préfère les moutons.'],['a','Et la mauvaise nouvelle ?'],['m','Il y a beaucoup de moutons en Corse.']],
+[['a','Si un de tes parasites me dévore, tu donneras mon nom à l’espèce ?'],['m','Promis. Andreaus cherokeensis. Il vivra dans un moteur.']],
+[['m','J’ai trouvé un ver magnifique dans ces crottes, regarde !'],['a','Je te fais confiance. Je regarderai la photo… dans dix ans.']]],
+jal:[[['m','Tu parles plus gentiment au Cherokee qu’à moi.'],['a','Lui, il ne me fait pas arrêter tous les cent mètres pour ramasser des crottes.']],
+[['a','Allez, mon grand, encore une côte… Tu es le meilleur.'],['m','Je suis un peu jalouse du Cherokee.']],
+[['m','Si un jour tu devais choisir entre le Cherokee et moi…'],['a','Ne me fais pas ça. Je te choisis, toi. Mais ne me fais pas ça.']],
+[['a','Tu sais que je t’aime plus que le Cherokee ?'],['m','Dis-le devant lui.'],['a','… Pas devant lui.']]]};
+var jokeT=0;const JOKE_SET=new Set();try{for(const P of[JOKE.mud,JOKE.rain,JOKE.sheep,JOKE.late,JOKE.any,GAG.par,GAG.jal])for(const L of P)for(const l of L)JOKE_SET.add(l[1]);['Bonne nouvelle : je peux encore conduire. Mauvaise nouvelle : plus de vaisselle pour moi.','Bien essayé. Je t’achèterai des gants.','Un ours en Corse… La prochaine fois, ce sera un pingouin, et là je démissionne.','Un pingouin, je l’adopterais. Le chien serait ravi.'].forEach(t=>JOKE_SET.add(t))}catch(e){}
+addPet=(function(o){return function(m,w){if(JOKE_SET.has(m))return m;return o(m,w)}})(addPet);
+function jokeSad(){try{if(chIdx()===BUR_CH&&SV.burS>0&&SV.burS<3)return true;if(typeof dogGone==='function'&&dogGone())return true;if(chs&&chs.ph<4)return true;if(chIdx()===HEL_CH&&(SV.helS===1||SV.helS===2))return true}catch(e){}return false}
+function jokeTick(dt){try{if(!started||night||crashed||paused||introT>0||cardOpen||hl||pz||cs||dt<=0)return;
+SV.jk=SV.jk||{};
+// répliques ponctuelles après des moments forts
+if(chIdx()===HEL_CH&&SV.helS===3&&!SV.jk.hel&&!talkQ.length&&sayT<=0){SV.jk.hel=1;talkQ.push(['a','Bonne nouvelle : je peux encore conduire. Mauvaise nouvelle : plus de vaisselle pour moi.'],['m','Bien essayé. Je t’achèterai des gants.']);return}
+if(SV.dogFoundL===level&&!SV.jk.ours&&!talkQ.length&&sayT<=0){SV.jk.ours=1;talkQ.push(['a','Un ours en Corse… La prochaine fois, ce sera un pingouin, et là je démissionne.'],['m','Un pingouin, je l’adopterais. Le chien serait ravi.']);return}
+if(jokeSad()||Math.hypot(v.x,v.y)<30)return;jokeT+=dt;const due=SV.jk.n?250:150;if(jokeT<due||talkQ.length||sayT>0||(typeof storyBusy==='function'&&storyBusy()))return;jokeT=0;SV.jk.n=(SV.jk.n||0)+1;
+let pool=null;const z=Z(c.x+60),ob=nextObs(500);
+if(z[3]==='mud'&&Math.random()<.6)pool=JOKE.mud;else if(rainNow&&rainNow()&&Math.random()<.5)pool=JOKE.rain;else if(ob&&ob.type==='sheep'&&Math.random()<.6)pool=JOKE.sheep;else if(hourNow()>=19&&Math.random()<.5)pool=JOKE.late;
+let L;if(pool){L=pool[Math.floor(Math.random()*pool.length)]}else{const r=SV.jk.n%3;if(r===1){const i=(SV.jk.par||0)%GAG.par.length;SV.jk.par=(SV.jk.par||0)+1;L=GAG.par[i]}else if(r===2){const i=(SV.jk.jal||0)%GAG.jal.length;SV.jk.jal=(SV.jk.jal||0)+1;L=GAG.jal[i]}else L=JOKE.any[Math.floor(Math.random()*JOKE.any.length)]}
+for(const l of L)talkQ.push(l)}catch(e){}}
+mgTick=(function(o){return function(dt){o(dt);jokeTick(dt)}})(mgTick);
+try{CS.sub.L=(function(o){return function(){const L=o();L.push([33.5,'a','Si on coule, sur ma tombe, tu écriras : « Il avait vérifié la pression des pneus. »']);return L}})(CS.sub.L);CS.sub.end=38.5}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.01',GAME_DATE='22/10/2026';
+const GAME_VER='2.02',GAME_DATE='22/10/2026';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
