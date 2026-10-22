@@ -7,7 +7,7 @@
 - L'utilisateur n'est pas développeur : réponses en français, simples, avec des réserves honnêtes (« testé sur ordinateur seulement »). Pas de faux souvenirs inventés, pas d'argent mentionné pour le couple.
 
 ## Technique
-- **Tout le jeu est dans `index.html`** (un seul fichier, environ 800 Ko, canvas 2D + Web Audio synthétisé, aucun fichier externe).
+- **Tout le jeu est dans `index.html`** (plus `icon.png`, l'icône d'écran d'accueil 180×180) (un seul fichier, environ 800 Ko, canvas 2D + Web Audio synthétisé, aucun fichier externe).
 - Déploiement : chaque push sur `main` part automatiquement sur Netlify (`netlify.toml`). On pousse directement sur `main`, sans PR.
 - **Version : 2.xx.** Constantes `GAME_VER` et `GAME_DATE` en fin de fichier, affichées dans le menu. Les incrémenter à chaque livraison.
 - Style du code : on ajoute des blocs `// ===== 2.xx : ... =====` à la fin du script et on surcharge les fonctions par réaffectation (`f=(function(o){return function(){...o()...}})(f)`). Les déclarations `function` sont réaffectables. Attention à la TDZ (`let`/`const`) : définir les variables globales tôt (ex. après `let W,HH,DPR,S;`).
@@ -25,9 +25,10 @@
 - Tests : Playwright headless (`NODE_PATH=/opt/npm-tools/node_modules`), avec `requestAnimationFrame` neutralisé et la boucle avancée à la main par `loop(t)`. L'écran d'intro dure environ 8 s réelles : attendre avant les captures.
 
 ## Reste à faire (demandes de l'utilisateur, par priorité)
-- « Allure pro » (proposé, en cours) : icônes dessinées à la place des emojis, palette fixe des panneaux, écran titre animé, générique de fin, icône d'écran d'accueil, passe de vérification chapitre par chapitre. L'utilisateur a une limite d'usage serrée : avancer par petites étapes.
+- « Allure pro » (proposé, en cours) : icônes dessinées à la place des emojis, palette fixe des panneaux, écran titre animé, générique de fin, passe de vérification chapitre par chapitre. L'utilisateur a une limite d'usage serrée : avancer par petites étapes.
 
 ## Déjà fait récemment
+**2.14** : icône d'écran d'accueil `icon.png` (Cherokee, tour génoise, coucher de soleil, cœur).
 **2.13** : objectif sur une ligne (le détail `<small>` se déplie au toucher pendant 5 s).
 **2.12** : allure pro, 1re étape — une seule police (Avenir Next) pour toute l'interface HTML, boutons qui s'enfoncent au toucher, transitions douces ; astuces (`#tut`, conseil boost) seulement aux chapitres 1 et 2, et l'astuce s'efface pendant qu'on parle.
 **2.11** : limite d'images supprimée (plus de 30/60 i/s forcés, tableau de bord redessiné à chaque image) : l'utilisateur avait des saccades. Ne pas remettre de limitation d'images. Les autres économies de la 2.02 (piste unique, étoiles pré-dessinées, ciel en cache) restent.

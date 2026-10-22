@@ -5,6 +5,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Voyage en amoureux">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
 <meta name="theme-color" content="#7b1a26">
 <title>Voyage en amoureux</title>
 <style>
@@ -5014,6 +5016,6 @@ const busy=sayT>0||gid('note').classList.contains('on');tutEl.style.opacity=busy
 (function(){const st=document.createElement('style');st.textContent=`#obj small{display:none}#obj.open small{display:block}#obj{pointer-events:auto;cursor:pointer}`;document.head.appendChild(st);const o=gid('obj');if(o)o.addEventListener('pointerdown',e=>{e.stopPropagation();o.classList.toggle('open');clearTimeout(o.__t);if(o.classList.contains('open'))o.__t=setTimeout(()=>o.classList.remove('open'),5000)})})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.13',GAME_DATE='22/10/2026';
+const GAME_VER='2.14',GAME_DATE='22/10/2026';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
