@@ -25,9 +25,10 @@
 - Tests : Playwright headless (`NODE_PATH=/opt/npm-tools/node_modules`), avec `requestAnimationFrame` neutralisé et la boucle avancée à la main par `loop(t)`. L'écran d'intro dure environ 8 s réelles : attendre avant les captures.
 
 ## Reste à faire (demandes de l'utilisateur, par priorité)
-4. **Construction de pont** : un pont en bois cassé, mini-jeu physique où l'on assemble des poutres sur une grille aimantée pour traverser. Une fois par chapitre, puis on voit le pont réparé.
+(Toutes les demandes de la liste sont faites. Voir ci-dessous.)
 
 ## Déjà fait récemment
+**2.09** : construction de pont (`brOpen`, grille aimantée, poutres de 2,3 cases maximum, budget `4n+1`, test avec le Cherokee et calcul de treillis `brSolve` : effondrement si trop souple, casse au-delà de `CAP`, couleurs de contrainte). Un grand pont de bois par chapitre entre 40 et 88 % est cassé (`brkS`, `brkOn`, `brkDraw`) et bloque la route jusqu'à la réparation (`brWorld`) ; au 2e échec, bouton « Idée d'Andrea » qui pose une solution.
 **2.08** : missions photo — maladies variées (`SICKX` : 3 symptômes par espèce + 5 génériques, `sickPick()` évite les répétitions via `SV.sickSeen`) et signes visuels différents (`SICKV` : titube, tremble, boite, tourne en rond, apathique, taches) ; le carnet garde le symptôme vu (`SV.sickT`).
 **2.07** : anti-retournement (couple de redressement quand l'angle du Cherokee s'écarte de plus de 0,45 rad de la pente, près du sol) et descente des talus « treuil » adoucie (`hardY` : descente sur 280 au lieu de 150) — l'utilisateur se renversait sans cesse à Bavella. Mission remorque (`TRL_TH`, `trlGen`, `trlOpen`, `trlWorld` entre 16 et 92 % du chapitre, obligatoire, `SV.trlL`) : carte à part avec boue, gués et cailloux, pas de treuil, chargement physique (bottes, bidons) ou bétaillère avec jauge de calme ; au 3e échec, ridelles plus hautes. Testée en simulation : conduite prudente = réussite en 45 à 70 s ; plein gaz = échec dans les chapitres avancés.
 **2.06** : mini-jeu des tubes à essai (`tubeOpen(after)`, `tubeGen`/`tubeSolvable` garantissent un niveau faisable ; 3 couleurs au chapitre 1 jusqu'à 7 au chapitre 9). Il s'ouvre au premier résultat de prélèvement du chapitre (`smpDone` surchargé, `SV.tubeL`), avec Annuler, Recommencer et Passer.

@@ -1188,7 +1188,7 @@ for(let k=Math.floor(x0/90);k<=x1/90;k++)decor(k,x0);towerDraw(x0,x1);
 for(let k=Math.floor(x0/300);k<=x1/300;k++)animal(k,tm);
 ravines(x0,x1);
 g.lineWidth=14;{let cur=null,rk=[];g.beginPath();
-for(let x=x0;x<x1;x+=10){const z=Z(x+5),col=laneCol(z,0,ALT(x+5));if(col!==cur){if(cur){g.strokeStyle=cur;g.stroke()}cur=col;g.beginPath();g.moveTo(x,T(x)+6.5)}g.lineTo(x+10.5,T(x+10)+6.5);if(z[3]==='rock')rk.push(x)}
+for(let x=x0;x<x1;x+=10){const z=Z(x+5),col=laneCol(z,0,ALT(x+5),x+5);if(col!==cur){if(cur){g.strokeStyle=cur;g.stroke()}cur=col;g.beginPath();g.moveTo(x,T(x)+6.5)}g.lineTo(x+10.5,T(x+10)+6.5);if(z[3]==='rock')rk.push(x)}
 if(cur){g.strokeStyle=cur;g.stroke()}if(rk.length){g.fillStyle='#6f6c68';g.beginPath();for(const x of rk){const y=T(x+5)+1,r=3+(x%7)/3;g.moveTo(x+5+r,y);g.arc(x+5,y,r,0,7)}g.fill()}}
 if(PLT())pozz(x0,x1);const j0=Math.max(1,Math.floor((x0-700)/2000));for(let j=j0;j<j0+3;j++){const sx=600+j*2000-100;if(sx>x0&&sx<x1)sign(sx)}
 if(!PLT())parkedV(x0,x1);pizza(x0,x1,tm);bonusSheep(x0,x1,tm);rails(x0,x1);scenery(x0,x1,false,tm);for(const m of camps)if(m.b>x0&&m.a<x1)camp(m,tm);if(!PLT()){for(const m of stns)if(m.b>x0&&m.a<x1)station(m,tm);for(const m of gars)if(m.b>x0&&m.a<x1)garageDraw(m,tm)}for(const m of obsP)if(m.x>x0-80&&m.x<x1+80)obsPtDraw(m,tm);for(const m of shp)if(m.b>x0&&m.a<x1)shopDraw(m,tm);injDraw(x0,x1,tm);drawObs(x0,x1);try{spBack();decoDraw(x0,x1);trackDraw(x0,x1);portDraw(x0,x1);try{ferDraw(x0,x1)}catch(e){}try{caveMid(x0,x1)}catch(e){}try{bdDraw(x0,x1)}catch(e){}farmDraw(x0,x1);plantNpcDraw(x0,x1);jamDraw(x0,x1);farmJamTick()}catch(e){}
@@ -4923,8 +4923,84 @@ chouette:[['wob','les yeux voilés'],['dull','du mal à voler'],['shiv','des plu
 vache:[['limp','une boiterie'],['wob','les yeux qui pleurent'],['dull','l’air de ne plus vouloir manger']],milan:[['wob','du mal à planer'],['dull','les plumes ternes'],['spin','un vol en cercles trop serrés']],
 puffin:[['dull','les plumes ternes'],['wob','du mal à décoller de l’eau'],['spin','l’air perdu en mer']],cistude:[['dull','l’air léthargique'],['wob','une carapace couverte de taches'],['limp','du mal à nager']],sittelle:[['wob','les plumes ébouriffées'],['shiv','des tremblements sur la branche'],['dull','un chant presque éteint']]};
 function sickPick(o){try{const sp=o.sick,L=(SICKX[sp]||[]).concat(SICK[sp]?[['wob',SICK[sp]]]:[]).concat(SICKX._);SV.sickSeen=SV.sickSeen||[];let cand=L.filter(q=>!SV.sickSeen.includes(sp+'|'+q[1]));if(!cand.length)cand=L;const q=cand[Math.floor(Math.random()*cand.length)];SV.sickSeen.push(sp+'|'+q[1]);if(SV.sickSeen.length>80)SV.sickSeen=SV.sickSeen.slice(-80);const vs=SICKV.filter(v=>v.m===q[0]);o.sv=/tache|plaque|croûte/.test(q[1])?SICKV[5]:(vs.filter(v=>v.e!=='🔴')[0]||SICKV[0]);o.sickTxt=q[1]}catch(e){o.sv=SICKV[0];o.sickTxt=SICK[o.sick]||'l’air malade'}}
+
+// ===== 2.09 : construction de pont (une fois par chapitre) =====
+function brSolve(nodes,beams,load){const n=nodes.length,map=[];let k=0;for(let i=0;i<n;i++){if(nodes[i].fix)map.push(-1);else{map.push(k);k+=2}}const N=k,EA=2e5;
+const K=Array.from({length:N},()=>new Float64Array(N)),F=new Float64Array(N);
+for(const bm of beams){const A=nodes[bm.a],B=nodes[bm.b],dx=B.x-A.x,dy=B.y-A.y,L=Math.hypot(dx,dy),c2=dx/L,s2=dy/L,kk=EA/L,m=[[c2*c2,c2*s2],[c2*s2,s2*s2]],ia=map[bm.a],ib=map[bm.b];
+for(let p=0;p<2;p++)for(let q=0;q<2;q++){const v2=kk*m[p][q];if(ia>=0){K[ia+p][ia+q]+=v2;if(ib>=0){K[ia+p][ib+q]-=v2;K[ib+p][ia+q]-=v2}}if(ib>=0)K[ib+p][ib+q]+=v2}
+const w=.12*L/2;if(ia>=0)F[ia+1]+=w;if(ib>=0)F[ib+1]+=w}
+for(const l of load){const m2=map[l[0]];if(m2>=0){F[m2]+=l[1];F[m2+1]+=l[2]}}for(let i=0;i<N;i++)K[i][i]+=1e-3;
+const M=K.map(r=>Array.from(r)),b=Array.from(F);for(let i=0;i<N;i++){let p=i;for(let r=i+1;r<N;r++)if(Math.abs(M[r][i])>Math.abs(M[p][i]))p=r;if(p!==i){const t=M[i];M[i]=M[p];M[p]=t;const t2=b[i];b[i]=b[p];b[p]=t2}const d=M[i][i]||1e-12;for(let r=i+1;r<N;r++){const f=M[r][i]/d;if(!f)continue;const Ri=M[i],Rr=M[r];for(let cc=i;cc<N;cc++)Rr[cc]-=f*Ri[cc];b[r]-=f*b[i]}}
+const u=new Array(N).fill(0);for(let i=N-1;i>=0;i--){let sum=b[i];for(let cc=i+1;cc<N;cc++)sum-=M[i][cc]*u[cc];u[i]=sum/(M[i][i]||1e-12)}
+const U=i=>map[i]>=0?[u[map[i]],u[map[i]+1]]:[0,0];let maxU=0;for(let i=0;i<n;i++){const q=U(i);maxU=Math.max(maxU,Math.hypot(q[0],q[1]))}
+const f=beams.map(bm=>{const A=nodes[bm.a],B=nodes[bm.b],dx=B.x-A.x,dy=B.y-A.y,L=Math.hypot(dx,dy),ua=U(bm.a),ub=U(bm.b);return EA/L*(((ub[0]-ua[0])*dx+(ub[1]-ua[1])*dy)/L)});return{U,f,maxU}}
+function brOpen(after){const ci=chIdx(),n=4+Math.floor(ci/2),S=50,Y=250,XL=400-n*S/2,XR=400+n*S/2,CAP=262,MAXL=S*2.3,budget=4*n+1;
+const B={k:'bridge',n,S,Y,XL,XR,nodes:[],beams:[],hist:[],sel:-1,downP:null,mode:'edit',t:0,car:0,res:null,fails:(SV.brFail&&SV.brFail[level])||0,msg:'',msgT:0,stress:null,brk:-1,fallT:0,
+start(){for(let j=0;j<=2;j++){B.nodes.push({x:XL,y:Y+j*S,fix:1});B.nodes.push({x:XR,y:Y+j*S,fix:1})}B.ui()},
+ui(){let h='<div style="position:absolute;left:2%;top:2.5%;right:2%;display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><span class="tr" style="font-weight:800">🌉 Le pont de bois est cassé : reconstruis-le !<br><span style="font-weight:600">'+(B.mode==='edit'?'Touche un point d’ancrage ⚓ puis un point de la grille pour poser une poutre (ou fais glisser). Touche une poutre pour l’enlever. Les triangles rendent le pont solide !':'Test en cours…')+'</span></span>';
+h+='<span style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;pointer-events:auto;max-width:44%">'+(B.mode==='edit'?'<button class="mb" id="bru">↩︎</button><button class="mb" id="brc">🗑</button>'+(B.fails>=2?'<button class="mb" id="brh">💡 Idée d’Andrea</button>':'')+'<button class="mb go" id="brt">🚙 Tester</button>':'')+'</span></div>';
+if(B.res)h+='<div style="position:absolute;left:25%;right:25%;top:36%;text-align:center"><div class="tr" style="font-size:17px;font-weight:800;margin-bottom:10px">'+(B.res==='win'?'🎉 Le pont tient bon !':'💥 '+B.res)+'</div><button class="mb go" id="brg" style="font-size:18px">'+(B.res==='win'?'Traverser ▶':'Corriger le pont 🔧')+'</button></div>';
+mgxUI(h);mgxBtn('bru',()=>{if(B.hist.length){const q=B.hist.pop();B.nodes=q[0];B.beams=q[1];B.sel=-1;snd('click')}});mgxBtn('brc',()=>{B.snap();B.nodes=B.nodes.filter(q=>q.fix);B.beams=[];B.sel=-1;snd('click')});mgxBtn('brh',()=>{B.snap();B.help();snd('chime')});mgxBtn('brt',()=>B.test());
+mgxBtn('brg',()=>{if(B.res==='win')mgxClose(true);else{B.res=null;B.mode='edit';B.car=0;B.stress=null;B.brk=-1;B.ui()}})},
+snap(){B.hist.push([B.nodes.map(q=>Object.assign({},q)),B.beams.map(q=>Object.assign({},q))]);if(B.hist.length>40)B.hist.shift()},
+grid(px,py){const gx=Math.round((px-XL)/S),gy=Math.round((py-Y)/S),x=XL+gx*S,y=Y+gy*S;if(gx<0||gx>n||gy<-2||gy>3)return null;if(Math.hypot(px-x,py-y)>S*.42)return null;return{x,y}},
+nodeAt(p){return B.nodes.findIndex(q=>q.x===p.x&&q.y===p.y)},
+addBeam(a,b){const A=B.nodes[a],C=b;const L=Math.hypot(C.x-A.x,C.y-A.y);if(L<1)return false;if(L>MAXL){B.say('Trop long pour une seule poutre !');return false}if(B.beams.length>=budget){B.say('Plus de poutres : '+budget+' au maximum.');return false}
+let ib=B.nodeAt(C);if(ib<0){if((C.x===XL||C.x===XR)&&C.y<Y){}B.nodes.push({x:C.x,y:C.y});ib=B.nodes.length-1}if(B.beams.some(q=>(q.a===a&&q.b===ib)||(q.a===ib&&q.b===a)))return false;B.snap();B.beams.push({a,b:ib});snd('ding');return ib},
+cleanup(){const used=new Set();for(const q of B.beams){used.add(q.a);used.add(q.b)}const keep=B.nodes.map((q,i)=>q.fix||used.has(i));const idx=[];let k=0;const nn=[];B.nodes.forEach((q,i)=>{if(keep[i]){idx[i]=k++;nn.push(q)}});B.beams=B.beams.map(q=>({a:idx[q.a],b:idx[q.b]}));B.nodes=nn;if(B.sel>=0)B.sel=keep[B.sel]?idx[B.sel]:-1},
+say(t){B.msg=t;B.msgT=2.2},
+down(px,py){if(B.mode!=='edit'||B.res)return;const p=B.grid(px,py);B.downP=p;if(p){const i=B.nodeAt(p);if(B.sel>=0&&i!==B.sel){const r=B.addBeam(B.sel,p);if(r!==false){B.sel=r}else if(i>=0)B.sel=i;B.downP=null;return}if(i>=0){B.sel=B.sel===i?-1:i;snd('click')}else B.say('Commence par un point d’ancrage ⚓ ou une poutre déjà posée.');return}
+// enlever une poutre
+let best=-1,bd=12;B.beams.forEach((q,i)=>{const A=B.nodes[q.a],C=B.nodes[q.b],vx=C.x-A.x,vy=C.y-A.y,t=Math.max(0,Math.min(1,((px-A.x)*vx+(py-A.y)*vy)/(vx*vx+vy*vy))),d=Math.hypot(A.x+vx*t-px,A.y+vy*t-py);if(d<bd){bd=d;best=i}});if(best>=0){B.snap();B.beams.splice(best,1);B.cleanup();snd('click')}else B.sel=-1},
+move(px,py){B.hover=B.mode==='edit'?B.grid(px,py):null},
+up(px,py){if(B.mode!=='edit'||!B.downP)return;const p=B.grid(px,py);if(p&&(p.x!==B.downP.x||p.y!==B.downP.y)){const i=B.nodeAt(B.downP);if(i>=0){const r=B.addBeam(i,p);if(r!==false)B.sel=r}}B.downP=null},
+help(){B.nodes=B.nodes.filter(q=>q.fix);B.beams=[];const id=(x,y)=>{let i=B.nodes.findIndex(q=>q.x===x&&q.y===y);if(i<0){B.nodes.push({x,y});i=B.nodes.length-1}return i};const add=(a,b,c2,d)=>B.beams.push({a:id(a,b),b:id(c2,d)});
+for(let i=0;i<n;i++)add(XL+i*S,Y,XL+(i+1)*S,Y);for(let i=0;i<n;i++)add(XL+i*S,Y+2*S,XL+(i+1)*S,Y+2*S);for(let i=1;i<n;i++)add(XL+i*S,Y,XL+i*S,Y+2*S);for(let i=0;i<n;i++){if(i<n/2)add(XL+i*S,Y+2*S,XL+(i+1)*S,Y);else add(XL+i*S,Y,XL+(i+1)*S,Y+2*S)}B.say('Andrea : « Une poutre en bas, des triangles partout. Comme un vieux pont de chemin de fer ! »')},
+deckAt(x){for(let i=0;i<B.beams.length;i++){const q=B.beams[i],A=B.nodes[q.a],C=B.nodes[q.b];if(A.y===Y&&C.y===Y){const a=Math.min(A.x,C.x),b=Math.max(A.x,C.x);if(x>=a-.5&&x<=b+.5)return{i,A:A.x<C.x?q.a:q.b,C:A.x<C.x?q.b:q.a,t:(x-a)/(b-a||1)}}}return null},
+test(){if(!B.beams.length){B.say('Il n’y a encore aucune poutre !');return}B.mode='test';B.car=XL-160;B.sel=-1;B.ui();snd('engine')},
+fail(why){B.res=why;B.mode='done';B.fails++;SV.brFail=SV.brFail||{};SV.brFail[level]=B.fails;snd('thud');vib([60,30,60]);setTimeout(()=>B.ui(),900)},
+tick(dt,tm){B.t+=dt;if(B.msgT>0)B.msgT-=dt;if(B.mode==='test'){B.car+=dt*80;const cx=B.car;let load=[];if(cx>XL&&cx<XR){const d=B.deckAt(cx);if(!d){B.fallX=cx;B.fail('Il manque un morceau de route : le Cherokee est tombé !');return}load=[[d.A,0,100*(1-d.t)],[d.C,0,100*d.t]]}
+const r=brSolve(B.nodes,B.beams,load);B.stress=r;if(r.maxU>4){B.fail('Le pont s’effondre : il n’est pas assez rigide. Ajoute des triangles !');B.fallX=cx;return}let wi=-1,wf=0;r.f.forEach((f,i)=>{if(Math.abs(f)>wf){wf=Math.abs(f);wi=i}});if(wf>CAP){B.brk=wi;B.fallX=cx;B.fail('Une poutre a cassé : le pont est trop faible. Rends-le plus profond !');return}
+if(cx>XR+160){B.mode='done';B.res='win';snd('chime');vib(40);B.ui()}}if(B.res&&B.res!=='win')B.fallT+=dt},
+draw(x,tm){const sk=x.createLinearGradient(0,0,0,450);sk.addColorStop(0,'#9fd0ec');sk.addColorStop(1,'#e8f0e0');x.fillStyle=sk;x.fillRect(-400,-200,1600,900);
+// ravin
+x.fillStyle='#6a5a44';x.fillRect(-400,Y,XL+400,500);x.fillRect(XR,Y,800,500);x.fillStyle='#4a3e30';x.fillRect(XL,Y,XR-XL,500);x.fillStyle='#3a3024';x.beginPath();x.moveTo(XL,Y);x.lineTo(XL+26,470);x.lineTo(XL,470);x.fill();x.beginPath();x.moveTo(XR,Y);x.lineTo(XR-26,470);x.lineTo(XR,470);x.fill();x.fillStyle='#3f7fb0';x.fillRect(XL+20,430,XR-XL-40,30);
+x.fillStyle='#6f8f3a';x.fillRect(-400,Y-4,XL+400,6);x.fillRect(XR,Y-4,800,6);
+// restes du vieux pont
+x.strokeStyle='rgba(60,40,20,.5)';x.lineWidth=5;x.beginPath();x.moveTo(XL,Y+2);x.lineTo(XL+22,Y+40);x.moveTo(XR,Y+2);x.lineTo(XR-18,Y+46);x.stroke();
+// grille aimantée
+if(B.mode==='edit'){for(let i=0;i<=n;i++)for(let j=-2;j<=3;j++){const gx=XL+i*S,gy=Y+j*S;x.fillStyle='rgba(255,255,255,.55)';x.beginPath();x.arc(gx,gy,2.4,0,7);x.fill()}
+if(B.sel>=0){const A=B.nodes[B.sel];x.strokeStyle='rgba(255,210,74,.35)';x.lineWidth=1;x.beginPath();x.arc(A.x,A.y,MAXL,0,7);x.stroke()}}
+const U=B.stress?B.stress.U:null,ex=8,P=i=>{const q=B.nodes[i];if(!U)return[q.x,q.y];const d=U(i);return[q.x+d[0]*ex,q.y+d[1]*ex]};
+const falling=B.res&&B.res!=='win',ft=B.fallT;
+B.beams.forEach((q,i)=>{let a=P(q.a),b=P(q.b);if(falling&&(i===B.brk||Math.abs(((a[0]+b[0])/2)-(B.fallX||400))<90)){const dy=ft*ft*300;a=[a[0],a[1]+dy];b=[b[0]+(i===B.brk?20*ft:0),b[1]+dy*1.1]}
+const f=B.stress?Math.abs(B.stress.f[i])/CAP:0,deck=B.nodes[q.a].y===Y&&B.nodes[q.b].y===Y;x.strokeStyle=B.mode==='edit'?(deck?'#8a5a2a':'#a8743a'):(f<.5?'#4ec36a':f<.8?'#f2c230':f<1?'#f08a2a':'#e8453c');x.lineWidth=deck?9:6;x.lineCap='round';x.beginPath();x.moveTo(a[0],a[1]);x.lineTo(b[0],b[1]);x.stroke();if(deck&&B.mode==='edit'){x.strokeStyle='rgba(255,230,180,.35)';x.lineWidth=2;x.beginPath();x.moveTo(a[0],a[1]-2);x.lineTo(b[0],b[1]-2);x.stroke()}});
+x.lineCap='butt';B.nodes.forEach((q,i)=>{const p=P(i);x.fillStyle=q.fix?'#3a3a3a':'#e8e0cc';x.beginPath();x.arc(p[0],p[1],q.fix?7:5,0,7);x.fill();if(q.fix){x.fillStyle='#ffd24a';x.font='10px serif';x.textAlign='center';x.textBaseline='middle';x.fillText('⚓',p[0],p[1]+.5)}if(i===B.sel){x.strokeStyle='#ffd24a';x.lineWidth=3;x.beginPath();x.arc(p[0],p[1],10+Math.sin(tm*6)*2,0,7);x.stroke()}});
+if(B.hover&&B.mode==='edit'){x.strokeStyle='rgba(255,255,255,.8)';x.lineWidth=1.5;x.beginPath();x.arc(B.hover.x,B.hover.y,8,0,7);x.stroke()}
+// le Cherokee
+if(B.mode!=='edit'||B.res==='win'){let cx=B.car,cy=Y-2;if(cx>XL&&cx<XR&&B.stress&&!falling){const d=B.deckAt(cx);if(d){const a=P(d.A),b=P(d.C);cy=a[1]+(b[1]-a[1])*d.t-2}}if(falling)cy+=ft*ft*320;onCtx(x,()=>grp(cx,cy,.55,()=>{try{cherokeeSide(cx,cy)}catch(e){}}))}
+x.fillStyle='#223';x.font='800 14px Arial';x.textAlign='left';x.textBaseline='alphabetic';x.fillText('Poutres : '+B.beams.length+' / '+budget,20,438);
+if(B.msgT>0){x.fillStyle='rgba(30,30,30,.75)';rr(x,180,392,440,30,10);x.fill();x.fillStyle='#fff';x.font='700 13px Arial';x.textAlign='center';x.fillText(B.msg,400,412)}}};
+B.after=win=>{if(win){SV.brOK=SV.brOK||{};SV.brOK[level]=1;SV.hearts+=3;note('🌉 Pont réparé ! +3 ❤',3);setTimeout(()=>say('Le pont est comme neuf. Tu fais un sacré charpentier, toi aussi.',3.4,1),600)}saveTrip()};
+mgxOpen(B)}
+// le pont du chapitre : un grand pont de bois à mi-parcours, cassé tant qu'on ne l'a pas réparé
+function brkS(){try{SV.brS=SV.brS||{};if(SV.brS[level]!==undefined)return SV.brS[level];if(!started||!c)return-1;let pick=-1;eachBridge0(MAP_L*.4,MAP_L*.88,s=>{if(pick<0&&s>c.x+800)pick=s});SV.brS[level]=pick;return pick}catch(e){return-1}}
+function brkOn(){const s=brkS();return s>=0&&!(SV.brOK&&SV.brOK[level])?s:-1}
+var eachBridge0=eachBridge;
+eachBridge=function(x0,x1,fn){return eachBridge0(x0,x1,s=>{if(window.__skipBr===s)return;fn(s)})};
+brTy=(function(o){return function(s){try{if(s===(SV.brS&&SV.brS[level]))return 0}catch(e){}return o(s)}})(brTy);
+rails=(function(o){return function(x0,x1){const s=brkOn();window.__skipBr=s>=0?s:null;try{o(x0,x1)}finally{window.__skipBr=null}if(s>=0&&s+BRL>=x0&&s<=x1)brkDraw(s);else{const s2=SV.brS&&SV.brS[level];if(s2>=0&&SV.brOK&&SV.brOK[level]&&s2+BRL>=x0&&s2<=x1){g.fillStyle='rgba(230,190,120,.35)';g.beginPath();g.moveTo(s2+120,T(s2+120)+1);for(let x=s2+120;x<=s2+BRL-120;x+=10)g.lineTo(x,T(x)+1);for(let x=s2+BRL-120;x>=s2+120;x-=10)g.lineTo(x,T(x)+13);g.fill()}}}})(rails);
+function brkDraw(s){const tm=performance.now()/1000;g.strokeStyle='#5a3c1e';for(const px of[40,110,BRL-110,BRL-40]){const x=s+px,top=T(x)+12,bot=rb(s,x)-4;g.lineWidth=6;g.beginPath();g.moveTo(x-8,top);g.lineTo(x-14,bot);g.moveTo(x+8,top);g.lineTo(x+14,bot);g.stroke()}
+for(const [a,b] of[[s,s+150],[s+BRL-150,s+BRL]]){g.fillStyle='#6b4a2a';g.beginPath();g.moveTo(a,T(a)+1);for(let x=a;x<=b;x+=10)g.lineTo(x,T(x)+1);for(let x=b;x>=a;x-=10)g.lineTo(x,T(x)+13);g.fill()}
+g.fillStyle='#6b4a2a';for(const [x0,dir] of[[s+150,1],[s+BRL-150,-1]]){for(let k=0;k<3;k++){g.save();g.translate(x0+dir*k*6,T(x0)+6);g.rotate(dir*(1.1+k*.2+Math.sin(tm*1.5+k)*.05));g.fillRect(0,-3,34-k*6,6);g.restore()}}
+const bx=s-40,by=T(bx);g.fillStyle='#d8352b';g.fillRect(bx-26,by-30,52,6);g.fillStyle='#fff';for(let i=0;i<4;i++)g.fillRect(bx-24+i*13,by-30,6,6);g.fillStyle='#5a3c1e';g.fillRect(bx-24,by-24,4,24);g.fillRect(bx+20,by-24,4,24);g.fillStyle='#f2c230';g.beginPath();g.moveTo(bx,by-62);g.lineTo(bx-14,by-38);g.lineTo(bx+14,by-38);g.closePath();g.fill();g.fillStyle='#222';g.font='900 16px Arial';g.textAlign='center';g.fillText('!',bx,by-42)}
+laneCol=(function(o){return function(z,side,alt,x){const s=x!=null?brkOn():-1;if(s>=0&&x>s+150&&x<s+BRL-150)return '';return o(z,side,alt)}})(laneCol);
+function brWorld(){try{const s=brkOn();if(s<0)return;if(c.x>s-180&&!MGX){c.x=Math.min(c.x,s-180);if(v.x>0)v.x=0}if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||work||chEnd)return;
+if(c.x>s-900&&c.x<s&&!stopReq&&SV.brAsk!==level+':'+Math.floor(playT/20)){SV.brAsk=level+':'+Math.floor(playT/20);sayT=0;say('Stop ! Le pont de bois est cassé… Il va falloir le réparer nous-mêmes.',3.4,0);stopReq={x:s-200,cb:()=>setTimeout(()=>brOpen(),350)}}}catch(e){}}
+mgTick=(function(o){return function(dt){o(dt);brWorld()}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.08',GAME_DATE='22/10/2026';
+const GAME_VER='2.09',GAME_DATE='22/10/2026';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
