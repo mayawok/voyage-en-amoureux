@@ -26,6 +26,7 @@
 
 ## Reste à faire (demandes de l'utilisateur, par priorité)
 - **Missions remorque trop faciles** (retour de l'utilisateur après test sur iPhone) : durcir (pistes plus longues et plus raides, bosses plus hautes, plus de chargement, moins de pertes permises, jauge de calme plus sensible). Réglages dans `trlGen` et `trlOpen`.
+- **Appels de Mila** (en plus des appels existants `callStart('maman'|'mamie')`, `callWorld`) : ajouter des appels avec son **papa** ; avec ses **parents**, elle demande des nouvelles de **Rafalou** (le cheval, déjà vu à la ferme bretonne) **et de son poulain** ; avec sa **grand-mère**, elle demande des nouvelles de **tonton moustachu**. Ne pas inventer d'autres souvenirs ; pas de surnoms pendant les appels.
 - « Allure pro » (proposé, en cours) : icônes dessinées à la place des emojis, palette fixe des panneaux, écran titre animé, générique de fin, passe de vérification chapitre par chapitre. L'utilisateur a une limite d'usage serrée : avancer par petites étapes.
 
 ## Déjà fait récemment
