@@ -6692,7 +6692,7 @@ mgTick=(function(o){return function(dt){o(dt);try{if(dt<=0)return;upFix();const 
  for(let i=tendH.length-1;i>=0;i--){const h=tendH[i];h.t+=dt;if(h.t<0)continue;h.x+=h.vx*dt+Math.sin(h.t*3+i)*.3;h.y+=h.vy*dt;if(h.t>3)tendH.splice(i,1)}
  if(poseT>0)poseT-=dt;
  // pique-nique
- if(!busyNow()){SV.pic=SV.pic||{};const P=picSpots();for(let i=0;i<P.length;i++){const px=P[i],key=level+':'+i;if(SV.pic[key])continue;if(c.x>px-760&&c.x<px-300){if(i===1&&(SV.food??1)>.75){SV.pic[key]=1;if(sayT<=0)say('Une aire de pique-nique… on n’a pas faim, on s’arrêtera la prochaine fois.',3.4,0);continue}SV.pic[key]=1;say('Une aire de pique-nique ! On s’arrête manger un morceau ?',3.6,1);stopReq={x:px-150,cb:()=>{fadeTo(()=>openCine('picnic'))}};break}}}
+ if(!busyNow()){SV.pic=SV.pic||{};const P=picSpots();for(let i=0;i<P.length;i++){const px=P[i],key=level+':'+i;if(SV.pic[key])continue;if(c.x>px-620&&c.x<px-200){if(i===1&&(SV.food??1)>.75){SV.pic[key]=1;if(sayT<=0)say('Une aire de pique-nique… on n’a pas faim, on s’arrêtera la prochaine fois.',3.4,0);continue}SV.pic[key]=1;say('Une aire de pique-nique ! On s’arrête manger un morceau ?',3.6,1);stopReq={x:px+25,cb:()=>{setTimeout(()=>{if(!cs&&!paused)fadeTo(()=>openCine('picnic'))},1200)}};break}}}
  // photo souvenir
  const pb=gid('pact');let show=null;if(!busyNow()&&!phBusy&&sp<10){for(const px of panSpots()){if(Math.abs(c.x-px)<190&&!(SV.phs&&SV.phs[level+':'+px])){show=px;break}}}
  if(show!=null){if(pb.style.display!=='block'){pb.style.display='block';pb.dataset.a='photo';pb.dataset.x=show;pb.textContent='📷 Photo souvenir';SV.phSaid=SV.phSaid||{};if(!SV.phSaid[level+':'+show]&&sayT<=0){SV.phSaid[level+':'+show]=1;say('Quelle vue ! On fait une photo souvenir ?',3,1)}}}else if(pb.style.display==='block')pb.style.display='none';
@@ -6759,6 +6759,6 @@ mgTick=(function(o){return function(dt){o(dt);try{if(dt<=0||!started)return;cons
 
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.85',GAME_DATE='23/10/2026 à 15h50';
+const GAME_VER='2.86',GAME_DATE='23/10/2026 à 16h04';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>

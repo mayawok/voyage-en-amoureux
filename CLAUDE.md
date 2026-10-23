@@ -37,6 +37,7 @@
 - **Andrea est végétarien** : jamais de viande ni de charcuterie pour lui dans les dialogues (Mila peut en manger).
 
 ## Déjà fait récemment
+**2.86** : pique-nique — le Cherokee s'arrête maintenant à hauteur de la table (`stopReq.x = px+25` au lieu de `px-150`), Mila le propose plus tard (entre 620 et 200 avant), et la cinématique démarre 1,2 s après l'arrêt.
 **2.85** (grosse mise à jour demandée par l'utilisateur) :
 - Difficultés renommées Facile / Normal / Difficile.
 - Feux stop (et 3e feu en haut du hayon) quand on freine, feux de recul blancs en marche arrière (`xjDetails` surchargé).
