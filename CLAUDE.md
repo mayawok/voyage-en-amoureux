@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.69** : prépa moteur à part : la bulle « Prépa moteur » n'apparaît que si le Cherokee est arrêté devant l'atelier (`c.x` entre `m.x+300` et `m.x+440`, dans `uiShops`), plus à la pompe. Mila le signale en passant à la station (`engSaid`). Aide mise à jour.
 **2.68** : plus de double affichage : quand l'objectif (`#obj`) annonce déjà la même chose que le panneau mission (`#mis`, ex. photo d'un animal), le panneau mission est masqué (classe `dup`, testée dans `objTick` surchargé).
 **2.67** : le tri des fioles fait partie du mail du labo : au premier résultat du chapitre, une carte « Mail du labo » (les fluides se sont mélangés pendant le transport) avec un bouton « Trier les fioles » (`cd.btn` : libellé personnalisé du bouton de carte, `openCard` surchargé) lance `tubeOpen` ; à la fin (réussi ou « Passer »), carte « Résultats du labo » avec l'analyse. Remplace l'ancien arrêt demandé par Mila (2.06). Les autres résultats arrivent comme avant.
 **2.66** : la nuit qui tangue (`rockOn`) : seule la caisse bouge, les roues restent posées au sol (compensation par `susS` dans la surcharge de `truck`, comme si les suspensions travaillaient).
