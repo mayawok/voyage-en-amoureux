@@ -5976,6 +5976,7 @@ const AIDE=[
   ['⛽','Station-service','Arrête-toi devant et coupe le moteur pour le plein. La bulle « Ouvrir » donne accès à la boutique auto.'],
   ['🛒','Magasins et vendeurs','Arrête-toi devant et touche la bulle « Ouvrir ».'],
   ['🔧','L’atelier Corse 4x4','Dans les garages : couleur, jantes, pneus, phares, suspensions…'],
+  ['🏁','L’étape au garage','Entre deux chapitres, une page « L’étape au garage » s’ouvre : Mécanique, Peinture et Moteur au même endroit, même si tu n’as pas croisé les magasins sur la route. Touche « Reprendre la route » quand le Cherokee est prêt.'],
   ['🔩','Prépa moteur','Une station par chapitre a un atelier juste après les pompes : arrête-toi devant et touche « Prépa moteur ». Essence ou diesel, 4 ou 6 cylindres, turbo ou non. Plus de puissance = plus de consommation.'],
   ['🫧','Lavage auto','Une autre station par chapitre a un portique juste avant les pompes : une bulle « Lavage auto » flotte au-dessus. Arrête-toi sous les rouleaux et touche « Laver le Cherokee ». Pour le plein, avance jusqu’à la pompe.'],
   ['📷','Photos d’animaux','Arrête-toi aux points d’observation pour photographier les animaux de la mission.'],
@@ -6961,6 +6962,97 @@ function va3DogRain(){const tm=performance.now()/1000;const win=()=>{g.beginPath
 // --- 3.03 : retour de Sardaigne raccourci (plus de cinématique de départ, traversée et arrivée courtes)
 CS.sarA1.L=()=>[[1,'n','Bonifacio, perché sur sa falaise. Le bateau accoste et le Cherokee redescend sur le quai.'],[5.5,'a','La Corse… On est à la maison. Direction la forêt de l’Ospedale !']];CS.sarA1.end=10;
 sarCross=(function(o){return function(back){if(!back)return o(back);fadeTo(()=>{btAfter=()=>{blackNow();try{openCine('sarA1')}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},350)};openBoat(true);if(bt){bt.D=9;bt.L=[[.8,'m','Au revoir la Sardaigne… On a ce qu’il nous faut.'],[4,'a','Regarde, Bonifacio sur sa falaise. On rentre.'],[7,'m','Le chien a déjà reconnu l’odeur du maquis !']]}})}})(sarCross);
+// ===== 3.05 : l'étape au garage entre deux chapitres (tous les ateliers du Cherokee au même endroit) =====
+var va5G=null;
+(function(){const st5=document.createElement('style');st5.textContent=`#va5{position:fixed;inset:0;z-index:41;display:none;background:#1a1410;touch-action:none;font-family:inherit}
+#va5 canvas{position:absolute;inset:0;width:100%;height:100%}
+#va5 .hd{position:absolute;left:max(12px,env(safe-area-inset-left));top:8px;max-width:40vw;background:rgba(255,248,234,.94);color:#2b241b;border-radius:16px;padding:8px 14px 9px;box-shadow:0 4px 18px rgba(0,0,0,.35);max-width:46vw}
+#va5 .hd small{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8f2230;font-weight:800}
+#va5 .hd b{display:block;font-size:17px;line-height:1.15}
+#va5 .hd span{display:block;font-size:12.5px;margin-top:3px;opacity:.85}
+#va5 .hr{position:absolute;right:max(12px,env(safe-area-inset-right));top:10px;background:rgba(43,32,24,.85);color:#ffe7a8;border-radius:14px;padding:7px 12px;font-weight:800;font-size:15px}
+#va5 .va5bar{position:absolute;left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom));display:flex;gap:8px;align-items:stretch}
+#va5 .va5bar button{flex:1;margin:0;min-height:0;height:auto;border:0;border-radius:16px;padding:8px 6px;background:rgba(255,248,234,.95);color:#2b241b;font:800 15px/1.15 "Avenir Next",Arial,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.35);transform:none;position:static}
+#va5 .va5bar button small{display:block;font-weight:600;font-size:11px;opacity:.75;margin-top:2px}
+#va5 .va5bar button.go{flex:1.25;background:#2e8b3a;color:#fff;font-size:16px}
+#va5 .va5bar button.go small{color:#e6ffe8;opacity:.9}`;document.head.appendChild(st5);
+ const d=document.createElement('div');d.id='va5';d.innerHTML='<canvas id="va5c"></canvas><div class="hd"><small id="va5k"></small><b>L’étape au garage</b><span id="va5n"></span></div><div class="hr" id="va5h"></div><div class="va5bar"><button id="va5m">🔧 Mécanique<small>suspension, pneus, treuil, pièces</small></button><button id="va5p">🎨 Peinture<small>carrosserie, jantes, livrées</small></button><button id="va5e">⚙ Moteur<small>essence, diesel, turbo</small></button><button class="go" id="va5go">🚙 Reprendre la route<small id="va5gs"></small></button></div>';document.body.appendChild(d);
+ const tap=(id,fn)=>gid(id).addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();fn()});
+ tap('va5m',()=>{snd('click');cusMode='gar';openShop();va5Lbl()});
+ tap('va5p',()=>{snd('click');openPaint();va5Lbl()});
+ tap('va5e',()=>{snd('click');openEng();va5Lbl()});
+ tap('va5go',()=>{snd('chime');va5Close()});
+ // en revenant d'un atelier, on reste sur la page du garage
+ const back=()=>{if(va5G){paused=true;st.gas=0;va5Hdr();va5Draw(performance.now())}};
+ gid('cusx').addEventListener('click',()=>setTimeout(back,0));gid('engx').addEventListener('click',()=>setTimeout(back,0));})();
+function va5Lbl(){try{if(!va5G)return;gid('cusx').textContent='Retour au garage ◀';gid('engx').textContent='Retour au garage ◀'}catch(e){}}
+function va5Unlbl(){try{gid('cusx').textContent='Repartir ▶';gid('engx').textContent='Repartir ▶'}catch(e){}}
+function va5Hdr(){try{gid('va5h').textContent='Tes cœurs : '+SV.hearts+' ❤';const nx=CHAP[(level-1)%CHAP.length];gid('va5k').textContent='Chapitre '+(va5G.i+1)+' terminé';gid('va5n').textContent='Prochaine étape : '+nx.p.split(' · ')[0]+'. Profitez-en pour préparer le Cherokee.';gid('va5gs').textContent='Chapitre '+(chIdx()+1)+' / '+CHAP.length}catch(e){}}
+function va5Open(i){va5G={i,t0:performance.now()};paused=true;st.gas=0;st.brake=0;try{ptr.clear()}catch(e){}try{cusInit()}catch(e){}const cvs=gid('va5c');cvs.width=Math.round(W*DPR);cvs.height=Math.round(HH*DPR);va5Hdr();gid('va5').style.display='block';va5Lbl();va5Draw(performance.now());SV.va5=level;saveTrip()}
+function va5Close(){va5G=null;gid('va5').style.display='none';va5Unlbl();paused=false;last=performance.now();try{applyUp();settleCar()}catch(e){}saveTrip()}
+const VA5_TALK=[['a','Je resserre deux ou trois boulons, et on est repartis.'],['m','Je note tout : les kilomètres, les animaux… et toi qui chantes faux.'],['a','Si tu veux changer quelque chose sur le Cherokee, c’est le moment.'],['m','Le magasin d’à côté a reçu de nouvelles couleurs. Je dis ça, je dis rien.'],['a','Un peu de graisse sur les rotules, et il grimpera n’importe où.'],['m','Le chien surveille le Cherokee depuis la fenêtre. Personne n’y touchera.']];
+function va5Draw(t){if(!va5G)return;const x=gid('va5c').getContext('2d'),tm=t/1000,k=HH/420,Wd=W/k,gy=318;
+ onCtx(x,()=>{g.setTransform(DPR*k,0,0,DPR*k,0,0);
+  // ciel d'après-midi
+  const sk=g.createLinearGradient(0,0,0,260);sk.addColorStop(0,'#7fb8e0');sk.addColorStop(1,'#f6e6c8');g.fillStyle=sk;g.fillRect(0,0,Wd,420);
+  g.fillStyle='rgba(255,236,170,.9)';g.beginPath();g.arc(Wd*.83,70,22,0,7);g.fill();
+  for(let i=0;i<4;i++){const cx=((tm*5+i*Wd/3)%(Wd+220))-110,cy=48+i*18;g.fillStyle='rgba(255,255,255,.75)';g.beginPath();g.ellipse(cx,cy,46,10,0,0,7);g.ellipse(cx+30,cy-6,30,9,0,0,7);g.fill()}
+  // collines du maquis et village perché
+  g.fillStyle='#9fb08a';g.beginPath();g.moveTo(0,230);for(let X=0;X<=Wd;X+=20)g.lineTo(X,176+Math.sin(X*.007+1)*22+Math.sin(X*.02)*7);g.lineTo(Wd,240);g.lineTo(0,240);g.fill();
+  for(let i=0;i<7;i++){const hx=Wd*.6+i*16,hy=166+Math.sin(i)*4;g.fillStyle=i%2?'#e9dcc4':'#d9c9aa';g.fillRect(hx,hy,13,11);g.fillStyle='#b5532a';g.beginPath();g.moveTo(hx-2,hy);g.lineTo(hx+6.5,hy-6);g.lineTo(hx+15,hy);g.fill()}
+  g.fillStyle='#d9c9aa';g.fillRect(Wd*.6+50,140,8,26);g.fillStyle='#b5532a';g.beginPath();g.moveTo(Wd*.6+48,140);g.lineTo(Wd*.6+54,132);g.lineTo(Wd*.6+60,140);g.fill();
+  g.fillStyle='#7f9a66';g.beginPath();g.moveTo(0,250);for(let X=0;X<=Wd;X+=16)g.lineTo(X,214+Math.sin(X*.012+3)*12+Math.sin(X*.05)*4);g.lineTo(Wd,260);g.lineTo(0,260);g.fill();
+  for(let i=0;i<20;i++){const X=(i*53)%Wd,Y=226+(i*7)%18;g.fillStyle=i%3?'#5f7f48':'#6a8a50';g.beginPath();g.arc(X,Y,7+i%4,0,7);g.fill()}
+  // cour du garage
+  g.fillStyle='#8f8a80';g.fillRect(0,gy-62,Wd,62);g.fillStyle='#7d786f';g.fillRect(0,gy,Wd,140);g.fillStyle='#a39d92';g.fillRect(0,gy-2,Wd,4);
+  g.fillStyle='rgba(30,26,22,.28)';g.beginPath();g.ellipse(Wd*.33,gy+23,15,3.5,0,0,7);g.ellipse(Wd*.625,gy+19,15,3.5,0,0,7);g.ellipse(Wd*.5,gy+6,108,6,0,0,7);g.fill();
+  g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=2;g.setLineDash([18,14]);g.beginPath();g.moveTo(0,gy+52);g.lineTo(Wd,gy+52);g.stroke();g.setLineDash([]);
+  // garage de pierre à gauche
+  const gx=Wd*.02,gw=Wd*.36,gt=118;g.fillStyle='#d9cbb0';g.fillRect(gx,gt,gw,gy-gt);
+  g.fillStyle='rgba(120,100,70,.18)';for(let r=0;r<9;r++)for(let q=0;q<10;q++){if((r+q)%3)continue;g.fillRect(gx+q*gw/10+(r%2)*8,gt+8+r*21,gw/10-6,10)}
+  g.fillStyle='#b5532a';g.beginPath();g.moveTo(gx-12,gt);g.lineTo(gx+gw/2,gt-40);g.lineTo(gx+gw+12,gt);g.closePath();g.fill();g.fillStyle='rgba(0,0,0,.15)';for(let i=0;i<8;i++)g.fillRect(gx-8+i*gw/7.3,gt-6,3,6);
+  const bx=gx+gw*.12,bw=gw*.62,bt=gt+44;g.fillStyle='#2c2621';g.fillRect(bx,bt,bw,gy-bt);
+  g.strokeStyle='#4a423a';g.lineWidth=2;g.strokeRect(bx,bt,bw,gy-bt);
+  // établi et outils au fond
+  g.fillStyle='#5a4632';g.fillRect(bx+8,gy-42,bw*.55,6);g.fillRect(bx+12,gy-36,4,36);g.fillRect(bx+bw*.55,gy-36,4,36);
+  g.strokeStyle='#9aa0a6';g.lineWidth=2;for(let i=0;i<7;i++){const tx=bx+12+i*12;g.beginPath();g.moveTo(tx,bt+20);g.lineTo(tx,bt+40+(i%3)*6);g.stroke();g.beginPath();g.arc(tx,bt+18,3,0,7);g.stroke()}
+  g.fillStyle='#c8382c';g.fillRect(bx+bw*.68,gy-34,22,34);g.fillStyle='#e8e2d0';g.fillRect(bx+bw*.68,gy-26,22,3);
+  for(let i=0;i<3;i++){g.fillStyle='#1c1c1c';g.beginPath();g.ellipse(bx+bw+20,gy-8-i*13,17,7,0,0,7);g.fill();g.fillStyle='#3a3a3a';g.beginPath();g.ellipse(bx+bw+20,gy-8-i*13,8,3,0,0,7);g.fill()}
+  // enseigne
+  g.fillStyle='#8f2230';rr(g,gx+gw*.12,gt+10,gw*.76,26,6);g.fill();g.fillStyle='#fff3d6';g.font='900 15px Arial';g.textAlign='center';g.textBaseline='middle';g.fillText('GARAGE CORSE 4x4',gx+gw/2,gt+23);
+  // magasin de pièces et peinture à droite
+  const sx=Wd*.7,sw=Wd*.28,stt=150;g.fillStyle='#f1ece0';g.fillRect(sx,stt,sw,gy-stt);g.fillStyle='#d7d0c0';g.fillRect(sx,stt,sw,6);
+  for(let i=0;i<8;i++){g.fillStyle=i%2?'#2e7d4f':'#f6f2e8';g.beginPath();g.moveTo(sx-6+i*(sw+12)/8,stt+30);g.lineTo(sx-6+(i+1)*(sw+12)/8,stt+30);g.lineTo(sx-6+(i+1)*(sw+12)/8-3,stt+46);g.lineTo(sx-6+i*(sw+12)/8-3,stt+46);g.fill()}
+  g.fillStyle='#2e7d4f';rr(g,sx+8,stt+8,sw-16,20,5);g.fill();g.fillStyle='#fff';g.font='800 12px Arial';g.fillText('PIÈCES & PEINTURE',sx+sw/2,stt+18);
+  const wx=sx+10,wy=stt+56,ww=sw*.56,wh=gy-wy-28;g.fillStyle='#bcd6e2';g.fillRect(wx,wy,ww,wh);g.strokeStyle='#8a8478';g.lineWidth=3;g.strokeRect(wx,wy,ww,wh);
+  for(let i=0;i<3;i++){const rx=wx+16+i*(ww-24)/3,ry=wy+wh-18;g.fillStyle='#2a2a2a';g.beginPath();g.arc(rx,ry,12,0,7);g.fill();g.fillStyle=['#c9ccd2','#d8b04a','#2a2d33'][i];g.beginPath();g.arc(rx,ry,7,0,7);g.fill()}
+  const pc=['#8f2230','#2f6fb0','#3d7a3a','#f2c230','#e8e2d0'];for(let i=0;i<5;i++){g.fillStyle=pc[i];g.fillRect(wx+8+i*(ww-16)/5,wy+8,(ww-16)/5-4,14);g.fillStyle='rgba(255,255,255,.4)';g.fillRect(wx+8+i*(ww-16)/5,wy+8,(ww-16)/5-4,3)}
+  g.fillStyle='#6a4a2a';g.fillRect(sx+sw*.7,gy-56,sw*.22,56);g.fillStyle='#e8d090';g.beginPath();g.arc(sx+sw*.74,gy-28,2,0,7);g.fill();
+  g.fillStyle='#2e7d4f';rr(g,sx+sw*.7,gy-72,sw*.22,12,4);g.fill();g.fillStyle='#fff';g.font='800 8px Arial';g.fillText('OUVERT',sx+sw*.81,gy-66);
+  g.textBaseline='alphabetic';
+  // le Cherokee, tel qu'il est préparé
+  const CX=Wd*.5,sc=1.75;g.save();g.translate(CX,gy+4);g.scale(sc,sc);g.translate(-CX,-(gy+4));
+  const sv={c,a,v:{x:v.x,y:v.y},rot:rot.slice(),work,flatW};try{c={x:CX,y:gy+4-(WL[0][1]+R-2)};a=0;v.x=0;v.y=0;rot[0]=rot[1]=0;work=1;flatW=-1;truck()}catch(e){}finally{c=sv.c;a=sv.a;v.x=sv.v.x;v.y=sv.v.y;rot=sv.rot;work=sv.work;flatW=sv.flatW}
+  g.restore();
+  // la caisse à outils ouverte
+  const tbx=CX+Wd*.15,tby=gy+16;g.fillStyle='#c8382c';g.fillRect(tbx-16,tby-12,32,12);g.fillStyle='#a52a20';g.save();g.translate(tbx-16,tby-12);g.rotate(-.5);g.fillRect(0,-8,32,8);g.restore();g.fillStyle='#9aa0a6';g.fillRect(tbx-10,tby-16,3,6);g.fillRect(tbx-2,tby-17,3,7);g.fillRect(tbx+6,tby-15,3,5);
+  // Andrea penché sur l'avant, clé à la main
+  const work2=Math.sin(tm*3.2),ax=CX+Wd*.125,ay=gy+18;grp(ax,ay,1.55,()=>{person(ax,ay,0,{f:-1,a1:1.9+work2*.35,a2:.6});
+   const hp=hand(ax,ay,1.9+work2*.35,-1);g.save();g.translate(hp[0],hp[1]);g.rotate(-.6+work2*.3);g.fillStyle='#b8bec6';g.fillRect(-1,-7,2.2,10);g.beginPath();g.arc(0,-8,2.4,0,7);g.fill();g.restore()});
+  // Mila et son carnet
+  const mx=Wd*.33,my=gy+22;grp(mx,my,1.55,()=>{person(mx,my,1,{f:1,a1:1.2,a2:1.5});
+   const hp=hand(mx,my,1.5,1);g.fillStyle='#2b3a6b';g.save();g.translate(hp[0]-2,hp[1]-5);g.rotate(-.15);g.fillRect(-6,-4,12,9);g.fillStyle='#f6f0e2';g.fillRect(-5,-3,10,7);g.strokeStyle='#8a8478';g.lineWidth=.5;for(let l=0;l<3;l++){g.beginPath();g.moveTo(-4,-1.5+l*2);g.lineTo(4,-1.5+l*2);g.stroke()}
+   g.strokeStyle='#d8a030';g.lineWidth=1.2;const pu=Math.sin(tm*5)*2.5;g.beginPath();g.moveTo(pu,0);g.lineTo(pu+3,-5);g.stroke();g.restore()});
+  // une hirondelle ou deux
+  for(let i=0;i<2;i++){const bx2=((tm*60+i*300)%(Wd+80))-40,by2=96+i*22+Math.sin(tm*3+i)*6,fl=Math.sin(tm*14+i)*4;g.strokeStyle='#2a2622';g.lineWidth=1.6;g.beginPath();g.moveTo(bx2-7,by2-fl);g.quadraticCurveTo(bx2-3,by2-2,bx2,by2);g.quadraticCurveTo(bx2+3,by2-2,bx2+7,by2-fl);g.stroke()}
+  // bulle : ce que disent Mila et Andrea
+  const L=VA5_TALK[Math.floor((t-va5G.t0)/4200)%VA5_TALK.length],isA=L[0]==='a',bxx=isA?ax+10:mx+10,byy=isA?gy-120:gy-112;g.font='700 13px Georgia,serif';const tw=Math.min(300,g.measureText(L[1]).width+22);
+  const bl=Math.max(8,Math.min(Wd-tw-8,bxx-tw/2));g.fillStyle='rgba(255,252,244,.96)';rr(g,bl,byy-24,tw,30,10);g.fill();g.beginPath();g.moveTo(bxx-6,byy+6);g.lineTo(bxx,byy+16);g.lineTo(bxx+6,byy+6);g.fill();
+  g.fillStyle=isA?'#2f5f9a':'#7a3fb0';g.textAlign='center';g.textBaseline='middle';const words=L[1];let fs=13;while(g.measureText(words).width>tw-14&&fs>9){fs--;g.font='700 '+fs+'px Georgia,serif'}g.fillText(words,bl+tw/2,byy-9);g.textBaseline='alphabetic';
+  try{wxOver(g,Wd,420,tm)}catch(e){}
+  g.setTransform(1,0,0,1,0,0)})}
+loop=(function(o){return function(t){o(t);try{if(va5G&&gid('cus').style.display!=='block'&&gid('engv').style.display!=='flex')va5Draw(t)}catch(e){}}})(loop);
+closeEnd=(function(o){return function(){const i=es?es.i:-1;o();try{if(i>=0&&i<CHAP.length-1&&level>1)va5Open(i)}catch(e){}}})(closeEnd);
 // ===== 3.04 : l'appel de Lucia au lac en cinématique =====
 // --- 3.04 : l'appel de Lucia au lac de l'Ospedale (cinématique), puis l'usine Noxacorp qui ferme et Marchetti en prison
 function va4LacScene(Wd,gy,T2,tm){
@@ -7102,6 +7194,6 @@ drawObs=(function(o){return function(x0,x1){o(x0,x1);try{va3TortDraw(performance
 
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.04',GAME_DATE='23/10/2026 à 20h22';
+const GAME_VER='3.05',GAME_DATE='23/10/2026 à 21h26';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
