@@ -5037,7 +5037,7 @@ try{hudNApply()}catch(e){}
 // une nuit sur trois dans le Cherokee : il tangue doucement, vitres embuées, des petits cœurs s'envolent
 arrive=(function(o){return function(m0){o(m0);try{if(night&&night.m&&night.m.car)night.rock=((SV.nightN||0)%3===2)}catch(e){}}})(arrive);
 function rockOn(){try{return !!(night&&night.rock&&night.m&&night.m.car&&night.t>12.8&&night.t<20)}catch(e){return false}}
-truck=(function(o){return function(){if(!rockOn())return o();const t=night.t,k=Math.min(1,(t-12.8)/.8)*Math.min(1,(20-t)/.8),sv=c,sa=a;c={x:c.x,y:c.y+Math.sin(t*8.5)*1.6*k};a=a+Math.sin(t*8.5+1)*.012*k;try{o()}finally{c=sv;a=sa}}})(truck);
+truck=(function(o){return function(){if(!rockOn())return o();const t=night.t,k=Math.min(1,(t-12.8)/.8)*Math.min(1,(20-t)/.8),sv=c,sa=a;const dy=Math.sin(t*8.5)*2.2*k,da=Math.sin(t*8.5+1)*.016*k,ss=susS.slice();c={x:c.x,y:c.y+dy};a=a+da;for(let i=0;i<2;i++)susS[i]=(susS[i]||0)-dy*Math.cos(sa)-WL[i][0]*da;try{o()}finally{c=sv;a=sa;for(let i=0;i<2;i++)susS[i]=ss[i]}}})(truck);
 carNight=(function(o){return function(m,tm){o(m,tm);try{if(!rockOn())return;const t=night.t,cx=m.x+120,y=m.y;
 g.save();g.translate(c.x,c.y);g.rotate(a);g.translate(0,8);g.fillStyle='rgba(235,240,245,'+(.55*Math.min(1,(t-12.8)/2))+')';g.beginPath();g.moveTo(-51,-19);g.lineTo(-49,-29);g.lineTo(-30,-29.5);g.lineTo(-30,-19);g.fill();g.beginPath();g.moveTo(-24,-19);g.lineTo(-24,-29.5);g.lineTo(11,-30);g.lineTo(21,-19);g.fill();g.restore();
 for(let i=0;i<7;i++){const u=((t-12.8)*.45+i/7)%1;heart(c.x-30+Math.sin(i*2.3+t*1.5)*26*u+i*6,c.y-45-u*70,3.5+u*4,(1-u)*Math.min(1,(t-12.8)/1.2)*Math.min(1,(20-t)/.8))}}catch(e){}}})(carNight);
@@ -6155,6 +6155,6 @@ mgTick=(function(o){return function(dt){o(dt);try{if(!started||night||cs||PLT())
 mgTick=(function(o){return function(dt){o(dt);try{if(introT>0&&!night&&!cs&&Math.abs(v.x)<2&&Math.abs(v.y)<2){settleCar();cam.y+=(c.y-cam.y)*.2}}catch(e){}}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.65',GAME_DATE='23/10/2026 à 12h08';
+const GAME_VER='2.66',GAME_DATE='23/10/2026 à 12h11';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
