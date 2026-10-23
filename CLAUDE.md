@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.64** : lavage et plein séparés : la bulle « Lavage » n'apparaît que si le Cherokee est arrêté sous le portique (`c.x` entre `m.x-215` et `m.x-105`, dans `uiShops`), la bulle de la station (boutique, prépa moteur) et le plein restent à la pompe (`m.x+40` à `m.x+240`). Mila prévient en approchant (`washSaid`). Aide mise à jour.
 **2.63** : les inséparables (chapitre 9, ~55 %) ne sont plus une carte qui cache tout : arrêt, puis cinématique `CS.love` (gros plan : grand arbre, branche au milieu de l'écran, deux inséparables détaillés `lbBird` qui se rapprochent, se toilettent, se blottissent avec des cœurs, puis s'envolent côte à côte ; Mila, Andrea et le Cherokee en bas à gauche ; musique `love`), mêmes répliques qu'avant, souvenir `albAdd('love')` à la fin.
 **2.62** :
 - Plateau du Coscione aussi la nuit (`PLT()` ne dépend plus de `night`) : on dort sur le plateau, plus en ville. Sur le plateau : pas de bouchon (`jamX` = -1), de marché (`marketDraw`), de lampadaires (`lampPts`), de villages/fontaines (`sceneAt` = 0), ni de nom de zone « Corse 4x4 » ; couleurs du biome forcées sur prairie (`ta` entre 150 et 200 dans le rendu, plus de sable de plage) ; troupeaux qui paissent (chevaux sans selle via `eqDraw` debout et `window.__wild`, vaches) et mares en plus (`pozz` surchargé).

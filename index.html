@@ -1403,8 +1403,9 @@ if(started&&!night&&!crashed&&!paused&&st.hb&&sp<25){
 const hrN=hourNow(),nightT=hrN>=19.5,cpN=camps.some(m=>c.x>m.a-60&&c.x<m.b+60);const tunN=nightT&&!ign&&!cpN&&noSleep();if(tunN&&window.__tunNo!==level+':'+Math.round(c.x/700)){window.__tunNo=level+':'+Math.round(c.x/700);try{if(tunAt(c.x)>=0||tunAt(c.x+260)>=0||tunAt(c.x-260)>=0)say('On ne va pas dormir dans un tunnel… Sortons d’abord, on s’arrêtera juste après.',3.6,1)}catch(e){}}if(nightT&&!ign&&!cpN&&!tunN){const vil=sceneAt(c.x)===1||sceneAt(c.x+200)===1||sceneAt(c.x-200)===1;cx={x:c.x,y:c.y-95,it:vil?[['sleep','🚙','Dans le Cherokee',0],['hotel','🏨','Hôtel du village',4]]:[['sleep','🚙','Dormir dans le Cherokee',0]],key:'sl'+(vil?1:0)}}else{
 const op=obsP.find(q=>c.x>q.x-170&&c.x<q.x+90&&obsUseful(q)),sm=op?null:shp.find(m=>c.x>m.x+10&&c.x<m.x+250);if(op)cx={x:op.x,y:op.y-70,it:[['obs','🔭','Observer',0]],key:'o'+op.x};else 
 if(sm)cx={x:sm.x+145,y:sm.y-96,it:sm.k==='food'?[['umenu','🛒','Entrer chez Utile',0]]:shopItems(sm),key:'s'+sm.x+(carry?'c':'')+(sm.extra?'e':'')};
-else{const m=PLT()?null:stns.find(q=>c.x>q.x+40&&c.x<q.x+240);
-if(m)cx={x:m.x+150,y:m.y-84,it:[['stmenu','🏪','Boutique auto',0]].concat(m.eng?[['engmenu','🔧','Prépa moteur',0]]:[]).concat(m.wash&&!washT?[['wash','🫧','Lavage',0]]:[]),key:'t'+m.x+(washT?'w':'')};
+else{const m=PLT()?null:stns.find(q=>c.x>q.x+40&&c.x<q.x+240),mw=(PLT()||washT)?null:stns.find(q=>q.wash&&c.x>q.x-215&&c.x<q.x-105);
+if(mw)cx={x:mw.x-160,y:T(mw.x-160)-112,it:[['wash','🫧','Lavage',0]],key:'w'+mw.x};
+else if(m)cx={x:m.x+150,y:m.y-84,it:[['stmenu','🏪','Boutique auto',0]].concat(m.eng?[['engmenu','🔧','Prépa moteur',0]]:[]),key:'t'+m.x};
 else{const j=pzJ();if(j!=null){const px=pzX(j);cx={x:px+10,y:T(px+10)-84,it:pzItems(j),key:'p'+j,mar:1,vend:pzVend(j)}}}}}}
 if(!cx){sbEl.style.display='none';mbEl.style.display='none';sbCtx=null;ctxKey='';return}
 if(ctxKey!==cx.key){ctxKey=cx.key;if(cx.mar){mLine=pzLine(cx.vend)}}
@@ -5949,7 +5950,7 @@ const AIDE=[
   ['🛒','Magasins et vendeurs','Arrête-toi devant et touche la bulle « Ouvrir ».'],
   ['🔧','L’atelier Corse 4x4','Dans les garages : couleur, jantes, pneus, phares, suspensions…'],
   ['🔩','Prépa moteur','Une station par chapitre : essence ou diesel, 4 ou 6 cylindres, turbo ou non. Plus de puissance = plus de consommation.'],
-  ['🫧','Lavage auto','Une autre station par chapitre : arrête-toi, touche « Laver » et le Cherokee ressort propre.'],
+  ['🫧','Lavage auto','Une autre station par chapitre a un portique juste avant les pompes : arrête-toi sous les rouleaux et touche « Lavage ». Pour le plein, avance jusqu’à la pompe.'],
   ['📷','Photos d’animaux','Arrête-toi aux points d’observation pour photographier les animaux de la mission.'],
   ['🐾','« Aider »','Quelqu’un ou un animal a besoin d’aide : arrête-toi et touche la bulle.'],
   ['🌙','La nuit','Dors au camping, à l’hôtel, ou dans le Cherokee avec la bulle « Dormir ici ».'],
@@ -6147,8 +6148,11 @@ else{const u=T2-31,fx=cx+u*70+u*u*8,fy=cy-10-u*22-Math.sin(u*3)*5,k2=sc*(1-u*.07
 // fleurs du premier plan
 for(let i=0;i<22;i++){const fx2=hh2(i+80)*Wd,fy2=gy+44+hh2(i+90)*40;g.strokeStyle='#4f8a3a';g.lineWidth=1.2;g.beginPath();g.moveTo(fx2,fy2);g.lineTo(fx2,fy2-8);g.stroke();g.fillStyle=['#fff','#f2d24a','#d86aa8','#8a7ae0'][i%4];g.beginPath();g.arc(fx2,fy2-9,2.6,0,7);g.fill()}}};
 musScene=(function(o){return function(){try{if(cs&&cs.k==='love')return 'love'}catch(e){}return o()}})(musScene);
+// ===== 2.64 : lavage sous les rouleaux, plein à la pompe =====
+var washSaid={};
+mgTick=(function(o){return function(dt){o(dt);try{if(!started||night||cs||PLT())return;for(const m of stns){if(!m.wash||washSaid[level+':'+m.x])continue;if(c.x>m.x-700&&c.x<m.x-300&&v.x>0&&sayT<=0){washSaid[level+':'+m.x]=1;say('Un lavage ! Si tu veux laver le Cherokee, arrête-toi sous les rouleaux. Pour le plein, c’est à la pompe, juste après.',4.6,1)}}}catch(e){}}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.63',GAME_DATE='23/10/2026 à 11h43';
+const GAME_VER='2.64',GAME_DATE='23/10/2026 à 11h49';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
