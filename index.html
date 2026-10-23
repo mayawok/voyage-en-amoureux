@@ -6961,6 +6961,58 @@ function va3DogRain(){const tm=performance.now()/1000;const win=()=>{g.beginPath
 // --- 3.03 : retour de Sardaigne raccourci (plus de cinématique de départ, traversée et arrivée courtes)
 CS.sarA1.L=()=>[[1,'n','Bonifacio, perché sur sa falaise. Le bateau accoste et le Cherokee redescend sur le quai.'],[5.5,'a','La Corse… On est à la maison. Direction la forêt de l’Ospedale !']];CS.sarA1.end=10;
 sarCross=(function(o){return function(back){if(!back)return o(back);fadeTo(()=>{btAfter=()=>{blackNow();try{openCine('sarA1')}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},350)};openBoat(true);if(bt){bt.D=9;bt.L=[[.8,'m','Au revoir la Sardaigne… On a ce qu’il nous faut.'],[4,'a','Regarde, Bonifacio sur sa falaise. On rentre.'],[7,'m','Le chien a déjà reconnu l’odeur du maquis !']]}})}})(sarCross);
+// ===== 3.04 : l'appel de Lucia au lac en cinématique =====
+// --- 3.04 : l'appel de Lucia au lac de l'Ospedale (cinématique), puis l'usine Noxacorp qui ferme et Marchetti en prison
+function va4LacScene(Wd,gy,T2,tm){
+ // ciel du soir
+ const sk=g.createLinearGradient(0,0,0,250);sk.addColorStop(0,'#33406e');sk.addColorStop(.55,'#d98a6a');sk.addColorStop(1,'#ffd7a0');g.fillStyle=sk;g.fillRect(0,0,Wd,420);
+ const sx=Wd*.7,sy=178;const sg=g.createRadialGradient(sx,sy,4,sx,sy,90);sg.addColorStop(0,'rgba(255,230,160,.9)');sg.addColorStop(1,'rgba(255,200,120,0)');g.fillStyle=sg;g.fillRect(sx-90,sy-90,180,180);g.fillStyle='#ffe2a0';g.beginPath();g.arc(sx,sy,20,0,7);g.fill();
+ for(let i=0;i<4;i++){const cx=((tm*6+i*Wd/3.5)%(Wd+200))-100,cy=50+i*22;g.fillStyle='rgba(255,215,190,.35)';g.beginPath();g.ellipse(cx,cy,60,9,0,0,7);g.ellipse(cx+40,cy-5,40,8,0,0,7);g.fill()}
+ // montagnes
+ g.fillStyle='#7a6a8a';g.beginPath();g.moveTo(0,200);for(let x=0;x<=Wd;x+=20)g.lineTo(x,150+Math.sin(x*.008+1)*26+Math.sin(x*.021)*10);g.lineTo(Wd,215);g.lineTo(0,215);g.fill();
+ g.fillStyle='#5a5a72';g.beginPath();g.moveTo(0,215);for(let x=0;x<=Wd;x+=20)g.lineTo(x,182+Math.sin(x*.013+2)*16+Math.sin(x*.04)*5);g.lineTo(Wd,222);g.lineTo(0,222);g.fill();
+ // pins laricio sur l'autre rive
+ const pine=(x,y,h,c)=>{g.fillStyle=c;g.fillRect(x-1.2,y-h,2.4,h);for(let k=0;k<3;k++){const yy=y-h+k*h*.18;g.beginPath();g.ellipse(x+(k-1)*3,yy,h*.22-k*1.5,h*.07,0,0,7);g.fill()}};
+ for(let i=0;i<34;i++){const x=i*(Wd/33)+Math.sin(i*7.3)*8,h=26+Math.abs(Math.sin(i*3.1))*22;pine(x,226,h,'#2f3d3a')}
+ // lac + reflets
+ const lk=g.createLinearGradient(0,226,0,gy);lk.addColorStop(0,'#c48a7a');lk.addColorStop(.3,'#6a7a9a');lk.addColorStop(1,'#3a5070');g.fillStyle=lk;g.fillRect(0,226,Wd,gy-226);
+ g.save();g.globalAlpha=.25;for(let i=0;i<34;i++){const x=i*(Wd/33)+Math.sin(i*7.3)*8,h=26+Math.abs(Math.sin(i*3.1))*22;g.fillStyle='#1f2a2a';g.fillRect(x-1.2,226,2.4,h*.8);g.beginPath();g.ellipse(x,226+h*.7,h*.2,h*.06,0,0,7);g.fill()}g.restore();
+ g.fillStyle='rgba(255,226,160,.55)';for(let i=0;i<9;i++){const yy=232+i*6,w2=40-i*3+Math.sin(tm*2+i)*6;g.fillRect(sx-w2/2+Math.sin(tm*1.3+i)*5,yy,w2,1.6)}
+ g.strokeStyle='rgba(255,255,255,.18)';g.lineWidth=1;for(let i=0;i<12;i++){const x=((i*97+tm*8)%Wd),y=240+(i*13)%(gy-250);g.beginPath();g.moveTo(x,y);g.lineTo(x+16,y);g.stroke()}
+ // rive : herbe, galets, gros rocher de granit
+ g.fillStyle='#5f7a4a';g.beginPath();g.moveTo(0,gy-6);for(let x=0;x<=Wd;x+=24)g.lineTo(x,gy-8+Math.sin(x*.05)*3);g.lineTo(Wd,420);g.lineTo(0,420);g.fill();
+ g.fillStyle='#4a6438';g.fillRect(0,gy+10,Wd,140);
+ for(let i=0;i<16;i++){g.fillStyle=i%2?'#9a958c':'#b8b2a6';g.beginPath();g.ellipse((i*61)%Wd,gy+4+(i%3)*5,6+i%4,3,0,0,7);g.fill()}
+ const rx=Wd*.56;g.fillStyle='#a8a296';g.beginPath();g.moveTo(rx-60,gy+2);g.quadraticCurveTo(rx-56,gy-30,rx-10,gy-34);g.quadraticCurveTo(rx+46,gy-30,rx+58,gy+2);g.closePath();g.fill();g.fillStyle='rgba(255,255,255,.15)';g.beginPath();g.ellipse(rx-14,gy-26,26,5,-.1,0,7);g.fill();
+ // le Cherokee garé
+ grp(Wd*.17,gy,1.25,()=>{cherokeeSide(Wd*.17,gy+4,0)});
+ // le chien
+ const joy=T2>20&&T2<26,wait=T2>10.5&&T2<19.5;
+ try{grp(Wd*.42,gy,1.9,()=>{dogDraw(Wd*.42+(joy?Math.sin(T2*6)*6:0),gy+3-(joy?Math.abs(Math.sin(T2*8))*5:0),1,joy?'trot':'sit',tm)})}catch(e){}
+ // Mila et Andrea
+ const mx=Wd*.53,ax=Wd*.6,hop=joy?Math.abs(Math.sin(T2*7))*7:0,hug=T2>23?Math.min(1,(T2-23)/1.2):0;
+ const mA2=T2<4?.2:T2<7.6?.9:T2<20?2.75:joy?3.1:.4,mA1=joy?3.0:.15,aA1=joy?3.1:wait?.9:.2,aA2=joy?2.9:-.1;
+ grp(mx,gy,1.9,()=>{
+  person(mx+hug*6,gy+4-hop,1,{f:1,a1:mA1,a2:mA2,bob:wait?Math.sin(T2*1.2)*.4:0});
+  person(ax-hug*8,gy+4-(joy?Math.abs(Math.sin(T2*7+1))*7:0)+(wait?Math.sin(T2*3)*.5:0),0,{f:-1,a1:aA1,a2:aA2});
+  // téléphone dans la main de Mila
+  if(T2>3.8&&T2<21){const hp=hand(mx+hug*6,gy+4-hop,mA2,1);g.fillStyle='#1d1f24';g.save();g.translate(hp[0],hp[1]-2);g.rotate(mA2>2?-.3:.1);rr(g,-2.4,-4.5,4.8,9,1.2);g.fill();g.fillStyle=T2<7.6?'#8fd0ff':'#3a4a5a';g.fillRect(-1.7,-3.6,3.4,6);g.restore();
+   if(T2<7.6){g.strokeStyle='rgba(255,255,255,'+(.5+.5*Math.sin(tm*14))+')';g.lineWidth=1;for(let r=0;r<3;r++){g.beginPath();g.arc(hp[0],hp[1]-2,6+r*4+(tm*12%4),-1.1,-.1);g.stroke();g.beginPath();g.arc(hp[0],hp[1]-2,6+r*4+(tm*12%4),Math.PI+.1,Math.PI+1.1);g.stroke()}}}
+  // l'attente : petits points au-dessus de Mila
+  if(wait){for(let i=0;i<3;i++){const on=Math.floor(T2*2.2)%4>i;g.fillStyle=on?'rgba(255,255,255,.95)':'rgba(255,255,255,.3)';g.beginPath();g.arc(mx-6+i*6,gy-64,1.8,0,7);g.fill()}}
+ });
+ if(T2>20){for(let i=0;i<7;i++){const u=((T2-20)*.35+i/7)%1;heart(Wd*.565+Math.sin(i*2.3+T2)*30,gy-150-u*80,6+i%3*2,(1-u)*.9)}}
+ try{wxOver(g,Wd,420,tm)}catch(e){}}
+CS.lacCall={mus:'love',L:()=>[[1.2,'n','Au bord du lac de l’Ospedale. Le soleil descend derrière les pins laricio.'],[4,'n','Le téléphone de Mila sonne. Sur l’écran : « Lucia ».'],[7.6,'m','Lucia ? … Oui, on est au lac.'],[10.5,'l','« Mila… Vous êtes assis, tous les deux ? »'],[13,'n','Un long silence. Mila ne dit rien. Andrea la regarde sans oser respirer.'],[16.5,'l','« Marchetti a été arrêté ce matin. Le préfet fait fermer Noxacorp. C’est fini. »'],[20,'m','C’est fini… Andrea, c’est fini !'],[23,'a','Tu l’as fait. Toi, tes tortues et tes parasites.'],[26.4,'n','Le lendemain, les gendarmes de l’Inspection arrivent à l’usine Noxacorp.'],[35.4,'n','Et pour l’adjudant-chef Marchetti, la route s’arrête ici.']],end:41.5,
+ draw:(Wd,gy,T2,tm)=>{const fd=t0=>Math.max(0,1-Math.abs(T2-t0)/.45);
+  if(T2<26)va4LacScene(Wd,gy,T2,tm);
+  else if(T2<35){const old=fn;fn=fn||{};try{noxaScene(Wd,gy,T2-26,tm)}finally{fn=old}}
+  else{prisonScene(Wd,gy,T2-35+9,tm)}
+  const a2=Math.max(fd(26),fd(35));if(a2>0){g.fillStyle='rgba(0,0,0,'+a2+')';g.fillRect(0,0,Wd,420)}},
+ onEnd:()=>{try{SV.froid=0;saveTrip()}catch(e){}}};
+try{ALBK.cs_lacCall=['📞','L’appel de Lucia au lac','#33406e','#ffd7a0']}catch(e){}
+// la fin à Fautea ne rejoue pas l'usine et la prison si on les a déjà vues au lac
+openFinale=(function(o){return function(){o();try{if(fn&&SV.arrL&&CS.lacCall){fn.t=15}}catch(e){}}})(openFinale);
 // ===== 3.02 : scénario retravaillé (4x4 noir récurrent, dispute et réconciliation, bague au contrôle, vol des échantillons, arrestation au lac, tortue guérie) =====
 // --- Sabotages : dispute (fin ch4) puis vol des échantillons et réconciliation (fin ch7)
 function va3Sab(i,base){try{
@@ -7032,8 +7084,8 @@ function va3BlkDraw(x,tm,go,wa){const y=Math.max(T(x-50),T(x+50))+1,an=Math.atan
   g.fillStyle='#0b0c10';g.beginPath();g.arc(wx,-12,16,Math.PI,0);g.lineTo(wx+16,-12);g.fill()}
  g.restore()}
 // --- Chapitre 9 : Lucia appelle au lac, Marchetti est arrêté
-function va3ArrTick(){try{if(chIdx()!==8||SV.arrL===level||SV.stL!==level||(SV.stI||0)<3||!inGame||cardOpen||cs||MGX||hl)return;SV.arrL=level;SV.froid=0;
- cardQ.unshift({now:1,t:'📞 Lucia au téléphone',L:[['n','Au bord du lac, le téléphone de Mila sonne. C’est Lucia.'],['v','<b>Lucia :</b> « C’est fini. Marchetti a été arrêté ce matin. L’Inspection a saisi les dossiers de Noxacorp, et le préfet fait fermer l’usine. »'],['m','Fini… vraiment fini ?'],['v','<b>Lucia :</b> « Vraiment. Votre dossier était imparable. Maintenant, reposez-vous. Vous l’avez bien mérité. »'],['a','Merci, Lucia. Pour tout.'],['n','Mila raccroche. Pendant un long moment, ils regardent le lac sans rien dire.']]});saveTrip()}catch(e){}}
+function va3ArrTick(){try{if(chIdx()!==8||SV.arrL===level||SV.stL!==level||(SV.stI||0)<3||!inGame||cardOpen||cs||MGX||hl||pz||stopReq||work||winch||chEnd)return;SV.arrL=level;SV.froid=0;
+ say('On s’arrête un moment au bord du lac ? Il est trop beau.',3.4,1);stopReq={x:c.x+320,cb:()=>setTimeout(()=>fadeTo(()=>openCine('lacCall')),400)};saveTrip()}catch(e){}}
 // --- Chapitre 10 : une tortue d'Hermann en bonne santé au bord du chemin de Fautea
 let va3TX=null;
 function va3TortTick(){try{if(chIdx()!==9){va3TX=null;return}if(va3TX&&va3TX.lv===level){if(va3TX.x>0&&!va3TX.said&&c.x>va3TX.x-560&&c.x<va3TX.x+100){va3TX.said=1;talkQ.push(['m','Andrea, regarde, au bord du chemin ! Une tortue d’Hermann, à l’ombre du ciste.'],['a','Elle mange tranquillement… comme une tortue normale.'],['m','Comme une tortue qui va bien. Sans le N-12, les autres vont guérir aussi.'])}return}if(SV.stL!==level||(SV.stI||0)<2)return;
@@ -7050,6 +7102,6 @@ drawObs=(function(o){return function(x0,x1){o(x0,x1);try{va3TortDraw(performance
 
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.03',GAME_DATE='23/10/2026 à 20h04';
+const GAME_VER='3.04',GAME_DATE='23/10/2026 à 20h22';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
