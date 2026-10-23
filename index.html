@@ -6068,8 +6068,11 @@ function engRender(){const E=ENGc();gid('engsub').textContent='Tes cœurs : '+SV
  const P=ENGP(0),Pl=ENGP(1),C=ENGC(),bar=(lab,val,mx,col)=>'<div>'+lab+'<div class="bar"><i style="width:'+Math.round(Math.min(1,val/mx)*100)+'%;background:'+col+'"></i></div></div>';
  gid('engst').innerHTML=bar('Puissance',P,1.6,'#5fe08a')+bar('Force en côte (4L)',Pl,1.75,'#5fe08a')+bar('Consommation',C,1.4,'#ff9a5a')}
 function openEng(){paused=true;st.gas=0;st.brake=0;try{ptr.clear()}catch(e){}gid('engmsg').textContent='';engRender();gid('engv').style.display='flex';snd('chime')}
-// sifflement du turbo
-setInterval(()=>{try{if(!AC||!mgn)return;if(!window.__turbo){const o=AC.createOscillator(),gn=AC.createGain();o.type='sine';gn.gain.value=0;o.connect(gn);gn.connect(mgn);o.start();window.__turbo={o,gn}}const T2=window.__turbo,E=ENGc(),on=E.t&&ign&&!paused&&!SET.mute&&st.gas;T2.o.frequency.setTargetAtTime(1900+(dv.rpm||0)*.45,AC.currentTime,.1);T2.gn.gain.setTargetAtTime(on?.012*Math.min(1,(dv.rpm||0)/3500):0,AC.currentTime,.25)}catch(e){}},120);
+// sifflement du turbo (2.70 : doux, suit le régime, souffle filtré + léger sifflement)
+setInterval(()=>{try{if(!AC||!mgn)return;if(!window.__turbo){const o=AC.createOscillator(),og=AC.createGain(),lp=AC.createBiquadFilter();o.type='sine';og.gain.value=0;lp.type='lowpass';lp.frequency.value=2600;o.connect(og);og.connect(lp);
+const nb=AC.createBuffer(1,AC.sampleRate*2,AC.sampleRate),d=nb.getChannelData(0);for(let k=0;k<d.length;k++)d[k]=Math.random()*2-1;const ns=AC.createBufferSource();ns.buffer=nb;ns.loop=true;const bp=AC.createBiquadFilter();bp.type='bandpass';bp.Q.value=6;const ng=AC.createGain();ng.gain.value=0;ns.connect(bp);bp.connect(ng);ng.connect(lp);lp.connect(mgn);o.start();ns.start();window.__turbo={o,og,bp,ng}}
+const T2=window.__turbo,E=ENGc(),r=Math.max(0,Math.min(6000,dv.rpm||0)),on=E.t&&ign&&!paused&&!SET.mute,sp=Math.max(0,(r-1200)/4800),ld=st.gas?1:.35,tg=on?sp*sp*ld:0,f=420+r*.42;
+T2.o.frequency.setTargetAtTime(f,AC.currentTime,.12);T2.bp.frequency.setTargetAtTime(f*1.6,AC.currentTime,.12);T2.og.gain.setTargetAtTime(tg*.0022,AC.currentTime,.3);T2.ng.gain.setTargetAtTime(tg*.006,AC.currentTime,.3)}catch(e){}},100);
 // compte-tours : un anneau autour de la vitesse qui se remplit et change de couleur
 spdDigits=(function(o){return function(z,v2){o(z,v2);try{const x=dg,cx=z.x+(z.w-(UN('winch')?Math.round(44*UI.u)+8:0))/2,cy=z.y+z.h/2,r=Math.min(z.h/2-2,46),a0=Math.PI*.75,span=Math.PI*1.5,f=Math.max(0,Math.min(1,(dv.rpm||0)/6000));
  x.save();x.lineCap='round';x.lineWidth=Math.max(3,4*UI.u);x.strokeStyle='rgba(255,255,255,.14)';x.beginPath();x.arc(cx,cy,r,a0,a0+span);x.stroke();
@@ -6164,6 +6167,6 @@ cardQ.push({t:'📧 Mail du labo · '+nm,L:[['n','« Bonjour Mila, vos échantil
 objTick=(function(o){return function(){o();try{const me=gid('mis');let dup=false;if(me.style.display==='block'){const ob=objMain(),t1=String(ob&&ob[1]||'').replace(/<[^>]*>/g,'');const nm=t1.split(/[:：]/).pop().trim();if(nm.length>3&&me.textContent.includes(nm))dup=true}me.classList.toggle('dup',dup)}catch(e){}}})(objTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.69',GAME_DATE='23/10/2026 à 12h21';
+const GAME_VER='2.70',GAME_DATE='23/10/2026 à 12h22';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
