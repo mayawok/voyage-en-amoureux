@@ -1,4 +1,4 @@
-# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.00)
+# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.01)
 
 ## Le projet
 - Jeu 2D de franchissement en 4x4 (Jeep Cherokee XJ phase 2 Sport 5 portes) en Corse, en français, joué sur iPhone en mode paysage (raccourci écran d'accueil). Site : https://voyagedesamoureux.netlify.app/
@@ -40,6 +40,7 @@
 - **Menu** : reprendre, son, volumes séparés (`#volp` : musique `busM`, moteur `busE`, effets/voix `busF`), plein écran, difficulté Facile/Normal/Difficile (`DIFF`), aide (`AIDE`, 5 onglets, à tenir à jour), sauvegarde de secours (`BAK`), nouveau voyage.
 
 ## Dernières versions
+- **3.01** : carré de dégradé autour des animaux corrigé (une seconde `function shade()` des livrées remplaçait celle des animaux, renommée `skShade`). Attention aux noms de fonctions en double : la dernière déclarée gagne partout.
 - **3.00** : passage à la version 3 (même jeu que la 2.89, seul le numéro change).
 - **2.89** : bulle du lavage ; magasin Peinture Nostrale (carrosserie, jantes, livrées avec défis affichés) ; Corse 4x4 garde les jantes.
 - **2.88** : carte de la Corse avec itinéraires dans le carnet ; rien du village (ancien, linge…) dans la grotte.
