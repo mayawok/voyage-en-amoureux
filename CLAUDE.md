@@ -1,4 +1,4 @@
-# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.01)
+# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.02)
 
 ## Le projet
 - Jeu 2D de franchissement en 4x4 (Jeep Cherokee XJ phase 2 Sport 5 portes) en Corse, en français, joué sur iPhone en mode paysage (raccourci écran d'accueil). Site : https://voyagedesamoureux.netlify.app/
@@ -36,10 +36,12 @@
 - **Commerces** : Chez Marcel et vendeurs corses (`VEND`), fermés la nuit (`standClosed`).
 - **Mini-jeux** : animaux à aider (`helpPlan`), prélèvements + tri des fioles via le mail du labo, touristes (2 par chapitre), remorque, enclos, plantes, bouchon, pont, poursuite à cheval (chapitre 9), sous-marin, appels de la famille. Calendrier dans 2.73 : .07 animal · .2 animal · .25+ remorque · .36 moteur · .44 prélèvement · .46-.72 touristes · .55 animal · pont · .66 panne · .66-.95 enclos · .76 animal · .82+ touristes · .9 animal.
 - **Vie du voyage** (2.85) : chien vivant (pluie, sommeil, aboie), moments à deux à l'arrêt (`TENDER`), pique-nique (`picSpots`, `CS.picnic`, arrêt à la table), photos souvenirs aux belvédères PANORAMA (`panSpots`, `#pact`, `localStorage['va_photos']`), souvenirs dits en bulles (`SOUV`, `JRN_T`), blagues (`JOKE`), saisons par chapitre (`season()`), météo (pluie, orage, neige, brouillard, arc-en-ciel, brume du matin, vent `leafP`), villages vivants (`vilLife`), nuit (`isDark` : moins de voitures, gendarmerie, troupeaux couchés, berger, renards/hérissons/sangliers aux yeux brillants, chouette, chauves-souris).
+- **Arc du scénario (3.02)** : 4x4 noir au logo arraché garé devant, qui démarre quand on approche (ch2 à ch7 et ch9, une fois par chapitre, `va3B`, `VA3_BLK`, chien qui grogne « Grrr… ») ; dispute après le 1er sabotage (fin ch4, `va3Sab`, `SV.froid`) : de ch5 à ch7 les moments tendres (`LOVE`/`TENDER`) sont remplacés par `VA3_FROID` via `talkQ.push` ; au contrôle de Marchetti (ch6) il trouve la bague dans la boîte à gants sans comprendre, et c'est la vidéo du téléphone d'Andrea qui les sauve (plus Lucia) ; 2e sabotage (fin ch7) = vol de la glacière d'échantillons puis carte « Le choix d'Andrea » (réconciliation, `SV.vol`) ; le chien trouve les bidons (fin ch2) ; ch9 : Lucia appelle au lac, Marchetti arrêté (`va3ArrTick`, `SV.arrL`), le dossier est envoyé au début du ch9 ; ch10 calme + tortue d'Hermann guérie près de Fautea (`va3TX`, dessinée dans `drawObs`).
 - **Carnet** : onglets ; « Le voyage en Corse » (2.88) = carte de la Corse dessinée (`coDraw`, `CO_R` itinéraires, chapitres à gauche/droite, « Jouer ce chapitre ») ; Souvenirs (album + photos) ; Bilan.
 - **Menu** : reprendre, son, volumes séparés (`#volp` : musique `busM`, moteur `busE`, effets/voix `busF`), plein écran, difficulté Facile/Normal/Difficile (`DIFF`), aide (`AIDE`, 5 onglets, à tenir à jour), sauvegarde de secours (`BAK`), nouveau voyage.
 
 ## Dernières versions
+- **3.02** : scénario retravaillé façon cinéma (menace récurrente du 4x4 noir, dispute et réconciliation, suspense de la bague au contrôle, héros qui s'en sortent seuls, vol des échantillons avant la Sardaigne, rôle du chien, enquête close au ch9, tortue guérie au ch10).
 - **3.01** : carré de dégradé autour des animaux corrigé (une seconde `function shade()` des livrées remplaçait celle des animaux, renommée `skShade`). Attention aux noms de fonctions en double : la dernière déclarée gagne partout.
 - **3.00** : passage à la version 3 (même jeu que la 2.89, seul le numéro change).
 - **2.89** : bulle du lavage ; magasin Peinture Nostrale (carrosserie, jantes, livrées avec défis affichés) ; Corse 4x4 garde les jantes.
