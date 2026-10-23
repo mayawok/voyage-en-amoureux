@@ -1147,8 +1147,8 @@ if(b>=3){const ty=y-H*.3-2*H*.22;g.fillStyle='#f2f6f9';g.beginPath();g.moveTo(px
 function scenery(x0,x1,front,tm){for(let k=Math.floor(x0/75);k<=Math.floor(x1/75);k++){const h=hs(k+900),px=k*75+h*40,sc=sceneAt(px);if(!sc)continue;
 const cen=1500+2600*Math.floor((px-1500)/2600)+325;
 if(sc===1&&Math.floor(cen/75)===k){if(front&&Z(cen)[3]==='dry')fountain(cen,T(cen)+10,tm);continue}
-if((hs(k+1500)>.62)!==front||Z(px)[3]!=='dry'||nearCamp(px))continue;
-const y=T(px)+(front?10:0);if(sc===1){if(!PLT())village(px,y,k)}else tree(px,y,h,k,bi(ALT(px)+110))}}
+const fr0=hs(k+1500)>.62;if((sc===1?false:fr0)!==front||Z(px)[3]!=='dry'||nearCamp(px))continue;
+const y=T(px)+(fr0?10:0);if(sc===1){if(!PLT())village(px,y,k)}else tree(px,y,h,k,bi(ALT(px)+110))}}
 function sheep(x,y,s,bn,dk){g.save();g.translate(x,y-bn);g.scale(s,s);g.fillStyle=dk?'#cfc9c0':'#f6f3ec';g.beginPath();g.arc(-4,-11,6,0,7);g.arc(2,-13,6.5,0,7);g.arc(7,-10,5.5,0,7);g.fill();
 g.fillStyle='#3a3530';g.beginPath();g.ellipse(13,-11,4,3.2,.3,0,7);g.fill();g.fillRect(-5,-7,2,7);g.fillRect(4,-7,2,7);g.restore()}
 function drawObs(x0,x1){for(const o of obs){if(o.done||o.x>x1||o.x+500<x0)continue;const wd=OW[o.type][0],h=OW[o.type][1],y=T(o.x+wd/2);
@@ -3255,7 +3255,7 @@ function scenery(x0,x1,front,tm){const done={};if(front)try{lampPosts(x0,x1)}cat
 if(sc===1&&Math.floor(cen/75)===k){if(front&&Z(cen)[3]==='dry')fountain(cen,T(cen)+10,tm);continue}
 if(sc===1&&q.mk&&front){if(!done[q.j]){done[q.j]=1;marketDraw(q,x0,x1,tm)}if(Math.abs(px-cen)<q.len/2-150)continue}
 if(Z(px)[3]!=='dry'||nearCamp(px))continue;
-if(sc===1){if((hs(k+1500)>.62)!==front)continue;const y=T(px)+(front?10:0);if(!PLT()){g.save();g.translate(px,y);g.scale(1.22,1.22);g.translate(-px,-y);village(px,y,k);g.restore()}continue}
+if(sc===1){const fr0=hs(k+1500)>.62;if(front)continue;const y=T(px)+(fr0?10:0);if(!PLT()){g.save();g.translate(px,y);g.scale(1.22,1.22);g.translate(-px,-y);village(px,y,k);g.restore()}continue}
 // forêt dense
 const y=T(px)+(front?10:0),b=bi(ALT(px)+110);
 if(!front){g.save();g.globalAlpha=.85;g.translate(px+37,y-4);g.scale(.85,.85);g.translate(-(px+37),-(y-4));tree(px+37,y-4,hs(k+71),k+1,b);g.restore();g.save();g.translate(px,y);g.scale(1.3,1.3);g.translate(-px,-y);tree(px,y,h,k,b);g.restore()}
@@ -5863,7 +5863,7 @@ hardKeep=(function(o){return function(j){if(!LAYcur)return o(j);return zt(600+j*
 fordP=(function(o){return function(j){const r=o(j);if(r<0||!LAYcur)return r;return zt(r-300)==='d'&&zt(r+700)==='d'?r:-1}})(fordP);
 zoneFree=(function(o){return function(a,b){if(LAYcur&&(zt(a)!=='d'||zt(b)!=='d'))return false;return o(a,b)}})(zoneFree);
 Z=(function(o){return function(x){const z=o(x);if(LAYcur&&zt(x)==='r'&&(z[3]==='mud'||z[3]==='ice'))return[1,1,'Route','dry'];if(LAYcur&&z[3]==='dry'&&z[2]==='Sol sec')z[2]={r:'Route goudronnée',d:'Chemin de terre',k:'Piste rocailleuse'}[zt(x)];return z}})(Z);
-laneCol=(function(o){return function(z,side,alt,x){const c0=o(z,side,alt,x);if(!LAYcur||x==null||z[3]!=='dry')return c0;const t=zt(x);return t==='r'?'#56585e':t==='k'?'#9a948a':'#a98a5e'}})(laneCol);
+laneCol=(function(o){return function(z,side,alt,x){const c0=o(z,side,alt,x);if(!LAYcur||x==null||z[3]!=='dry')return c0;const t=zt(x);if(t==='r')return alt>600?'#6a6f78':'#56585e';if(t==='k'){try{const A=mixA('ln',alt),G=[150,146,138];return rgb(A.map((v,i)=>v*.45+G[i]*.55))}catch(e){return '#9a948a'}}return c0}})(laneCol);
 // où se trouvent les commerces
 function layShift(m,want,max,ox){if(!LAYcur)return;const t=zt(m.x+(ox||0));if(want.includes(t))return;let best=-1;for(const w of want){const s=zStart(m.x,w,max);if(s>0&&(best<0||s<best))best=s}if(best<0)return;let x=best;
  const bad=q=>{for(let d=-100;d<=340;d+=40){const y=q+d;if(rockW(y)>0||bridgeAt(y)>=0||hardS(y)>=0||fordS(y)>=0||tunNear(y)||(typeof spNear==='function'&&spNear(y))||stns.some(s=>s!==m&&Math.abs(s.x+110-y)<460)||gars.some(s=>s!==m&&Math.abs(s.x+100-y)<460)||shp.some(s=>s!==m&&Math.abs(s.x+100-y)<460)||camps.some(s=>s!==m&&Math.abs(s.x+100-y)<460))return 1}return 0};
@@ -5883,7 +5883,7 @@ function laySigns(x0,x1){if(!LAYcur)return;for(let i=1;i<LAYcur.length;i++){cons
 // marquages : ligne blanche sur le goudron, ornières sur la terre, cailloux sur la rocaille
 function layMarks(x0,x1){if(!LAYcur)return;g.save();for(let x=Math.floor(x0/40)*40;x<x1;x+=40){const t=zt(x),z=Z(x);if(z[3]!=='dry')continue;const y=T(x)+6.5;
  if(t==='r'){if((x/40)%2===0){g.strokeStyle='rgba(245,240,225,.9)';g.lineWidth=1.6;g.beginPath();g.moveTo(x,y);g.lineTo(x+22,T(x+22)+6.5);g.stroke()}}
- else if(t==='d'){g.strokeStyle='rgba(90,60,30,.35)';g.lineWidth=1.2;g.beginPath();g.moveTo(x,y-3);g.lineTo(x+40,T(x+40)+3.5);g.moveTo(x,y+3);g.lineTo(x+40,T(x+40)+9.5);g.stroke()}
+ else if(t==='d'){g.strokeStyle=ALT(x)>600?'rgba(150,170,190,.5)':'rgba(60,40,20,.22)';g.lineWidth=1.2;g.beginPath();g.moveTo(x,y-3);g.lineTo(x+40,T(x+40)+3.5);g.moveTo(x,y+3);g.lineTo(x+40,T(x+40)+9.5);g.stroke()}
  else{g.fillStyle='#7a756c';const h=hs(x*.37);g.beginPath();g.arc(x+h*30,y-2+h*5,1.6+h*1.8,0,7);g.fill();g.fillStyle='#b8b2a6';g.beginPath();g.arc(x+15+h*10,y+2,1.2+h,0,7);g.fill()}}g.restore()}
 trackDraw=(function(o){return function(x0,x1){o(x0,x1);try{layMarks(x0,x1);laySigns(x0,x1)}catch(e){}}})(trackDraw);
 var layLast='';
@@ -6000,8 +6000,11 @@ function portArrive(Wd,gy,T2,tm,nm,col){const sk=g.createLinearGradient(0,0,0,gy
  grp(cx,cy,1,()=>{try{cherokeeSide(cx,cy)}catch(e){}});
  g.strokeStyle='#2a2a30';g.lineWidth=1.4;for(let i=0;i<4;i++){const bx=(Wd*.1+i*120+tm*30)%Wd,by=80+(i%2)*30+Math.sin(tm*3+i)*5,wv=Math.sin(tm*8+i)*3;g.beginPath();g.moveTo(bx-6,by-wv);g.lineTo(bx,by);g.lineTo(bx+6,by-wv);g.stroke()}}
 portScene=(function(o){return function(Wd,gy,T2,tm,dep,nm,col){if(!dep)return portArrive(Wd,gy,T2,tm,nm,col);return o(Wd,gy,T2,tm,dep,nm,col)}})(portScene);
+
+// ===== 2.53 : biome neige au sol blanc =====
+try{BI[3].gr=hx('#dfe7ee');BI[3].near=hx('#e9eff4');BI[3].ln=hx('#f6f9fb')}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.52',GAME_DATE='23/10/2026 à 08h12';
+const GAME_VER='2.53',GAME_DATE='23/10/2026 à 08h18';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
