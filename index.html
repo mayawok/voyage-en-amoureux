@@ -2546,7 +2546,7 @@ function spTick(dt){if(!started||night||crashed||paused||dt<=0||!inGame)return;S
 for(const e of L){if(e.k==='chase')continue;if(SV.ev[evK(e.k)]||e.go)continue;const d=e.x-c.x;
 if(d<680&&d>-260&&!stopReq&&!hl&&!pp&&!cardOpen&&!sev&&!mev&&rockW(c.x)<.02&&!hardNear(c.x)){e.go=1;
 if(e.k==='haz'){obsP.push({x:e.x,y:T(e.x),said:1,haz:1});say('Un point de vue sur la vallée… je voudrais photographier les cerfs. On s’arrête ?',4,1);stopReq={x:e.x-40,cb:()=>{SV.ev[evK('haz')]=1;openObsHaz()}}}
-else if(e.k==='love'){say('Attends, ralentis… tu entends ces petits cris dans l’arbre ?',3.6,1);stopReq={x:e.x-120,cb:()=>{SV.ev[evK('love')]=1;SV.ev.love9=1;cardQ.unshift({now:1,t:'💚 Les inséparables',L:[['n','Sur une branche, deux petits perroquets verts au visage orangé se serrent l’un contre l’autre.'],['m','Des inséparables ! Ils ont dû s’échapper d’une volière du village. Ils ne vivent pas en liberté ici, normalement.'],['m','On dit qu’un couple d’inséparables reste uni toute la vie. Ils se nettoient les plumes, ils dorment collés…'],['a','Collés, à se chamailler pour la meilleure place… et toujours ensemble. Ça ne te rappelle personne ?'],['m','Nous deux dans le Cherokee, oui. Toi, tu serais celui qui fait le plus de bruit.'],['a','Et toi, celle qui a le plus joli plumage, mon amour.'],['n','Les deux oiseaux s’envolent ensemble, côte à côte, vers la forêt.']]});saveTrip()}}}
+else if(e.k==='love'){say('Attends, ralentis… tu entends ces petits cris dans l’arbre ?',3.6,1);stopReq={x:e.x-120,cb:()=>{SV.ev[evK('love')]=1;SV.ev.love9=1;saveTrip();setTimeout(()=>{sayT=0;fadeTo(()=>openCine('love'))},700)}}}
 else if(e.k==='gend'){say('La gendarmerie ! On leur montre la photo, mon cœur.',3.6,1);stopReq={x:e.x-130,cb:()=>{SV.ev[evK('gend')]=1;SV.ev.gend=1;cardQ.unshift({now:1,t:'🚓 Gendarmerie',L:SP_GEND()});saveTrip()}}}
 else if(e.k==='barr'){say('Des gyrophares près de la rivière… c’est là que je voulais faire mon prélèvement !',4,1);stopReq={x:e.x-150,cb:()=>{SV.ev[evK('barr')]=1;SV.ev.barr=1;cardQ.unshift({now:1,t:'🚧 Zone interdite',L:SP_BARR(),cb:()=>{choice2(()=>{HELP.riv.cb=()=>{SV.ev.riv=1;nbNew();say(CHX('prelev')===1?'Deux flacons : amont et aval. Si l’amont est propre… on tient la source.':'Le flacon est caché dans la glacière. Ni vu ni connu.',3.6,1);saveTrip()};setTimeout(()=>openHelp('riv'),300)})}});saveTrip()}}}}}
 chaseTick(dt)}
@@ -6098,8 +6098,57 @@ laySync=(function(o){return function(){brOKc={};return o.apply(this,arguments)}}
 eachBridge0=(function(o){return function(x0,x1,fn){return o(x0,x1,s=>{if(bridgeAt(s+1)===s)fn(s)})}})(eachBridge0);
 brkS=(function(o){return function(){try{SV.brS=SV.brS||{};const v0=SV.brS[level];if(v0!=null&&v0>=0&&!(SV.brOK&&SV.brOK[level])&&bridgeAt(v0+1)!==v0)delete SV.brS[level]}catch(e){}return o()}})(brkS);
 T=(function(o){return function(x){const s=bridgeAt(x);if(s>=0){const a=Tr(s),b=Tr(s+BRL);return a+(b-a)*(x-s)/BRL}return o(x)}})(T);
+// ===== 2.63 : les inséparables en cinématique (gros plan, rien ne les cache) =====
+function lbBird(x,y,s,dir,tm,o){o=o||{};g.save();g.translate(x,y);g.scale(s*dir,s);if(o.fly)g.rotate(.85);
+// queue
+g.fillStyle='#2f8a3a';g.beginPath();g.moveTo(-6,6);g.lineTo(-16,15);g.lineTo(-11,17);g.lineTo(-3,9);g.fill();g.fillStyle='#2f6fd8';g.beginPath();g.moveTo(-13,14);g.lineTo(-17,17);g.lineTo(-12,18);g.fill();
+// corps
+const bd=g.createLinearGradient(0,-10,0,12);bd.addColorStop(0,'#7ed957');bd.addColorStop(1,'#3e9b3a');g.fillStyle=bd;g.beginPath();g.ellipse(0,2,9,11,-.25,0,7);g.fill();
+// aile
+const fl=o.fly?Math.sin(tm*26)*1:0;g.save();g.translate(-2,0);g.rotate(o.fly?-.9+fl*.9:.25);g.fillStyle='#2e8b36';g.beginPath();g.ellipse(-2,3,5.5,10,.2,0,7);g.fill();g.fillStyle='#1f6a2a';for(let i=0;i<3;i++){g.beginPath();g.ellipse(-3,8+i*2,3.5-i*.6,1.3,.2,0,7);g.fill()}g.fillStyle='#3a7ad8';g.beginPath();g.ellipse(-4,12,2.4,2,.2,0,7);g.fill();g.restore();
+// tête qui se tourne vers l'autre (toilettage)
+const hb=o.preen?Math.sin(tm*7)*1.5:0;g.save();g.translate(4+hb*.4,-10+Math.abs(hb)*.3);g.rotate(o.tilt||0);
+const fc=g.createRadialGradient(2,-1,1,2,0,9);fc.addColorStop(0,'#ff5a3a');fc.addColorStop(.55,'#ff8a3a');fc.addColorStop(1,'#f8c048');g.fillStyle=fc;g.beginPath();g.arc(0,0,7.5,0,7);g.fill();
+g.fillStyle='#8fd96a';g.beginPath();g.arc(-3,-4,4.5,Math.PI*.9,Math.PI*1.9);g.fill();
+// bec rouge
+g.fillStyle='#e8322a';g.beginPath();g.moveTo(5,-3);g.quadraticCurveTo(11,-2,9,4);g.quadraticCurveTo(7,3,5,2);g.fill();g.fillStyle='#f2e6c8';g.fillRect(6,1,2.2,1.2);
+// œil cerclé de blanc
+g.fillStyle='#fff';g.beginPath();g.arc(2.5,-2,2.6,0,7);g.fill();g.fillStyle='#1a1a1a';g.beginPath();const bl=(o.blink&&Math.sin(tm*2.3+(o.ph||0))>.96);if(bl)g.fillRect(.6,-2.3,3.8,.8);else{g.arc(2.8,-2,1.3,0,7);g.fill();g.fillStyle='#fff';g.beginPath();g.arc(3.3,-2.5,.45,0,7);g.fill()}
+g.restore();
+// pattes sur la branche
+if(!o.fly){g.strokeStyle='#8a7a6a';g.lineWidth=1.4;g.beginPath();g.moveTo(-1,12);g.lineTo(-2,15);g.moveTo(3,12);g.lineTo(3,15);g.stroke()}
+g.restore()}
+CS.love={mus:'love',L:()=>[[1.5,'n','Sur une branche, deux petits perroquets verts au visage orangé se serrent l’un contre l’autre.'],[6.5,'m','Des inséparables ! Ils ont dû s’échapper d’une volière du village. Ils ne vivent pas en liberté ici, normalement.'],[12,'m','On dit qu’un couple d’inséparables reste uni toute la vie. Ils se nettoient les plumes, ils dorment collés…'],[17.5,'a','Collés, à se chamailler pour la meilleure place… et toujours ensemble. Ça ne te rappelle personne ?'],[22.5,'m','Nous deux dans le Cherokee, oui. Toi, tu serais celui qui fait le plus de bruit.'],[26.5,'a','Et toi, celle qui a le plus joli plumage, mon amour.'],[30.5,'n','Les deux oiseaux s’envolent ensemble, côte à côte, vers la forêt.']],end:36,
+onEnd:()=>{try{albAdd('love')}catch(e){}SV.ev.loveFly=1;saveTrip()},
+draw:(Wd,gy,T2,tm)=>{csSky(Wd,gy,'#8cc8ea','#f6e8c8');
+// soleil doux
+{const sg=g.createRadialGradient(Wd*.82,70,6,Wd*.82,70,110);sg.addColorStop(0,'rgba(255,246,200,.95)');sg.addColorStop(.3,'rgba(255,230,160,.45)');sg.addColorStop(1,'rgba(255,230,160,0)');g.fillStyle=sg;g.fillRect(Wd*.82-110,-40,220,220);g.fillStyle='#fff3c8';g.beginPath();g.arc(Wd*.82,70,20,0,7);g.fill()}
+for(let i=0;i<4;i++){const cx=((i*290+tm*7)%(Wd+300))-150,cy=40+(i%2)*34;g.fillStyle='rgba(255,255,255,.8)';g.beginPath();g.ellipse(cx,cy,56,12,0,0,7);g.ellipse(cx+30,cy-8,32,11,0,0,7);g.ellipse(cx-26,cy-4,26,9,0,0,7);g.fill()}
+bgMount(g,gy-70,'#a9bccf',80,1.3,40);bgMount(g,gy-30,'#7f9c86',50,2.7,34);
+for(let i=0;i<18;i++){const px=i*Wd/17+hh2(i+5)*20;bgPine(g,px,gy-8,48+hh2(i+9)*30,'#2f5a3a','#3d6c45')}
+// sol et premier plan
+const gr=g.createLinearGradient(0,gy-10,0,420);gr.addColorStop(0,'#86a85a');gr.addColorStop(1,'#5d7f3c');g.fillStyle=gr;g.fillRect(0,gy-6,Wd,430-gy);
+g.fillStyle='#b9a27a';g.beginPath();g.moveTo(0,gy+18);g.quadraticCurveTo(Wd*.5,gy+8,Wd,gy+22);g.lineTo(Wd,gy+36);g.quadraticCurveTo(Wd*.5,gy+24,0,gy+34);g.fill();
+// grand arbre : tronc à droite, branche qui traverse le haut de l'écran
+const tx=Wd*.78,by=gy-150;g.fillStyle='#5a3c22';g.beginPath();g.moveTo(tx-16,gy+4);g.quadraticCurveTo(tx-8,gy-90,tx-12,by-40);g.lineTo(tx+14,by-40);g.quadraticCurveTo(tx+10,gy-90,tx+18,gy+4);g.fill();
+g.strokeStyle='#6b4a2a';g.lineCap='round';g.lineWidth=11;g.beginPath();g.moveTo(tx,by+8);g.quadraticCurveTo(Wd*.55,by-6,Wd*.3,by+6);g.stroke();g.lineWidth=5;g.beginPath();g.moveTo(Wd*.42,by+2);g.lineTo(Wd*.36,by-26);g.stroke();
+g.strokeStyle='rgba(255,255,255,.12)';g.lineWidth=3;g.beginPath();g.moveTo(tx-6,by+4);g.quadraticCurveTo(Wd*.55,by-10,Wd*.32,by+1);g.stroke();g.lineCap='butt';
+for(const [dx,dy,r,c] of [[0,-70,58,'#2f6a34'],[-50,-50,44,'#3a7a3e'],[48,-56,46,'#36723a'],[-110,-30,34,'#3f7f40'],[-240,-26,30,'#3a7a3e'],[-200,-44,26,'#2f6a34'],[20,-20,40,'#3f8442']]){g.fillStyle=c;g.beginPath();g.arc(tx+dx,by+dy,r,0,7);g.fill();g.fillStyle='rgba(255,255,255,.07)';g.beginPath();g.arc(tx+dx-r*.3,by+dy-r*.3,r*.5,0,7);g.fill()}
+for(let i=0;i<8;i++){g.fillStyle='#4f9a48';g.beginPath();g.ellipse(Wd*.33+i*34,by+10+Math.sin(i*2)*3,7,3.5,.5+i,0,7);g.fill()}
+// Cherokee, Mila et Andrea en bas à gauche, ils lèvent les yeux
+grp(Wd*.12,gy+30,1.15,()=>{try{cherokeeSide(Wd*.12,gy+30)}catch(e){}});
+grp(Wd*.3,gy+30,1.25,()=>{person(Wd*.3,gy+30,0,{f:1,a1:T2>17.5&&T2<22?1.3:.6,a2:.2});person(Wd*.3+22,gy+30,1,{f:1,a1:T2>6&&T2<11?2.6:T2>30.5?2.3:.5,a2:T2>22?1.2:.2})});
+// les deux inséparables : se rapprochent, se toilettent, se blottissent, puis s'envolent côte à côte
+const cx=Wd*.5,sc=2.9,cy=by-4-15*sc;let gap=T2<5?32-T2*2:22;if(T2>12&&T2<17)gap=21;if(T2>17)gap=19;
+if(T2<31){const pre=T2>12&&T2<17,nuz=T2>22&&T2<30;lbBird(cx-gap*sc/2,cy,sc,1,tm,{preen:pre,tilt:nuz?.25:pre?.15:0,blink:1,ph:0});lbBird(cx+gap*sc/2,cy,sc,-1,tm,{preen:pre,tilt:nuz?.25:0,blink:1,ph:2});
+if(T2>8){for(let i=0;i<4;i++){const u=((T2-8)*.35+i*.25)%1;heart(cx+(i-1.5)*14,cy-50-u*60,5+i%2*2,(1-u)*(T2>29?Math.max(0,31-T2)/2:1))}}
+}
+else{const u=T2-31,fx=cx+u*70+u*u*8,fy=cy-10-u*22-Math.sin(u*3)*5,k2=sc*(1-u*.07);lbBird(fx-26,fy,k2,1,tm,{fly:1});lbBird(fx+26,fy+10+Math.sin(tm*5)*3,k2,1,tm+.3,{fly:1});for(let i=0;i<3;i++){const q=((u*.8)+i*.3)%1;heart(fx-30-q*50,fy+10+q*10,4+i,1-q)}}
+// fleurs du premier plan
+for(let i=0;i<22;i++){const fx2=hh2(i+80)*Wd,fy2=gy+44+hh2(i+90)*40;g.strokeStyle='#4f8a3a';g.lineWidth=1.2;g.beginPath();g.moveTo(fx2,fy2);g.lineTo(fx2,fy2-8);g.stroke();g.fillStyle=['#fff','#f2d24a','#d86aa8','#8a7ae0'][i%4];g.beginPath();g.arc(fx2,fy2-9,2.6,0,7);g.fill()}}};
+musScene=(function(o){return function(){try{if(cs&&cs.k==='love')return 'love'}catch(e){}return o()}})(musScene);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.62',GAME_DATE='23/10/2026 à 11h39';
+const GAME_VER='2.63',GAME_DATE='23/10/2026 à 11h43';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
