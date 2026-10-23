@@ -6303,13 +6303,106 @@ g.strokeStyle='#2a2a2a';g.lineWidth=.45;g.beginPath();g.moveTo(29.5,-15);g.lineT
 // monogrammes « Cherokee » (porte avant) et « SPORT » (custode)
 g.save();g.fillStyle='rgba(235,235,232,.9)';g.font='italic 700 3.2px Georgia,serif';g.textAlign='left';g.textBaseline='alphabetic';g.fillText('Cherokee',5,-4.2);g.font='800 2.6px Arial,sans-serif';g.fillText('SPORT',-49.5,-4.4);g.restore();
 // baguette de protection latérale noire sur les portes
-g.fillStyle='#1b1918';g.fillRect(-50,-9.2,73,1.6);g.fillStyle='rgba(255,255,255,.12)';g.fillRect(-50,-9.2,73,.4);g.fillStyle='#16130f'}
+g.fillStyle='#1b1918';g.fillRect(-50,-9.2,73,1.6);g.fillStyle='rgba(255,255,255,.12)';g.fillRect(-50,-9.2,73,.4);
+// feux arrière phase 2 : haut et étroit (rouge, orange, recul)
+g.fillStyle='#2a1a1a';g.fillRect(-58.6,-27,3.6,21.5);g.fillStyle='#d8352b';g.fillRect(-58.3,-26.5,3,11);g.fillStyle='rgba(255,255,255,.25)';g.fillRect(-57.9,-26,.8,10);g.fillStyle='#ff9a2b';g.fillRect(-58.3,-15.3,3,4.5);g.fillStyle='#f4f0e6';g.fillRect(-58.3,-10.6,3,4.4);
+// serrures de portes
+g.fillStyle='rgba(30,30,30,.7)';g.beginPath();g.arc(-4,-15,.55,0,7);g.arc(23,-15,.55,0,7);g.fill();
+// antibrouillard et crochet de remorquage rouge à l'avant, sortie d'échappement à l'arrière
+g.fillStyle='#f6f2d8';g.beginPath();g.arc(57.6,4.2,1.1,0,7);g.fill();g.fillStyle='#c8241c';g.fillRect(58.5,7.2,2.4,1.4);g.fillRect(60.1,6.4,.9,3);
+g.fillStyle='#5a5a5e';g.fillRect(-61.5,8.6,4.5,1.5);g.fillStyle='#222';g.fillRect(-61.6,8.8,.6,1.1);
+g.fillStyle='#16130f'}
 function xjFlares(){for(let i=0;i<2;i++){const ax=WL[i][0],ay=WL[i][1]-8,r=R;const x0=ax-r-6.5,x1=ax+r+6.5,top=ay-r-5.2,sh=r*.62;
 g.fillStyle='#1d1a17';g.beginPath();g.moveTo(x0,10);g.lineTo(x0+1.2,top+sh*.55);g.lineTo(ax-sh,top);g.lineTo(ax+sh,top);g.lineTo(x1-1.2,top+sh*.55);g.lineTo(x1,10);g.lineTo(x1-3,10);g.lineTo(x1-4,top+sh*.6+1.6);g.lineTo(ax+sh-1.2,top+2.8);g.lineTo(ax-sh+1.2,top+2.8);g.lineTo(x0+4,top+sh*.6+1.6);g.lineTo(x0+3,10);g.closePath();g.fill();
 g.strokeStyle='rgba(255,255,255,.1)';g.lineWidth=.5;g.beginPath();g.moveTo(x0+1.2,top+sh*.55);g.lineTo(ax-sh,top);g.lineTo(ax+sh,top);g.lineTo(x1-1.2,top+sh*.55);g.stroke();
 g.fillStyle='rgba(0,0,0,.35)';for(let k=0;k<3;k++){g.beginPath();g.arc(ax-sh+3+k*(sh*2-6)/2,top+1.4,.35,0,7);g.fill()}}}
+// ===== 2.80 : visages de profil mieux proportionnés (front, nez, lèvres, menton, mâchoire) =====
+head=function(k,x,y,sc,f){g.save();g.translate(x,y);g.scale(sc*f,sc);const sk='#f1d3b8',skD='#e0b592';
+const P=(pts,fill)=>{g.beginPath();g.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++){const q=pts[i];if(q.length===4)g.quadraticCurveTo(q[0],q[1],q[2],q[3]);else g.lineTo(q[0],q[1])}g.closePath();if(fill!==0)g.fill()};
+if(k){// cheveux longs de Mila, derrière la tête et dans le dos
+const hb=g.createLinearGradient(-7,0,0,0);hb.addColorStop(0,'#6a4224');hb.addColorStop(1,'#8f5e36');g.fillStyle=hb;
+P([[0.4,-6.2],[-4.6,-6.2,-6.2,-2],[-7,3.6,-6.4,9.4],[-6,12.6,-4.4,14.2],[-2.8,13.4,-2.6,10.6],[-2.8,6.4,-2.2,3.6],[-1.6,1.6,-1.2,-.8],[-.6,-3.4,0.4,-6.2]]);
+g.strokeStyle='rgba(55,30,12,.45)';g.lineWidth=.45;g.beginPath();g.moveTo(-4.6,-1.6);g.quadraticCurveTo(-5.6,5,-4.8,12.4);g.moveTo(-3.4,1.4);g.quadraticCurveTo(-3.8,7,-3.4,12);g.stroke()}
+// cou
+g.fillStyle=skD;g.beginPath();g.moveTo(-1.6,3.4);g.lineTo(1.8,4.2);g.lineTo(1.4,7.4);g.lineTo(-1.8,7.4);g.closePath();g.fill();
+// silhouette du visage : crâne, front, arcade, nez, lèvres, menton, mâchoire
+g.fillStyle=sk;P([[-5,-.6],[-5.2,-5.2,-.6,-6.1],[3.6,-6.1,4.8,-3.2],[5.3,-1.9,5.1,-1.1],[5.2,-.6,6.5,.9],[6.6,1.4,5.3,1.5],[5.5,1.9,5.5,2.2],[5.1,2.6,5.4,3],[5.3,4.3,4.6,4.7],[3.4,5.4,1.6,5.1],[-.2,4.8,-1.2,3.6],[-4.6,3.2,-5,-.6]]);
+// ombre douce sous la pommette et le long de la mâchoire
+g.strokeStyle='rgba(190,130,95,.25)';g.lineWidth=.35;g.beginPath();g.moveTo(.2,4.3);g.quadraticCurveTo(2,5,3.8,4.7);g.stroke();
+// oreille
+{const ex=k?-1.3:-1.5,es=k?.78:1;g.fillStyle=skD;g.beginPath();g.ellipse(ex,.2,1.15*es,1.65*es,.1,0,7);g.fill();g.fillStyle='rgba(150,95,70,.45)';g.beginPath();g.ellipse(ex+.15,.3,.5*es,.9*es,.1,0,7);g.fill()}
+// narine
+g.fillStyle='rgba(150,90,70,.45)';g.beginPath();g.ellipse(5.5,1.15,.45,.25,.3,0,7);g.fill();
+// œil en amande avec iris, reflet ; paupière
+const eye=(lash)=>{g.fillStyle='#fff';g.beginPath();g.moveTo(2.1,-.7);g.quadraticCurveTo(3.1,-1.6,4,-.8);g.quadraticCurveTo(3.1,-.1,2.1,-.7);g.fill();g.fillStyle='#4a3020';g.beginPath();g.arc(3.25,-.8,.55,0,7);g.fill();g.fillStyle='#120c08';g.beginPath();g.arc(3.35,-.8,.28,0,7);g.fill();g.fillStyle='#fff';g.fillRect(3.4,-1.15,.22,.22);
+g.strokeStyle='#2a1810';g.lineWidth=lash?.5:.4;g.beginPath();g.moveTo(2,-.75);g.quadraticCurveTo(3.1,-1.75,4.1,-.85);g.stroke();if(lash){g.beginPath();g.moveTo(4.1,-.85);g.lineTo(4.5,-1.25);g.moveTo(3.8,-1.2);g.lineTo(4.1,-1.6);g.stroke()}};
+if(k){// Mila
+eye(1);g.strokeStyle='#6a4024';g.lineWidth=.45;g.lineCap='round';g.beginPath();g.moveTo(2,-2.4);g.quadraticCurveTo(3.1,-2.9,4.2,-2.4);g.stroke();
+g.fillStyle='rgba(232,140,140,.4)';g.beginPath();g.arc(3.1,1.3,.95,0,7);g.fill();
+g.fillStyle='#c4565a';g.beginPath();g.moveTo(4.9,2.3);g.quadraticCurveTo(5.5,2.15,5.5,2.4);g.quadraticCurveTo(5.3,2.6,4.9,2.55);g.closePath();g.fill();g.beginPath();g.moveTo(4.9,2.7);g.quadraticCurveTo(5.4,2.65,5.35,2.95);g.quadraticCurveTo(5,3.15,4.8,2.85);g.closePath();g.fill();
+// calotte et mèche balayée au-dessus de l'œil
+g.fillStyle='#8a5a34';P([[-5.4,-.2],[-5.8,-6,-.6,-6.8],[4.2,-6.9,5.4,-3.4],[4.6,-3.5,3.8,-3],[2.6,-4,0.6,-3.5],[-.6,-2.4,-2.2,-1.8],[-2.6,1,-2.4,2.8],[-4.4,1.8,-5.4,-.2]]);
+g.fillStyle='#9c6b40';P([[0.6,-6.1],[3.8,-5.9,5,-3.3],[3.3,-4.2,1.4,-4.1],[0.8,-4.9,0.6,-6.1]]);
+g.strokeStyle='rgba(255,225,190,.35)';g.lineWidth=.7;g.beginPath();g.arc(-.6,-1.6,4.6,Math.PI*1.18,Math.PI*1.62);g.stroke()}
+else{// Andrea
+eye(0);
+// cheveux courts : dessus et arrière, au-dessus de l'oreille
+g.fillStyle='#4e2e14';P([[3.8,-4.6],[2,-7,-2.6,-6.6],[-5.9,-5.4,-5.8,-1.4],[-5.6,1.6,-4.4,2.6],[-3.4,2.1,-2.7,.1],[-2.3,-1.9,-1.4,-2.6],[0.6,-3.8,3.8,-4.6]]);
+g.fillStyle='#4e2e14';for(const [tx,ty] of[[-2.2,-6],[0,-6.6],[2.2,-5.9]]){g.beginPath();g.moveTo(tx-1.6,ty+.9);g.quadraticCurveTo(tx+.2,ty-.8,tx+1.6,ty+.6);g.fill()}
+g.strokeStyle='rgba(255,220,180,.18)';g.lineWidth=.7;g.beginPath();g.arc(-.6,-1.9,4.4,Math.PI*1.2,Math.PI*1.55);g.stroke();
+// sourcil épais
+g.strokeStyle='#3e220e';g.lineWidth=.85;g.lineCap='round';g.beginPath();g.moveTo(1.9,-2.3);g.quadraticCurveTo(3.1,-3,4.3,-2.4);g.stroke();
+// barbe : favori devant l'oreille, mâchoire, menton, moustache ; la joue reste visible
+const bd=g.createLinearGradient(0,-1,0,6);bd.addColorStop(0,'#5a3418');bd.addColorStop(1,'#43260e');g.fillStyle=bd;
+P([[-.5,-1.6],[-1.4,3,-.9,4.2],[.6,5.6,3,5.8],[5,5.6,5.6,3.8],[5.8,2.6,5.6,1.7],[4.6,1.4,3.7,1.9],[2.7,2.5,1.5,2],[.4,1.2,.3,-1.4],[0,-1.8,-.5,-1.6]]);
+g.fillStyle='#b8705e';g.beginPath();g.ellipse(4.9,2.75,.65,.32,.05,0,7);g.fill();
+g.strokeStyle='rgba(30,16,6,.35)';g.lineWidth=.35;for(let i=0;i<5;i++){g.beginPath();g.moveTo(.6+i*1,4.3+(i%2)*.4);g.lineTo(.8+i*1,5.2);g.stroke()}}
+g.lineCap='butt';g.restore()};
+// ===== 2.80 : vue de face du Cherokee XJ (atelier) =====
+function xjFront(x,cx,gy,sc){const C=SV.cus||{},Rr=R,lift=((SV.up&&SV.up.susp)||0)*3,base=-(Rr*1.15+6+lift);x.save();x.translate(cx,gy);x.scale(sc,sc);
+const L=CCv.l,M=CCv.m,D=CCv.d;
+// ombre
+x.fillStyle='rgba(0,0,0,.35)';x.beginPath();x.ellipse(0,1,60,4,0,0,7);x.fill();
+// pneus et jantes (vues de face : on voit la bande de roulement)
+for(const sx of[-1,1]){const tx=sx*44;x.fillStyle='#121110';x.beginPath();x.roundRect(tx-7.5,-Rr*2.05,15,Rr*2.05,4);x.fill();x.fillStyle='#262321';for(let k=0;k<8;k++){x.fillRect(tx-6.5,-Rr*2+k*Rr*.25+1,13,1.2)}
+x.fillStyle='rgba(255,255,255,.05)';x.fillRect(tx-7.5,-Rr*2.05,3,Rr*2.05);x.fillStyle=(C.rimC||'#c9ccd2');x.fillRect(sx>0?tx-7.6:tx+6.4,-Rr*1.35,1.2,Rr*.7)}
+// pont et différentiel, ressorts
+x.fillStyle='#2a2826';x.fillRect(-38,-Rr*1.05-1.5,76,3);x.beginPath();x.ellipse(4,-Rr*1.02,6,4.4,0,0,7);x.fill();x.strokeStyle='#5a5652';x.lineWidth=1.4;for(const sx of[-1,1]){x.beginPath();for(let k=0;k<5;k++){x.moveTo(sx*30-3,-Rr*1.05-2-k*2.2);x.lineTo(sx*30+3,-Rr*1.05-3.1-k*2.2)}x.stroke()}
+if(C.rb){x.fillStyle=C.rb==='noir'?'#1c1a18':M;x.fillRect(-49,base+1,6,2.2);x.fillRect(43,base+1,6,2.2)}
+// pare-chocs noir avec antibrouillards, plaque, crochets
+x.fillStyle='#1d1b19';x.beginPath();x.roundRect(-49,base-8,98,8,1.5);x.fill();x.fillStyle='rgba(255,255,255,.08)';x.fillRect(-49,base-8,98,1.2);
+for(const sx of[-1,1]){x.fillStyle='#f6f2d8';x.beginPath();x.arc(sx*34,base-4,2.4,0,7);x.fill();x.strokeStyle='#888';x.lineWidth=.5;x.stroke();x.fillStyle='#c8241c';x.fillRect(sx*22-1.5,base-.5,3,2.6)}
+x.fillStyle='#f4f4ef';x.fillRect(-9,base-7.2,18,5.4);x.strokeStyle='#333';x.lineWidth=.4;x.strokeRect(-9,base-7.2,18,5.4);x.fillStyle='#2a3a8a';x.fillRect(-9,base-7.2,2.2,5.4);x.fillRect(6.8,base-7.2,2.2,5.4);x.fillStyle='#222';x.font='700 3.6px Arial';x.textAlign='center';x.textBaseline='middle';x.fillText('VA-2026',0,base-4.4);
+if(SV.up&&SV.up.winch){x.fillStyle='#2b2b2b';x.fillRect(-12,base-11,24,4);x.fillStyle='#777';x.fillRect(-6,base-10.5,12,3);x.fillStyle='#d8a020';x.fillRect(-1,base-8,2,3)}
+// élargisseurs d'ailes carrés
+for(const sx of[-1,1]){x.fillStyle='#1d1a17';x.beginPath();x.moveTo(sx*36,base-6);x.lineTo(sx*53.5,base-6);x.lineTo(sx*53,base-22);x.lineTo(sx*38,base-24);x.closePath();x.fill()}
+// face avant couleur carrosserie
+const fb=x.createLinearGradient(0,base-30,0,base-8);fb.addColorStop(0,L);fb.addColorStop(1,D);x.fillStyle=fb;x.fillRect(-46,base-29,92,21.5);
+// calandre 7 fentes
+x.fillStyle='#141210';x.fillRect(-16.5,base-25,33,13);for(let k=0;k<7;k++){const gx=-15.2+k*4.5;x.fillStyle='#050505';x.fillRect(gx,base-24,3.1,11);x.fillStyle='rgba(220,220,220,.55)';x.fillRect(gx-.3,base-24.4,3.7,.6)}x.strokeStyle='rgba(230,230,230,.6)';x.lineWidth=.6;x.strokeRect(-16.5,base-25,33,13);
+// phares rectangulaires affleurants, clignotants orange dessous
+for(const sx of[-1,1]){const hx=sx*28.5;x.fillStyle='#1b1d20';x.fillRect(hx-10,base-25.6,20,9.6);const hg=x.createLinearGradient(hx-9,0,hx+9,0);hg.addColorStop(0,'#e9edf0');hg.addColorStop(1,'#bfc6cc');x.fillStyle=hg;x.fillRect(hx-9.2,base-24.8,18.4,8);x.fillStyle=(C.head==='jaune')?'#ffd65a':'#fffbe8';x.beginPath();x.arc(hx+sx*-3,base-20.8,2.8,0,7);x.fill();x.strokeStyle='rgba(120,130,140,.5)';x.lineWidth=.35;for(let k=0;k<4;k++){x.beginPath();x.moveTo(hx-9,base-23.5+k*2);x.lineTo(hx+9,base-23.5+k*2);x.stroke()}
+x.fillStyle='#ff9a2b';x.fillRect(hx-9.2,base-15.6,18.4,3.4);x.fillStyle='rgba(255,255,255,.3)';x.fillRect(hx-9.2,base-15.6,18.4,.8)}
+// capot
+x.fillStyle=M;x.beginPath();x.moveTo(-46,base-29);x.lineTo(46,base-29);x.lineTo(43,base-33);x.lineTo(-43,base-33);x.closePath();x.fill();x.fillStyle='rgba(255,255,255,.18)';x.fillRect(-43,base-33,86,.8);
+// pare-brise, montants, essuie-glaces
+x.fillStyle=M;x.beginPath();x.moveTo(-43,base-33);x.lineTo(43,base-33);x.lineTo(37,base-52);x.lineTo(-37,base-52);x.closePath();x.fill();
+const wg=x.createLinearGradient(0,base-50,0,base-34);wg.addColorStop(0,'#33404c');wg.addColorStop(1,'#1a2028');x.fillStyle=wg;x.beginPath();x.moveTo(-39.5,base-34.2);x.lineTo(39.5,base-34.2);x.lineTo(34.5,base-50.5);x.lineTo(-34.5,base-50.5);x.closePath();x.fill();
+x.fillStyle='rgba(255,255,255,.12)';x.beginPath();x.moveTo(-20,base-34.2);x.lineTo(-10,base-34.2);x.lineTo(-4,base-50.5);x.lineTo(-12,base-50.5);x.closePath();x.fill();
+x.strokeStyle='#111';x.lineWidth=.9;x.beginPath();x.moveTo(-28,base-34.6);x.lineTo(-8,base-37);x.moveTo(6,base-34.6);x.lineTo(26,base-37);x.stroke();
+// rétroviseurs
+for(const sx of[-1,1]){x.fillStyle='#16130f';x.beginPath();x.roundRect(sx>0?44:-52,base-41,8,6,1.4);x.fill();x.fillRect(sx>0?42:-44,base-38.5,2,1.4)}
+// toit, barres, accessoires
+x.fillStyle=D;x.fillRect(-37,base-55,74,3);x.fillStyle='#16130f';x.fillRect(-36,base-57.5,72,2);x.fillRect(-32,base-57.5,2,2.5);x.fillRect(30,base-57.5,2,2.5);
+if(C.roof==='tent'){x.fillStyle='#4a4a46';x.fillRect(-34,base-66,68,8.5);x.fillStyle='#8a8460';x.fillRect(-33,base-65,66,6.5)}
+if(SV.one&&SV.one.led){x.fillStyle='#111';x.fillRect(-26,base-62,52,4);for(let k=0;k<12;k++){x.fillStyle=(typeof ledLens==='function'?ledLens():'#fffbe0');x.fillRect(-25+k*4.2,base-61.3,3,2.6)}}
+// conducteur et passagère derrière le pare-brise (silhouettes)
+x.fillStyle='rgba(20,14,10,.55)';x.beginPath();x.arc(-14,base-42,4.2,0,7);x.arc(14,base-42,4.2,0,7);x.fill();x.fillRect(-19,base-39,10,5);x.fillRect(9,base-39,10,5);
+x.restore()}
+(function(){try{const cv=gid('cusc');if(!cv)return;const b=document.createElement('button');b.id='cusvw';b.className='b';b.textContent='Vue de face';b.style.cssText='display:block;margin:6px auto 0;padding:6px 14px;font-size:14px';cv.insertAdjacentElement('afterend',b);b.addEventListener('click',e=>{e.stopPropagation();window.__cusFront=!window.__cusFront;b.textContent=window.__cusFront?'Vue de profil':'Vue de face';cusDrawPrev()})}catch(e){}})();
+cusDrawPrev=(function(o){return function(){o();try{if(!window.__cusFront)return;const cv=gid('cusc'),x=cv.getContext('2d'),W2=cv.width,H2=cv.height;x.setTransform(1,0,0,1,0,0);const bg=x.createLinearGradient(0,0,0,H2);bg.addColorStop(0,'#4a4c52');bg.addColorStop(1,'#2a2b2e');x.fillStyle=bg;x.fillRect(0,0,W2,H2);x.fillStyle='#55585e';for(let j=0;j<6;j++)x.fillRect(0,40+j*50,W2,2);x.fillStyle='#1f2023';x.fillRect(0,H2*.78,W2,H2*.22);x.fillStyle='#e8892b';x.fillRect(W2*.12,H2*.3,14,H2*.48);x.fillRect(W2*.84,H2*.3,14,H2*.48);xjFront(x,W2/2,H2*.84,3.9);x.setTransform(1,0,0,1,0,0)}catch(e){}}})(cusDrawPrev);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.79',GAME_DATE='23/10/2026 à 13h11';
+const GAME_VER='2.80',GAME_DATE='23/10/2026 à 13h21';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
