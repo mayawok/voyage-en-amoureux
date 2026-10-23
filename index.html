@@ -5973,8 +5973,35 @@ mb.addEventListener('click',e=>{e.stopPropagation();show(0);d.style.display='fle
 #menu .card #mgo{padding:clamp(9px,2.4vh,14px) 8px!important;font-size:clamp(15px,4.2vh,19px)!important}
 #menu .card #mhint:empty{display:none}#menu .card #mhint{margin:0!important;font-size:11px}
 #menu .card #mver{margin-top:0!important}`;document.head.appendChild(st)})();
+
+// ===== 2.52 : à l'arrivée, le bateau accoste à droite et le Cherokee débarque vers la droite =====
+function portArrive(Wd,gy,T2,tm,nm,col){const sk=g.createLinearGradient(0,0,0,gy);sk.addColorStop(0,'#7cc3ec');sk.addColorStop(1,'#f3e6cf');g.fillStyle=sk;g.fillRect(0,0,Wd,420);
+ const sg=g.createRadialGradient(Wd*.22,70,6,Wd*.22,70,90);sg.addColorStop(0,'rgba(255,240,180,.9)');sg.addColorStop(1,'rgba(255,240,180,0)');g.fillStyle=sg;g.fillRect(Wd*.22-90,-20,180,180);g.fillStyle='#ffd45a';g.beginPath();g.arc(Wd*.22,70,22,0,7);g.fill();
+ for(let i=0;i<4;i++){const cx=((i*230+tm*8)%(Wd+200))-100,cy=40+(i*29)%60;g.fillStyle='rgba(255,255,255,.8)';g.beginPath();g.ellipse(cx,cy,46,10,0,0,7);g.ellipse(cx-14,cy-6,20,9,0,0,7);g.ellipse(cx+12,cy-8,22,11,0,0,7);g.fill()}
+ // côte et ville à droite
+ g.fillStyle=col;g.beginPath();g.moveTo(Wd,gy-20);g.lineTo(Wd,gy-120);g.lineTo(Wd*.92,gy-130);g.lineTo(Wd*.8,gy-110);g.lineTo(Wd*.64,gy-60);g.lineTo(Wd*.6,gy-20);g.fill();
+ g.fillStyle='rgba(0,0,0,.08)';g.beginPath();g.moveTo(Wd*.6,gy-20);g.lineTo(Wd*.64,gy-60);g.lineTo(Wd*.7,gy-40);g.lineTo(Wd*.66,gy-20);g.fill();
+ for(let i=0;i<9;i++){const hx=Wd*.95-i*Wd*.035,hy=gy-118+Math.abs(i-4)*7;g.fillStyle=['#efe6d2','#e9dcc0','#f1e7d3'][i%3];g.fillRect(hx,hy,Wd*.03,22);g.fillStyle='#b4562d';g.fillRect(hx-1,hy-4,Wd*.03+2,4);g.fillStyle='#3a4a5a';g.fillRect(hx+Wd*.008,hy+8,Wd*.008,8)}
+ // mer à gauche
+ const sea=g.createLinearGradient(0,gy-20,0,420);sea.addColorStop(0,'#2c8cc0');sea.addColorStop(1,'#14608f');g.fillStyle=sea;g.fillRect(0,gy-20,Wd*.7,440);g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=1.5;for(let i=0;i<16;i++){const xx=((i*97+tm*18)%(Wd*.68)),yy=gy-8+(i%5)*22;g.beginPath();g.moveTo(xx,yy);g.lineTo(xx+16,yy);g.stroke()}
+ // quai à droite
+ const qx=Wd*.58;g.fillStyle='#9a9286';g.fillRect(qx,gy,Wd-qx,420-gy);g.fillStyle='#b8b0a4';g.fillRect(qx,gy-4,Wd-qx,8);g.fillStyle='#5a5248';for(let i=0;i<5;i++)g.fillRect(qx+Wd*.04+i*Wd*.08,gy-14,5,10);
+ g.fillStyle='rgba(0,0,0,.12)';for(let i=0;i<8;i++)g.fillRect(qx+i*Wd*.055,gy+4,2,420-gy);
+ // le navire arrive par la gauche et s'amarre
+ const L=Wd*.5,s0=qx-L-10;let sx=s0;if(T2<7)sx-=Math.pow(7-T2,2)*14;const sy=gy+6+Math.sin(tm*1.4)*1.5;
+ if(T2<7){g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=2;for(let i=0;i<5;i++){const w=sx-14-i*22;g.beginPath();g.moveTo(w,sy+10+i*2);g.lineTo(w-18,sy+12+i*2);g.stroke()}}
+ g.fillStyle='#e9eef2';g.beginPath();g.moveTo(sx,sy-36);g.lineTo(sx+L,sy-36);g.lineTo(sx+L-20,sy+16);g.lineTo(sx+24,sy+16);g.closePath();g.fill();g.fillStyle='#1f5a8a';g.fillRect(sx+22,sy+2,L-44,9);
+ g.fillStyle='#f4f6f8';g.fillRect(sx+L*.06,sy-82,L*.36,46);g.fillStyle='#2a3e52';for(let i=0;i<5;i++)g.fillRect(sx+L*.09+i*L*.065,sy-74,L*.04,10);g.fillStyle='#d8352b';g.fillRect(sx+L*.14,sy-104,18,24);
+ g.fillStyle='#1f5a8a';g.font='800 12px Arial';g.textAlign='center';g.fillText(nm,sx+L*.62,sy-16);
+ // rampe vers le quai de droite
+ if(T2>8.5){g.fillStyle='#6a6f76';g.beginPath();g.moveTo(qx+36,gy);g.lineTo(sx+L-6,sy-34);g.lineTo(sx+L-30,sy-34);g.lineTo(qx+10,gy);g.fill()}
+ // le Cherokee descend vers la droite
+ const deck=sy-36,x0=sx+L*.55,u=Math.min(1,Math.max(0,(T2-10)/7));let cx=x0+(Wd*.86-x0)*u,cy;const b1=sx+L-30,b2=qx+30;cy=cx<b1?deck:(cx<b2?deck+(gy-deck)*Math.min(1,(cx-b1)/(b2-b1)):gy);
+ grp(cx,cy,1,()=>{try{cherokeeSide(cx,cy)}catch(e){}});
+ g.strokeStyle='#2a2a30';g.lineWidth=1.4;for(let i=0;i<4;i++){const bx=(Wd*.1+i*120+tm*30)%Wd,by=80+(i%2)*30+Math.sin(tm*3+i)*5,wv=Math.sin(tm*8+i)*3;g.beginPath();g.moveTo(bx-6,by-wv);g.lineTo(bx,by);g.lineTo(bx+6,by-wv);g.stroke()}}
+portScene=(function(o){return function(Wd,gy,T2,tm,dep,nm,col){if(!dep)return portArrive(Wd,gy,T2,tm,nm,col);return o(Wd,gy,T2,tm,dep,nm,col)}})(portScene);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.51',GAME_DATE='23/10/2026 à 08h10';
+const GAME_VER='2.52',GAME_DATE='23/10/2026 à 08h12';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>

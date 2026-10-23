@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.52** : scènes d'arrivée au port (`CS.sarA0` Santa Teresa, `CS.sarA1` Bonifacio) dans le sens du voyage : `portArrive` (le bateau arrive par la gauche avec un sillage, accoste le quai de droite, la ville est à droite, la rampe descend à droite et le Cherokee débarque vers la droite). Le départ (`dep`) reste vers la gauche.
 **2.51** : départ du port (`portScene`, `dep`) : le Cherokee glissait deux fois plus vite que le bateau quand celui-ci quittait le quai (déplacement compté deux fois) ; il reste maintenant immobile sur le pont, au frein à main, et suit exactement le bateau.
 **2.50** : menu principal sur deux colonnes (grille CSS sur `#menu .card`, tailles en `clamp(..vh..)`) : tout tient sans défiler sur les écrans d'iPhone en paysage ; « Reprendre/Commencer » et « Nouveau voyage » sur toute la largeur.
 **2.49** : aide — onglets plus coupés, icônes sur pastille claire avec contour (lisibles qu'elles soient claires ou foncées).
