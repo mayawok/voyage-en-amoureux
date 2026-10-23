@@ -825,7 +825,7 @@ reset();
 function step(dt){
 const ca=Math.cos(a),sa=Math.sin(a),spd=Math.hypot(v.x,v.y),gasOn=st.gas&&!(winch&&winch.hard)&&!stalled&&ign&&startT<.6&&fuel>0,awd=st.gear===1||st.gear===3,low=st.gear===3,neu=st.gear===2;
 if(started){playT+=dt;lvlT+=dt;if(boostT>0)boostT-=dt;if(!night&&!curCamp&&lvlT>=nextRestT)placeCamp();if(!night&&curCamp&&c.x>curCamp.x+420){curCamp=null;nextRestT=lvlT+lvlDur*.3}if(!night){SV.clk=(SV.clk||8)+dt*.1;if(SV.clk>=31){SV.clk=7;SV.dayN=(SV.dayN||0)+1;sayK('dawn',4);note('🌅 Le jour se lève')}}}
-if(ign&&!PLT()){fuel-=(.0012+(gasOn?.0058+(low?.0012:0)+(awd?.0008:0)+(boostT>0?.004:0):0))*FM()*ENGC()*dt;if(fuel<=0){fuel=0;ign=0;sayK('dry',4)}}
+if(ign&&!PLT()&&!va7Dry){fuel-=(.0012+(gasOn?.0058+(low?.0012:0)+(awd?.0008:0)+(boostT>0?.004:0):0))*FM()*ENGC()*dt;if(fuel<=0){fuel=0;ign=0;sayK('dry',4)}}
 {const sl0=(T(c.x+1)-T(c.x-1))/2;if(ign&&started&&gasOn&&!low&&!neu&&-sl0>.5&&spd<230){stallAcc+=dt;if(stallAcc>.9){stallAcc=0;ign=0;sayK('stall',3.6)}}else stallAcc=Math.max(0,stallAcc-dt*2)}
 if(refuel){const m=stnNear();if(m&&spd<25&&!ign&&!night){fuel+=dt*.2;if(fuel>=1){fuel=1;refuel=false;sayK('tankDone')}}else refuel=false}
 if(gasOn)temp+=RM()*((neu?3:6+(low?3:0)+(awd?1:0))+(boostT>0&&!neu?10:0))*dt;
@@ -845,7 +845,7 @@ const z=Z(px);if(z[3]==='rock')inRock=true;
 const gf=.5*Math.min(z[0],z[1])+.25*(z[0]+z[1]),mu=1.15*gf*(gf>.5?1-.15*wI:1)*(1+.04*SV.up.wheel)*(BF.grip>0?1.1:1)*(SV.cus&&SV.cus.psi?1.08:1);
 const share=i?(awd?.5:0):(awd?.5:1),Fd=ENGP(low)*(SV.sabo?.55:1)*(low?1000:520)*(boostT>0?1.8:1)*(flatW>=0?.45:1)*(st.hb?.2:1),vmax=ENGV()*(low?190:480)*(boostT>0?1.25:1)*(flatW>=0?.5:1)*(SV.cus&&SV.cus.psi?.94:1);
 let Ft=-.06*vt;
-if(gasOn&&!neu)Ft+=share*Fd*Math.min(1.5,Math.max(0,1-vt/vmax));
+if(gasOn&&!neu)Ft+=share*Fd*Math.min(1.5,Math.max(0,va7F(vt,vmax)));
 if(st.brake){if(vt>12)Ft-=330*Math.min(1,vt/40);else if(!neu)Ft-=.62*(share||.2)*Fd*Math.max(0,1+vt/(vmax*.5))}
 if(!gasOn&&!st.brake&&!winch&&!neu&&Math.abs(vt)<10)Ft=-vt*25;
 if(st.hb&&i===0)Ft=-vt*80;
@@ -1405,7 +1405,7 @@ const hrN=hourNow(),nightT=hrN>=19.5,cpN=camps.some(m=>c.x>m.a-60&&c.x<m.b+60);c
 const op=obsP.find(q=>c.x>q.x-170&&c.x<q.x+90&&obsUseful(q)),sm=op?null:shp.find(m=>c.x>m.x+10&&c.x<m.x+250);if(op)cx={x:op.x,y:op.y-70,it:[['obs','🔭','Observer',0]],key:'o'+op.x};else 
 if(sm)cx={x:sm.x+145,y:sm.y-96,it:sm.k==='food'?[['umenu','🛒','Entrer chez Utile',0]]:shopItems(sm),key:'s'+sm.x+(carry?'c':'')+(sm.extra?'e':'')};
 else{const m=PLT()?null:stns.find(q=>c.x>q.x+40&&c.x<q.x+240),mw=null;
-const me2=PLT()?null:stns.find(q=>q.eng&&c.x>q.x+300&&c.x<q.x+440);
+const me2=null;
 if(mw)cx={x:mw.x-160,y:T(mw.x-160)-112,it:[['wash','🫧','Lavage',0]],key:'w'+mw.x};
 else if(me2)cx={x:me2.x+365,y:T(me2.x+365)-106,it:[['engmenu','🔧','Prépa moteur',0]],key:'e'+me2.x};
 else if(m)cx={x:m.x+150,y:m.y-84,it:[['stmenu','🏪','Boutique auto',0]],key:'t'+m.x};
@@ -6972,7 +6972,7 @@ mgTick=(function(o){return function(dt){o(dt);try{const wb=gid('washb'),pb=gid('
  if(m){const sp=Math.hypot(v.x,v.y),near=c.x>m.x-215&&c.x<m.x-105;let lb,rd=0;if(!near)lb='🫧 Lavage auto';else if(sp>=25)lb='🫧 Arrête-toi';else{lb='🫧 Laver le Cherokee';rd=1}if(wb.textContent!==lb)wb.textContent=lb;wb.className='b'+(rd?' rdy':' wait');wb.dataset.r=rd?'1':'0';wb.style.display='block';wb.style.left=Math.round(scr.ox+(m.x-160)*S)+'px';wb.style.top=Math.round(scr.oy+(T(m.x-160)-150)*S)+'px'}else wb.style.display='none';
  // peinture
  let px=null;if(!off)for(const q of paintShops()){if(q+110>cam.x-W*.35/S-100&&q+110<cam.x+W*.65/S+100){px=q;break}}
- if(px!=null){const sp=Math.hypot(v.x,v.y),near=c.x>px+10&&c.x<px+210;let lb,rd=0;if(!near)lb='🎨 Peinture Nostrale';else if(sp>=25)lb='🎨 Arrête-toi';else{lb='🎨 Entrer';rd=1}if(pb.textContent!==lb)pb.textContent=lb;pb.className='b'+(rd?' rdy':' wait');pb.dataset.r=rd?'1':'0';pb.style.display='block';pb.style.left=Math.round(scr.ox+(px+110)*S)+'px';pb.style.top=Math.round(scr.oy+(T(px+110)-136)*S)+'px';
+ if(px!=null){const sp=Math.hypot(v.x,v.y),near=c.x>px-30&&c.x<px+250;let lb,rd=0;if(!near)lb='🎨 Peinture Nostrale';else if(sp>=25)lb='🎨 Arrête-toi';else{lb='🎨 Entrer';rd=1}if(pb.textContent!==lb)pb.textContent=lb;pb.className='b'+(rd?' rdy':' wait');pb.dataset.r=rd?'1':'0';pb.style.display='block';pb.style.left=Math.round(scr.ox+(px+110)*S)+'px';pb.style.top=Math.round(scr.oy+(T(px+110)-136)*S)+'px';
   const k2=level+':'+px;if(!paintSaid[k2]&&c.x<px&&c.x>px-700&&sayT<=0){paintSaid[k2]=1;say('Un magasin de peinture à côté de Corse 4x4 ! On pourrait changer la couleur du Cherokee… ou lui mettre une livrée rare.',4.4,1)}}else pb.style.display='none';
 }catch(e){}}})(mgTick);
 
@@ -6997,6 +6997,62 @@ function va6Glass(tm){g.save();g.beginPath();g.moveTo(-4.4,-19);g.lineTo(-4.4,-2
 // --- 3.03 : retour de Sardaigne raccourci (plus de cinématique de départ, traversée et arrivée courtes)
 CS.sarA1.L=()=>[[1,'n','Bonifacio, perché sur sa falaise. Le bateau accoste et le Cherokee redescend sur le quai.'],[5.5,'a','La Corse… On est à la maison. Direction la forêt de l’Ospedale !']];CS.sarA1.end=10;
 sarCross=(function(o){return function(back){if(!back)return o(back);fadeTo(()=>{btAfter=()=>{blackNow();try{openCine('sarA1')}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},350)};openBoat(true);if(bt){bt.D=9;bt.L=[[.8,'m','Au revoir la Sardaigne… On a ce qu’il nous faut.'],[4,'a','Regarde, Bonifacio sur sa falaise. On rentre.'],[7,'m','Le chien a déjà reconnu l’odeur du maquis !']]}})}})(sarCross);
+// ===== 3.07 : corrections de partie (nouveau voyage, pop-ups, panne sèche, bulles, matin, vitesse) =====
+// --- nouveau voyage : Cherokee rouge d'origine et propre
+wipeTrip=(function(o){return function(){o();try{mudL=0;mudHi=0}catch(e){}try{cusInit();cusApply()}catch(e){}try{applyUp()}catch(e){}}})(wipeTrip);
+// --- chapitre 10 : l'enquête est finie, plus de relevés ni de prélèvements
+paraWorld=(function(o){return function(dt){if(chIdx()===CHAP.length-1)return;return o(dt)}})(paraWorld);
+sampleTick=(function(o){return function(dt,run){if(chIdx()===CHAP.length-1)return;return o(dt,run)}})(sampleTick);
+endStory=(function(o){return function(){try{for(let i=cardQ.length-1;i>=0;i--){const t=cardQ[i].t||'';if(/Mila explique|Mail du labo|Résultats du labo|Échantillon/.test(t))cardQ.splice(i,1)}}catch(e){}return o()}})(endStory);
+// --- pop-ups : plus d'attente de 40 s de route calme pour les cartes (seuls les événements du monde attendent le calme)
+popOK=(function(o){return function(){try{return !onFerry()&&!winch&&!stopReq&&(sayT<=0||popCD<-6)}catch(e){return true}}})(popOK);
+// les résultats du labo arrivent plus vite, et le mail avec le tri des fioles s'ouvre tout de suite
+smpAdd=(function(o){return function(sp,full){o(sp,full);try{if(SV.smpP&&SV.smpP[sp])SV.smpP[sp].t=Math.min(SV.smpP[sp].t,40+Math.random()*20)}catch(e){}}})(smpAdd);
+smpDone=(function(o){return function(sp,inst){const n0=cardQ.length;const r=o(sp,inst);try{for(let i=n0;i<cardQ.length;i++)if(/Mail du labo|Résultats du labo/.test(cardQ[i].t||''))cardQ[i].now=1}catch(e){}return r}})(smpDone);
+cardTick=(function(o){return function(){try{if(cardQ.length&&/Résultats du labo/.test(cardQ[0].t||''))cardQ[0].now=1}catch(e){}return o()}})(cardTick);
+// --- dormir : la bulle reste proposée le soir même moteur coupé et pendant que les personnages parlent
+slpUI=(function(o){return function(){const s0=sayT,i0=ign;try{if(hourNow()>=19.5){sayT=0;ign=1}}catch(e){}try{o()}finally{sayT=s0;ign=i0}}})(slpUI);
+// --- fin du chapitre 1 : le bouton attend que le camion-citerne ait traversé les 3/4 de l'écran
+esTick=(function(o){return function(t){o(t);try{if(es&&es.i===0&&es.end){const b=gid('esx');if(es.t<21.8){if(b.style.display!=='none')b.style.display='none'}else if(b.style.display==='none')b.style.display='block'}}catch(e){}}})(esTick);
+// --- panne sèche : le moteur tousse, on avance au pas jusqu'à une station
+var va7Dry=0,va7Cough=0,va7DrySaid=-1;
+var va7Ig=0;
+sayK=(function(o){return function(k,d,a){if(k==='dry'&&started&&!night&&!crashed)return;return o(k,d,a)}})(sayK);
+mgTick=(function(o){return function(dt){o(dt);const ig0=va7Ig;va7Ig=ign;try{
+ if(ig0&&!ign&&fuel<=0&&!night&&!crashed){fuel=.0004;ign=1;va7Dry=1;if(va7DrySaid!==level){va7DrySaid=level;sayT=0;say('Le moteur tousse… on roule sur ce qui reste dans le réservoir. Doucement, jusqu’à la prochaine station !',4.6,0)}}
+ va7Ig=ign;if(va7Dry){if(fuel>.1){va7Dry=0}else{fuel=Math.max(fuel,.0004);
+  if(v.x>75)v.x=75;if(v.x<-40)v.x=-40;
+  va7Cough-=dt;if(va7Cough<=0&&ign&&st.gas){va7Cough=1.1+Math.random()*1.6;try{snd('click');snd('thud')}catch(e){}v.x*=.45;for(let i=0;i<4;i++)dustP.push({x:c.x-62,y:c.y+2,vx:-30-Math.random()*20,vy:-10-Math.random()*10,t:0,r:2+Math.random()*2})}}}
+ }catch(e){}}})(mgTick);
+// --- vitesse maximale plus haute, même accélération : la poussée reste identique jusqu'à 85 % de l'ancienne vitesse max, puis continue doucement
+function va7F(vt,vm){const k=.85;if(vt<k*vm)return 1-vt/vm;if(vt<vm)return 1-k;const v1=vm*1.3;return (1-k)*Math.max(0,1-(vt-vm)/(v1-vm))}
+// --- la distance jusqu'à l'arrivée reste affichée sur l'objectif
+objTick=(function(o){return function(){o();try{const el=gid('obj');if(!el||el.style.display==='none')return;const ok=el.querySelector('.ok');if(!ok)return;const left=Math.max(0,(MAP_L-c.x)/30000),tx=left>.05?'Objectif · arrivée dans '+left.toFixed(1).replace('.',',')+' km':'Objectif · presque arrivés';if(ok.textContent!==tx)ok.textContent=tx}catch(e){}}})(objTick);
+// --- au réveil, ils se demandent s'ils ont bien dormi
+const VA7_AM={car:[[['m','Bien dormi ?'],['a','Comme un loir… à part le levier de vitesses dans les côtes.']],[['a','Tu as bien dormi, toi ?'],['m','Le chien a ronflé toute la nuit. Mais oui, très bien.']],[['m','Alors, cette nuit dans le Cherokee ?'],['a','Parfaite. On entendait les grillons jusqu’au matin.']]],
+ hotel:[[['a','Bien dormi ?'],['m','Un vrai lit… j’ai dormi d’une traite !']],[['m','Tu as bien dormi ?'],['a','Comme un bébé. Et le petit-déjeuner sent le brocciu.']]],
+ camp:[[['m','Bien dormi sous la tente ?'],['a','Un caillou sous le dos, mais oui. Et toi ?'],['m','Les étoiles m’ont tenue éveillée un moment… c’était beau.']],[['a','Tu as bien dormi ?'],['m','Avec le bruit du vent dans les pins, oui. Et le chien était collé contre moi.']]]};
+var va7WasN=null;
+mgTick=(function(o){return function(dt){o(dt);try{if(night){va7WasN=night.m||{}}else if(va7WasN){const m=va7WasN;va7WasN=null;if(started&&!crashed){const L=VA7_AM[m.hotel?'hotel':m.car?'car':'camp'];const P=L[(SV.amI=(SV.amI||0)+1)%L.length];setTimeout(()=>{for(const l of P)talkQ.push(l)},2500)}}}catch(e){}}})(mgTick);
+// --- pique-nique : une bulle à toucher quand on s'arrête près de la table (plus de départ automatique)
+var va7Pic=null;
+(function(){const b=document.createElement('button');b.id='picb';b.className='b wait';b.style.cssText='position:fixed;display:none;z-index:3;padding:8px 16px;font-size:19px;white-space:nowrap;transform:translate(-50%,-100%)';document.body.appendChild(b);
+ const st5=document.createElement('style');st5.textContent='body.cine #picb,body.intro #picb,body.cine #engb,body.intro #engb{display:none!important}';document.head.appendChild(st5);
+ b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(!va7Pic)return;if(b.dataset.r!=='1'){if(sayT<=0)say('Arrête-toi près de la table, et on sort le panier.',3,1);return}SV.pic=SV.pic||{};SV.pic[va7Pic.key]=1;b.style.display='none';st.gas=0;st.hb=1;fadeTo(()=>openCine('picnic'))});
+ const e2=document.createElement('button');e2.id='engb';e2.className='b wait';e2.style.cssText=b.style.cssText;document.body.appendChild(e2);
+ e2.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(e2.dataset.r==='1')openEng();else if(sayT<=0)say('Arrête-toi devant l’atelier, et on regarde le moteur.',3,1)})})();
+mgTick=(function(o){return function(dt){
+ // on neutralise l'ancien départ automatique du pique-nique : on marque les tables comme « proposées »
+ const pk=[];try{if(SV.pic){}SV.pic=SV.pic||{};const P=picSpots();for(let i=0;i<P.length;i++){const key=level+':'+i;if(!SV.pic[key]){SV.pic[key]='b';pk.push(key)}}}catch(e){}
+ o(dt);
+ try{for(const k of pk)if(SV.pic[k]==='b')delete SV.pic[k]}catch(e){}
+ try{const b=gid('picb'),off=!started||night||crashed||cs||paused||MGX||cardOpen,sp=Math.hypot(v.x,v.y);let show=null;
+  if(!off){const P=picSpots();for(let i=0;i<P.length;i++){const px=P[i],key=level+':'+i;if(SV.pic&&SV.pic[key])continue;if(px>cam.x-W*.35/S-100&&px<cam.x+W*.65/S+100){show={px,key};break}}}
+  va7Pic=show;if(show){const near=Math.abs(c.x-show.px)<230;let lb,rd=0;if(!near)lb='🥪 Aire de pique-nique';else if(sp>=25)lb='🥪 Arrête-toi';else{lb='🥪 Pique-niquer';rd=1}if(b.textContent!==lb)b.textContent=lb;b.className='b'+(rd?' rdy':' wait');b.dataset.r=rd?'1':'0';b.style.display='block';b.style.left=Math.round(scr.ox+show.px*S)+'px';b.style.top=Math.round(scr.oy+(T(show.px)-92)*S)+'px';SV.picSaid=SV.picSaid||{};if(!SV.picSaid[show.key]&&c.x>show.px-700&&c.x<show.px-150&&sayT<=0){SV.picSaid[show.key]=1;say('Une aire de pique-nique ! Si tu as faim, on peut s’y arrêter.',3.4,1)}}else if(b.style.display!=='none')b.style.display='none';
+  // atelier moteur : bulle comme la peinture
+  const e2=gid('engb');let me=null;if(!off&&!PLT())me=stns.find(q=>q.eng&&q.x+365>cam.x-W*.35/S-100&&q.x+365<cam.x+W*.65/S+100);
+  if(me){const near=c.x>me.x+250&&c.x<me.x+480;let lb,rd=0;if(!near)lb='🔧 Prépa moteur';else if(sp>=25)lb='🔧 Arrête-toi';else{lb='🔧 Entrer';rd=1}if(e2.textContent!==lb)e2.textContent=lb;e2.className='b'+(rd?' rdy':' wait');e2.dataset.r=rd?'1':'0';e2.style.display='block';e2.style.left=Math.round(scr.ox+(me.x+365)*S)+'px';e2.style.top=Math.round(scr.oy+(T(me.x+365)-140)*S)+'px'}else if(e2.style.display!=='none')e2.style.display='none';
+ }catch(e){}}})(mgTick);
 // ===== 3.05 : l'étape au garage entre deux chapitres (tous les ateliers du Cherokee au même endroit) =====
 var va5G=null;
 (function(){const st5=document.createElement('style');st5.textContent=`#va5{position:fixed;inset:0;z-index:41;display:none;background:#1a1410;touch-action:none;font-family:inherit}
@@ -7229,6 +7285,6 @@ drawObs=(function(o){return function(x0,x1){o(x0,x1);try{va3TortDraw(performance
 
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.06',GAME_DATE='24/10/2026 à 00h00';
+const GAME_VER='3.07',GAME_DATE='24/10/2026 à 00h58';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
