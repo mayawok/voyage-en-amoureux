@@ -5904,8 +5904,16 @@ LAYlv=-1;
 // voyage déjà commencé au chargement : on adapte la position à la nouvelle longueur
 try{if(SV.has){SV.layV=SV.layV||{};const ci=((SV.lvl||1)-1)%10;if(LAYON.has(ci)&&SV.layV[SV.lvl]!==2){SV.layV[SV.lvl]=2;if(SV.px!=null)SV.px=Math.round(SV.px*1.6);if(SV.resp!=null)SV.resp=Math.round(SV.resp*1.6);SV.cmp=null;laySync();try{_loadTrip0()}catch(e){}}else laySync();lvlDur*=LAYK()}}catch(e){}
 npcList=(function(o){let lv=-1,F=null;return function(){const L=o();if(!layOn())return L;if(lv===level&&F&&F.src===L)return F;lv=level;F=L.filter(n=>n.sto||hs(n.i*13+TS()*7+level)<.67);F.src=L;return F}})(npcList);
+
+// ===== 2.47 : la pièce du sabotage est bien vendue à la station, en surbrillance =====
+try{ITD.fixsab='Durite neuve et filtre : le Cherokee retrouve toute sa puissance'}catch(e){}
+stnList=(function(o){return function(){const L=o();try{if(mis&&mis.item&&mis.shop==='stn'&&!SV.inv[mis.need]&&!L.some(q=>q[0]===mis.item[0]))L.unshift(mis.item);if(SV.sabo&&SV.sabo.shop==='stn'&&!L.some(q=>q[0]==='fixsab'))L.unshift(['fixsab','🔧','Kit durite + filtre',3])}catch(e){}return L}})(stnList);
+(function(){const st=document.createElement('style');st.textContent=`#items .it.hot{position:relative;margin-top:12px;padding-top:6px;background:rgba(255,206,74,.2)!important;outline:3px solid #ffce4a;outline-offset:-3px;border-radius:14px;animation:hotP 1.4s ease-in-out infinite}
+#items .it.hot::after{content:'POUR LA RÉPARATION';position:absolute;top:-12px;left:14px;background:#ffce4a;color:#3a2a10;font:900 10px Arial,sans-serif;letter-spacing:1px;padding:2px 8px;border-radius:8px}
+@keyframes hotP{0%,100%{box-shadow:0 0 0 rgba(255,206,74,0)}50%{box-shadow:0 0 18px rgba(255,206,74,.85)}}`;document.head.appendChild(st)})();
+storeRender=(function(o){return function(){o();try{const L=storeList();const its=gid('items').querySelectorAll('.it');let k=0;for(const el of its){const b=el.querySelector('button[data-q]');if(!b)continue;const q=L[+b.dataset.q];if(q&&(q[0]==='fixsab'||(mis&&mis.item&&q[0]===mis.item[0])))el.classList.add('hot')}}catch(e){}}})(storeRender);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.46',GAME_DATE='23/10/2026 à 02h16';
+const GAME_VER='2.47',GAME_DATE='23/10/2026 à 08h02';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>

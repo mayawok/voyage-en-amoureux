@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.47** : bug du sabotage (chapitres 5 et 8) — la pièce `fixsab` n'apparaissait jamais à la station (`stnList` ne l'ajoutait que si la boutique était dans `CARK`, or c'est `'stn'`). Elle s'appelle « Kit durite + filtre » (3 ❤) et l'article utile à la mission est en surbrillance dorée avec l'étiquette « POUR LA RÉPARATION » (`.it.hot`, `storeRender` surchargé). Même correction pour un objet de mission vendu à la station.
 **2.46** : nouveau découpage activé pour les 10 chapitres (`LAYON` = 0 à 9). Le bac se place sur une portion goudronnée ou en terre, jamais sur la rocaille (`ferPick` surchargé, cache `ferG` vidé par `laySync`). Contrôle par chapitre (script de test : proportions des portions, talus seulement sur `k`, gués seulement sur `d`, position du bac, du port, de la grotte, des personnages, captures) : aucune erreur. Non testé : une vraie partie complète au volant (le pilote automatique ne sait pas treuiller).
 **2.45** : nouveau découpage des routes (demande de l'utilisateur : jeu trop dense), activé chapitre par chapitre via `LAYON` (Set des indices de chapitre) :
 - `MAP_L` est maintenant une variable : 88 000 (60 % plus long) pour les chapitres de `LAYON`, 55 000 sinon (`laySync()`, appelé depuis `Tr` quand `level` change ; vide les caches dépendant de la longueur). `LAYK()` = 1,6 : durée `lvlDur` et espacement des obstacles `ensureObs` multipliés. Sauvegarde en cours : position ×1,6 une seule fois (`SV.layV[lvl]=2`).
