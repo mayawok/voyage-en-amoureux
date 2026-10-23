@@ -36,6 +36,8 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.72** : marchepieds à l'atelier Corse 4x4 (`SV.cus.rb` : aucun, couleur carrosserie, noirs ; 6 ❤ la première fois `own.rb`, puis changement gratuit), dessinés entre les roues sous les portes avec supports et stries antidérapantes (`rbDraw` appelé depuis `cusAcc`).
+**Habitude** : envoyer à l'utilisateur les captures de test utiles (`SendUserFile`), il le demande.
 **2.71** : la nuit (avant 7 h 30 et à partir de 20 h, `standClosed()`), Chez Marcel et les vendeurs corses sont fermés : rideau de fer avec pancarte « FERMÉ » (`shutter`), marchand absent, pas de bulle d'achat (`uiShops`), pas de salut du marchand ; Mila le dit une fois si on s'arrête devant (`stClSaid`).
 **2.70** : turbo plus doux : souffle filtré (bruit en passe-bande) + léger sifflement sinus passé en passe-bas, fréquence 420 + régime×0,42 Hz, volume qui monte avec le régime au-dessus de 1200 tr/min (au carré) et réduit sans accélérer ; environ 5 fois plus faible qu'avant (`window.__turbo`).
 **2.69** : prépa moteur à part : la bulle « Prépa moteur » n'apparaît que si le Cherokee est arrêté devant l'atelier (`c.x` entre `m.x+300` et `m.x+440`, dans `uiShops`), plus à la pompe. Mila le signale en passant à la station (`engSaid`). Aide mise à jour.

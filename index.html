@@ -6173,8 +6173,18 @@ vendDraw=(function(o){return function(q0,tm){const cl=standClosed(),nf=npcFig;if
 pizza=(function(o){return function(x0,x1,tm){o(x0,x1,tm);try{if(!standClosed()||PLT())return;for(const q0 of pzL){if(pzVend(q0.j)!=='marcel')continue;const px=q0.x;if(px<x0-150||px>x1+20)continue;const y=T(px+60),sl=Math.atan2(T(px+90)-T(px+30),60);g.save();g.translate(px+60,y);g.rotate(sl);shutter(-46,-62,58,36,1);g.restore()}}catch(e){}}})(pizza);
 var stClSaid={};
 mgTick=(function(o){return function(dt){o(dt);try{if(!started||night||cs||!standClosed()||sayT>0||PLT())return;if(Math.hypot(v.x,v.y)>25)return;for(const q of pzL){const px=q.x;if(c.x>px-260&&c.x<px+170){const k=level+':'+q.j+':'+(SV.dayN||0);if(!stClSaid[k]){stClSaid[k]=1;const mar=pzVend(q.j)==='marcel';say(mar?'Chez Marcel est fermé pour la nuit… On reviendra demain matin pour une pizza !':'Le stand est fermé pour la nuit. Il rouvre demain matin.',3.6,1)}break}}}catch(e){}}})(mgTick);
+// ===== 2.72 : marchepieds (atelier) couleur carrosserie ou noirs =====
+const RBT={'':'Aucun',body:'Couleur carrosserie',noir:'Noirs'};
+cusRows=(function(o){return function(){const r=o(),C=SV.cus;const i=r.findIndex(q=>q[0].indexOf('Lettrage')>=0);r.splice(i>=0?i+1:r.length,0,['🚙 Marchepieds','6 ❤ la première fois · entre les roues, sous les portes',Object.keys(RBT).map(k=>['rb',k,RBT[k],(k&&!(C.own&&C.own.rb))?6:0,(C.rb||'')===k])]);return r}})(cusRows);
+cusPick=(function(o){return function(k,v){if(k==='rb'){const C=SV.cus;C.own=C.own||{};if(v&&!C.own.rb){if(!cusPay(6)){try{cusRender()}catch(e){}return}C.own.rb=1}C.rb=v;snd('click');try{cusRender()}catch(e){}saveTrip();return}return o(k,v)}})(cusPick);
+function rbDraw(){const C=SV.cus||{};if(!C.rb)return;const x0=WL[0][0]+R+3,x1=WL[1][0]-R-3;if(x1-x0<8)return;const y=11.5,blk=C.rb==='noir';
+g.fillStyle='#1a1816';g.fillRect(x0+4,y-4,2.4,4);g.fillRect(x1-6.4,y-4,2.4,4);
+const gr=g.createLinearGradient(0,y,0,y+4.2);if(blk){gr.addColorStop(0,'#3a3836');gr.addColorStop(1,'#141312')}else{gr.addColorStop(0,CCv.l);gr.addColorStop(1,CCv.d)}g.fillStyle=gr;g.beginPath();g.roundRect(x0,y,x1-x0,4.2,1.6);g.fill();
+g.fillStyle=blk?'rgba(255,255,255,.1)':'rgba(255,255,255,.25)';g.fillRect(x0+1.5,y+.5,x1-x0-3,.8);
+g.fillStyle=blk?'#0c0b0a':'rgba(0,0,0,.35)';for(let xx=x0+4;xx<x1-3;xx+=5)g.fillRect(xx,y+1.6,2.6,1.4)}
+cusAcc=(function(o){return function(tm){o(tm);try{rbDraw()}catch(e){}}})(cusAcc);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.71',GAME_DATE='23/10/2026 à 12h35';
+const GAME_VER='2.72',GAME_DATE='23/10/2026 à 12h38';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
