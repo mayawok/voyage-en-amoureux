@@ -36,6 +36,13 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.56** :
+- Prépa moteur : la première station après 22 % de chaque chapitre a un atelier « PRÉPA MOTEUR » (`m.eng`, `engDraw`, bulle « Prépa moteur » → `openEng`, panneau `#engv`). `SV.eng={f:'e'|'d',c:4|6,t:0|1}` ; prix 10 ❤ carburant, 15 ❤ 6 cylindres, 12 ❤ turbo (revenir en arrière gratuit). Effets : `ENGP(low)` puissance (6 cyl ×1,18, turbo ×1,15/1,22, diesel ×1,15 en 4L et ×0,97 sinon), `ENGV()` vitesse max, `ENGC()` consommation (6 cyl ×1,25, turbo ×1,08, diesel ×0,75). Son : 6 cylindres = cadence ×1,5, diesel plus grave et rugueux, sifflement de turbo (`window.__turbo`).
+- Lavage auto : la première station après 52 % a un portique « LAVAGE AUTO » (`m.wash`, `washDraw`), bulle « Lavage » → `startWash()` (5,5 s de brosses, mousse et eau, `mudL` remis à zéro), gratuit.
+- Compte-tours : anneau autour de la vitesse qui se remplit avec `dv.rpm` (0-6000), du vert au rouge (`spdDigits` surchargé).
+- Contact coupé en roulant : roues bloquées (`lockW`) — arrière en 2H, les quatre en 4H/4L, aucune au point mort.
+- Grotte : pas de lampadaires (`lampPosts`, `lampPts`) ni de voitures garées (`parkedV`) ; le pont cassé à reconstruire n'est jamais dans la grotte (`brkS`).
+- Aide mise à jour (clé, régime, prépa moteur, lavage).
 **2.55** : l'annonce de Mila pour un animal à aider (« Oh ! Un petit oiseau blessé… ») arrivait dès que l'aide apparaissait, 1000 devant : elle arrive maintenant à 500 de l'animal (deux fois plus près), via `hev.said` dans `mgTick`. Le nombre et le moment des aides (`helpPlan`) ne changent pas (un essai pour les espacer a été annulé à la demande de l'utilisateur).
 **2.53** :
 - Sols des biomes retrouvés : sur les chemins de terre, la piste garde la couleur du biome (sable de plage, prairie, désert, montagne, neige) ; la rocaille mélange la couleur du biome et du gris ; seul le goudron est gris (`laneCol` surchargé).
