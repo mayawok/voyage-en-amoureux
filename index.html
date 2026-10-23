@@ -5483,9 +5483,9 @@ const gr=g.createLinearGradient(0,gy-10,0,420);gr.addColorStop(0,'#9cbc6a');gr.a
 g.fillStyle='rgba(90,150,190,.75)';for(let i=0;i<7;i++){const X=((hh2(i+3)*Wd*1.6-(px||0)*.6)%(Wd+200)+Wd+200)%(Wd+200)-100,Y=gy+18+hh2(i+9)*70;g.beginPath();g.ellipse(X,Y,26+hh2(i)*30,4+hh2(i+2)*3,0,0,7);g.fill();g.fillStyle='rgba(200,230,245,.6)';g.fillRect(X-8,Y-1,10,1.2);g.fillStyle='rgba(90,150,190,.75)'}
 g.strokeStyle='#5f8a3a';g.lineWidth=1.4;for(let i=0;i<60;i++){const X=((hh2(i+40)*Wd*1.3-(px||0))%(Wd+40)+Wd+40)%(Wd+40)-20,Y=gy+6+hh2(i+70)*110;g.beginPath();g.moveTo(X,Y);g.lineTo(X-2,Y-6);g.moveTo(X,Y);g.lineTo(X+2,Y-7);g.stroke()}}
 // cheval de selle détaillé (galop), avec ou sans Mila
-function eqDraw(x,y,s,ph,col,rider){g.save();g.translate(x,y);g.scale(s,s);const c2=col||'#8a4a24',dk='#5a2e14';
+function eqDraw(x,y,s,ph,col,rider,st){const A=st?0:1;g.save();g.translate(x,y);g.scale(s,s);const c2=col||'#8a4a24',dk='#5a2e14';
 const leg=(lx,a,b,far)=>{g.strokeStyle=far?dk:c2;g.lineWidth=4.2;g.lineCap='round';const kx=lx+Math.sin(a)*9,ky=-14+Math.cos(a)*9;const hx=kx+Math.sin(a+b)*10,hy=ky+Math.cos(a+b)*10;g.beginPath();g.moveTo(lx,-22);g.lineTo(kx,ky);g.lineTo(hx,hy);g.stroke();g.fillStyle='#2a1a10';g.beginPath();g.arc(hx,hy,2.4,0,7);g.fill()};
-const p=ph;leg(-14,Math.sin(p)*.7,.4+Math.max(0,Math.sin(p+1))*.8,1);leg(16,Math.sin(p+2.4)*.8,-.2-Math.max(0,Math.sin(p+3))*1,1);
+const p=ph;leg(-14,A*Math.sin(p)*.7-(1-A)*.06,(1-A)*.1+A*(.4+Math.max(0,Math.sin(p+1))*.8),1);leg(16,A*Math.sin(p+2.4)*.8+(1-A)*.04,-A*(.2+Math.max(0,Math.sin(p+3))*1),1);
 // queue
 g.strokeStyle='#2a1a10';g.lineWidth=3.2;g.beginPath();g.moveTo(-24,-30);g.quadraticCurveTo(-36,-30+Math.sin(p)*4,-40,-18+Math.sin(p*1.3)*5);g.stroke();g.lineWidth=2;g.beginPath();g.moveTo(-24,-29);g.quadraticCurveTo(-34,-24,-37,-12+Math.sin(p)*4);g.stroke();
 // corps
@@ -5497,7 +5497,7 @@ g.fillStyle=c2;g.beginPath();g.moveTo(31,-61);g.lineTo(30,-68);g.lineTo(34,-62);
 // crinière
 g.strokeStyle='#2a1a10';g.lineWidth=2.2;for(let i=0;i<6;i++){const mx=16+i*2.6,my=-38-i*3.6;g.beginPath();g.moveTo(mx,my);g.lineTo(mx-6-Math.sin(p+i)*2,my+1);g.stroke()}
 // pattes avant (côté proche)
-leg(-10,Math.sin(p+.6)*.7,.4+Math.max(0,Math.sin(p+1.6))*.8,0);leg(20,Math.sin(p+3)*.8,-.2-Math.max(0,Math.sin(p+3.6))*1,0);
+leg(-10,A*Math.sin(p+.6)*.7+(1-A)*.05,(1-A)*.1+A*(.4+Math.max(0,Math.sin(p+1.6))*.8),0);leg(20,A*Math.sin(p+3)*.8-(1-A)*.03,-A*(.2+Math.max(0,Math.sin(p+3.6))*1),0);
 // selle
 g.fillStyle='#3a2414';g.beginPath();g.ellipse(-2,-38,10,3.5,0,0,7);g.fill();g.fillStyle='#5a3a24';g.fillRect(-4,-36,3,10);
 if(rider){// Mila, penchée en avant, cheveux au vent
@@ -5513,7 +5513,7 @@ CS.nox1={mus:'tense',L:()=>[[1.5,'n','Plateau du Coscione. Derrière la crête, 
 onEnd:()=>{try{horseOpen()}catch(e){}},
 draw:(Wd,gy,T2,tm)=>{coscBG(Wd,gy,tm,0);const shake=T2>22&&T2<23.2?Math.sin(T2*90)*4*(23.2-T2):0;g.save();g.translate(shake,0);
 // rocher de l'accident
-const rx=Wd*.5;{const hx0=Wd*.3,rid=T2>=31.5,gall=T2>=34;let ex=hx0,ph=Math.sin(T2)*.15;if(gall){ex=hx0+Math.pow(T2-34,2)*70;ph=T2*12}g.save();g.translate(ex,gy-6);eqDraw(0,0,1.45,ph,'#7a4220',rid);g.restore()}rockD(rx,gy+4,70,46,'#7d7a75');
+const rx=Wd*.5;{const hx0=Wd*.3,rid=T2>=31.5,gall=T2>=34;let ex=hx0,ph=Math.sin(T2)*.15;if(gall){ex=hx0+Math.pow(T2-34,2)*70;ph=T2*7}g.save();g.translate(ex,gy-6);eqDraw(0,0,1.45,ph,'#7a4220',rid,!gall);g.restore()}rockD(rx,gy+4,70,46,'#7d7a75');
 // mouflon : tenu puis s'échappe vers la gauche en traversant la piste
 let mx=Wd*.72,my=gy,mf=1;if(T2>17.5){const u=Math.min(1,(T2-17.5)/4.5);mx=Wd*.72-(Wd*.62)*u;mf=-1;my=gy-Math.abs(Math.sin(T2*9))*6}g.save();g.translate(mx,my-4);g.scale(-.75*mf,.75);try{artA(g,'mouflon',tm)}catch(e){}g.restore();
 // les hommes et la camionnette
@@ -5540,14 +5540,14 @@ ui(){let h='<div style="position:absolute;left:2%;top:2.5%;right:2%;display:flex
 if(H.res)h+='<div style="position:absolute;left:22%;right:22%;top:34%;text-align:center"><div class="tr" style="font-size:17px;font-weight:800;margin-bottom:10px">'+(H.res==='win'?'🎉 Tu les as rattrapés !':'💨 La camionnette s’éloigne…')+'</div><button class="mb go" id="hgo" style="font-size:18px">Continuer ▶</button></div>';mgxUI(h);if(H.res)mgxBtn('hgo',()=>mgxClose(H.res==='win'))},
 down(){if(H.res)return;if(H.hy<=0.5){H.vy=640;snd('click')}},
 tick(dt){if(!(dt>0))return;H.t+=dt;if(H.flash>0)H.flash-=dt;
-if(H.hy>0||H.vy>0){H.hy+=H.vy*dt;H.vy-=1650*dt;if(H.hy<=0){H.hy=0;H.vy=0;for(let i=0;i<6;i++)H.dust.push({x:150+Math.random()*40,y:360,vx:-60-Math.random()*80,vy:-30-Math.random()*40,t:0})}}
+if(H.hy>0||H.vy>0){H.hy+=H.vy*dt;H.vy-=1650*dt;if(H.hy<=0){H.hy=0;H.vy=0;for(let i=0;i<6;i++)H.dust.push({x:150+Math.random()*40,y:370,vx:-60-Math.random()*80,vy:-30-Math.random()*40,t:0})}}
 if(H.res){H.spd*=.97;H.x+=H.spd*dt;return}
 H.spd=sp0+H.t*3.2;const s=H.spd*(H.stum>0?.55:1);H.x+=s*dt;if(H.stum>0)H.stum-=dt;
 H.D-=(H.stum>0?-2.5:2.55)*dt*(sp0/300);
 if(H.x+900>=H.nx){const ty=['rock','wall','log','water','bush'][Math.floor(Math.random()*5)],W2={rock:[42,30],wall:[64,34],log:[72,22],water:[96,0],bush:[48,30]}[ty];H.ob.push({wx:H.nx,ty,w:W2[0],h:W2[1],hit:0});H.nx+=340+Math.random()*360+Math.min(200,H.t*2)}
 for(const o of H.ob){const sx=170+(o.wx-H.x);if(!o.hit&&sx+o.w*.4>148&&sx-o.w*.4<198&&H.hy<(o.ty==='water'?6:o.h-8)){o.hit=1;H.hits++;H.D+=16;H.stum=.7;H.flash=.4;snd('thud');vib(60)}}
 H.ob=H.ob.filter(o=>o.wx-H.x>-400);
-if(H.hy<=0&&Math.random()<dt*20)H.dust.push({x:150,y:362,vx:-80-Math.random()*60,vy:-20-Math.random()*30,t:0});for(const d of H.dust){d.t+=dt;d.x+=d.vx*dt;d.y+=d.vy*dt;d.vy+=80*dt}H.dust=H.dust.filter(d=>d.t<.8);
+if(H.hy<=0&&Math.random()<dt*20)H.dust.push({x:150,y:372,vx:-80-Math.random()*60,vy:-20-Math.random()*30,t:0});for(const d of H.dust){d.t+=dt;d.x+=d.vx*dt;d.y+=d.vy*dt;d.vy+=80*dt}H.dust=H.dust.filter(d=>d.t<.8);
 if(H.D<=0){H.D=0;H.res='win';snd('chime');vib(40);H.ui()}else if(H.D>=130||H.hits>=5){H.res='lose';snd('click');H.ui()}},
 draw(x,tm){onCtx(x,()=>{const Wd=800,gy=300;g.save();g.translate(-300,0);coscBG(1400,gy,tm,H.x);g.restore();
 // route au loin et camionnette
@@ -5557,16 +5557,23 @@ const vx=230+H.D*5;if(vx<Wd+80){noxVan(vx,gy+2,.62,tm,1,0);g.fillStyle='rgba(200
 const fg=g.createLinearGradient(0,330,0,450);fg.addColorStop(0,'#8ab05a');fg.addColorStop(1,'#5f8a3a');g.fillStyle=fg;g.fillRect(-300,350,Wd+600,160);g.fillStyle='#7a9a4a';g.fillRect(-300,358,Wd+600,3);
 g.strokeStyle='#4f7a2f';g.lineWidth=1.6;for(let i=0;i<40;i++){const X=((hh2(i+5)*Wd*2-H.x)%Wd+Wd)%Wd,Y=372+hh2(i+9)*70;g.beginPath();g.moveTo(X,Y);g.lineTo(X-3,Y-8);g.moveTo(X,Y);g.lineTo(X+3,Y-9);g.stroke()}
 g.fillStyle='#f4f0e0';for(let i=0;i<14;i++){const X=((hh2(i+50)*Wd*2-H.x)%Wd+Wd)%Wd,Y=380+hh2(i+60)*60;g.beginPath();g.arc(X,Y,1.8,0,7);g.fill()}
-// obstacles
-for(const o of H.ob){const sx=170+(o.wx-H.x);if(sx<-120||sx>Wd+120)continue;const y=362;
+// piste de terre où court le cheval
+{const tg=g.createLinearGradient(0,354,0,392);tg.addColorStop(0,'#b89a68');tg.addColorStop(1,'#9a7c4c');g.fillStyle=tg;g.fillRect(-300,356,Wd+600,34);g.fillStyle='rgba(0,0,0,.12)';g.fillRect(-300,356,Wd+600,2);g.fillStyle='rgba(255,240,200,.25)';g.fillRect(-300,388,Wd+600,2);
+g.fillStyle='rgba(90,64,34,.35)';for(let i=0;i<26;i++){const X=((hh2(i+120)*Wd*2-H.x)%Wd+Wd)%Wd;g.beginPath();g.ellipse(X,362+hh2(i+130)*24,3+hh2(i+140)*5,1.4,0,0,7);g.fill()}
+g.fillStyle='#8a7a66';for(let i=0;i<18;i++){const X=((hh2(i+150)*Wd*2-H.x)%Wd+Wd)%Wd;g.beginPath();g.arc(X,360+hh2(i+160)*28,1.6,0,7);g.fill()}}
+// obstacles (sur la piste, avec ombre et contour pour bien les voir)
+for(const o of H.ob){const sx=170+(o.wx-H.x);if(sx<-120||sx>Wd+120)continue;const y=376;
+g.fillStyle='rgba(40,25,10,.35)';g.beginPath();g.ellipse(sx+4,y+3,o.w*.6,6,0,0,7);g.fill();
+if(sx>200&&sx<Wd+40&&!o.hit){const k=.5+.5*Math.sin(tm*8);g.fillStyle='rgba(230,70,40,'+(.55+.35*k)+')';g.beginPath();g.moveTo(sx,y-o.h-30-k*3);g.lineTo(sx-7,y-o.h-42-k*3);g.lineTo(sx+7,y-o.h-42-k*3);g.closePath();g.fill()}
+g.save();g.shadowColor='rgba(30,18,8,.9)';g.shadowBlur=0;g.shadowOffsetX=0;g.shadowOffsetY=0;
 if(o.ty==='rock')rockD(sx,y,o.w,o.h);
 else if(o.ty==='wall'){for(let r=0;r<3;r++)for(let i=0;i<4-(r%2);i++){g.fillStyle=['#9a958c','#8a857c','#a8a39a'][(i+r)%3];g.beginPath();g.ellipse(sx-o.w/2+8+i*16+(r%2)*8,y-6-r*11,9,6,0,0,7);g.fill()}}
 else if(o.ty==='log'){g.fillStyle='#6b4424';g.beginPath();g.roundRect(sx-o.w/2,y-o.h,o.w,o.h,o.h/2);g.fill();g.fillStyle='#a8743a';g.beginPath();g.ellipse(sx+o.w/2-6,y-o.h/2,6,o.h/2,0,0,7);g.fill();g.strokeStyle='#8a5a2a';g.beginPath();g.arc(sx+o.w/2-6,y-o.h/2,3,0,7);g.stroke()}
-else if(o.ty==='water'){g.fillStyle='#4a8ab8';g.beginPath();g.ellipse(sx,y+2,o.w/2,8,0,0,7);g.fill();g.fillStyle='rgba(220,240,255,.7)';g.fillRect(sx-o.w/4+Math.sin(tm*3)*4,y,18,1.5);g.fillRect(sx+6-Math.sin(tm*3)*4,y+3,12,1.5)}
-else{g.fillStyle='#3f6a2a';g.beginPath();g.arc(sx-12,y-12,14,0,7);g.arc(sx+10,y-14,16,0,7);g.arc(sx,y-24,13,0,7);g.fill();g.fillStyle='#f2e3b0';for(let i=0;i<5;i++){g.beginPath();g.arc(sx-16+i*8,y-18-(i%2)*8,2,0,7);g.fill()}}}
+else if(o.ty==='water'){g.fillStyle='#6a5030';g.beginPath();g.ellipse(sx,y+2,o.w/2+5,11,0,0,7);g.fill();g.fillStyle='#3a6f98';g.beginPath();g.ellipse(sx,y+2,o.w/2,8,0,0,7);g.fill();g.strokeStyle='#4f7a2f';g.lineWidth=2;for(const jx of[-o.w/2-2,-o.w/2+6,o.w/2-4,o.w/2+3]){g.beginPath();g.moveTo(sx+jx,y+4);g.lineTo(sx+jx-2,y-14);g.stroke()}g.fillStyle='rgba(220,240,255,.7)';g.fillRect(sx-o.w/4+Math.sin(tm*3)*4,y,18,1.5);g.fillRect(sx+6-Math.sin(tm*3)*4,y+3,12,1.5)}
+else{g.fillStyle='#3f6a2a';g.beginPath();g.arc(sx-12,y-12,14,0,7);g.arc(sx+10,y-14,16,0,7);g.arc(sx,y-24,13,0,7);g.fill();g.fillStyle='#f2e3b0';for(let i=0;i<5;i++){g.beginPath();g.arc(sx-16+i*8,y-18-(i%2)*8,2,0,7);g.fill()}}g.restore()}
 // poussière, cheval et Mila
 g.fillStyle='rgba(190,170,120,.5)';for(const d of H.dust){g.beginPath();g.arc(d.x,d.y,3+d.t*10,0,7);g.globalAlpha=1-d.t/.8;g.fill()}g.globalAlpha=1;
-const ph=H.hy>0?1.2:tm*(H.spd/26);if(H.flash>0&&Math.floor(tm*20)%2)g.globalAlpha=.4;eqDraw(175,364-H.hy,1.55,ph,'#7a4220',1);g.globalAlpha=1;
+const ph=H.hy>0?1.2:tm*(H.spd/50);if(H.flash>0&&Math.floor(tm*20)%2)g.globalAlpha=.4;eqDraw(175,374-H.hy,1.55,ph,'#7a4220',1);g.globalAlpha=1;
 // jauge
 const pr=1-Math.min(1,H.D/100);g.fillStyle='rgba(0,0,0,.35)';rr(g,250,84,300,12,6);g.fill();g.fillStyle='#e0a54a';rr(g,250,84,300*pr,12,6);g.fill();g.fillStyle='#223';g.font='800 13px Arial';g.textAlign='left';g.fillText('Distance : '+Math.round(H.D*3)+' m',250,114);g.textAlign='right';g.fillText('Faux pas : '+H.hits+' / 5',550,114);
 if(H.t<3.5&&!H.res){g.fillStyle='rgba(20,16,12,.7)';rr(g,280,180,240,36,12);g.fill();g.fillStyle='#fff';g.font='800 16px Arial';g.textAlign='center';g.fillText('Touche pour sauter !',400,203)}});
@@ -5588,13 +5595,13 @@ if(T2>21.5){const dx=T2<25?Wd*.62:Wd*.55;npcFig(dx,gy,['#e8e8e4','#3a3a3a',0,'#2
 if(T2>18){const lx=T2<21?Wd*.3+(T2-18)/3*(Wd*.22):Wd*.52;npcFig(lx,gy,['#24407a','#1a2a4a',1,'#3a2a1a',0,0,1],0,tm)}});
 if(T2>16.5){const gx=Math.min(Wd*.12,-120+(T2-16.5)*200);gendCar(gx,gy+2,tm)}
 // Mila à cheval arrive, puis met pied à terre
-const ex=T2<12?-160+T2/12*(Wd*.42+160):Wd*.42;g.save();g.translate(ex,gy+2);eqDraw(0,0,1.6,T2<12?T2*12:Math.sin(T2)*.2,'#7a4220',T2<13);g.restore();if(T2>=13)grp(Wd*.46,gy,1.3,()=>{person(Wd*.46,gy,1,{f:1,a1:T2>14&&T2<17?2.4:.3})});
+const ex=T2<12?-160+T2/12*(Wd*.42+160):Wd*.42;g.save();g.translate(ex,gy+2);eqDraw(0,0,1.6,T2<12?T2*7:0,'#7a4220',T2<13,T2>=12);g.restore();if(T2>=13)grp(Wd*.46,gy,1.3,()=>{person(Wd*.46,gy,1,{f:1,a1:T2>14&&T2<17?2.4:.3})});
 // Andrea arrive à pied
 if(T2>33){const ax=Math.min(Wd*.36,-60+(T2-33)*120);grp(ax,gy,1.3,()=>{person(ax,gy-(ax<Wd*.36?Math.abs(Math.sin(T2*10))*2:0),0,{f:1,a1:T2>37?2.4:.2})})}}};
 CS.nox3={mus:'worry',L:()=>[[1.5,'n','La camionnette prend trop d’avance et disparaît derrière la crête, dans un nuage de poussière.'],[6,'m','Non… ils nous ont échappé.'],[9.5,'m','Mais j’ai eu le temps de relever leur plaque. Et le mouflon est libre.'],[14,'a','Le Cherokee repart : j’ai rebouché le radiateur avec ce que j’avais. Ça tiendra jusqu’au village.'],[19,'m','On donnera la plaque à Lucia. Ils ne se cacheront pas longtemps.']],end:23,
 onEnd:()=>{SV.noxL=level;saveTrip()},
 draw:(Wd,gy,T2,tm)=>{coscBG(Wd,gy,tm,0);g.fillStyle='#c8b58a';g.fillRect(0,gy-2,Wd,10);const vx=Wd*.75+T2*90;if(vx<Wd+200)noxVan(vx,gy+2,.9,tm,1,0);g.fillStyle='rgba(200,180,140,.4)';for(let i=0;i<6;i++){g.beginPath();g.arc(Math.min(Wd,vx)-80-i*30,gy-10-i*5,10+i*5,0,7);g.fill()}
-g.save();g.translate(Wd*.4,gy+2);eqDraw(0,0,1.7,Math.sin(T2)*.2,'#7a4220',1);g.restore();if(T2>12){const ax=Math.min(Wd*.28,-60+(T2-12)*120);grp(ax,gy,1.3,()=>{person(ax,gy,0,{f:1,a1:.3})})}}};
+g.save();g.translate(Wd*.4,gy+2);eqDraw(0,0,1.7,0,'#7a4220',1,1);g.restore();if(T2>12){const ax=Math.min(Wd*.28,-60+(T2-12)*120);grp(ax,gy,1.3,()=>{person(ax,gy,0,{f:1,a1:.3})})}}};
 try{Object.assign(ALBK,{cs_nox1:['🐴','Le Coscione','#9cbc6a','#7a4220'],cs_nox2:['🚜','Pris sur le fait','#9cbc6a','#2f7a2a']})}catch(e){}
 musScene=(function(o){return function(){try{if(cs&&cs.k==='nox1')return cs.t<14?'mystery':cs.t<31?'tense':'epic';if(MGX&&MGX.k==='horse')return 'epic';if(cs&&cs.k==='nox2')return cs.t<20?'epic':'win';if(cs&&cs.k==='nox3')return 'tense'}catch(e){}return o()}})(musScene);
 // --- déclenchement : un berger fait signe au bord de la route (chapitre de l'Ospedale, avant la forêt)
@@ -6073,6 +6080,6 @@ try{lampPts=(function(o){return function(a,b){const L=o(a,b);try{return L.filter
 brkS=(function(o){return function(){try{SV.brS=SV.brS||{};const v0=SV.brS[level];if(v0!==undefined&&v0>=0&&cvIn(v0,700)){delete SV.brS[level]}if(SV.brS[level]!==undefined)return SV.brS[level];if(!started||!c)return-1;let pick=-1;eachBridge0(MAP_L*.4,MAP_L*.88,s=>{if(pick<0&&s>c.x+800&&!cvIn(s,700))pick=s});SV.brS[level]=pick;return pick}catch(e){return o()}}})(brkS);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.58',GAME_DATE='23/10/2026 à 09h58';
+const GAME_VER='2.59',GAME_DATE='23/10/2026 à 10h18';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>

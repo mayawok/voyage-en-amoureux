@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.59** : poursuite à cheval — jambes deux fois moins rapides (`tm*(spd/50)`, galop des cinématiques `T2*7`) ; `eqDraw(...,st)` : 7e paramètre « debout » = pattes droites (plus de pattes arrière repliées à l'arrêt, utilisé dans `CS.nox1` avant le galop et `CS.nox2`). Piste de terre au premier plan où court le cheval, obstacles posés dessus (y 376) avec ombre et flèche rouge clignotante dès qu'ils entrent à l'écran ; la flaque d'obstacle est boueuse avec des joncs (différente des pozzines du décor).
 **2.58** : tableau de bord du bas descendu presque au bord de l'écran : `by` dans `sizeDash` n'ajoute plus toute la marge de sécurité iPhone (barre d'accueil, `UI.b` ≈ 21 px) ni la marge de 8 : seulement `min(UI.b×0,25 ; 5)` + 3×u. Les boutons au-dessus (phares, essuie-glaces, boost, J) suivent.
 **2.57** : la nuit, la bulle de dialogue pointait vers le bord de l'écran : `bubble` utilisait l'échelle sans le zoom de nuit (`NZ`) et la position du camping même quand on dort dans le Cherokee. Elle vise maintenant le Cherokee (`night.m.car`) ou le campement, avec l'échelle zoomée.
 **2.56** :
