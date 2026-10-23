@@ -6078,8 +6078,11 @@ parkedV=(function(o){return function(x0,x1){try{if(cvIn((x0+x1)/2,900))return}ca
 try{lampPts=(function(o){return function(a,b){const L=o(a,b);try{return L.filter(p=>!cvIn(p[0],150))}catch(e){return L}}})(lampPts)}catch(e){}
 
 brkS=(function(o){return function(){try{SV.brS=SV.brS||{};const v0=SV.brS[level];if(v0!==undefined&&v0>=0&&cvIn(v0,700)){delete SV.brS[level]}if(SV.brS[level]!==undefined)return SV.brS[level];if(!started||!c)return-1;let pick=-1;eachBridge0(MAP_L*.4,MAP_L*.88,s=>{if(pick<0&&s>c.x+800&&!cvIn(s,700))pick=s});SV.brS[level]=pick;return pick}catch(e){return o()}}})(brkS);
+// ===== 2.60 : le plateau du Coscione existe aussi au chapitre de l'Ospedale, autour de l'événement Noxacorp =====
+PLT=(function(o){return function(){if(o())return true;try{if(night||chIdx()!==8)return false;const f=chP();return f>=.12&&f<.46}catch(e){return false}}})(PLT);
+noxWorld=(function(o){return function(){try{if(chIdx()===8&&!PLT())return;if(chIdx()===8&&chP()<.2)return}catch(e){}return o()}})(noxWorld);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.59',GAME_DATE='23/10/2026 à 10h18';
+const GAME_VER='2.60',GAME_DATE='23/10/2026 à 10h22';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
