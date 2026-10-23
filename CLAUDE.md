@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.71** : la nuit (avant 7 h 30 et à partir de 20 h, `standClosed()`), Chez Marcel et les vendeurs corses sont fermés : rideau de fer avec pancarte « FERMÉ » (`shutter`), marchand absent, pas de bulle d'achat (`uiShops`), pas de salut du marchand ; Mila le dit une fois si on s'arrête devant (`stClSaid`).
 **2.70** : turbo plus doux : souffle filtré (bruit en passe-bande) + léger sifflement sinus passé en passe-bas, fréquence 420 + régime×0,42 Hz, volume qui monte avec le régime au-dessus de 1200 tr/min (au carré) et réduit sans accélérer ; environ 5 fois plus faible qu'avant (`window.__turbo`).
 **2.69** : prépa moteur à part : la bulle « Prépa moteur » n'apparaît que si le Cherokee est arrêté devant l'atelier (`c.x` entre `m.x+300` et `m.x+440`, dans `uiShops`), plus à la pompe. Mila le signale en passant à la station (`engSaid`). Aide mise à jour.
 **2.68** : plus de double affichage : quand l'objectif (`#obj`) annonce déjà la même chose que le panneau mission (`#mis`, ex. photo d'un animal), le panneau mission est masqué (classe `dup`, testée dans `objTick` surchargé).
