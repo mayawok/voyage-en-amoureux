@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.68** : plus de double affichage : quand l'objectif (`#obj`) annonce déjà la même chose que le panneau mission (`#mis`, ex. photo d'un animal), le panneau mission est masqué (classe `dup`, testée dans `objTick` surchargé).
 **2.67** : le tri des fioles fait partie du mail du labo : au premier résultat du chapitre, une carte « Mail du labo » (les fluides se sont mélangés pendant le transport) avec un bouton « Trier les fioles » (`cd.btn` : libellé personnalisé du bouton de carte, `openCard` surchargé) lance `tubeOpen` ; à la fin (réussi ou « Passer »), carte « Résultats du labo » avec l'analyse. Remplace l'ancien arrêt demandé par Mila (2.06). Les autres résultats arrivent comme avant.
 **2.66** : la nuit qui tangue (`rockOn`) : seule la caisse bouge, les roues restent posées au sol (compensation par `susS` dans la surcharge de `truck`, comme si les suspensions travaillaient).
 **2.65** : au chargement d'une partie, pendant l'écran titre « Voyage en amoureux » (`introT`), le Cherokee gardait la hauteur sauvegardée alors que la route avait changé (stations re-posées, ponts retirés en 2.62) : il flottait ou s'enfonçait. Maintenant `settleCar()` le repose sur la route à chaque image tant que l'écran titre est affiché et qu'il est à l'arrêt.
