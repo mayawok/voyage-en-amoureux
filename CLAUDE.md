@@ -25,7 +25,7 @@
 - Tests : Playwright headless (`NODE_PATH=/opt/npm-tools/node_modules`), avec `requestAnimationFrame` neutralisé et la boucle avancée à la main par `loop(t)`. L'écran d'intro dure environ 8 s réelles : attendre avant les captures.
 
 ## Reste à faire (demandes de l'utilisateur, par priorité)
-- Passer les chapitres au nouveau découpage, un par un (ajouter l'indice du chapitre dans `LAYON`, vérifier talus/gués/commerces/événements, captures) : fait pour le chapitre 1.
+(Rien en attente. À surveiller : retours de l'utilisateur sur le rythme des chapitres allongés, l'essence et la faim.)
 
 ## Règles permanentes de l'utilisateur
 - **Graphismes toujours élaborés**, y compris dans les cinématiques et les mini-jeux : décors en plusieurs plans (ciel en dégradé, nuages, reliefs, premier plan détaillé), personnages et véhicules soignés, effets (poussière, fumée, éclaboussures), rien de « placeholder ».
@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.46** : nouveau découpage activé pour les 10 chapitres (`LAYON` = 0 à 9). Le bac se place sur une portion goudronnée ou en terre, jamais sur la rocaille (`ferPick` surchargé, cache `ferG` vidé par `laySync`). Contrôle par chapitre (script de test : proportions des portions, talus seulement sur `k`, gués seulement sur `d`, position du bac, du port, de la grotte, des personnages, captures) : aucune erreur. Non testé : une vraie partie complète au volant (le pilote automatique ne sait pas treuiller).
 **2.45** : nouveau découpage des routes (demande de l'utilisateur : jeu trop dense), activé chapitre par chapitre via `LAYON` (Set des indices de chapitre) :
 - `MAP_L` est maintenant une variable : 88 000 (60 % plus long) pour les chapitres de `LAYON`, 55 000 sinon (`laySync()`, appelé depuis `Tr` quand `level` change ; vide les caches dépendant de la longueur). `LAYK()` = 1,6 : durée `lvlDur` et espacement des obstacles `ensureObs` multipliés. Sauvegarde en cours : position ×1,6 une seule fois (`SV.layV[lvl]=2`).
 - `LAY[ci]` = suite de portions `[fraction, type]` : `r` route goudronnée (plate, ligne blanche, stations/garages/magasins/hôtels poussés dedans), `d` chemin de terre (bosses qui s'enchaînent, ornières, gués, boue, côtes glissantes, Chez Marcel, vendeurs, fermes, campings), `k` piste rocailleuse (gros relief, talus à treuiller, cailloux, pas de petits ponts). `zt(x)`, `zw(x)` (poids lissés), `zStart`. Relief dans `Tr` remplacé quand le découpage est actif. Panneaux à chaque changement (`laySigns`), marquages (`layMarks`), remarque de Mila/Andrea au changement de portion.

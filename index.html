@@ -5842,10 +5842,10 @@ const LAY={
  7:[[0,'r'],[.15,'d'],[.4,'k'],[.55,'d'],[.8,'r']],
  8:[[0,'r'],[.08,'d'],[.25,'k'],[.45,'d'],[.6,'k'],[.8,'d'],[.93,'r']],
  9:[[0,'r'],[.15,'d'],[.35,'k'],[.45,'d'],[.65,'r'],[.8,'d'],[.92,'r']]};
-const LAYON=new Set([0]);// chapitres déjà passés au nouveau découpage
+const LAYON=new Set([0,1,2,3,4,5,6,7,8,9]);// chapitres déjà passés au nouveau découpage
 function layOn(){try{return LAYON.has(chIdx())}catch(e){return false}}
 function LAYK(){return layOn()?1.6:1}
-function laySync(){LAYlv=level;const on=layOn(),L=on?88000:55000;LAYcur=on?LAY[chIdx()]:null;if(L!==MAP_L){MAP_L=L;try{slipC={};deepC={}}catch(e){}for(const C of ['farmXc','portXc','jamXc','stfXc','plantXc'])try{const o2=window[C]||eval(C);for(const k in o2)delete o2[k]}catch(e){}try{npcLv=-1;spLv=-1}catch(e){}try{for(const k in hardOKc)delete hardOKc[k]}catch(e){}try{fordOKc={}}catch(e){}try{for(const k in tunOKc)delete tunOKc[k]}catch(e){}try{ztC={}}catch(e){}}}
+function laySync(){LAYlv=level;const on=layOn(),L=on?88000:55000;LAYcur=on?LAY[chIdx()]:null;if(L!==MAP_L){MAP_L=L;try{slipC={};deepC={}}catch(e){}for(const C of ['farmXc','portXc','jamXc','stfXc','plantXc'])try{const o2=window[C]||eval(C);for(const k in o2)delete o2[k]}catch(e){}try{npcLv=-1;spLv=-1}catch(e){}try{ferG={lv:-99,on:0}}catch(e){}try{for(const k in hardOKc)delete hardOKc[k]}catch(e){}try{fordOKc={}}catch(e){}try{for(const k in tunOKc)delete tunOKc[k]}catch(e){}try{ztC={}}catch(e){}}}
 var ztC={};
 function zt(x){if(!LAYcur)return 'd';const f=x/MAP_L;let t=LAYcur[0][1];for(const q of LAYcur){if(f>=q[0])t=q[1];else break}return t}
 function zw(x){if(!LAYcur)return null;const B=600;const k=Math.round(x/50);if(ztC[k])return ztC[k];const W2={r:0,d:0,k:0};for(const d of[-B,-B/2,0,B/2,B])W2[zt(x+d)]+=.2;if(Object.keys(ztC).length>6000)ztC={};ztC[k]=W2;return W2}
@@ -5899,12 +5899,13 @@ function calmOK(){return !layOn()||calmT>=40}
 for(const nm of ['trlWorld','tourWorld','coasWorld','cineWorld','plantWorld','pzWorld','paraWorld','funWorld','bdWorld','callWorld']){try{const o=window[nm];if(typeof o==='function')window[nm]=function(...a){if(!calmOK())return;return o.apply(this,a)}}catch(e){}}
 popOK=(function(o){return function(){return o()&&(calmOK()||(typeof popCD!=='undefined'&&popCD<-45))}})(popOK);
 // personnages facultatifs : environ deux sur trois par voyage, tirés au hasard
+ferPick=(function(o){return function(){const r=o();try{const ok2=(a,b)=>{for(let y=a;y<=b;y+=200)if(zt(y)==='k')return false;return true};if(r<0||!LAYcur||ok2(r-600,r+FER_D+2000))return r;let best=-1;for(let x=Math.round(MAP_L*.25/100)*100;x<MAP_L-FER_D-5200;x+=100){if(!ok2(x-700,x+FER_D+2100))continue;let ok=true;for(let xx=x-800;xx<=x+FER_D+2200;xx+=50)if(tunAt(xx)>=0){ok=false;break}if(ok&&(best<0||Math.abs(x-r)<Math.abs(best-r)))best=x}if(best>0)return best}catch(e){}return r}})(ferPick);
 LAYlv=-1;
 // voyage déjà commencé au chargement : on adapte la position à la nouvelle longueur
 try{if(SV.has){SV.layV=SV.layV||{};const ci=((SV.lvl||1)-1)%10;if(LAYON.has(ci)&&SV.layV[SV.lvl]!==2){SV.layV[SV.lvl]=2;if(SV.px!=null)SV.px=Math.round(SV.px*1.6);if(SV.resp!=null)SV.resp=Math.round(SV.resp*1.6);SV.cmp=null;laySync();try{_loadTrip0()}catch(e){}}else laySync();lvlDur*=LAYK()}}catch(e){}
 npcList=(function(o){let lv=-1,F=null;return function(){const L=o();if(!layOn())return L;if(lv===level&&F&&F.src===L)return F;lv=level;F=L.filter(n=>n.sto||hs(n.i*13+TS()*7+level)<.67);F.src=L;return F}})(npcList);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.45',GAME_DATE='23/10/2026 à 02h07';
+const GAME_VER='2.46',GAME_DATE='23/10/2026 à 02h16';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
