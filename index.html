@@ -6151,8 +6151,10 @@ musScene=(function(o){return function(){try{if(cs&&cs.k==='love')return 'love'}c
 // ===== 2.64 : lavage sous les rouleaux, plein à la pompe =====
 var washSaid={};
 mgTick=(function(o){return function(dt){o(dt);try{if(!started||night||cs||PLT())return;for(const m of stns){if(!m.wash||washSaid[level+':'+m.x])continue;if(c.x>m.x-700&&c.x<m.x-300&&v.x>0&&sayT<=0){washSaid[level+':'+m.x]=1;say('Un lavage ! Si tu veux laver le Cherokee, arrête-toi sous les rouleaux. Pour le plein, c’est à la pompe, juste après.',4.6,1)}}}catch(e){}}})(mgTick);
+// ===== 2.65 : au chargement, le Cherokee se repose sur la route (plus de voiture qui flotte ou s'enfonce pendant l'écran titre) =====
+mgTick=(function(o){return function(dt){o(dt);try{if(introT>0&&!night&&!cs&&Math.abs(v.x)<2&&Math.abs(v.y)<2){settleCar();cam.y+=(c.y-cam.y)*.2}}catch(e){}}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.64',GAME_DATE='23/10/2026 à 11h49';
+const GAME_VER='2.65',GAME_DATE='23/10/2026 à 12h08';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
