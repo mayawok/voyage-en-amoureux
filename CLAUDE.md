@@ -25,7 +25,7 @@
 - Tests : Playwright headless (`NODE_PATH=/opt/npm-tools/node_modules`), avec `requestAnimationFrame` neutralisé et la boucle avancée à la main par `loop(t)`. L'écran d'intro dure environ 8 s réelles : attendre avant les captures.
 
 ## Reste à faire (demandes de l'utilisateur, par priorité)
-(Rien en attente.)
+- Passer les chapitres au nouveau découpage, un par un (ajouter l'indice du chapitre dans `LAYON`, vérifier talus/gués/commerces/événements, captures) : fait pour le chapitre 1.
 
 ## Règles permanentes de l'utilisateur
 - **Graphismes toujours élaborés**, y compris dans les cinématiques et les mini-jeux : décors en plusieurs plans (ciel en dégradé, nuages, reliefs, premier plan détaillé), personnages et véhicules soignés, effets (poussière, fumée, éclaboussures), rien de « placeholder ».
@@ -36,6 +36,12 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.45** : nouveau découpage des routes (demande de l'utilisateur : jeu trop dense), activé chapitre par chapitre via `LAYON` (Set des indices de chapitre) :
+- `MAP_L` est maintenant une variable : 88 000 (60 % plus long) pour les chapitres de `LAYON`, 55 000 sinon (`laySync()`, appelé depuis `Tr` quand `level` change ; vide les caches dépendant de la longueur). `LAYK()` = 1,6 : durée `lvlDur` et espacement des obstacles `ensureObs` multipliés. Sauvegarde en cours : position ×1,6 une seule fois (`SV.layV[lvl]=2`).
+- `LAY[ci]` = suite de portions `[fraction, type]` : `r` route goudronnée (plate, ligne blanche, stations/garages/magasins/hôtels poussés dedans), `d` chemin de terre (bosses qui s'enchaînent, ornières, gués, boue, côtes glissantes, Chez Marcel, vendeurs, fermes, campings), `k` piste rocailleuse (gros relief, talus à treuiller, cailloux, pas de petits ponts). `zt(x)`, `zw(x)` (poids lissés), `zStart`. Relief dans `Tr` remplacé quand le découpage est actif. Panneaux à chaque changement (`laySigns`), marquages (`layMarks`), remarque de Mila/Andrea au changement de portion.
+- Temps de calme : `calmT` (secondes de route sans interruption) ; dans les chapitres de `LAYON`, les événements du monde (`trlWorld`, `tourWorld`, `coasWorld`, `cineWorld`, `plantWorld`, `pzWorld`, `paraWorld`, `funWorld`, `bdWorld`, `callWorld`) et les pop-ups (`popOK`) attendent 40 s de calme (`calmOK()`).
+- Personnages facultatifs (non `sto`) : environ 2 sur 3 gardés au hasard par voyage.
+- Le titre du bac n'est plus caché par l'objectif (`body.fvon`).
 **2.44** : décors élaborés pour deux mini-jeux — touristes (`tourBG` : ciel, soleil, nuages qui avancent, montagnes en deux plans, mer au loin dans les chapitres côtiers, maisons en pierre avec volets et fleurs, clocher avec cloche et horloge, place pavée en perspective, fontaine qui coule, terrasse de café avec parasols, oliviers, pigeons, pots de fleurs) et pont (`brBG` : montagnes, pins, falaises avec strates, cascade, rivière avec remous et rochers, herbe et fleurs, panneau de danger). Fonctions communes `bgSky`, `bgMount`, `bgPine`, `bgOlive`.
 **2.43** : 
 - Rien ne se superpose : `occAt(x,r,skip)` (ferme, magasins, stations, garages, camps, PNJ, puzzles, mission remorque, touristes, Noxacorp, pont cassé) ; la mission remorque, les touristes et Noxacorp attendent un endroit libre (le magasin agricole tombait sur la « Sauvegarde des oiseaux »).
