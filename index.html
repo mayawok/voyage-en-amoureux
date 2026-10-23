@@ -896,12 +896,12 @@ g.beginPath();g.moveTo(-24,-19);g.lineTo(-24,-29.5);g.lineTo(11,-30);g.lineTo(21
 g.fillStyle='rgba(255,255,255,.07)';g.beginPath();g.moveTo(-20,-19);g.lineTo(-12,-29.7);g.lineTo(-6,-29.8);g.lineTo(-14,-19);g.fill();
 g.fillStyle='#14181c';g.fillRect(-30,-30,6,12);
 const kind=(level-1)%2;
-if(!night&&!work&&!(kind===0&&((stalled&&pumpP>0)||(flatW>=0&&flatP>0)))){g.save();g.beginPath();g.rect(-25,-30,36,11);g.clip();head(kind,-6,-24,.95,1);g.restore();
-g.strokeStyle='#f1d3b8';g.lineWidth=3;g.lineCap='round';g.beginPath();g.moveTo(-14,-17);g.lineTo(3+Math.sin(tm*2),-17.5);g.stroke();g.lineCap='butt'}
-g.fillStyle='#14181c';g.fillRect(11.5,-30,2.4,12);
-g.strokeStyle=CCv.dd;g.lineWidth=1.1;g.beginPath();g.moveTo(-27,-19);g.lineTo(-27,3);g.moveTo(14,-19);g.lineTo(15,3);g.moveTo(-51,-18);g.lineTo(-51,3);g.stroke();
+if(!night&&!work&&!(kind===0&&((stalled&&pumpP>0)||(flatW>=0&&flatP>0)))){g.save();g.beginPath();g.rect(2.6,-30,19,11);g.clip();head(kind,7.5,-24,.95,1);g.restore();
+g.strokeStyle='#f1d3b8';g.lineWidth=3;g.lineCap='round';g.beginPath();g.moveTo(4,-17);g.lineTo(17+Math.sin(tm*2),-17.5);g.stroke();g.lineCap='butt'}
+g.fillStyle='#14181c';g.fillRect(-.6,-30.2,3,12.2);
+g.strokeStyle=CCv.dd;g.lineWidth=1.1;g.beginPath();g.moveTo(-27,-19);g.lineTo(-27,3);g.moveTo(1,-19);g.lineTo(1,3);g.moveTo(26,-17);g.lineTo(25,3);g.moveTo(-51,-18);g.lineTo(-51,3);g.stroke();
 g.fillStyle='#16130f';g.fillRect(-47,-36.5,61,2.2);g.fillRect(-42,-34.5,2.4,2.4);g.fillRect(8,-34.5,2.4,2.4);g.fillRect(-28,-39,2.6,2.6);g.fillRect(-9,-39,2.6,2.6);
-g.fillStyle='#16130f';g.fillRect(-36,-15.5,7,2);g.fillRect(2,-15.5,7,2);
+g.fillStyle='#16130f';g.fillRect(-11,-15.5,6,1.8);g.fillRect(16,-15.5,6,1.8);try{xjDetails(tm)}catch(e){}
 g.beginPath();g.moveTo(20,-24);g.lineTo(27,-24);g.lineTo(27,-17);g.lineTo(21,-17);g.closePath();g.fill();
 g.fillStyle=(SV.cus&&SV.cus.head==='jaune')?'#ffd65a':'#e6e2d0';g.fillRect(52,-14,6,5);g.strokeStyle='#222';g.lineWidth=1;g.strokeRect(52,-14,6,5);
 g.fillStyle='#ff9a2b';g.fillRect(53,-8,5,2.5);g.fillStyle='#13110e';g.fillRect(53,-5,5,6);g.fillStyle='#5c5c61';for(let q=0;q<3;q++)g.fillRect(53.6+q*1.5,-4.3,.7,4.6);
@@ -912,7 +912,7 @@ if(stalled||(night&&night.t<5&&night.rep===0)){g.fillStyle='#2a2623';g.beginPath
 if(stalled)for(let i=0;i<5;i++){const u=(tm*.8+i*.2)%1;g.fillStyle='rgba(255,255,255,'+.7*(1-u)+')';g.beginPath();g.arc(46+Math.sin(tm*3+i)*5,-16-u*34,4+u*6,0,7);g.fill()}
 for(let i=0;i<2;i++){const ax=WL[i][0],ay=WL[i][1]-8;g.save();g.beginPath();g.moveTo(-58,10);g.lineTo(-58,-18);g.lineTo(-54,-32);g.lineTo(17,-33);g.lineTo(31,-17);g.lineTo(56,-13);g.lineTo(58,-5);g.lineTo(58,10);g.closePath();g.clip();
 g.fillStyle='#120f0c';g.beginPath();g.arc(ax,ay,R+3.5,0,7);g.fill();g.strokeStyle='#241e1b';g.lineWidth=3;g.beginPath();g.arc(ax,ay,R+5.5,0,7);g.stroke();
-g.strokeStyle='rgba(255,255,255,.12)';g.lineWidth=1;g.beginPath();g.arc(ax,ay,R+7.5,Math.PI*1.1,Math.PI*1.9);g.stroke();g.restore()}
+g.strokeStyle='rgba(255,255,255,.12)';g.lineWidth=1;g.beginPath();g.arc(ax,ay,R+7.5,Math.PI*1.1,Math.PI*1.9);g.stroke();g.restore()}try{xjFlares()}catch(e){}
 // Le chien, langue au vent
 if(!dogGone()&&!(dogAnim&&dogAnim.t>.12&&dogAnim.t<DOGD-.12)&&!(night&&night.m&&night.m.car&&night.t>.6)){
 g.fillStyle='#8a5a2e';g.save();g.translate(-40,-27);g.rotate(.4+sp*.7+fl*.18);g.beginPath();g.ellipse(-1,5,3.2,6.5,0,0,7);g.fill();g.restore();
@@ -6284,8 +6284,32 @@ const r=o(k);try{if(k==='figatellu'||k==='lonzu'||k==='coppa'){setTimeout(()=>{t
 (function(){const st=document.createElement('style');st.textContent='#shop.stnc .card{padding-top:6px!important;padding-bottom:6px!important}#shop.stnc h1{font-size:clamp(16px,4.6vh,24px)!important;margin:0!important}#shop.stnc #purse{margin:0!important;font-size:clamp(12px,3.6vh,16px)!important}#shop.stnc #items{gap:3px 14px!important}#shop.stnc .it{padding:1px 4px!important;min-height:0!important}#shop.stnc .it .tx b{font-size:clamp(12px,3.8vh,16px)!important}#shop.stnc .it small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(10px,3vh,13px)!important}#shop.stnc .it .tx{min-width:0;overflow:hidden}#shop.stnc .it button{min-height:0!important;padding:4px 10px!important;font-size:clamp(12px,3.8vh,16px)!important}#shop.stnc .it .ic{font-size:clamp(14px,4.6vh,22px)!important}';document.head.appendChild(st)})();
 openStore=(function(o){return function(kind,m){const r=o(kind,m);try{gid('shop').classList.toggle('stnc',kind==='stn')}catch(e){}return r}})(openStore);
 stnList=(function(o){return function(){const L=o(),keep=new Set();try{if(mis&&mis.item)keep.add(mis.item[0]);if(SV.sabo&&SV.sabo.it)keep.add(SV.sabo.it[0])}catch(e){}const drop=new Set(['gonf','amor','cale','amp','fog','cafe']);return L.filter(q=>keep.has(q[0])||!drop.has(q[0]))}})(stnList);
+// ===== 2.79 : Cherokee XJ phase 2 Sport 5 portes plus réaliste =====
+// portes avant / arrière avec montant B, élargisseurs d'ailes carrés noirs, antenne, trappe à carburant, feux de position, monogrammes
+function xjDetails(tm){
+// vitre de porte arrière séparée de la custode par le montant C (déjà), montant B fin ; joints de vitres noirs
+g.strokeStyle='#121416';g.lineWidth=.9;g.beginPath();g.moveTo(-24,-19.2);g.lineTo(-24,-29.6);g.lineTo(11,-30.1);g.lineTo(21,-19.2);g.closePath();g.stroke();
+g.beginPath();g.moveTo(-51,-19.2);g.lineTo(-49,-29.2);g.lineTo(-30,-29.6);g.lineTo(-30,-19.2);g.closePath();g.stroke();
+// reflet sur la vitre avant
+g.fillStyle='rgba(255,255,255,.08)';g.beginPath();g.moveTo(12,-19.3);g.lineTo(16,-26);g.lineTo(18.5,-23);g.lineTo(15.5,-19.3);g.fill();
+// gouttière de toit
+g.strokeStyle='rgba(0,0,0,.28)';g.lineWidth=.6;g.beginPath();g.moveTo(-53.5,-31);g.lineTo(16.5,-32);g.stroke();
+// trappe à carburant (custode gauche)
+g.strokeStyle=CCv.dd;g.lineWidth=.6;g.beginPath();g.roundRect(-47.5,-14.5,5,4.6,1);g.stroke();
+// feu de position avant orange et arrière rouge sur les ailes
+g.fillStyle='#ff9a2b';g.fillRect(50.5,-11.6,3.2,1.8);g.fillStyle='#c8241c';g.fillRect(-56.6,-3.4,2.4,1.8);
+// antenne sur l'aile avant
+g.strokeStyle='#2a2a2a';g.lineWidth=.45;g.beginPath();g.moveTo(29.5,-15);g.lineTo(26.5+Math.sin(tm*3)*.4,-44);g.stroke();
+// monogrammes « Cherokee » (porte avant) et « SPORT » (custode)
+g.save();g.fillStyle='rgba(235,235,232,.9)';g.font='italic 700 3.2px Georgia,serif';g.textAlign='left';g.textBaseline='alphabetic';g.fillText('Cherokee',5,-4.2);g.font='800 2.6px Arial,sans-serif';g.fillText('SPORT',-49.5,-4.4);g.restore();
+// baguette de protection latérale noire sur les portes
+g.fillStyle='#1b1918';g.fillRect(-50,-9.2,73,1.6);g.fillStyle='rgba(255,255,255,.12)';g.fillRect(-50,-9.2,73,.4);g.fillStyle='#16130f'}
+function xjFlares(){for(let i=0;i<2;i++){const ax=WL[i][0],ay=WL[i][1]-8,r=R;const x0=ax-r-6.5,x1=ax+r+6.5,top=ay-r-5.2,sh=r*.62;
+g.fillStyle='#1d1a17';g.beginPath();g.moveTo(x0,10);g.lineTo(x0+1.2,top+sh*.55);g.lineTo(ax-sh,top);g.lineTo(ax+sh,top);g.lineTo(x1-1.2,top+sh*.55);g.lineTo(x1,10);g.lineTo(x1-3,10);g.lineTo(x1-4,top+sh*.6+1.6);g.lineTo(ax+sh-1.2,top+2.8);g.lineTo(ax-sh+1.2,top+2.8);g.lineTo(x0+4,top+sh*.6+1.6);g.lineTo(x0+3,10);g.closePath();g.fill();
+g.strokeStyle='rgba(255,255,255,.1)';g.lineWidth=.5;g.beginPath();g.moveTo(x0+1.2,top+sh*.55);g.lineTo(ax-sh,top);g.lineTo(ax+sh,top);g.lineTo(x1-1.2,top+sh*.55);g.stroke();
+g.fillStyle='rgba(0,0,0,.35)';for(let k=0;k<3;k++){g.beginPath();g.arc(ax-sh+3+k*(sh*2-6)/2,top+1.4,.35,0,7);g.fill()}}}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.78',GAME_DATE='23/10/2026 à 13h08';
+const GAME_VER='2.79',GAME_DATE='23/10/2026 à 13h11';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
