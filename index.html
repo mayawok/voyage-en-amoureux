@@ -1037,7 +1037,7 @@ g.beginPath();for(let x=s;x<=s+160;x+=10){x===s?g.moveTo(x,T(x)-14):g.lineTo(x,T
 
 function bubble(topY){if(sayT<=0||!sayM||sbCtx||banOn()||(night&&!night.m))return;
 const kd=sayWho,col=kd?'#7b3fa0':'#a8512a',nm=kd?'MILA':'ANDREA',ca=Math.cos(a),sa=Math.sin(a);
-const wx=c.x+(-6)*ca+24*sa,wy=c.y+(-6)*sa+(-24)*ca;let hx=scr.ox+wx*S,hy=scr.oy+wy*S-10;if(night){hx=scr.ox+(night.m.x+215)*S;hy=scr.oy+(night.m.y-85)*S}
+const wx=c.x+(-6)*ca+24*sa,wy=c.y+(-6)*sa+(-24)*ca;let hx=scr.ox+wx*S,hy=scr.oy+wy*S-10;if(night){const Sz=S*(1+1.35*(IZ||0)+.85*(NZ||0)),car=night.m.car,X=car?c.x+10:night.m.x+215,Y=car?c.y-42:night.m.y-85;hx=scr.ox+X*Sz;hy=scr.oy+Y*Sz}
 g.setTransform(DPR,0,0,DPR,0,0);g.font='600 17px "Avenir Next","Helvetica Neue",Arial,sans-serif';
 const mw=Math.min(W-36,310),words=sayM.split(' '),ln=[];let cur='';
 for(const wd of words){const t=cur?cur+' '+wd:wd;if(g.measureText(t).width>mw&&cur){ln.push(cur);cur=wd}else cur=t}ln.push(cur);
@@ -6073,6 +6073,6 @@ try{lampPts=(function(o){return function(a,b){const L=o(a,b);try{return L.filter
 brkS=(function(o){return function(){try{SV.brS=SV.brS||{};const v0=SV.brS[level];if(v0!==undefined&&v0>=0&&cvIn(v0,700)){delete SV.brS[level]}if(SV.brS[level]!==undefined)return SV.brS[level];if(!started||!c)return-1;let pick=-1;eachBridge0(MAP_L*.4,MAP_L*.88,s=>{if(pick<0&&s>c.x+800&&!cvIn(s,700))pick=s});SV.brS[level]=pick;return pick}catch(e){return o()}}})(brkS);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.56',GAME_DATE='23/10/2026 à 09h27';
+const GAME_VER='2.57',GAME_DATE='23/10/2026 à 09h45';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
