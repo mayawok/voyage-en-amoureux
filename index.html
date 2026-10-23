@@ -4596,7 +4596,7 @@ if(chIdx()===HEL_CH&&SV.helS===3&&!SV.jk.hel&&!talkQ.length&&sayT<=0){SV.jk.hel=
 if(SV.dogFoundL===level&&!SV.jk.ours&&!talkQ.length&&sayT<=0){SV.jk.ours=1;talkQ.push(['a','Un ours en Corse… La prochaine fois, ce sera un pingouin, et là je démissionne.'],['m','Un pingouin, je l’adopterais. Le chien serait ravi.']);return}
 if(jokeSad()||Math.hypot(v.x,v.y)<30)return;jokeT+=dt;const due=SV.jk.n?250:150;if(jokeT<due||talkQ.length||sayT>0||(typeof storyBusy==='function'&&storyBusy()))return;jokeT=0;SV.jk.n=(SV.jk.n||0)+1;
 let pool=null;const z=Z(c.x+60),ob=nextObs(500);
-if(z[3]==='mud'&&Math.random()<.6)pool=JOKE.mud;else if(rainNow&&rainNow()&&Math.random()<.5)pool=JOKE.rain;else if(ob&&ob.type==='sheep'&&Math.random()<.6)pool=JOKE.sheep;else if(hourNow()>=19&&Math.random()<.5)pool=JOKE.late;
+if(z[3]==='mud'&&Math.random()<.6)pool=JOKE.mud;else if(rainNow&&rainNow()&&Math.random()<.5)pool=JOKE.rain;else if(ob&&ob.type==='sheep'&&(!ob.hd||ob.hd==='mouton')&&Math.random()<.6)pool=JOKE.sheep;else if(hourNow()>=19&&Math.random()<.5)pool=JOKE.late;
 let L;if(pool){L=pool[Math.floor(Math.random()*pool.length)]}else{const r=SV.jk.n%3;if(r===1){const i=(SV.jk.par||0)%GAG.par.length;SV.jk.par=(SV.jk.par||0)+1;L=GAG.par[i]}else if(r===2){const i=(SV.jk.jal||0)%GAG.jal.length;SV.jk.jal=(SV.jk.jal||0)+1;L=GAG.jal[i]}else L=JOKE.any[Math.floor(Math.random()*JOKE.any.length)]}
 for(const l of L)talkQ.push(l)}catch(e){}}
 mgTick=(function(o){return function(dt){o(dt);jokeTick(dt)}})(mgTick);
@@ -6487,8 +6487,30 @@ step=(function(o){return function(dt){try{if(canSmash()&&started&&!crashed){for(
   SV.smashL=SV.smashL||{};if(!SV.smashL[level]&&sayT<=0){SV.smashL[level]=1;say(ob.type==='rock'?'Même pas besoin de la pelle : avec la rehausse et les 35 pouces, on passe à travers !':'Le tronc a cédé ! Les gros pneus, ça change tout.',3.6,0)}}}}}catch(e){}return o(dt)}})(step);
 mgTick=(function(o){return function(dt){o(dt);try{if(dt<=0)return;for(let i=smashP.length-1;i>=0;i--){const q=smashP[i];q.t+=dt;q.vy+=600*dt;q.x+=q.vx*dt;q.y+=q.vy*dt;q.rot+=q.vr*dt;const gy=T(q.x)-q.r*.5;if(q.y>gy){q.y=gy;q.vy*=-.3;q.vx*=.6;q.vr*=.5}if(q.t>3.2)smashP.splice(i,1)}if(smashP.length>120)smashP.splice(0,smashP.length-120)}catch(e){}}})(mgTick);
 drawObs=(function(o){return function(x0,x1){o(x0,x1);try{for(const q of smashP){g.save();g.globalAlpha=Math.min(1,(3.2-q.t)/.8);g.translate(q.x,q.y);g.rotate(q.rot);g.fillStyle=q.col;if(q.lg){g.fillRect(-q.r*1.6,-q.r*.5,q.r*3.2,q.r)}else{g.beginPath();g.moveTo(-q.r,q.r*.4);g.lineTo(-q.r*.4,-q.r*.8);g.lineTo(q.r*.7,-q.r*.6);g.lineTo(q.r,q.r*.5);g.closePath();g.fill()}g.restore()}g.globalAlpha=1}catch(e){}}})(drawObs);
+// ===== 2.84 : des troupeaux variés sur la route (vaches, chèvres, ânes, chevaux, sangliers, cerfs, mouflons, moutons) =====
+const HERD={vache:{n:3,s:.82,d:46},chevre:{n:5,s:.63,d:25},ane:{n:2,s:.71,d:40},cheval:{n:2,s:.76,d:52},sanglier:{n:1,s:.71,d:0,kids:3},cerf:{n:2,s:.74,d:48},mouflon:{n:4,s:.63,d:30}};
+const HERD_ORD=['vache','chevre','mouton','ane','sanglier','cheval','mouflon','cerf'];
+const HERD_MSG={vache:[['m','Des vaches au milieu de la route ! Un petit coup de klaxon.'],['a','Les vaches corses font la sieste sur le goudron… klaxonne doucement.']],
+ chevre:[['m','Des chèvres ! Elles ne vont pas bouger toutes seules, klaxonne.'],['a','Tout un troupeau de chèvres… elles nous regardent comme si on était chez elles.']],
+ ane:[['m','Deux ânes sur la piste ! Un coup de klaxon, gentiment.'],['a','Des ânes… les plus têtus de Corse. On klaxonne ?']],
+ cheval:[['m','Deux chevaux en liberté ! Klaxonne doucement, il ne faut pas les effrayer.'],['a','Regarde ces chevaux… magnifiques. Un petit coup de klaxon.']],
+ sanglier:[['m','Une laie et ses marcassins ! On reste dans la voiture et on klaxonne.'],['a','Des sangliers ! Pas question de descendre. Klaxon !']],
+ cerf:[['m','Un couple de cerfs sur la route ! Ralentis… un coup de klaxon.'],['a','Des cerfs de Corse ! Ils ont failli disparaître, on les laisse passer.']],
+ mouflon:[['m','Des mouflons ! C’est rare de les voir aussi bas. Klaxonne doucement.'],['a','Des mouflons sur la piste… ils sont chez eux, on klaxonne.']]};
+function herdOf(o){if(o.hd)return o.hd;const j=obs.indexOf(o);o.hd=HERD_ORD[((j<0?0:j)+level*3+(TS()||0))%HERD_ORD.length];return o.hd}
+sayK=(function(o){return function(k,d,arg){try{if(k==='ob_sheep'){const ob=nextObs(900);if(ob&&ob.type==='sheep'){const hd=herdOf(ob);if(hd!=='mouton'&&HERD_MSG[hd]){if(sayCool>0)return;const L=HERD_MSG[hd][Math.floor(Math.random()*HERD_MSG[hd].length)];say(L[1],d||3.8,L[0]==='m'?1:0);return}}}}catch(e){}return o(k,d,arg)}})(sayK);
+function herdDraw(o,tm){const hd=herdOf(o),H=HERD[hd];if(!H)return false;const sp=o.sh||[0,0,0,0,0,0];
+ const put=(i,id,sc,ox)=>{const run=o.run?o.t*(120+sp[i%6]*90):0,ax=o.x+14+ox+run,ay=T(ax),bn=o.run?Math.abs(Math.sin(o.t*11+i))*5:Math.max(0,Math.sin(tm*1.3+i*1.7))*.8,face=o.run||hs(o.x+i*3)>.35?1:-1,sl=Math.atan2(T(ax+20)-T(ax-20),40);
+  g.fillStyle='rgba(0,0,0,.18)';g.beginPath();g.ellipse(ax,ay-1,32*sc,4*sc,0,0,7);g.fill();
+  g.save();g.translate(ax,ay-2-bn);g.rotate(sl);g.scale(face*sc,sc);if(!o.run&&hd!=='sanglier'){g.rotate(Math.sin(tm*.7+i)*.015)}artA(g,id,o.run?tm*3+i:tm*.4+i);g.restore();
+  if(o.run&&Math.random()<.25)dustP.push({x:ax-10,y:ay-3,vx:-20-Math.random()*30,vy:-8-Math.random()*12,t:0,r:3+Math.random()*3})};
+ if(hd==='sanglier'){put(0,'sanglier',H.s,0);for(let i=0;i<H.kids;i++)put(i+1,'sanglier',.38,52+i*22)}
+ else for(let i=0;i<H.n;i++)put(i,hd,H.s*(.92+hs(o.x+i)*.16),i*H.d+(hs(o.x+i*7)-.5)*8);
+ return true}
+drawObs=(function(o){return function(x0,x1){const hid=[];for(const q of obs){if(q.type==='sheep'&&!q.done&&herdOf(q)!=='mouton'){q.done=1;hid.push(q)}}try{o(x0,x1)}finally{for(const q of hid)q.done=0}
+ try{const tm=performance.now()/1000;for(const q of hid){if(q.x>x1+300||q.x+700<x0)continue;herdDraw(q,tm)}}catch(e){}}})(drawObs);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.83',GAME_DATE='23/10/2026 à 15h04';
+const GAME_VER='2.84',GAME_DATE='23/10/2026 à 15h16';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
