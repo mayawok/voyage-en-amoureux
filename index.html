@@ -6276,12 +6276,16 @@ g.strokeStyle='#3e220e';g.lineWidth=.85;g.lineCap='round';g.beginPath();g.moveTo
 g.lineCap='butt';g.restore()};
 // ===== 2.76 : Andrea est végétarien ; sandwichs à la station-service =====
 try{MSG.chat.push('Moi, un bon brocciu et du pain, et je suis le plus heureux des végétariens !','§Végétarien en Corse… tu tiens bon, avec tous ces figatelli ?','Les châtaignes, le fromage, les canistrelli… La Corse, c’est le paradis des végétariens !')}catch(e){}
-try{ITD.sandwS='Un jambon-beurre pour Mila, un végétarien pour Andrea'}catch(e){}
+try{ITD.sandwS='Dont un végétarien pour Andrea'}catch(e){}
 stnList=(function(o){return function(){const L=o();const i=L.findIndex(q=>q[0]==='plein');L.splice(i+1,0,['sandwS','🥪','Sandwichs',2]);return L}})(stnList);
 applyItem=(function(o){return function(k){if(k==='sandwS'){SV.food=Math.min(1,(SV.food??1)+.45);note('🥪 Sandwichs : ça cale !');try{sayT=0;say(Math.random()<.5?'Et le mien est bien végétarien ? Parfait, merci !':'Tomate, mozzarella, roquette… Le sandwich végétarien de station n’est pas si mal !',3.4,0)}catch(e){}return}
 const r=o(k);try{if(k==='figatellu'||k==='lonzu'||k==='coppa'){setTimeout(()=>{try{sayT=0;say(['Bon appétit ! Moi, je reste au fromage et au pain.','Je te laisse la charcuterie, je me rattraperai sur le fiadone !','Ça sent bon, mais je reste végétarien. Profite !'][Math.floor(Math.random()*3)],3.4,0)}catch(e){}},600)}}catch(e){}return r}})(applyItem);
+// ===== 2.77 : boutique de la station plus courte (tout tient sur l'écran) =====
+(function(){const st=document.createElement('style');st.textContent='#shop.stnc .card{padding-top:6px!important;padding-bottom:6px!important}#shop.stnc h1{font-size:clamp(16px,4.6vh,24px)!important;margin:0!important}#shop.stnc #purse{margin:0!important;font-size:clamp(12px,3.6vh,16px)!important}#shop.stnc #items{gap:3px 14px!important}#shop.stnc .it{padding:1px 4px!important;min-height:0!important}#shop.stnc .it .tx b{font-size:clamp(12px,3.8vh,16px)!important}#shop.stnc .it small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(10px,3vh,13px)!important}#shop.stnc .it .tx{min-width:0;overflow:hidden}#shop.stnc .it button{min-height:0!important;padding:4px 10px!important;font-size:clamp(12px,3.8vh,16px)!important}#shop.stnc .it .ic{font-size:clamp(14px,4.6vh,22px)!important}';document.head.appendChild(st)})();
+openStore=(function(o){return function(kind,m){const r=o(kind,m);try{gid('shop').classList.toggle('stnc',kind==='stn')}catch(e){}return r}})(openStore);
+stnList=(function(o){return function(){const L=o(),keep=new Set();try{if(mis&&mis.item)keep.add(mis.item[0]);if(SV.sabo&&SV.sabo.it)keep.add(SV.sabo.it[0])}catch(e){}const drop=new Set(['gonf','amor','cale','amp','fog','matcha']);return L.filter(q=>keep.has(q[0])||!drop.has(q[0]))}})(stnList);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.76',GAME_DATE='23/10/2026 à 13h04';
+const GAME_VER='2.77',GAME_DATE='23/10/2026 à 13h06';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
