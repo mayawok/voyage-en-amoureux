@@ -1,4 +1,4 @@
-# Voyage en amoureux — notes pour Claude (version condensée, à jour en 2.89)
+# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.00)
 
 ## Le projet
 - Jeu 2D de franchissement en 4x4 (Jeep Cherokee XJ phase 2 Sport 5 portes) en Corse, en français, joué sur iPhone en mode paysage (raccourci écran d'accueil). Site : https://voyagedesamoureux.netlify.app/
@@ -21,8 +21,8 @@
 
 ## Technique
 - **Tout le jeu est dans `index.html`** (~1,3 Mo, canvas 2D + Web Audio synthétisé), plus `icon.png` et `sw.js` (hors connexion). Déploiement : push sur `main` → Netlify automatiquement. On pousse directement sur `main`, sans PR.
-- **Version** : `GAME_VER` (2.xx) et `GAME_DATE` (date et heure **réelle** de Paris : `TZ=Europe/Paris date '+%d/%m/%Y à %Hh%M'`) en fin de fichier. Incrémenter à chaque livraison et ajouter une ligne dans « Dernières versions » ci-dessous.
-- **Style du code** : ajouter un bloc `// ===== 2.xx : ... =====` juste avant `function nightRep(){` et surcharger par réaffectation (`f=(function(o){return function(){...o()...}})(f)`). Attention aux `const`/`let` en double (erreur « already declared ») : préfixer les nouveaux noms. `scenery` est déclarée deux fois (la seconde sert).
+- **Version** : `GAME_VER` (3.xx depuis la 3.00 ; avant 2.xx) et `GAME_DATE` (date et heure **réelle** de Paris : `TZ=Europe/Paris date '+%d/%m/%Y à %Hh%M'`) en fin de fichier. Incrémenter à chaque livraison et ajouter une ligne dans « Dernières versions » ci-dessous.
+- **Style du code** : ajouter un bloc `// ===== 2.xx : ... =====` juste avant `function nightRep(){` (`// ===== 3.xx : ... =====` désormais) et surcharger par réaffectation (`f=(function(o){return function(){...o()...}})(f)`). Attention aux `const`/`let` en double (erreur « already declared ») : préfixer les nouveaux noms. `scenery` est déclarée deux fois (la seconde sert).
 - **Tests** : dossier `outils-tests/` — `NODE_PATH=/opt/npm-tools/node_modules node outils-tests/h.js monscript.js` ; le script exporte `async (page,adv,shot)` ; `require('./lib.js').boot(p,adv,chapitre)` lance un chapitre ; `adv(s)` avance la boucle `loop(t)` (requestAnimationFrame neutralisé) ; voir `exemple_conduite.js`. Pour forcer une scène : `SV.stI=99` (pas d'arrêts de chapitre), `SV.brOK[level]=1` (pont), `SV.rhOK=level` (bouchon), `SV.frL=level` (bac passé), fermer `cardQ`/`hl`/`MGX`/`pz` à chaque image, téléporter `c.x` puis `settleCar()`. Les `setTimeout` ne tournent pas pendant `adv` (utiliser `p.waitForTimeout`).
 - **Fonctions utiles** : `say(texte,durée,qui)` (0 Andrea, 1 Mila) ; `talkQ.push(['m'|'a',texte])` (bulles enchaînées) ; `cardQ.push({t,L,cb})` (carte) ; `choice(...)` ; `openCine(k)` avec `CS[k]={L,end,draw(Wd,gy,T2,tm),onEnd}` ; `openHelp(k)`/`HELP` ; `pzOpen(...)` ; `mgxOpen(def)` (mini-jeux 800×450) ; `stopReq={x,cb}` (arrêt en douceur) ; `chIdx()` (0-9), `chP()` (0-1), `level`, `SV` (sauvegarde), `saveTrip()` ; `note(texte)` ; `T(x)` hauteur de route ; `Z(x)` zone `[adhérence,adhérence,nom,type]` ; `hourNow()`, `night`, `isDark()` ; `person(x,y,k,P)`, `head()`, `npcFig()`, `artA(ctx,espèce,t)` (animaux détaillés), `dogDraw`, `cherokeeSide` (cinématiques), `truck()` (Cherokee du jeu) ; `grp(cx,gy,sc,fn)`.
 - Carte : `MAP_L` = 88 000 par chapitre, découpage `LAY` en portions route `r` / terre `d` / rocaille `k` (`zt(x)`), événements du monde après 40 s de calme (`calmT`, `calmOK()`).
@@ -40,6 +40,7 @@
 - **Menu** : reprendre, son, volumes séparés (`#volp` : musique `busM`, moteur `busE`, effets/voix `busF`), plein écran, difficulté Facile/Normal/Difficile (`DIFF`), aide (`AIDE`, 5 onglets, à tenir à jour), sauvegarde de secours (`BAK`), nouveau voyage.
 
 ## Dernières versions
+- **3.00** : passage à la version 3 (même jeu que la 2.89, seul le numéro change).
 - **2.89** : bulle du lavage ; magasin Peinture Nostrale (carrosserie, jantes, livrées avec défis affichés) ; Corse 4x4 garde les jantes.
 - **2.88** : carte de la Corse avec itinéraires dans le carnet ; rien du village (ancien, linge…) dans la grotte.
 - **2.87** : livrées rares (50 ❤ ou défis).
