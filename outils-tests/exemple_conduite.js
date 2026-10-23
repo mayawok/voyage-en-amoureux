@@ -1,0 +1,8 @@
+const L=require('./lib.js');module.exports=async(p,adv,shot)=>{
+for(const ch of [1,4,7]){await L.boot(p,adv,ch);
+await p.evaluate(()=>{window.__ev=[];const os=snd;snd=function(k){if(!['blip','talk'].includes(k))window.__ev.push({k,x:Math.round(c.x),vx:Math.round(v.x)});return os.apply(this,arguments)};SV.stI=99;SV.brOK=SV.brOK||{};SV.brOK[level]=1;window.__rec=[];window.__sx=[];window.__T=window.__T||1e6});
+for(let i=0;i<1200;i++){await p.evaluate(()=>{for(let j=0;j<4;j++){cardQ.length=0;if(cardOpen)closeCard();if(MGX)try{mgxClose(1)}catch(e){};if(hl){hl=null;gid('hlv').style.display='none'}if(pz){pz=null;gid('pzv').style.display='none'}if(call)call=null;paused=false;stopReq=null;hev=null;mev=null;sev=null;SV.hpI=99;SV.mpD=1;SV.spD=1;SV.ppL=level;SV.trlL=level;SV.trlAsk=level;SV.tourL=level;SV.tour2L=level;SV.qzL=level;SV.rhOK=level;SV.callL=level;ign=1;st.hb=0;st.gas=1;st.brake=0;fuel=1;SV.food=1;for(const o of obs)o.done=1;if(crashed){crashed=false;reset(false)}if(winch)winch=null;if(work)work=null;if(boostT<=0)boostReadyAt=0,startBoost();
+const v0=v.x,s0=c.x-cam.x;window.__T+=16;loop(window.__T);const s1=c.x-cam.x;
+if(v0>200&&v.x<v0*.85)window.__rec.push({x:Math.round(c.x),v0:Math.round(v0),v1:Math.round(v.x),z:Z(c.x)[3],br:bridgeAt(c.x),dT:Math.round(T(c.x+60)-T(c.x+40))});
+if(s1-s0>6)window.__sx.push({x:Math.round(c.x),ds:+(s1-s0).toFixed(1),v:Math.round(v.x)});}})}
+console.log(ch,JSON.stringify(await p.evaluate(()=>({ev:window.__ev.slice(0,15),drop:window.__rec.slice(0,15),nd:window.__rec.length,sx:window.__sx.slice(0,10),nsx:window.__sx.length,end:Math.round(c.x),vmax:0}))))}}
