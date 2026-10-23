@@ -1403,7 +1403,7 @@ if(started&&!night&&!crashed&&!paused&&st.hb&&sp<25){
 const hrN=hourNow(),nightT=hrN>=19.5,cpN=camps.some(m=>c.x>m.a-60&&c.x<m.b+60);const tunN=nightT&&!ign&&!cpN&&noSleep();if(tunN&&window.__tunNo!==level+':'+Math.round(c.x/700)){window.__tunNo=level+':'+Math.round(c.x/700);try{if(tunAt(c.x)>=0||tunAt(c.x+260)>=0||tunAt(c.x-260)>=0)say('On ne va pas dormir dans un tunnel… Sortons d’abord, on s’arrêtera juste après.',3.6,1)}catch(e){}}if(nightT&&!ign&&!cpN&&!tunN){const vil=sceneAt(c.x)===1||sceneAt(c.x+200)===1||sceneAt(c.x-200)===1;cx={x:c.x,y:c.y-95,it:vil?[['sleep','🚙','Dans le Cherokee',0],['hotel','🏨','Hôtel du village',4]]:[['sleep','🚙','Dormir dans le Cherokee',0]],key:'sl'+(vil?1:0)}}else{
 const op=obsP.find(q=>c.x>q.x-170&&c.x<q.x+90&&obsUseful(q)),sm=op?null:shp.find(m=>c.x>m.x+10&&c.x<m.x+250);if(op)cx={x:op.x,y:op.y-70,it:[['obs','🔭','Observer',0]],key:'o'+op.x};else 
 if(sm)cx={x:sm.x+145,y:sm.y-96,it:sm.k==='food'?[['umenu','🛒','Entrer chez Utile',0]]:shopItems(sm),key:'s'+sm.x+(carry?'c':'')+(sm.extra?'e':'')};
-else{const m=PLT()?null:stns.find(q=>c.x>q.x+40&&c.x<q.x+240),mw=(PLT()||washT)?null:stns.find(q=>q.wash&&c.x>q.x-215&&c.x<q.x-105);
+else{const m=PLT()?null:stns.find(q=>c.x>q.x+40&&c.x<q.x+240),mw=null;
 const me2=PLT()?null:stns.find(q=>q.eng&&c.x>q.x+300&&c.x<q.x+440);
 if(mw)cx={x:mw.x-160,y:T(mw.x-160)-112,it:[['wash','🫧','Lavage',0]],key:'w'+mw.x};
 else if(me2)cx={x:me2.x+365,y:T(me2.x+365)-106,it:[['engmenu','🔧','Prépa moteur',0]],key:'e'+me2.x};
@@ -5977,7 +5977,7 @@ const AIDE=[
   ['🛒','Magasins et vendeurs','Arrête-toi devant et touche la bulle « Ouvrir ».'],
   ['🔧','L’atelier Corse 4x4','Dans les garages : couleur, jantes, pneus, phares, suspensions…'],
   ['🔩','Prépa moteur','Une station par chapitre a un atelier juste après les pompes : arrête-toi devant et touche « Prépa moteur ». Essence ou diesel, 4 ou 6 cylindres, turbo ou non. Plus de puissance = plus de consommation.'],
-  ['🫧','Lavage auto','Une autre station par chapitre a un portique juste avant les pompes : arrête-toi sous les rouleaux et touche « Lavage ». Pour le plein, avance jusqu’à la pompe.'],
+  ['🫧','Lavage auto','Une autre station par chapitre a un portique juste avant les pompes : une bulle « Lavage auto » flotte au-dessus. Arrête-toi sous les rouleaux et touche « Laver le Cherokee ». Pour le plein, avance jusqu’à la pompe.'],
   ['📷','Photos d’animaux','Arrête-toi aux points d’observation pour photographier les animaux de la mission.'],
   ['🐾','« Aider »','Quelqu’un ou un animal a besoin d’aide : arrête-toi et touche la bulle.'],
   ['🌙','La nuit','Dors au camping, à l’hôtel, ou dans le Cherokee avec la bulle « Dormir ici ».'],
@@ -5990,7 +5990,8 @@ const AIDE=[
   ['📷','Photos souvenirs','Aux panneaux PANORAMA, arrête-toi : un bouton « Photo souvenir » apparaît. Les photos se collent dans le carnet (onglet Souvenirs).'],
   ['🧺','Pique-nique','Aux aires de pique-nique, Mila propose de s’arrêter manger : la faim remonte.'],
   ['🔧','Pièces du garage','À l’atelier Corse 4x4 : blocage de différentiel (boue), pare-buffle (troncs), snorkel (gués), sabots (rocaille).'],
-  ['✨','Livrées rares','9 livrées à l’atelier (50 ❤) ou gratuites avec un défi : boue ×5, 6 photos, 10 troupeaux klaxonnés, 10 animaux aidés, 8 obstacles brisés, 15 surpuissances, 3 pique-niques, les 4 pièces du garage, 10 min de nuit.'],
+  ['🎨','Peinture Nostrale','Souvent à côté de Corse 4x4 : couleur de carrosserie, couleur des jantes et livrées rares (avec leur défi). Les jantes se peignent aussi chez Corse 4x4.'],
+  ['✨','Livrées rares','9 livrées au magasin Peinture Nostrale (50 ❤) ou gratuites avec un défi : boue ×5, 6 photos, 10 troupeaux klaxonnés, 10 animaux aidés, 8 obstacles brisés, 15 surpuissances, 3 pique-niques, les 4 pièces du garage, 10 min de nuit.'],
   ['💾','Sauvegarde','Dans le menu, « Sauvegarde de secours » garde ton voyage en lieu sûr.']]]];
 (function(){const st=document.createElement('style');st.textContent=`#aide{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(10,6,4,.72);padding:10px;box-sizing:border-box}
 #aide .aw{width:min(820px,96vw);max-height:calc(100vh - 20px);display:flex;flex-direction:column;background:#2b2018;color:#f6ead6;border-radius:18px;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 40px rgba(0,0,0,.5);box-sizing:border-box;overflow:hidden}
@@ -6890,8 +6891,61 @@ nbRender=(function(o){return function(){o();try{if(nbTab!=='jr')return;const C=g
  C.querySelectorAll('.cmb').forEach(b=>b.onclick=()=>{coSel=+b.dataset.i;C.querySelectorAll('.cmb').forEach(q=>q.classList.toggle('on',q===b));gid('coinfo').innerHTML=coInfo(coSel);gid('coinfo2').innerHTML=coInfo2(coSel);bind();try{snd('click')}catch(e){}coAnimate(cv,coSel)});
  setTimeout(()=>coAnimate(cv,coSel),30)}catch(e){}}})(nbRender);
 
+// ===== 2.89 : bulle du lavage ; magasin « Peinture Nostrale » à côté de Corse 4x4 (carrosserie, jantes, livrées) =====
+var cusMode='gar',paintSaid={};
+function paintX(m){if(m.pt!==undefined&&m.ptL===level)return m.pt;m.ptL=level;m.pt=-1;try{if(hs(m.x*.0137+level*1.7)>=.75)return -1;const free=x0=>{const cx=x0+110;if(gars.some(g2=>g2!==m&&Math.abs(g2.x+120-cx)<480)||gars.some(g2=>g2!==m&&g2.pt>0&&g2.ptL===level&&Math.abs(g2.pt-x0)<400))return false;if(stns.some(q=>Math.abs(q.x+110-cx)<340)||shp.some(q=>Math.abs(q.x+120-cx)<320)||camps.some(q=>Math.abs(q.x+150-cx)<320))return false;if(typeof pzL!=='undefined'&&pzL&&pzL.some(q=>Math.abs(q.x+60-cx)<300))return false;for(let d=-20;d<=240;d+=40){if(sceneAt(x0+d)||bridgeAt(x0+d)>=0||tunAt(x0+d)>=0||ferIn(x0+d)||cvIn(x0+d,100)||rockW(x0+d)>.02)return false}return Math.abs(T(x0+220)-T(x0))<30};
+ if(free(m.x+340))m.pt=m.x+340;else if(free(m.x-330))m.pt=m.x-330}catch(e){}return m.pt}
+function paintShops(){return PLT()?[]:gars.map(m=>paintX(m)).filter(x=>x>0)}
+function paintDraw(x,tm){const y=T(x+110);g.save();
+ g.fillStyle='rgba(0,0,0,.18)';g.fillRect(x-6,y-1,232,5);
+ // bâtiment
+ g.fillStyle='#efe6d2';g.fillRect(x,y-92,220,92);const SC=['#e8476a','#f2a33a','#f2d23a','#3aa86a','#3fa0d8','#8a5ad8'];for(let i=0;i<6;i++){g.fillStyle=SC[i];g.fillRect(x+i*220/6,y-92,220/6,6)}
+ g.fillStyle='#5a4a3a';g.beginPath();g.moveTo(x-8,y-92);g.lineTo(x+228,y-92);g.lineTo(x+220,y-100);g.lineTo(x,y-100);g.closePath();g.fill();
+ // enseigne
+ g.fillStyle='#2b1d0e';g.beginPath();g.roundRect(x+18,y-128,184,26,6);g.fill();g.fillStyle='#fff6e0';g.font='bold 12px Arial';g.textAlign='center';g.fillText('PEINTURE NOSTRALE',x+110,y-110);for(let i=0;i<6;i++){g.fillStyle=SC[i];g.beginPath();g.arc(x+28+i*4,y-124+(i%2)*2,2.4,0,7);g.fill()}
+ g.fillStyle='#5a4a3a';g.fillRect(x+40,y-102,3,6);g.fillRect(x+177,y-102,3,6);
+ // cabine de peinture ouverte, avec brouillard de couleur
+ g.fillStyle='#2a2d33';g.fillRect(x+92,y-76,92,76);g.fillStyle='#3a3e46';for(let i=0;i<5;i++)g.fillRect(x+92,y-76+i*6,92,2);const pc=SC[Math.floor(tm*.5)%6];g.globalAlpha=.28;g.fillStyle=pc;for(let i=0;i<7;i++){const u=(tm*.5+i/7)%1;g.beginPath();g.arc(x+110+i*10+Math.sin(tm+i)*4,y-30-u*30,6+u*10,0,7);g.fill()}g.globalAlpha=1;
+ g.strokeStyle='#8a8d92';g.lineWidth=2;g.strokeRect(x+92,y-76,92,76);
+ // vitrine avec nuancier
+ g.fillStyle='#bfe0f0';g.fillRect(x+12,y-74,66,40);g.strokeStyle='#5a4a3a';g.lineWidth=2;g.strokeRect(x+12,y-74,66,40);for(let r=0;r<3;r++)for(let k=0;k<6;k++){g.fillStyle=SC[(k+r*2)%6];g.globalAlpha=.55+r*.15;g.fillRect(x+16+k*10,y-70+r*12,8,9)}g.globalAlpha=1;
+ g.fillStyle='#8a5a34';g.fillRect(x+30,y-26,30,26);g.fillStyle='#c9a24a';g.beginPath();g.arc(x+55,y-13,1.6,0,7);g.fill();
+ // pots de peinture empilés et coulures
+ const cans=[[x+196,0,'#e8476a'],[x+208,0,'#3fa0d8'],[x+202,-11,'#f2d23a'],[x+190,0,'#3aa86a']];for(const [cx,dy,cl] of cans){g.fillStyle='#c8ccd2';g.fillRect(cx-5,y-11+dy,10,11);g.fillStyle=cl;g.fillRect(cx-5,y-8+dy,10,5);g.fillStyle='#8a8d92';g.fillRect(cx-5.5,y-12+dy,11,1.6)}
+ for(let i=0;i<7;i++){g.fillStyle=SC[i%6];g.globalAlpha=.75;g.beginPath();g.ellipse(x+70+hs(i+x)*140,y+1,3+hs(i*3+x)*5,1.2,0,0,7);g.fill()}g.globalAlpha=1;
+ // le peintre avec son pistolet
+ try{npcFig(x+86,y,['#f4f1ea','#6a6a70',1,'#5a3a20',0,0,0],0,tm)}catch(e){}g.fillStyle='#3a3d42';g.fillRect(x+92,y-30,8,3);if(Math.sin(tm*3)>0){g.fillStyle=pc;g.globalAlpha=.4;g.beginPath();g.moveTo(x+100,y-29);g.lineTo(x+116,y-36);g.lineTo(x+116,y-22);g.fill();g.globalAlpha=1}
+ g.restore()}
+scenery=(function(o){return function(x0,x1,front,tm){o(x0,x1,front,tm);if(front||night)return;try{const t2=tm||performance.now()/1000;for(const px of paintShops())if(px+240>x0&&px-20<x1)paintDraw(px,t2)}catch(e){}}})(scenery);
+// étiquettes cliquables (lavage, peinture), comme celle de la station
+(function(){const st=document.createElement('style');st.textContent=`#washb,#paintb{position:fixed;display:none;z-index:3;padding:8px 16px;font-size:19px;white-space:nowrap;transform:translate(-50%,-100%)}#washb.wait,#paintb.wait{background:var(--btn);color:var(--btn-t);opacity:.85}body.cine #washb,body.cine #paintb,body.intro #washb,body.intro #paintb{display:none!important}`;document.head.appendChild(st);
+ for(const id of['washb','paintb']){const b=document.createElement('button');b.id=id;b.className='b wait';document.body.appendChild(b)}
+ gid('washb').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();const b=gid('washb');if(b.dataset.r==='1'){startWash();b.style.display='none'}else if(sayT<=0)say('Arrête-toi sous les rouleaux, et on lance le lavage.',3,1)});
+ gid('paintb').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();const b=gid('paintb');if(b.dataset.r==='1')openPaint();else if(sayT<=0)say('Arrête-toi devant la cabine de peinture.',3,1)})})();
+function openPaint(){cusMode='paint';openShop();cusMode='paint';cusHdr();try{cusRender()}catch(e){}}
+function cusHdr(){try{const cl=gid('cus').querySelector('.cl');cl.querySelector('h2').textContent=cusMode==='paint'?'PEINTURE NOSTRALE':'CORSE 4x4';cl.querySelector('small').textContent=cusMode==='paint'?'Carrosserie · jantes · livrées rares':'Atelier de préparation · pont élévateur'}catch(e){}}
+openShop=(function(o){return function(){if(cusMode!=='paint')cusMode='gar';o.apply(this,arguments);cusHdr()}})(openShop);
+{const x0=gid('cusx');if(x0)x0.addEventListener('click',()=>{cusMode='gar'})}
+cusRows=(function(o){return function(){const r=o();try{const isB=q=>q[0].indexOf('Couleur de carrosserie')>=0,isR=q=>q[0].indexOf('Couleur des jantes')>=0,isS=q=>q[0].indexOf('Livrées rares')>=0;
+ if(cusMode==='paint')return r.filter(q=>isB(q)||isR(q));return r.filter(q=>!isB(q)&&!isS(q))}catch(e){return r}}})(cusRows);
+cusRender=(function(o){return function(){o();try{if(cusMode!=='paint')return;const C=SV.cus,A=achO(),box=gid('cusr');let h='<div class="row"><b>✨ Livrées rares<i>50 ❤ chacune, ou gratuite quand le défi est réussi</i></b><button class="ch'+(!C.skin?' on':'')+'" data-k="skin" data-v="">Aucune livrée</button></div>';
+ for(const s of SKINS){const ok=skinOK(s[0]),pr=Math.min(s[4],s[3](A)),on=C.skin===s[0];h+='<div class="row skr"><b>'+s[1]+(ok?' <span style="color:#7be0a0">✓</span>':'')+'<i>Défi : '+s[2]+' · '+pr+'/'+s[4]+'</i></b><div class="skp"><span style="width:'+Math.round(pr/s[4]*100)+'%"></span></div>'+(on?'<button class="ch on" data-k="skin" data-v="'+s[0]+'">Choisie ✓</button>':ok?'<button class="ch" data-k="skin" data-v="'+s[0]+'">Choisir</button>':'<button class="ch" data-k="skinbuy" data-v="'+s[0]+'">Acheter · 50 ❤</button>')+'</div>'}
+ box.insertAdjacentHTML('beforeend',h)}catch(e){}}})(cusRender);
+(function(){const st=document.createElement('style');st.textContent=`#cus .skr .skp{height:6px;border-radius:3px;background:rgba(255,255,255,.12);margin:4px 0 6px;overflow:hidden}#cus .skr .skp span{display:block;height:100%;background:linear-gradient(90deg,#f2a33a,#7be0a0)}`;document.head.appendChild(st)})();
+cusPick=(function(o){return function(k,v){if(k==='skinbuy'){const C=SV.cus;C.own=C.own||{};cusMsg='';if(!cusPay(50)){try{cusRender()}catch(e){}return}C.own['sk_'+v]=1;C.skin=v;try{cusRender()}catch(e){}saveTrip();return}return o(k,v)}})(cusPick);
+// mise à jour des étiquettes et de l'ancienne bulle de lavage
+mgTick=(function(o){return function(dt){o(dt);try{const wb=gid('washb'),pb=gid('paintb');const off=!started||night||crashed||PLT()||cs||paused;
+ // lavage
+ let m=null;if(!off&&!washT)m=stns.find(q=>q.wash&&q.x-160>cam.x-W*.35/S-100&&q.x-160<cam.x+W*.65/S+100);
+ if(m){const sp=Math.hypot(v.x,v.y),near=c.x>m.x-215&&c.x<m.x-105;let lb,rd=0;if(!near)lb='🫧 Lavage auto';else if(sp>=25)lb='🫧 Arrête-toi';else{lb='🫧 Laver le Cherokee';rd=1}if(wb.textContent!==lb)wb.textContent=lb;wb.className='b'+(rd?' rdy':' wait');wb.dataset.r=rd?'1':'0';wb.style.display='block';wb.style.left=Math.round(scr.ox+(m.x-160)*S)+'px';wb.style.top=Math.round(scr.oy+(T(m.x-160)-150)*S)+'px'}else wb.style.display='none';
+ // peinture
+ let px=null;if(!off)for(const q of paintShops()){if(q+110>cam.x-W*.35/S-100&&q+110<cam.x+W*.65/S+100){px=q;break}}
+ if(px!=null){const sp=Math.hypot(v.x,v.y),near=c.x>px+10&&c.x<px+210;let lb,rd=0;if(!near)lb='🎨 Peinture Nostrale';else if(sp>=25)lb='🎨 Arrête-toi';else{lb='🎨 Entrer';rd=1}if(pb.textContent!==lb)pb.textContent=lb;pb.className='b'+(rd?' rdy':' wait');pb.dataset.r=rd?'1':'0';pb.style.display='block';pb.style.left=Math.round(scr.ox+(px+110)*S)+'px';pb.style.top=Math.round(scr.oy+(T(px+110)-136)*S)+'px';
+  const k2=level+':'+px;if(!paintSaid[k2]&&c.x<px&&c.x>px-700&&sayT<=0){paintSaid[k2]=1;say('Un magasin de peinture à côté de Corse 4x4 ! On pourrait changer la couleur du Cherokee… ou lui mettre une livrée rare.',4.4,1)}}else pb.style.display='none';
+}catch(e){}}})(mgTick);
+
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.88',GAME_DATE='23/10/2026 à 16h21';
+const GAME_VER='2.89',GAME_DATE='23/10/2026 à 16h35';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
