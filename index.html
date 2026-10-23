@@ -5055,7 +5055,7 @@ g.fillStyle='#1f5a8a';g.font='800 12px Arial';g.textAlign='center';g.fillText(nm
 // rampe
 const rampOn=dep?T2<15.5:T2>8.5;if(rampOn&&sx<qx+20){g.fillStyle='#6a6f76';g.beginPath();g.moveTo(qx-36,gy);g.lineTo(sx+6,sy-34);g.lineTo(sx+30,sy-34);g.lineTo(qx-10,gy);g.fill()}
 // le Cherokee : il monte (départ) ou descend (arrivée)
-let cx,cy;const deck=sy-36;if(dep){const u=Math.min(1,Math.max(0,(T2-6)/7));cx=Wd*.1+(sx+L*.24-Wd*.1)*u;cy=cx<qx-30?gy:(cx<sx+30?gy+(deck-gy)*Math.min(1,(cx-(qx-30))/(sx+30-(qx-30))):deck);if(T2>17)cx+=sx-(qx+10)}
+let cx,cy;const deck=sy-36;if(dep){const s0=qx+10,u=Math.min(1,Math.max(0,(T2-6)/7));cx=Wd*.1+(s0+L*.24-Wd*.1)*u;cy=cx<qx-30?gy:(cx<s0+30?gy+(deck-gy)*Math.min(1,(cx-(qx-30))/(s0+30-(qx-30))):deck);cx+=sx-s0}
 else{const u=Math.min(1,Math.max(0,(T2-10)/7));const x0=sx+L*.24;cx=x0+(Wd*.12-x0)*u;cy=cx>sx+30?deck:(cx>qx-30?deck+(gy-deck)*Math.min(1,((sx+30)-cx)/((sx+30)-(qx-30))):gy)}
 grp(cx,cy,1,()=>{try{cherokeeSide(cx,cy)}catch(e){}});
 // mouettes
@@ -5975,6 +5975,6 @@ mb.addEventListener('click',e=>{e.stopPropagation();show(0);d.style.display='fle
 #menu .card #mver{margin-top:0!important}`;document.head.appendChild(st)})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.50',GAME_DATE='23/10/2026 à 08h08';
+const GAME_VER='2.51',GAME_DATE='23/10/2026 à 08h10';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
