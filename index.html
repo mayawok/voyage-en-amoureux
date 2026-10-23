@@ -5912,8 +5912,59 @@ stnList=(function(o){return function(){const L=o();try{if(mis&&mis.item&&mis.sho
 #items .it.hot::after{content:'POUR LA RÉPARATION';position:absolute;top:-12px;left:14px;background:#ffce4a;color:#3a2a10;font:900 10px Arial,sans-serif;letter-spacing:1px;padding:2px 8px;border-radius:8px}
 @keyframes hotP{0%,100%{box-shadow:0 0 0 rgba(255,206,74,0)}50%{box-shadow:0 0 18px rgba(255,206,74,.85)}}`;document.head.appendChild(st)})();
 storeRender=(function(o){return function(){o();try{const L=storeList();const its=gid('items').querySelectorAll('.it');let k=0;for(const el of its){const b=el.querySelector('button[data-q]');if(!b)continue;const q=L[+b.dataset.q];if(q&&(q[0]==='fixsab'||(mis&&mis.item&&q[0]===mis.item[0])))el.classList.add('hot')}}catch(e){}}})(storeRender);
+
+// ===== 2.48 : onglet « Aide » dans le menu =====
+try{Object.assign(EM2I,{'❓':'think','🚗':'car','🏕️':'tent','🏕':'tent','😴':'zz','🛣️':'map','🛣':'map'})}catch(e){}
+const AIDE=[
+ ['Conduire',[
+  ['➡️','Pédale de droite · accélérer','Reste appuyé pour avancer. Deux appuis rapides = <b>boost</b> (le petit éclair vert est allumé quand il est prêt).'],
+  ['<span style="display:inline-block;transform:scaleX(-1)">➡️</span>','Pédale de gauche · freiner','Appuie pour freiner. À l’arrêt, reste appuyé pour <b>reculer</b>.'],
+  ['🔑','La clé','Touche-la pour démarrer ou couper le moteur. Moteur coupé pour faire le plein.'],
+  ['🎚','Le levier 2H · 4H · N · 4L','<b>2H</b> sur le goudron, <b>4H</b> sur les chemins de terre, <b>4L</b> pour les côtes raides et la rocaille, <b>N</b> = point mort. Touche ou fais glisser.'],
+  ['🪝','Le treuil (bouton J)','Devant un talus trop raide (panneau « TREUIL »), arrête-toi au pied et touche le treuil : le Cherokee se hisse.'],
+  ['💡','Les phares','Allume-les la nuit, dans les tunnels et le brouillard.'],
+  ['🌧️','Les essuie-glaces','Sous la pluie, touche le bouton à côté des phares.'],
+  ['📯','Le klaxon','Apparaît quand des animaux bloquent la route.']]],
+ ['Le tableau de bord',[
+  ['🚗','Vitesse','En km/h, au milieu.'],
+  ['⛽','Essence','La jauge à côté du levier. Quand elle devient rouge, trouve une station.']]],
+ ['En haut de l’écran',[
+  ['⚙️','Le menu','Reprendre, son, plein écran, difficulté, sauvegarde de secours et cette aide.'],
+  ['📓','Le carnet de Mila','Animaux, preuves, lettres, souvenirs. Un point rouge = quelque chose de nouveau.'],
+  ['❤','Les cœurs','La monnaie du voyage : magasins, atelier, dépanneuse. On en gagne en aidant et en réussissant les missions.'],
+  ['🍞','La faim','La barre à côté des cœurs. Mange chez les commerçants avant qu’elle soit vide.'],
+  ['🗺️','La carte du chapitre','Le relief de la route, ta position (point orange) et la progression en dessous.'],
+  ['🎯','L’objectif','Touche-le pour voir le détail. En dessous s’affiche la mission en cours.']]],
+ ['Sur la route',[
+  ['🛣️','Trois types de route','<b>Goudron</b> : plat, stations et magasins. <b>Terre</b> : bosses, gués, boue, fermes et vendeurs. <b>Rocaille</b> : talus à treuiller, cailloux qui crèvent. Un panneau annonce chaque changement.'],
+  ['⛽','Station-service','Arrête-toi devant et coupe le moteur pour le plein. La bulle « Ouvrir » donne accès à la boutique auto.'],
+  ['🛒','Magasins et vendeurs','Arrête-toi devant et touche la bulle « Ouvrir ».'],
+  ['🔧','L’atelier Corse 4x4','Dans les garages : couleur, jantes, pneus, phares, suspensions…'],
+  ['📷','Photos d’animaux','Arrête-toi aux points d’observation pour photographier les animaux de la mission.'],
+  ['🐾','« Aider »','Quelqu’un ou un animal a besoin d’aide : arrête-toi et touche la bulle.'],
+  ['🌙','La nuit','Dors au camping, à l’hôtel, ou dans le Cherokee avec la bulle « Dormir ici ».'],
+  ['🛞','Crevaison','Arrête-toi : Andrea change la roue.'],
+  ['🚜','Bloqué ou retourné ?','Le bouton de la dépanneuse apparaît (15 ❤).']]],
+ ['Astuces',[
+  ['🌊','Gués et boue','Traverse les gués doucement. Dans la boue, passe en 4H ou 4L.'],
+  ['⛰️','Talus','En descente, freine. En montée raide, 4L ou treuil.'],
+  ['💾','Sauvegarde','Dans le menu, « Sauvegarde de secours » garde ton voyage en lieu sûr.']]]];
+(function(){const st=document.createElement('style');st.textContent=`#aide{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(10,6,4,.72);padding:10px;box-sizing:border-box}
+#aide .aw{width:min(820px,96vw);max-height:calc(100vh - 20px);display:flex;flex-direction:column;background:#2b2018;color:#f6ead6;border-radius:18px;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 40px rgba(0,0,0,.5);box-sizing:border-box;overflow:hidden}
+#aide .ah{display:flex;align-items:center;gap:10px;padding:12px 16px 8px}#aide .ah h2{margin:0;font-size:21px;flex:1}
+#aide .tabs{display:flex;gap:6px;padding:0 14px 8px;overflow-x:auto}#aide .tabs button{flex:0 0 auto;border:0;border-radius:12px;padding:8px 13px;font-family:inherit;font-size:13px;font-weight:800;line-height:1.25;background:rgba(255,255,255,.1);color:#f6ead6}#aide .tabs button.on{background:#ffce4a;color:#3a2a10}
+#aide .ab{overflow:auto;padding:4px 14px 14px;-webkit-overflow-scrolling:touch;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#aide .ci{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.07);border-radius:12px;padding:9px 11px}#aide .ci .i{font-size:24px;line-height:1;flex:0 0 30px;text-align:center}
+#aide .ci b.t{display:block;font-size:14.5px;margin-bottom:2px;color:#ffe0a0}#aide .ci span.d{font-size:13px;line-height:1.35;opacity:.92}
+@media (max-width:640px){#aide .ab{grid-template-columns:1fr}}`;document.head.appendChild(st);
+const d=document.createElement('div');d.id='aide';d.innerHTML='<div class="aw"><div class="ah"><h2>❓ Aide</h2><button class="b" id="aidex" style="margin:0;min-width:90px">Fermer</button></div><div class="tabs" id="aidet"></div><div class="ab" id="aideb"></div></div>';document.body.appendChild(d);
+const show=i=>{gid('aidet').querySelectorAll('button').forEach((b,k)=>b.classList.toggle('on',k===i));gid('aideb').innerHTML=AIDE[i][1].map(q=>'<div class="ci"><span class="i">'+q[0]+'</span><span><b class="t">'+q[1]+'</b><span class="d">'+q[2]+'</span></span></div>').join('');gid('aideb').scrollTop=0};
+gid('aidet').innerHTML=AIDE.map(q=>'<button>'+q[0]+'</button>').join('');gid('aidet').querySelectorAll('button').forEach((b,i)=>b.onclick=e=>{e.stopPropagation();show(i)});
+gid('aidex').onclick=e=>{e.stopPropagation();d.style.display='none'};
+const mb=document.createElement('button');mb.className='b';mb.id='maide';mb.textContent='❓ Aide';const ref=gid('mbak')||gid('mnew');ref.parentNode.insertBefore(mb,ref);
+mb.addEventListener('click',e=>{e.stopPropagation();show(0);d.style.display='flex'})})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.47',GAME_DATE='23/10/2026 à 08h02';
+const GAME_VER='2.48',GAME_DATE='23/10/2026 à 08h05';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
