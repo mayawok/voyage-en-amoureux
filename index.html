@@ -896,8 +896,9 @@ g.beginPath();g.moveTo(-24,-19);g.lineTo(-24,-29.5);g.lineTo(11,-30);g.lineTo(21
 g.fillStyle='rgba(255,255,255,.07)';g.beginPath();g.moveTo(-20,-19);g.lineTo(-12,-29.7);g.lineTo(-6,-29.8);g.lineTo(-14,-19);g.fill();
 g.fillStyle='#14181c';g.fillRect(-30,-30,6,12);
 const kind=(level-1)%2;
-if(!night&&!work&&!(kind===0&&((stalled&&pumpP>0)||(flatW>=0&&flatP>0)))){g.save();g.beginPath();g.rect(-4.4,-30,25,11);g.clip();head(kind,1.2,-24,.95,1);g.restore();
-g.strokeStyle='#f1d3b8';g.lineWidth=3;g.lineCap='round';g.beginPath();g.moveTo(-2,-17);g.lineTo(11+Math.sin(tm*2),-17.5);g.stroke();g.lineCap='butt'}
+if(!night&&!work&&!(kind===0&&((stalled&&pumpP>0)||(flatW>=0&&flatP>0)))){const rn6=window.__dogS==='rain';g.save();g.beginPath();g.rect(-4.4,-30,25,11);g.clip();head(kind,rn6?-1:1.2,rn6?-23.4:-24,.95,1);g.restore();
+if(!rn6){g.strokeStyle='#f1d3b8';g.lineWidth=3;g.lineCap='round';g.beginPath();g.moveTo(-2,-17);g.lineTo(11+Math.sin(tm*2),-17.5);g.stroke();g.lineCap='butt'}}
+if(window.__dogS==='rain'){try{va6Glass(tm)}catch(e){}}
 g.fillStyle='#14181c';g.fillRect(-7.6,-30.2,3,12.2);
 g.strokeStyle=CCv.dd;g.lineWidth=1.1;g.beginPath();g.moveTo(-27,-19);g.lineTo(-27,3);g.moveTo(-6,-19);g.lineTo(-6,3);g.moveTo(26,-17);g.lineTo(25,3);g.moveTo(-51,-18);g.lineTo(-51,3);g.stroke();
 g.fillStyle='#16130f';g.fillRect(-47,-36.5,61,2.2);g.fillRect(-42,-34.5,2.4,2.4);g.fillRect(8,-34.5,2.4,2.4);g.fillRect(-28,-39,2.6,2.6);g.fillRect(-9,-39,2.6,2.6);
@@ -6837,6 +6838,43 @@ const CO_R=[['Plage de Fautea','Village de Sari',['fautea','favone','solenz','sa
  ['Sardaigne','Lac de l’Ospedale',['sard','bonif','pv','osp']],
  ['Lac de l’Ospedale','Plage de Fautea',['osp','pv','pina','fautea']]];
 var coSel=null,coAnim=0,coTmr=0;
+// ===== 3.06 : carte de la Corse en teintes d'altitude (paliers nets, sans fondu) =====
+// Altitudes des sommets et des plaines d'après les cartes topographiques (Cinto 2706 m, Rotondo 2622 m, Paglia Orba 2525 m, d'Oro 2389 m, Renoso 2352 m, Incudine 2134 m, San Petrone 1767 m, Stello 1307 m, plaine orientale < 100 m)
+const CO_RIDGE=[ // la grande chaîne, du nord-ouest au sud-est : [lon, lat, altitude]
+ [8.70,42.43,1100],[8.80,42.43,1700],[8.885,42.40,2300],[8.945,42.38,2706],[9.00,42.33,2050],[8.885,42.345,2525],[8.95,42.30,1950],[9.05,42.22,2622],[9.11,42.14,2389],[9.15,42.06,2352],[9.12,41.98,1750],[9.17,41.92,1650],[9.21,41.85,2134],[9.24,41.80,1850],[9.22,41.72,1400],[9.20,41.65,1150],[9.12,41.56,1000],[9.08,41.50,700]];
+const CO_RIDGES2=[ // chaînons secondaires
+ [[8.83,42.53,1300],[8.88,42.52,1937],[8.98,42.47,2390],[9.02,42.40,2200]], // Balagne : Monte Grosso, Monte Padro
+ [[9.36,42.98,500],[9.41,42.86,1200],[9.41,42.79,1307],[9.40,42.72,900]], // Cap Corse : Monte Stello
+ [[9.10,42.64,700],[9.20,42.61,1535],[9.27,42.57,1100]], // Tenda
+ [[9.25,42.52,900],[9.30,42.39,1767],[9.32,42.30,1300],[9.30,42.20,1000]], // Castagniccia : San Petrone
+ [[8.80,42.18,1000],[8.92,42.15,1500],[9.05,42.12,1900]], // contreforts de Vico
+ [[8.85,41.98,900],[9.00,41.98,1500],[9.12,41.98,1900]], // vallée du Prunelli
+ [[8.90,41.80,800],[9.05,41.82,1400],[9.17,41.85,1800]], // Taravo
+ [[8.95,41.62,500],[9.05,41.60,900],[9.12,41.58,1000]]]; // Sartenais, Cagna
+function coSegD(px,py,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],L2=dx*dx+dy*dy;let u=L2?((px-a[0])*dx+(py-a[1])*dy)/L2:0;u=Math.max(0,Math.min(1,u));const qx=a[0]+dx*u,qy=a[1]+dy*u;return[Math.hypot(px-qx,py-qy),a[2]+(b[2]-a[2])*u]}
+function coLine(lo,la,L,sig){let best=0;const px=lo*.743,py=la;const LL=L.map(q=>[q[0]*.743,q[1],q[2]]);for(let i=1;i<LL.length;i++){const r=coSegD(px,py,LL[i-1],LL[i]);const h=r[1]*Math.exp(-(r[0]/sig)*(r[0]/sig));if(h>best)best=h}return best}
+function coCoast(lo,la){let d=9;const px=lo*.743;for(let i=0;i<CO_OUT.length;i++){const a=CO_OUT[i],b=CO_OUT[(i+1)%CO_OUT.length];const r=coSegD(px,la,[a[0]*.743,a[1],0],[b[0]*.743,b[1],0]);if(r[0]<d)d=r[0]}return d}
+function coElev(lo,la){const dc=coCoast(lo,la);
+ let e=coLine(lo,la,CO_RIDGE,.115);for(const R of CO_RIDGES2)e=Math.max(e,coLine(lo,la,R,.075));
+ // collines de fond, plus marquées à l'ouest qu'à l'est
+ const nz=Math.sin(lo*41+la*13)*.5+Math.sin(lo*17-la*29)*.35+Math.sin(lo*73+la*61)*.15;
+ let base=260+170*nz;e=Math.max(e,base);
+ // plaine orientale : une bande basse le long de la côte est, de Solenzara à Bastia
+ {let dE=9;const px=lo*.743;for(let i=8;i<15;i++){const A=CO_OUT[i],B=CO_OUT[i+1];const r=coSegD(px,la,[A[0]*.743,A[1],0],[B[0]*.743,B[1],0]);if(r[0]<dE)dE=r[0]}e=Math.min(e,25+(Math.exp(Math.max(0,dE-.065)*32)-1)*260)}
+ // près du rivage l'altitude retombe
+ const k=Math.min(1,dc/.045);e*=.2+.8*k;
+ return e}
+const CO_BANDS=[[0,'#7fae6b','0'],[150,'#a7c47c','150'],[400,'#d3cf8f','400'],[700,'#dcb878','700'],[1000,'#c99a62','1 000'],[1400,'#a97a52','1 400'],[1800,'#8c6a50','1 800'],[2200,'#9a948c','2 200'],[2500,'#f4f2ee','2 500 m']];
+function coBand(e){let c=CO_BANDS[0][1];for(const b of CO_BANDS)if(e>=b[0])c=b[1];return c}
+var coRel=null;
+function coRelief(W2,H2,dpr,ox,sc,L0,A1,kx){const key=[W2,H2,dpr].join('x');if(coRel&&coRel.key===key)return coRel.cv;
+ const cv=document.createElement('canvas');cv.width=Math.round(W2*dpr);cv.height=Math.round(H2*dpr);const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);
+ const st=1.5,nx=Math.ceil(W2/st),ny=Math.ceil(H2/st),G=new Float32Array(nx*ny);
+ for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){const lo=L0+((i+.5)*st-ox)/(kx*sc),la=A1-((j+.5)*st)/sc;G[j*nx+i]=(lo<8.5||lo>9.6||la<41.33||la>43.05)?0:coElev(lo,la)}
+ for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){x.fillStyle=coBand(G[j*nx+i]);x.fillRect(i*st,j*st,st+.6,st+.6)}
+ // fines courbes de niveau entre les paliers
+ x.fillStyle='rgba(60,40,20,.28)';for(let j=1;j<ny;j++)for(let i=1;i<nx;i++){const a=coBand(G[j*nx+i]);if(a!==coBand(G[j*nx+i-1])||a!==coBand(G[(j-1)*nx+i]))x.fillRect(i*st,j*st,.7,.7)}
+ coRel={key,cv};return cv}
 function coDraw(cv,sel,prog){const dpr=Math.min(2,devicePixelRatio||1),W2=cv.clientWidth,H2=cv.clientHeight;if(!W2||!H2)return;if(cv.width!==Math.round(W2*dpr)){cv.width=Math.round(W2*dpr);cv.height=Math.round(H2*dpr)}const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);
  const L0=8.46,L1=9.66,A0=41.12,A1=43.07,kx=.743,sc=Math.min(W2/((L1-L0)*kx),H2/(A1-A0)),ox=(W2-(L1-L0)*kx*sc)/2;const P=(lo,la)=>[ox+(lo-L0)*kx*sc,(A1-la)*sc];
  // mer
@@ -6844,21 +6882,14 @@ function coDraw(cv,sel,prog){const dpr=Math.min(2,devicePixelRatio||1),W2=cv.cli
  x.strokeStyle='rgba(255,255,255,.18)';x.lineWidth=1;for(let i=0;i<26;i++){const yy=hs(i*3.3)*H2,xx=hs(i*7.1)*W2;x.beginPath();x.moveTo(xx,yy);x.quadraticCurveTo(xx+5,yy-2,xx+10,yy);x.stroke()}
  const isl=()=>{x.beginPath();CO_OUT.forEach((p,i)=>{const q=P(p[0],p[1]);i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1])});x.closePath()};
  x.save();isl();x.strokeStyle='rgba(200,240,250,.55)';x.lineWidth=9;x.lineJoin='round';x.stroke();x.strokeStyle='rgba(230,250,255,.5)';x.lineWidth=4;x.stroke();x.restore();
- // île : maquis, plaines, forêts, montagnes, neige
- x.save();isl();x.fillStyle='#8fb85e';x.fill();x.clip();
- const blob=(lo,la,r,c0,c1,sy)=>{const q=P(lo,la),R=r*sc;const g2=x.createRadialGradient(q[0],q[1],0,q[0],q[1],R);g2.addColorStop(0,c0);g2.addColorStop(1,c1);x.fillStyle=g2;x.beginPath();x.ellipse(q[0],q[1],R,R*(sy||1),0,0,7);x.fill()};
- blob(9.50,42.20,.22,'rgba(214,214,140,.9)','rgba(214,214,140,0)',1.6);blob(9.15,42.68,.08,'rgba(205,190,130,.85)','rgba(205,190,130,0)');blob(8.95,41.50,.08,'rgba(196,186,120,.6)','rgba(196,186,120,0)');
- for(const f of CO_FOR){blob(f[0],f[1],f[2]*1.6,'rgba(46,100,46,.85)','rgba(46,100,46,0)');const q=P(f[0],f[1]);x.fillStyle='rgba(30,70,30,.7)';for(let i=0;i<10;i++){const a2=i*2.4,rr=f[2]*sc*(.2+.6*hs(i+f[0]*9));x.beginPath();x.arc(q[0]+Math.cos(a2)*rr,q[1]+Math.sin(a2)*rr,1.2,0,7);x.fill()}}
- for(const m of CO_MT){blob(m[0],m[1],.12*m[2]+.03,'rgba(140,112,76,'+(.55+.35*m[2])+')','rgba(140,112,76,0)')}
- for(const m of CO_MT){if(m[2]<.7)continue;blob(m[0],m[1],.06*m[2],'rgba(150,146,140,.9)','rgba(150,146,140,0)')}
- for(const m of CO_MT){if(!m[3])continue;blob(m[0],m[1],.032,'rgba(255,255,255,.95)','rgba(255,255,255,0)')}
- for(const m of CO_MT){const q=P(m[0]-.03,m[1]+.03);const g3=x.createRadialGradient(q[0],q[1],0,q[0],q[1],.08*sc*m[2]);g3.addColorStop(0,'rgba(255,255,240,.22)');g3.addColorStop(1,'rgba(255,255,240,0)');x.fillStyle=g3;x.beginPath();x.arc(q[0],q[1],.08*sc*m[2],0,7);x.fill()}
+ // île : teintes d'altitude par paliers (3.06)
+ x.save();isl();x.fillStyle='#7fae6b';x.fill();x.clip();try{x.drawImage(coRelief(W2,H2,dpr,ox,sc,L0,A1,kx),0,0,W2,H2)}catch(e){}
  // rivière du Golo
  x.strokeStyle='rgba(90,160,210,.8)';x.lineWidth=1.2;x.beginPath();[[9.02,42.37],[9.15,42.33],[9.22,42.45],[9.36,42.52],[9.53,42.56]].forEach((p,i)=>{const q=P(p[0],p[1]);i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1])});x.stroke();
  x.restore();
  isl();x.strokeStyle='#e9dcae';x.lineWidth=1.6;x.stroke();x.strokeStyle='rgba(60,80,40,.7)';x.lineWidth=.7;x.stroke();
- // villes
- x.font='600 8px "Avenir Next",Arial';for(const t of CO_TOWN){const q=P(t[1],t[2]);x.fillStyle='#3a3026';x.beginPath();x.arc(q[0],q[1],1.6,0,7);x.fill();x.fillStyle='rgba(40,30,20,.75)';x.textAlign=t[1]>9.2?'right':'left';x.fillText(t[0],q[0]+(t[1]>9.2?-4:4),q[1]+(t[0]==='Bastia'?-4:3))}
+ // légende des altitudes
+ {const n=CO_BANDS.length,bw=9,bh=Math.min(11,(H2-60)/n),lx=6,ly=H2-8-n*bh;x.font='600 7.5px "Avenir Next",Arial';x.textAlign='left';x.textBaseline='middle';x.fillStyle='rgba(20,40,60,.35)';x.fillRect(lx-3,ly-14,52,n*bh+18);x.fillStyle='#fff';x.fillText('Altitude',lx,ly-7);for(let i=0;i<n;i++){const b=CO_BANDS[n-1-i];x.fillStyle=b[1];x.fillRect(lx,ly+i*bh,bw,bh);x.fillStyle='#fff';x.fillText(b[2],lx+bw+3,ly+i*bh+bh-1)}x.strokeStyle='rgba(255,255,255,.6)';x.lineWidth=.6;x.strokeRect(lx,ly,bw,n*bh);x.textBaseline='alphabetic'}
  // nom et rose des vents
  x.save();x.fillStyle='rgba(255,255,255,.85)';x.font='italic 700 '+Math.round(13)+'px Georgia,serif';x.textAlign='left';x.fillText('Corse',8,18);x.restore();
  {const cx=W2-16,cy=20;x.fillStyle='rgba(255,255,255,.85)';x.beginPath();x.moveTo(cx,cy-11);x.lineTo(cx+3.5,cy);x.lineTo(cx,cy+11);x.lineTo(cx-3.5,cy);x.closePath();x.fill();x.fillStyle='#c8382c';x.beginPath();x.moveTo(cx,cy-11);x.lineTo(cx+3.5,cy);x.lineTo(cx-3.5,cy);x.fill();x.fillStyle='#fff';x.font='bold 8px Arial';x.textAlign='center';x.fillText('N',cx,cy-13)}
@@ -6953,12 +6984,16 @@ function va3DogRain(){const tm=performance.now()/1000;const win=()=>{g.beginPath
  g.fillStyle='#d9a560';g.beginPath();g.arc(0,-4,7.5,0,7);g.fill();g.beginPath();g.ellipse(7,-1.5,6,4.2,0,0,7);g.fill();
  g.fillStyle='#1d1914';g.beginPath();g.arc(11.6,-2.6,1.8,0,7);g.fill();g.strokeStyle='#1d1914';g.lineWidth=1;g.beginPath();g.moveTo(1,-6.5);g.lineTo(4.5,-6);g.stroke();
  g.restore();
- // vitre fermée, mouillée
- g.fillStyle='rgba(165,195,218,.42)';g.fillRect(-25,-31,19,13);
+ // vitre fermée, même teinte foncée que les autres
+ g.fillStyle='rgba(28,36,43,.62)';g.fillRect(-25,-31,19,13);
  g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=.6;for(let i=0;i<5;i++){const u=((tm*.35+i*.23)%1),xx=-22.5+i*3.3;g.beginPath();g.moveTo(xx,-29.5+u*9);g.lineTo(xx-.6,-27+u*9);g.stroke()}
  g.fillStyle='rgba(255,255,255,.6)';for(let i=0;i<6;i++){g.beginPath();g.arc(-22+((i*5.3)%15),-28+((i*3.7)%8),.45,0,7);g.fill()}
- g.fillStyle='rgba(255,255,255,.12)';g.beginPath();g.moveTo(-22,-19);g.lineTo(-16,-29.6);g.lineTo(-13,-29.6);g.lineTo(-19,-19);g.closePath();g.fill();
+ g.fillStyle='rgba(255,255,255,.07)';g.beginPath();g.moveTo(-22,-19);g.lineTo(-16,-29.6);g.lineTo(-13,-29.6);g.lineTo(-19,-19);g.closePath();g.fill();
  g.restore()}
+// 3.06 : sous la pluie, la vitre du conducteur est fermée (même teinte foncée), avec des gouttes sur toutes les vitres
+function va6Glass(tm){g.save();g.beginPath();g.moveTo(-4.4,-19);g.lineTo(-4.4,-29.9);g.lineTo(11,-30);g.lineTo(21,-19);g.closePath();g.clip();g.fillStyle='rgba(28,36,43,.62)';g.fillRect(-6,-31,28,13);g.fillStyle='rgba(255,255,255,.07)';g.beginPath();g.moveTo(2,-19);g.lineTo(8,-29.8);g.lineTo(11,-29.8);g.lineTo(5,-19);g.closePath();g.fill();g.restore();
+ const drops=(x0,x1)=>{g.strokeStyle='rgba(200,215,230,.4)';g.lineWidth=.55;for(let i=0;i<4;i++){const u=((tm*.35+i*.27+x0*.013)%1),xx=x0+1.5+i*(x1-x0-3)/3;g.beginPath();g.moveTo(xx,-29+u*8);g.lineTo(xx-.5,-26.8+u*8);g.stroke()}};
+ drops(-4,19);drops(-49.5,-31)}
 // --- 3.03 : retour de Sardaigne raccourci (plus de cinématique de départ, traversée et arrivée courtes)
 CS.sarA1.L=()=>[[1,'n','Bonifacio, perché sur sa falaise. Le bateau accoste et le Cherokee redescend sur le quai.'],[5.5,'a','La Corse… On est à la maison. Direction la forêt de l’Ospedale !']];CS.sarA1.end=10;
 sarCross=(function(o){return function(back){if(!back)return o(back);fadeTo(()=>{btAfter=()=>{blackNow();try{openCine('sarA1')}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},350)};openBoat(true);if(bt){bt.D=9;bt.L=[[.8,'m','Au revoir la Sardaigne… On a ce qu’il nous faut.'],[4,'a','Regarde, Bonifacio sur sa falaise. On rentre.'],[7,'m','Le chien a déjà reconnu l’odeur du maquis !']]}})}})(sarCross);
@@ -7194,6 +7229,6 @@ drawObs=(function(o){return function(x0,x1){o(x0,x1);try{va3TortDraw(performance
 
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.05',GAME_DATE='23/10/2026 à 21h26';
+const GAME_VER='3.06',GAME_DATE='24/10/2026 à 00h00';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
