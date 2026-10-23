@@ -2128,7 +2128,7 @@ ph:[{txt:'Prépare de l’eau sucrée',ic:'sugar',tg:[[-110,10]],n:2,r:44},{txt:
 fact:'Une abeille épuisée peut repartir avec une goutte d’eau sucrée. Jamais de miel : il peut transmettre des maladies aux ruches.'}};
 function helpTick(dt){try{pzWorld(dt)}catch(e){}try{storyChoicesTick(dt);bdWorld(dt);try{funWorld(dt)}catch(e){}cineWorld(dt);chxConseq(dt)}catch(e){}try{plantWorld(dt)}catch(e){}try{if(!hel){const b=gid('helx');if(b&&b.style.display!=='none')b.style.display='none'}if(!bur){const b=gid('burx');if(b&&b.style.display!=='none')b.style.display='none'}}catch(e){}try{const me=gid('mis'),te=gid('tut');if(te.style.display!=='none'){const r=me.style.display==='block'?me.getBoundingClientRect():null,tr=te.getBoundingClientRect();const top=(r&&tr.right>r.left-4)?Math.round(r.bottom+8):UI.t+72;if(te.style.top!==top+'px')te.style.top=top+'px'}}catch(e){}try{urgentShop()}catch(e){}try{paraWorld(dt)}catch(e){}try{helWorld(dt)}catch(e){}try{slipTick(dt);friendTick(dt)}catch(e){}try{parTick(dt)}catch(e){}try{callWorld(dt)}catch(e){}try{ferryWorld(dt)}catch(e){}try{burWorld(dt)}catch(e){}const run=started&&!night&&!crashed&&!paused&&introT<=0&&!cardOpen;if(SV.hpL!==level){SV.hpL=level;SV.hpI=0;hev=null}
 sampleTick(dt,run);const pe=helpPlan()[SV.hpI||0];if(!run||!pe)return;const k2=pe.k;
-if(!hev&&chP()>=pe.f&&!mev&&!inj&&!work&&sayT<=0){let x=c.x+1000,n=0;while((rockW(x)>0||wetRange(x-150,x+150)||bridgeAt(x)>=0||Z(x)[3]!=='dry'||sceneAt(x)||sceneAt(x+150)||nearC(x)||stns.some(q=>Math.abs(q.x+110-x)<500)||obs.some(o=>Math.abs(o.x-x)<250)||shp.some(q=>Math.abs(q.x+100-x)<400)||obsP.some(q=>Math.abs(q.x-x)<300)||occ(x))&&n++<60)x+=90;if(x>MAP_L-1600){SV.hpI=(SV.hpI||0)+1}else{hev={k:k2,x};say(HELP[k2].see,4,1)}}
+if(!hev&&chP()>=pe.f&&!mev&&!inj&&!work&&sayT<=0){let x=c.x+1000,n=0;while((rockW(x)>0||wetRange(x-150,x+150)||bridgeAt(x)>=0||Z(x)[3]!=='dry'||sceneAt(x)||sceneAt(x+150)||nearC(x)||stns.some(q=>Math.abs(q.x+110-x)<500)||obs.some(o=>Math.abs(o.x-x)<250)||shp.some(q=>Math.abs(q.x+100-x)<400)||obsP.some(q=>Math.abs(q.x-x)<300)||occ(x))&&n++<60)x+=90;if(x>MAP_L-1600){SV.hpI=(SV.hpI||0)+1}else{hev={k:k2,x}}}
 if(hev){const d=c.x-hev.x,dp=gid('dogp');if(Math.abs(d)<320&&!dogAnim){dp.textContent='💚 '+HELP[hev.k].t+' : arrête-toi (coupe le contact 🔑) pour aider';dp.style.display='block'}else if(!dogNeed&&!dogAnim&&!mev&&!sev&&dp.textContent.indexOf('💚')===0)dp.style.display='none';if(Math.abs(d)<280&&st.hb&&Math.hypot(v.x,v.y)<30&&!hl){dp.style.display='none';openHelp(hev.k)}else if(d>600){SV.hpI=(SV.hpI||0)+1;hev=null;const dp=gid('dogp');if(dp.textContent.indexOf('💚')===0)dp.style.display='none'}}}
 function helpDraw(tm){if(!hev)return;const H=HELP[hev.k],x=hev.x,y=T(x),pu=1+Math.sin(tm*4)*.08;
 const gl=g.createRadialGradient(x,y-30,4,x,y-30,80);gl.addColorStop(0,'rgba(120,255,160,.45)');gl.addColorStop(1,'rgba(120,255,160,0)');g.fillStyle=gl;g.beginPath();g.arc(x,y-30,80*pu,0,7);g.fill();
@@ -6004,10 +6004,11 @@ portScene=(function(o){return function(Wd,gy,T2,tm,dep,nm,col){if(!dep)return po
 // ===== 2.53 : biome neige au sol blanc =====
 try{BI[3].gr=hx('#dfe7ee');BI[3].near=hx('#e9eff4');BI[3].ln=hx('#f6f9fb')}catch(e){}
 
-// ===== 2.54 : aides aux animaux deux fois moins fréquentes et plus tardives =====
-helpPlan=(function(o){return function(){const i=chIdx();try{if(HPLAN[i])return[{f:.42,k:HPLAN[i]}].concat(hs(i*7+TS())<.5?[{f:.78,k:NEWH[(2*i+1+TS())%10]}]:[]);return[{f:hs(i*3+TS())<.5?.4:.7,k:NEWH[(2*i+TS())%10]}]}catch(e){return o()}}})(helpPlan);
+
+// ===== 2.54 : l'annonce d'un animal à aider arrive deux fois plus près (même fréquence d'aides) =====
+mgTick=(function(o){return function(dt){o(dt);try{if(hev&&!hev.said&&hev.x-c.x<=500){if(sayT<=0||hev.x-c.x<300){hev.said=1;sayT=0;say(HELP[hev.k].see,4,1)}}}catch(e){}}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.54',GAME_DATE='23/10/2026 à 08h50';
+const GAME_VER='2.55',GAME_DATE='23/10/2026 à 08h51';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
