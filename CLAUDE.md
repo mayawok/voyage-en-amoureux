@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.58** : tableau de bord du bas descendu presque au bord de l'écran : `by` dans `sizeDash` n'ajoute plus toute la marge de sécurité iPhone (barre d'accueil, `UI.b` ≈ 21 px) ni la marge de 8 : seulement `min(UI.b×0,25 ; 5)` + 3×u. Les boutons au-dessus (phares, essuie-glaces, boost, J) suivent.
 **2.57** : la nuit, la bulle de dialogue pointait vers le bord de l'écran : `bubble` utilisait l'échelle sans le zoom de nuit (`NZ`) et la position du camping même quand on dort dans le Cherokee. Elle vise maintenant le Cherokee (`night.m.car`) ou le campement, avec l'échelle zoomée.
 **2.56** :
 - Prépa moteur : la première station après 22 % de chaque chapitre a un atelier « PRÉPA MOTEUR » (`m.eng`, `engDraw`, bulle « Prépa moteur » → `openEng`, panneau `#engv`). `SV.eng={f:'e'|'d',c:4|6,t:0|1}` ; prix 10 ❤ carburant, 15 ❤ 6 cylindres, 12 ❤ turbo (revenir en arrière gratuit). Effets : `ENGP(low)` puissance (6 cyl ×1,18, turbo ×1,15/1,22, diesel ×1,15 en 4L et ×0,97 sinon), `ENGV()` vitesse max, `ENGC()` consommation (6 cyl ×1,25, turbo ×1,08, diesel ×0,75). Son : 6 cylindres = cadence ×1,5, diesel plus grave et rugueux, sifflement de turbo (`window.__turbo`).
