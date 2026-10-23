@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.54** : aides aux animaux sur la route (`helpPlan`) deux fois moins fréquentes et plus tardives : avant 2 à 3 par chapitre (à 20 %, 55 %, 76 %), maintenant 1 ou 2 (l'aide liée à l'histoire `HPLAN` à 42 %, plus une sur deux à 78 % ; sans `HPLAN`, une seule à 40 % ou 70 %). Plus jamais au début du chapitre.
 **2.53** :
 - Sols des biomes retrouvés : sur les chemins de terre, la piste garde la couleur du biome (sable de plage, prairie, désert, montagne, neige) ; la rocaille mélange la couleur du biome et du gris ; seul le goudron est gris (`laneCol` surchargé).
 - Biome neige au sol blanc (`BI[3]` : `gr`, `near`, `ln` presque blancs), visible au-dessus de ~600 m (Bavella).

@@ -6003,8 +6003,11 @@ portScene=(function(o){return function(Wd,gy,T2,tm,dep,nm,col){if(!dep)return po
 
 // ===== 2.53 : biome neige au sol blanc =====
 try{BI[3].gr=hx('#dfe7ee');BI[3].near=hx('#e9eff4');BI[3].ln=hx('#f6f9fb')}catch(e){}
+
+// ===== 2.54 : aides aux animaux deux fois moins fréquentes et plus tardives =====
+helpPlan=(function(o){return function(){const i=chIdx();try{if(HPLAN[i])return[{f:.42,k:HPLAN[i]}].concat(hs(i*7+TS())<.5?[{f:.78,k:NEWH[(2*i+1+TS())%10]}]:[]);return[{f:hs(i*3+TS())<.5?.4:.7,k:NEWH[(2*i+TS())%10]}]}catch(e){return o()}}})(helpPlan);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.53',GAME_DATE='23/10/2026 à 08h18';
+const GAME_VER='2.54',GAME_DATE='23/10/2026 à 08h50';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
