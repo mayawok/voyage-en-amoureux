@@ -37,6 +37,7 @@
 - **Andrea est végétarien** : jamais de viande ni de charcuterie pour lui dans les dialogues (Mila peut en manger).
 
 ## Déjà fait récemment
+**2.87** : livrées rares du Cherokee (`SKINS`, `skinDraw` appelé dans `truck` juste après la peinture, sous les vitres ; `SV.cus.skin`) : Rouillé façon Mad Max, Fleurs, Police, Ambulance vétérinaire, Armée camouflage, Rallye de Corse, Tête de Maure, Panneaux bois vintage, Nuit étoilée. À l'atelier (ligne « Livrées rares ») : 50 ❤ (`own['sk_'+k]`) ou gratuite quand le défi est réussi (`SV.cus.skU`, `achCheck`, compteurs `SV.ach` : boue au max ×5, 6 photos, 10 troupeaux klaxonnés, 10 animaux aidés `SV.help`, 8 obstacles brisés, 15 surpuissances, 3 pique-niques, 4 pièces du garage, 10 min de route de nuit). Toucher une livrée verrouillée affiche le défi et la progression, retoucher l'achète. Note + réplique d'Andrea au déblocage. Aide (Astuces) à jour.
 **2.86** : pique-nique — le Cherokee s'arrête maintenant à hauteur de la table (`stopReq.x = px+25` au lieu de `px-150`), Mila le propose plus tard (entre 620 et 200 avant), et la cinématique démarre 1,2 s après l'arrêt.
 **2.85** (grosse mise à jour demandée par l'utilisateur) :
 - Difficultés renommées Facile / Normal / Difficile.

@@ -888,7 +888,7 @@ g.fillStyle='#1d1914';g.fillRect(-56,6,112,7);
 g.fillStyle='#2a2623';g.fillRect(-60,0,5,12);g.fillRect(55,0,6,12);
 // Cherokee XJ Sport bordeaux, 5 portes
 const bg=g.createLinearGradient(0,-34,0,10);bg.addColorStop(0,CCv.l);bg.addColorStop(.4,CCv.m);bg.addColorStop(1,CCv.d);
-g.fillStyle=bg;g.beginPath();g.moveTo(-58,10);g.lineTo(-58,-18);g.lineTo(-54,-32);g.lineTo(17,-33);g.lineTo(31,-17);g.lineTo(56,-13);g.lineTo(58,-5);g.lineTo(58,10);g.closePath();g.fill();
+g.fillStyle=bg;g.beginPath();g.moveTo(-58,10);g.lineTo(-58,-18);g.lineTo(-54,-32);g.lineTo(17,-33);g.lineTo(31,-17);g.lineTo(56,-13);g.lineTo(58,-5);g.lineTo(58,10);g.closePath();g.fill();try{skinDraw(tm)}catch(e){}
 g.fillStyle='rgba(255,255,255,.14)';g.fillRect(-52,-16,100,1.4);
 g.fillStyle='#1b1918';g.fillRect(-40,3,80,6);g.fillRect(-33,-8,62,3.2);g.fillRect(-61,-1,5,12);g.fillRect(52,0,9,11);
 g.fillStyle='#1c242b';g.beginPath();g.moveTo(-51,-19);g.lineTo(-49,-29);g.lineTo(-30,-29.5);g.lineTo(-30,-19);g.fill();
@@ -5990,6 +5990,7 @@ const AIDE=[
   ['📷','Photos souvenirs','Aux panneaux PANORAMA, arrête-toi : un bouton « Photo souvenir » apparaît. Les photos se collent dans le carnet (onglet Souvenirs).'],
   ['🧺','Pique-nique','Aux aires de pique-nique, Mila propose de s’arrêter manger : la faim remonte.'],
   ['🔧','Pièces du garage','À l’atelier Corse 4x4 : blocage de différentiel (boue), pare-buffle (troncs), snorkel (gués), sabots (rocaille).'],
+  ['✨','Livrées rares','9 livrées à l’atelier (50 ❤) ou gratuites avec un défi : boue ×5, 6 photos, 10 troupeaux klaxonnés, 10 animaux aidés, 8 obstacles brisés, 15 surpuissances, 3 pique-niques, les 4 pièces du garage, 10 min de nuit.'],
   ['💾','Sauvegarde','Dans le menu, « Sauvegarde de secours » garde ton voyage en lieu sûr.']]]];
 (function(){const st=document.createElement('style');st.textContent=`#aide{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(10,6,4,.72);padding:10px;box-sizing:border-box}
 #aide .aw{width:min(820px,96vw);max-height:calc(100vh - 20px);display:flex;flex-direction:column;background:#2b2018;color:#f6ead6;border-radius:18px;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 40px rgba(0,0,0,.5);box-sizing:border-box;overflow:hidden}
@@ -6757,8 +6758,68 @@ mgTick=(function(o){return function(dt){o(dt);try{if(dt<=0||!started)return;cons
  gendT-=dt;if(dark&&gendT<=0&&Math.abs(v.x)>30&&!busyNow()){gendT=150+Math.random()*120;try{const x=c.x+(W*.7/S)+300;if(tunAt(x)<0&&!ferIn(x))traf.push({x,dir:-1,sp:110,col:0,k:1,said:0,gend:1})}catch(e){}}
 }catch(e){}}})(mgTick);
 
+// ===== 2.87 : livrées rares du Cherokee (50 ❤ à l'atelier ou gratuites en réussissant un défi) =====
+const SKINS=[
+ ['rust','Rouillé façon Mad Max','Cherokee couvert de boue 5 fois',a=>a.mud||0,5],
+ ['flow','Fleurs','Prendre 6 photos souvenirs',a=>a.ph||0,6],
+ ['pol','Police','10 troupeaux klaxonnés',a=>a.herd||0,10],
+ ['vet','Ambulance vétérinaire','Aider 10 animaux',a=>(SV.help||0),10],
+ ['camo','Armée camouflage','8 troncs ou éboulis brisés',a=>a.smash||0,8],
+ ['rally','Rallye de Corse','15 surpuissances',a=>a.boost||0,15],
+ ['maure','Tête de Maure','Faire 3 pique-niques',a=>a.pic||0,3],
+ ['wood','Panneaux bois vintage','les 4 pièces du garage',a=>['pdiff','pbull','psnk','pskid'].filter(k=>SV.cus&&SV.cus.own&&SV.cus.own[k]).length,4],
+ ['gal','Nuit étoilée','Rouler 10 minutes de nuit',a=>Math.floor((a.night||0)/60),10]];
+function achO(){SV.ach=SV.ach||{};return SV.ach}
+function skinOK(k){const C=SV.cus||{};return !!((C.own&&C.own['sk_'+k])||(C.skU&&C.skU[k]))}
+function achCheck(){try{const A=achO();SV.cus=SV.cus||{};const C=SV.cus;C.skU=C.skU||{};for(const s of SKINS){if(C.skU[s[0]])continue;if(s[3](A)>=s[4]){C.skU[s[0]]=1;try{note('✨ Livrée débloquée : '+s[1]+' (atelier Corse 4x4)',4.5)}catch(e){}try{snd('done')}catch(e){}talkQ.push(['a','On a gagné une nouvelle livrée pour le Cherokee : « '+s[1]+' » ! Direction l’atelier.']);saveTrip()}}}catch(e){}}
+// ---------- dessins des livrées (dans le repère du Cherokee, sous les vitres) ----------
+function bodyClip(){g.beginPath();g.moveTo(-58,10);g.lineTo(-58,-18);g.lineTo(-54,-32);g.lineTo(17,-33);g.lineTo(31,-17);g.lineTo(56,-13);g.lineTo(58,-5);g.lineTo(58,10);g.closePath()}
+function shade(){const sh=g.createLinearGradient(0,-34,0,10);sh.addColorStop(0,'rgba(255,255,255,.22)');sh.addColorStop(.45,'rgba(255,255,255,0)');sh.addColorStop(1,'rgba(0,0,0,.28)');g.fillStyle=sh;g.fillRect(-60,-36,120,48)}
+function skinDraw(tm){const k=SV.cus&&SV.cus.skin;if(!k||!skinOK(k))return;g.save();bodyClip();g.clip();
+ if(k==='rust'){g.fillStyle='#8a5a3a';g.fillRect(-60,-36,120,48);for(let i=0;i<26;i++){const x=-56+hs(i*3.1)*112,y=-30+hs(i*5.7)*38,r=2+hs(i*7.3)*7;g.fillStyle=['#a5552a','#6b3a1e','#c0763a','#4a2a14'][i%4];g.beginPath();g.ellipse(x,y,r*1.3,r*.8,hs(i)*3,0,7);g.fill()}
+  g.fillStyle='#7d7f80';g.fillRect(-27,-19,27,21);g.fillStyle='rgba(0,0,0,.18)';for(let i=0;i<5;i++)g.fillRect(-25+i*5,-17,1,17);
+  g.strokeStyle='rgba(240,220,190,.5)';g.lineWidth=.5;for(let i=0;i<8;i++){const x=-50+hs(i+40)*95,y=-25+hs(i+41)*28;g.beginPath();g.moveTo(x,y);g.lineTo(x+8+hs(i)*10,y+2-hs(i+3)*4);g.stroke()}
+  g.fillStyle='#3a3a3a';for(const [x,y] of[[-54,-14],[-54,4],[52,-8],[2,-15],[2,4],[-26,4]]){g.beginPath();g.arc(x,y,1,0,7);g.fill()}}
+ else if(k==='flow'){g.fillStyle='#f6e6c8';g.fillRect(-60,-36,120,48);const FC=['#e8476a','#f2a33a','#3fa0d8','#8a5ad8','#3aa86a','#f2d23a'];for(let i=0;i<22;i++){const x=-55+hs(i*2.3)*110,y=-30+hs(i*4.1)*38,r=2.2+hs(i*6.7)*2.6,cl=FC[i%6];g.fillStyle=cl;for(let p=0;p<5;p++){const an=p*1.2566+i;g.beginPath();g.ellipse(x+Math.cos(an)*r,y+Math.sin(an)*r,r*.75,r*.45,an,0,7);g.fill()}g.fillStyle='#fff3b0';g.beginPath();g.arc(x,y,r*.5,0,7);g.fill()}
+  g.strokeStyle='#3aa86a';g.lineWidth=1;g.beginPath();g.moveTo(-58,6);for(let x=-58;x<=58;x+=6)g.quadraticCurveTo(x+3,2,x+6,6);g.stroke()}
+ else if(k==='pol'){g.fillStyle='#f4f4f2';g.fillRect(-60,-36,120,48);g.fillStyle='#1f3b8a';g.fillRect(-60,-11,120,6);for(let i=0;i<24;i++){g.fillStyle=i%2?'#1f3b8a':'#f4f4f2';g.fillRect(-58+i*5,-5,5,2.5);g.fillStyle=i%2?'#f4f4f2':'#1f3b8a';g.fillRect(-58+i*5,-2.5,5,2.5)}
+  g.fillStyle='#1f3b8a';g.font='bold 6px Arial';g.textAlign='center';g.fillText('POLICE',13,-12.5);g.fillStyle='#c8382c';g.fillRect(-60,1,120,1.4)}
+ else if(k==='vet'){g.fillStyle='#f6f6f2';g.fillRect(-60,-36,120,48);g.fillStyle='#f28c28';g.fillRect(-60,-6,120,4);g.fillStyle='#2f9a5a';g.fillRect(-60,-2,120,2);
+  g.fillStyle='#2f9a5a';g.fillRect(-46,-15,4,10);g.fillRect(-49,-12,10,4);g.fillStyle='#2f9a5a';g.font='bold 4.6px Arial';g.textAlign='center';g.fillText('VÉTÉRINAIRE',13,-11);
+  g.fillStyle='#2f9a5a';g.beginPath();g.ellipse(-34,-9.5,2,2.4,0,0,7);g.fill();for(const [dx,dy] of[[-2.6,-3.6],[0,-4.6],[2.6,-3.6]]){g.beginPath();g.arc(-34+dx,-9.5+dy,1,0,7);g.fill()}}
+ else if(k==='camo'){g.fillStyle='#6b6f3a';g.fillRect(-60,-36,120,48);const CC=['#4a4e28','#8a8a52','#3a3020','#5a5a30'];for(let i=0;i<30;i++){const x=-58+hs(i*1.9)*116,y=-32+hs(i*3.7)*42;g.fillStyle=CC[i%4];g.beginPath();g.moveTo(x,y);for(let p=1;p<7;p++){const an=p/6*6.28,r=3+hs(i*7+p)*5;g.lineTo(x+Math.cos(an)*r*1.4,y+Math.sin(an)*r*.8)}g.closePath();g.fill()}
+  g.fillStyle='#e8e2c8';g.font='bold 4.6px Arial';g.textAlign='center';g.fillText('CORSE 4×4',13,-4);g.save();g.translate(-40,-10);g.fillStyle='#e8e2c8';g.beginPath();for(let p=0;p<10;p++){const an=-Math.PI/2+p*Math.PI/5,r=p%2?1.4:3.4;g.lineTo(Math.cos(an)*r,Math.sin(an)*r)}g.closePath();g.fill();g.restore()}
+ else if(k==='rally'){g.fillStyle='#f4f4f2';g.fillRect(-60,-36,120,48);g.fillStyle='#c8382c';g.beginPath();g.moveTo(-60,-6);g.lineTo(60,-12);g.lineTo(60,-6);g.lineTo(-60,0);g.fill();g.fillStyle='#1f5fa8';g.beginPath();g.moveTo(-60,0);g.lineTo(60,-6);g.lineTo(60,-2);g.lineTo(-60,4);g.fill();
+  g.fillStyle='#fff';g.beginPath();g.arc(13,-10,7,0,7);g.fill();g.strokeStyle='#1c1c1e';g.lineWidth=.8;g.stroke();g.fillStyle='#1c1c1e';g.font='bold 9px Arial';g.textAlign='center';g.textBaseline='middle';g.fillText('4',13,-9.5);g.textBaseline='alphabetic';g.fillStyle='#f2c230';g.fillRect(-52,-16,22,4);g.fillStyle='#1c1c1e';g.font='bold 3.4px Arial';g.fillText('TOUR DE CORSE',-41,-13)}
+ else if(k==='maure'){g.fillStyle='#f6f4ee';g.fillRect(-60,-36,120,48);g.save();g.translate(12,-9);g.scale(.85,.85);g.fillStyle='#1c1c1e';g.beginPath();g.ellipse(0,0,6.5,7.5,0,0,7);g.fill();g.beginPath();g.moveTo(5,-1);g.lineTo(9,0);g.lineTo(5,2);g.fill();g.fillStyle='#f6f4ee';g.fillRect(-7,-4,14,2.4);g.beginPath();g.moveTo(7,-4);g.lineTo(11,-6);g.lineTo(11,-1.6);g.lineTo(7,-1.6);g.fill();g.fillStyle='#1c1c1e';g.beginPath();g.ellipse(0,9,7,3,0,0,7);g.fill();g.restore();
+  g.strokeStyle='#1c1c1e';g.lineWidth=.9;g.beginPath();g.moveTo(-52,-4);g.lineTo(52,-8);g.stroke();g.fillStyle='#1c1c1e';g.font='italic bold 5px Georgia,serif';g.textAlign='center';g.fillText('Corsica',-40,-8)}
+ else if(k==='wood'){g.fillStyle=CCv.m;g.fillRect(-60,-36,120,48);const wg=g.createLinearGradient(0,-17,0,4);wg.addColorStop(0,'#a8763e');wg.addColorStop(1,'#7a4f26');g.fillStyle=wg;g.fillRect(-57,-17,112,20);g.strokeStyle='rgba(60,30,10,.45)';g.lineWidth=.5;for(let i=0;i<9;i++){g.beginPath();g.moveTo(-57,-15+i*2.2);for(let x=-57;x<=55;x+=8)g.quadraticCurveTo(x+4,-15+i*2.2+Math.sin(x*.3+i)*.7,x+8,-15+i*2.2);g.stroke()}
+  g.strokeStyle='#e8d8b0';g.lineWidth=1.4;g.strokeRect(-56,-16.5,110,19);for(const x of[-27,-6,26]){g.beginPath();g.moveTo(x,-16.5);g.lineTo(x,2.5);g.stroke()}}
+ else if(k==='gal'){const gg=g.createLinearGradient(-60,-34,60,10);gg.addColorStop(0,'#1a1440');gg.addColorStop(.5,'#3a1f6a');gg.addColorStop(1,'#0f2a5a');g.fillStyle=gg;g.fillRect(-60,-36,120,48);g.fillStyle='rgba(200,120,255,.25)';g.beginPath();g.ellipse(-10,-10,40,7,-.2,0,7);g.fill();for(let i=0;i<40;i++){const tw=.5+.5*Math.sin(tm*3+i*1.7);g.fillStyle='rgba(255,255,255,'+(.4+.6*tw)+')';const r=hs(i*2.9)<.15?1.1:.55;g.fillRect(-58+hs(i*1.3)*116,-32+hs(i*4.4)*40,r,r)}
+  g.fillStyle='#f6e8b0';g.beginPath();g.arc(40,-22,4,0,7);g.fill();g.fillStyle='#2a1f5a';g.beginPath();g.arc(41.6,-23,3.4,0,7);g.fill()}
+ shade();g.restore()}
+// ---------- atelier ----------
+cusRows=(function(o){return function(){const r=o();try{const C=SV.cus;C.own=C.own||{};r.push(['✨ Livrées rares','50 ❤ chacune, ou gratuite en réussissant son défi (touche une livrée verrouillée pour voir le défi)',[['','Aucune',0]].concat(SKINS.map(s=>[s[0],s[1],skinOK(s[0])?0:50])).map(q=>['skin',q[0],q[1],q[2],(C.skin||'')===q[0]])])}catch(e){}return r}})(cusRows);
+var skArm='';
+cusPick=(function(o){return function(k,v){if(k!=='skin')return o(k,v);const C=SV.cus;C.own=C.own||{};cusMsg='';
+ if(v&&!skinOK(v)){const s=SKINS.find(q=>q[0]===v);const pr=Math.min(s[4],s[3](achO()));if(skArm!==v){skArm=v;cusMsg='Défi : '+s[2]+' ('+pr+'/'+s[4]+') · retouche = achat';snd('click');try{cusRender()}catch(e){}return}if(!cusPay(50)){try{cusRender()}catch(e){}return}C.own['sk_'+v]=1}
+ skArm='';C.skin=v;snd('click');try{cusRender()}catch(e){}saveTrip()}})(cusPick);
+// ---------- dessin sur le Cherokee (juste après la peinture, avant vitres et détails) ----------
+// (appelé depuis truck() : voir l'insertion « skinDraw »)
+// ---------- compteurs des défis ----------
+actPress=(function(o){return function(){const ob=nextObs(450),was=ob&&ob.type==='sheep'&&!ob.run;o.apply(this,arguments);try{if(was&&ob.run){achO().herd=(achO().herd||0)+1;achCheck()}}catch(e){}}})(actPress);
+startBoost=(function(o){return function(){const b0=boostT;o.apply(this,arguments);try{if(b0<=0&&boostT>0){achO().boost=(achO().boost||0)+1;achCheck()}}catch(e){}}})(startBoost);
+takePhoto=(function(o){return function(px){const b=phBusy;o(px);try{if(!b){achO().ph=(achO().ph||0)+1;setTimeout(achCheck,3500)}}catch(e){}}})(takePhoto);
+{const oe=CS.picnic.onEnd;CS.picnic.onEnd=()=>{try{oe()}catch(e){}achO().pic=(achO().pic||0)+1;achCheck()}}
+var mudHi=0,achT=0;
+mgTick=(function(o){return function(dt){o(dt);try{if(dt<=0||!started)return;const A=achO();
+ if(mudL>.95&&!mudHi){mudHi=1;A.mud=(A.mud||0)+1;achCheck()}else if(mudL<.5)mudHi=0;
+ if(typeof isDark==='function'&&isDark()&&Math.abs(v.x)>30)A.night=(A.night||0)+dt;
+ for(const ob of obs){if(ob.smashed&&!ob.smC){ob.smC=1;A.smash=(A.smash||0)+1}}
+ achT-=dt;if(achT<=0){achT=3;achCheck()}}catch(e){}}})(mgTick);
+
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.86',GAME_DATE='23/10/2026 à 16h04';
+const GAME_VER='2.87',GAME_DATE='23/10/2026 à 16h10';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
