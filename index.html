@@ -331,7 +331,7 @@ const bname=alt=>alt<80?'Plage':BI[bi(alt+110)].n;
 function Z(x){
 if(bridgeAt(x)>=0)return[1,1,'Pont','bridge'];if(fordAt(x))return[.8,.8,'Gué','ford'];if(slipAt(x)){let gp=(st.gear===1||st.gear===3)?(st.gear===3?.3:.27):.14;if(boostT>0)gp+=.14;return[gp,gp,'Côte glissante','slip']}if(deepAt(x))return[.3,.3,'Boue profonde','mud'];
 {const sm=PLT()?null:stns.find(m=>x>m.a&&x<m.b);if(sm)return[1,1,'Station '+stnName(sm.x),'dry']}
-if(gars.some(m=>x>m.a&&x<m.b))return[1,1,'Corse 4x4','dry'];
+if(!PLT()&&gars.some(m=>x>m.a&&x<m.b))return[1,1,'Corse 4x4','dry'];
 if(tunAt(x)>=0)return[1,1,'Tunnel','dry'];
 if(nearC(x))return[1,1,'Camp','dry'];
 if(rockW(x)>.02)return[.9,.9,'Cailloux','rock'];
@@ -1164,7 +1164,7 @@ if(o.p>0&&!o.done){g.fillStyle='rgba(0,0,0,.4)';g.fillRect(o.x,y-h-24,60,7);g.fi
 function workers(){if(!work)return;const y=T(work.x),q=Math.sin(performance.now()/200)*.15;person(work.x-18,y,1,{a1:1.4+q,a2:1.3});person(work.x-44,y,0,{a1:1.4-q,a2:1.3})}
 function horn(){if(hornT<=0)return;g.strokeStyle='rgba(255,255,255,'+hornT+')';g.lineWidth=3;for(let i=0;i<3;i++){g.beginPath();g.arc(c.x+60,c.y-10,Math.max(1,(.9-hornT)*170-i*22),-.7,.7);g.stroke()}}
 function draw0(){
-const ta=420-cam.y,tm=performance.now()/1000;
+const ta=PLT()?Math.max(150,Math.min(200,420-cam.y)):420-cam.y,tm=performance.now()/1000;
 const hr=hourNow();let bs;if(night){const b0=bsOf(night.h0);bs=b0+cl((night.t-night.t0)/NIGHT)*(6.2832-1.3-b0)}else bs=bsOf(hr);
 const es=Math.cos(bs),dayF=sm(cl(es*1.6+.6));
 const tw=cl(1-Math.abs(es)*3.2)*.7,s0=lerpA(NT,mixA('s0',ta),dayF),s1=lerpA(lerpA(NB,mixA('s1',ta),dayF),[236,127,69],tw),s2=lerpA(NF,mixA('far',ta),dayF);
@@ -1671,7 +1671,7 @@ else if(mg.busy<=0){mg.busy=1.4;mg.pb.classList.add('busy');snd('tick')}});
 
 // ===== v26 : plateau du Coscione, points d'observation, orages =====
 var flatAt=[],flatLvl=-1;var obsP=[],obv=null,flee=0,runs=[],drops=[];let obsNT=80,runT=8,pltSaid=0,lastSpl=-1,obT0=0;
-function PLT(){try{if(night||chIdx()!==3)return false;const f=chP();return f>=.33&&f<.62}catch(e){return false}}
+function PLT(){try{if(chIdx()!==3)return false;const f=chP();return f>=.33&&f<.62}catch(e){return false}}
 function pltSnowy(){if(SV.pltL!==level){SV.pltL=level;SV.pltS=Math.random()<.45}return !!SV.pltS}
 AN.cheval={c:'#5a3a22',L:32,H:13,lg:14,tail:1};const PSPEC=['vache','cheval','cheval','mouflon'];
 
@@ -5499,7 +5499,7 @@ g.strokeStyle='#2a1a10';g.lineWidth=2.2;for(let i=0;i<6;i++){const mx=16+i*2.6,m
 // pattes avant (côté proche)
 leg(-10,A*Math.sin(p+.6)*.7+(1-A)*.05,(1-A)*.1+A*(.4+Math.max(0,Math.sin(p+1.6))*.8),0);leg(20,A*Math.sin(p+3)*.8-(1-A)*.03,-A*(.2+Math.max(0,Math.sin(p+3.6))*1),0);
 // selle
-g.fillStyle='#3a2414';g.beginPath();g.ellipse(-2,-38,10,3.5,0,0,7);g.fill();g.fillStyle='#5a3a24';g.fillRect(-4,-36,3,10);
+if(!window.__wild){g.fillStyle='#3a2414';g.beginPath();g.ellipse(-2,-38,10,3.5,0,0,7);g.fill();g.fillStyle='#5a3a24';g.fillRect(-4,-36,3,10)}
 if(rider){// Mila, penchée en avant, cheveux au vent
 g.fillStyle='#4a3a6a';g.beginPath();g.moveTo(-6,-38);g.lineTo(2,-38);g.lineTo(-1,-26);g.lineTo(-5,-26);g.fill();g.fillStyle='#3a2a1a';g.fillRect(-6,-27,5,3);
 g.fillStyle='#7a3fb0';g.beginPath();g.moveTo(-6,-38);g.lineTo(4,-39);g.lineTo(10,-54);g.lineTo(2,-57);g.closePath();g.fill();
@@ -6079,10 +6079,27 @@ try{lampPts=(function(o){return function(a,b){const L=o(a,b);try{return L.filter
 
 brkS=(function(o){return function(){try{SV.brS=SV.brS||{};const v0=SV.brS[level];if(v0!==undefined&&v0>=0&&cvIn(v0,700)){delete SV.brS[level]}if(SV.brS[level]!==undefined)return SV.brS[level];if(!started||!c)return-1;let pick=-1;eachBridge0(MAP_L*.4,MAP_L*.88,s=>{if(pick<0&&s>c.x+800&&!cvIn(s,700))pick=s});SV.brS[level]=pick;return pick}catch(e){return o()}}})(brkS);
 // ===== 2.60 : le plateau du Coscione existe aussi au chapitre de l'Ospedale, autour de l'événement Noxacorp =====
-PLT=(function(o){return function(){if(o())return true;try{if(night||chIdx()!==8)return false;const f=chP();return f>=.12&&f<.46}catch(e){return false}}})(PLT);
+PLT=(function(o){return function(){if(o())return true;try{if(chIdx()!==8)return false;const f=chP();return f>=.12&&f<.46}catch(e){return false}}})(PLT);
 noxWorld=(function(o){return function(){try{if(chIdx()===8&&!PLT())return;if(chIdx()===8&&chP()<.2)return}catch(e){}return o()}})(noxWorld);
+// ===== 2.62 : plateau du Coscione propre, de jour comme de nuit (pas de ville, de bouchon, de marché, de lampadaires) =====
+jamX=(function(o){return function(){try{if(PLT())return -1}catch(e){}return o.apply(this,arguments)}})(jamX);
+marketDraw=(function(o){return function(){try{if(PLT())return}catch(e){}return o.apply(this,arguments)}})(marketDraw);
+lampPts=(function(o){return function(){try{if(PLT())return[]}catch(e){}return o.apply(this,arguments)}})(lampPts);
+sceneAt=(function(o){return function(px){try{if(PLT())return 0}catch(e){}return o.apply(this,arguments)}})(sceneAt);
+// chevaux et vaches qui paissent au bord de la piste, mares en plus (visibles aussi la nuit autour du Cherokee)
+pozz=(function(o){return function(x0,x1){o(x0,x1);try{const tm=performance.now()/1000,sn=pltSnowy();for(let k=Math.floor(x0/520)-1;k<=Math.floor(x1/520)+1;k++){if(hs(k+911)>.62)continue;const px=k*520+hs(k+912)*260;if(Math.abs(T(px+60)-T(px-60))>30)continue;
+if(hs(k+913)<.7&&Math.abs(T(px+200)-T(px+100))<6){const pw=50+hs(k+914)*50,py=T(px+150)+4;g.fillStyle=sn?'#d3e6f1':'#3f7fa8';g.beginPath();g.ellipse(px+150,py,pw/2,4,0,0,7);g.fill();g.fillStyle=sn?'#fff':'#9fcde8';g.beginPath();g.ellipse(px+140,py-1,pw*.2,1.2,0,0,7);g.fill();g.strokeStyle=sn?'#e9f0f4':'#5f8a3a';g.lineWidth=1.4;g.beginPath();for(const s2 of[-1,1]){const ex=px+150+s2*pw/2;g.moveTo(ex,py);g.lineTo(ex+s2*2,py-7);g.moveTo(ex+s2*4,py+1);g.lineTo(ex+s2*6,py-5)}g.stroke()}
+const n=1+Math.floor(hs(k+915)*2.4),cow=hs(k+916)<.3;for(let i=0;i<n;i++){const hx=px+i*46+hs(k*3+i)*20,hy=T(hx)-1,dir=hs(k*5+i)<.5?1:-1;if(Math.abs(T(hx+20)-T(hx-20))>8)continue;g.save();g.translate(hx,hy);g.scale(dir,1);try{if(cow){g.scale(.46,.46);artA(g,'vache',tm*.3+i)}else{window.__wild=1;try{eqDraw(0,0,.62,0,['#7a4220','#3a2a1e','#9a6a3a','#5a3a22'][(k+i)%4],0,1)}finally{window.__wild=0}}}catch(e){}g.restore()}}}catch(e){}}})(pozz);
+// ===== 2.62 : ponts — jamais sur une épreuve treuil, jamais trop penchés, tablier toujours droit =====
+var brOKc={};
+bridgeAt=(function(o){return function(x){const r=o(x);if(r<0)return r;const key=level+':'+r;let ok=brOKc[key];if(ok===undefined){ok=1;try{const a=Tr(r),b=Tr(r+BRL);if(Math.abs(b-a)>50)ok=0;for(const q of[r-600,r,r+BRL,r+BRL+600]){const h=hardS(q);if(h>=0&&h-400<r+BRL&&h+950>r){ok=0;break}}}catch(e){}brOKc[key]=ok}return ok?r:-1}})(bridgeAt);
+eachBridge=(function(o){return function(x0,x1,fn){o(x0,x1,s=>{if(bridgeAt(s+1)===s)fn(s)})}})(eachBridge);
+laySync=(function(o){return function(){brOKc={};return o.apply(this,arguments)}})(laySync);
+eachBridge0=(function(o){return function(x0,x1,fn){return o(x0,x1,s=>{if(bridgeAt(s+1)===s)fn(s)})}})(eachBridge0);
+brkS=(function(o){return function(){try{SV.brS=SV.brS||{};const v0=SV.brS[level];if(v0!=null&&v0>=0&&!(SV.brOK&&SV.brOK[level])&&bridgeAt(v0+1)!==v0)delete SV.brS[level]}catch(e){}return o()}})(brkS);
+T=(function(o){return function(x){const s=bridgeAt(x);if(s>=0){const a=Tr(s),b=Tr(s+BRL);return a+(b-a)*(x-s)/BRL}return o(x)}})(T);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.61',GAME_DATE='23/10/2026 à 10h36';
+const GAME_VER='2.62',GAME_DATE='23/10/2026 à 11h39';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
