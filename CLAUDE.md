@@ -36,6 +36,7 @@
 - Pas de flou de pare-brise en dehors de la conduite (cinématiques, mini-jeux, menus, nuit).
 
 ## Déjà fait récemment
+**2.73** : audit des mini-jeux, +25 % et meilleure répartition dans chaque chapitre : deux animaux à aider de plus (à 7 % et 90 %, `helpPlan` surchargé, espèces différentes de la même liste `NEWH`) ; deuxième groupe de touristes vers 82-95 % (`tour2World`, `SV.tour2L`) ; remorque pas avant 25 % ; touristes entre 46 et 72 % (au lieu de 30-60) ; enclos sans ferme entre 66 et 95 % (au lieu de 30-90) ; un animal à aider attend aussi 30 s de calme (`calmT`). Calendrier visé : .07 animal · .2 animal · .25+ remorque · .36 moteur · .44 prélèvement · .46-.72 touristes · .55 animal · pont cassé · .66 panne · .66-.95 enclos · .76 animal · .82+ touristes · .9 animal.
 **2.72** : marchepieds à l'atelier Corse 4x4 (`SV.cus.rb` : aucun, couleur carrosserie, noirs ; 6 ❤ la première fois `own.rb`, puis changement gratuit), dessinés entre les roues sous les portes avec supports et stries antidérapantes (`rbDraw` appelé depuis `cusAcc`).
 **Habitude** : envoyer à l'utilisateur les captures de test utiles (`SendUserFile`), il le demande.
 **2.71** : la nuit (avant 7 h 30 et à partir de 20 h, `standClosed()`), Chez Marcel et les vendeurs corses sont fermés : rideau de fer avec pancarte « FERMÉ » (`shutter`), marchand absent, pas de bulle d'achat (`uiShops`), pas de salut du marchand ; Mila le dit une fois si on s'arrête devant (`stClSaid`).

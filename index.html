@@ -3084,7 +3084,7 @@ function inVil(x){const vj=Math.floor((x-1500)/2600);return vj>=0&&x-(1500+2600*
 function pzWorld(dt){if(SV.qzL===undefined)SV.qzL=-1;if(SV.rhL===undefined)SV.rhL=-1;if(pz||!started||night||crashed||paused||introT>0||cardOpen||hl||pp||bt||obv||bz||fn||es||chEnd)return;
 if(stopReq||hev||mev||sev||work||stalled||flatW>=0||tow||sayT>0||(typeof chs!=='undefined'&&chs))return;const f=chP();
 const fx=farmX(),jx=jamX();if(SV.qzL!==level&&fx>0&&c.x>fx-900&&c.x<fx-80){const T=QZT[(chIdx()+TS())%QZT.length];SV.qzL=level;say(T.n.split(' · ')[0]+' nous fait signe ! Touche sa bulle pour l’aider.',3,1);return}
-if(SV.qzL!==level&&fx<0&&f>=.3&&f<.9&&!hardNear(c.x+300)){const T=QZT[(chIdx()+TS())%QZT.length];SV.qzL=level;say(T.n.split(' · ')[0]+' nous fait signe au bord du chemin… On s’arrête ?',3.6,1);stopReq={x:c.x+380,cb:()=>setTimeout(()=>pzOpen('farm'),500)};return}
+if(SV.qzL!==level&&fx<0&&f>=.66&&f<.95&&!hardNear(c.x+300)){const T=QZT[(chIdx()+TS())%QZT.length];SV.qzL=level;say(T.n.split(' · ')[0]+' nous fait signe au bord du chemin… On s’arrête ?',3.6,1);stopReq={x:c.x+380,cb:()=>setTimeout(()=>pzOpen('farm'),500)};return}
 if(SV.rhL!==level&&jx>0&&c.x>jx-900&&c.x<jx-80){SV.rhL=level;say('Un véhicule en travers devant ! Touche la bulle pour dégager.',3,0);return}
 if(SV.rhL!==level&&jx<0&&f>=.55&&f<.92&&inVil(c.x+380)&&!hardNear(c.x+300)){SV.rhL=level;say('Oh non… un bouchon devant ! Laisse-moi faire.',3.4,0);stopReq={x:c.x+340,cb:()=>setTimeout(()=>pzOpen('jam'),500)};return}
 if(SV.rhL!==level&&jx<0&&f>=.8&&f<.92&&!hardNear(c.x+300)){SV.rhL=level;say('Oh non… un bouchon devant ! Laisse-moi faire.',3.4,0);stopReq={x:c.x+340,cb:()=>setTimeout(()=>pzOpen('jam'),500)}}}
@@ -4760,7 +4760,7 @@ T.after=win=>{SV.tourL=level;if(win){SV.hearts+=2;note('🌍 Bonne réponse ! Le
 mgxOpen(T)}
 // déclenchement : une fois par chapitre, des touristes font signe au bord de la route
 var tourWX=null;
-function tourWorld(){try{if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd)return;if(SV.tourL===level||onFerry()||jokeSad())return;const f=chP();if(f<.3||f>.6)return;if(typeof storyBusy==='function'&&storyBusy())return;
+function tourWorld(){try{if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd)return;if(SV.tourL===level||onFerry()||jokeSad())return;const f=chP();if(f<.46||f>.72)return;if(typeof storyBusy==='function'&&storyBusy())return;
 SV.tourL=level;const lang=tourLang(chIdx()),who=TOURL[lang][2];tourWX=c.x+420;say(who?'Des touristes nous font signe… On s’arrête, je vais voir ce qu’ils veulent.':'Des touristes agitent les bras ! Je m’arrête, je vais leur parler.',3.4,who);stopReq={x:c.x+330,cb:()=>setTimeout(()=>{tourOpen()},350)}}catch(e){}}
 mgTick=(function(o){return function(dt){o(dt);tourWorld()}})(mgTick);
 npcDraw=(function(o){return function(tm){o(tm);try{if(tourWX!=null&&Math.abs(tourWX-c.x)<1500){const cols=[['#e86a5a','#2f4f7a',1,'#e3c27a',0,3,1],['#4a8fd0','#5a4a3a',0,'#3a2a1a',1,3,0],['#f2c230','#3a6a4a',1,'#a85a2a',0,0,1]];for(let i=0;i<3;i++){const px=tourWX+i*26;npcFig(px,T(px),cols[i],SV.tourL===level&&!MGX&&c.x<tourWX-100,tm)}}}catch(e){}}})(npcDraw);
@@ -6183,8 +6183,15 @@ const gr=g.createLinearGradient(0,y,0,y+4.2);if(blk){gr.addColorStop(0,'#3a3836'
 g.fillStyle=blk?'rgba(255,255,255,.1)':'rgba(255,255,255,.25)';g.fillRect(x0+1.5,y+.5,x1-x0-3,.8);
 g.fillStyle=blk?'#0c0b0a':'rgba(0,0,0,.35)';for(let xx=x0+4;xx<x1-3;xx+=5)g.fillRect(xx,y+1.6,2.6,1.4)}
 cusAcc=(function(o){return function(tm){o(tm);try{rbDraw()}catch(e){}}})(cusAcc);
+// ===== 2.73 : mini-jeux plus nombreux (+25 %) et mieux répartis sur le chapitre =====
+// calendrier visé : .07 animal · .2 animal · .27 remorque · .36 moteur · .44 prélèvement · .46-.72 touristes · .55 animal · pont cassé (lieu fixe) · .66 panne · .66-.95 enclos · .76 animal · .84 touristes (2e groupe) · .9 animal
+helpPlan=(function(o){return function(){const i=chIdx(),L=o().slice();L.unshift({f:.07,k:NEWH[(2*i+2+TS())%10]});L.push({f:.9,k:NEWH[(2*i+3+TS())%10]});const out=L.sort((a,b)=>a.f-b.f);if(typeof calmT!=='undefined'&&layOn()&&calmT<30&&!hev){const j=SV.hpI||0;if(out[j])out[j]=Object.assign({},out[j],{f:2})}return out}})(helpPlan);
+trlWorld=(function(o){return function(){try{if(SV.trlL!==level&&chP()<.25)return}catch(e){}return o()}})(trlWorld);
+function tour2World(){try{if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd)return;if(SV.tour2L===level||SV.tourL!==level||onFerry()||jokeSad()||!calmOK())return;const f=chP();if(f<.82||f>.95)return;if(typeof storyBusy==='function'&&storyBusy())return;
+SV.tour2L=level;const lang=tourLang(chIdx()),who=TOURL[lang][2];tourWX=c.x+420;say('Encore des touristes perdus ! On s’arrête les aider ?',3.2,who);stopReq={x:c.x+330,cb:()=>setTimeout(()=>{tourOpen()},350)}}catch(e){}}
+mgTick=(function(o){return function(dt){o(dt);tour2World()}})(mgTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.72',GAME_DATE='23/10/2026 à 12h38';
+const GAME_VER='2.73',GAME_DATE='23/10/2026 à 12h41';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
