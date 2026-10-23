@@ -330,7 +330,7 @@ const bname=alt=>alt<80?'Plage':BI[bi(alt+110)].n;
 // Sol : [adhérence gauche, droite, nom, type]. Boue/verglas seulement dans les creux et les fonds de vallée
 function Z(x){
 if(bridgeAt(x)>=0)return[1,1,'Pont','bridge'];if(fordAt(x))return[.8,.8,'Gué','ford'];if(slipAt(x)){let gp=(st.gear===1||st.gear===3)?(st.gear===3?.3:.27):.14;if(boostT>0)gp+=.14;return[gp,gp,'Côte glissante','slip']}if(deepAt(x))return[.3,.3,'Boue profonde','mud'];
-{const sm=stns.find(m=>x>m.a&&x<m.b);if(sm)return[1,1,'Station '+stnName(sm.x),'dry']}
+{const sm=PLT()?null:stns.find(m=>x>m.a&&x<m.b);if(sm)return[1,1,'Station '+stnName(sm.x),'dry']}
 if(gars.some(m=>x>m.a&&x<m.b))return[1,1,'Corse 4x4','dry'];
 if(tunAt(x)>=0)return[1,1,'Tunnel','dry'];
 if(nearC(x))return[1,1,'Camp','dry'];
@@ -458,7 +458,7 @@ function startWinch(){if(winch||!started||crashed||night||playT<wReadyAt)return;
 function ensureStns(){while(!stns.length||stns[stns.length-1].x<c.x+4500){const prev=stns.length?stns[stns.length-1].x:0;let x=prev?prev+7000:4500;
 const bad=x=>{for(let d=-100;d<=340;d+=40)if(rockW(x+d)>0||spNear(x+d)||wetAt(x+d)||bridgeAt(x+d)>=0||sceneAt(x+d)||tunNear(x+d)||shpBad(x+d)||pzNear(x+d)||gars.some(s=>Math.abs(s.x+100-(x+d))<500)||camps.some(m=>Math.abs(m.x+100-(x+d))<460)||obs.some(o=>Math.abs(o.x+30-(x+d))<220))return 1};
 for(let _n=0;bad(x)&&_n<150;_n++)x+=100;stns.push({x,a:x-60,b:x+280,y:T(x+110)})}}
-const stnNear=()=>stns.find(m=>c.x>m.x+60&&c.x<m.x+200);
+const stnNear=()=>PLT()?null:stns.find(m=>c.x>m.x+60&&c.x<m.x+200);
 function doRefuel(){const m=stnNear();if(!m||!started||crashed||night||refuel)return;if(Math.hypot(v.x,v.y)>=25){sayK('park');return}if(ign){sayK('engFirst');return}if(fuel>=.98){sayK('full');return}refuel=true;st.hb=1;sayK('refuelStart',3.4)}
 function toggleKey(){if(night||crashed)return;if(ign){ign=0;st.hb=1;snd('click');return}if(fuel<=0){sayK('empty');return}ign=1;started=true;st.hb=0;snd('start');startT=1.2;smokeT=1.2;stallAcc=0;hint.style.display='none'}
 
@@ -2476,11 +2476,11 @@ else if(!crashed){acc+=dt*.72;while(acc>=1/240&&!crashed){step(1/240);acc-=1/240
 cam.x+=((night?(c.x+170)*(1-NZ)+(night.m.x+(night.m.car?160:120))*NZ:tow&&tow.flip?c.x-150:c.x+v.x*.3)-cam.x)*.1;cam.y+=(c.y-cam.y)*.08;
 if(fb){try{fbTick(t)}catch(e){window.__showErr&&window.__showErr('sous-marin '+e.message)}}else if(cs){try{csTick(t)}catch(e){window.__showErr('cine '+e.message)}}else if(hel){try{helTick(t)}catch(e){window.__showErr('helico '+e.message)}}else if(bur){try{burTick(t)}catch(e){window.__showErr('adieu '+e.message)}}else if(ot){try{otTick(t)}catch(e){window.__showErr('outro '+e.message)}}else if(es){try{esTick(t)}catch(e){window.__showErr('fin chap '+e.message)}}else if(fn){try{fnTick(t)}catch(e){window.__showErr('fin '+e.message)}}else if(hl){try{hlTick(t)}catch(e){window.__showErr('aide '+e.message)}}else if(bz){try{bzTick(t)}catch(e){window.__showErr('bzh '+e.message)}}else if(bt){try{boatTick(t)}catch(e){window.__showErr('boat '+e.message)}}else if(obv){try{obTick(t)}catch(e){window.__showErr('obs '+e.message)}}else try{draw()}catch(e){window.__showErr('draw '+e.message)}
 {const m=stns.find(s=>s.x+105>cam.x-W*.35/S-100&&s.x+105<cam.x+W*.65/S+100);
-if(m&&!night&&!crashed){const sp3=Math.hypot(v.x,v.y),near=!!stnNear();pumpEl.style.display='block';pumpEl.style.left=Math.round(scr.ox+(m.x+105)*S)+'px';pumpEl.style.top=Math.round(scr.oy+(m.y-165)*S)+'px';
+if(m&&!night&&!crashed&&!PLT()){const sp3=Math.hypot(v.x,v.y),near=!!stnNear();pumpEl.style.display='block';pumpEl.style.left=Math.round(scr.ox+(m.x+105)*S)+'px';pumpEl.style.top=Math.round(scr.oy+(m.y-165)*S)+'px';
 let lb,rd=0;if(refuel)lb='Plein '+Math.round(fuel*100)+' %';else if(!near)lb='⛽ Station '+stnName(m.x);else if(sp3>=25)lb='⛽ Arrête-toi';else if(ign)lb='⛽ Coupe le moteur';else if(fuel>.98)lb='⛽ Réservoir plein';else{lb='⛽ Faire le plein';rd=1}
 if(pumpEl.textContent!==lb)pumpEl.textContent=lb;pumpEl.className='b'+(rd?' rdy':' wait')}else pumpEl.style.display='none'}
 {const m=gars.find(s=>s.x+170>cam.x-W*.35/S-100&&s.x+170<cam.x+W*.65/S+100);
-if(m&&!night&&!crashed){const sp3=Math.hypot(v.x,v.y),near=!!garNear();garEl.style.display='block';garEl.style.left=Math.round(scr.ox+(m.x+170)*S)+'px';garEl.style.top=Math.round(scr.oy+(m.y-132)*S)+'px';
+if(m&&!night&&!crashed&&!PLT()){const sp3=Math.hypot(v.x,v.y),near=!!garNear();garEl.style.display='block';garEl.style.left=Math.round(scr.ox+(m.x+170)*S)+'px';garEl.style.top=Math.round(scr.oy+(m.y-132)*S)+'px';
 let lb,rd=0;if(!near)lb='🔧 Corse 4x4';else if(sp3>=25)lb='🔧 Arrête-toi';else{lb='🔧 Entrer à l’atelier';rd=1}
 if(garEl.textContent!==lb)garEl.textContent=lb;garEl.className='b'+(rd?' rdy':' wait')}else garEl.style.display='none'}
 try{slpUI();uiRest();uiShops();uiPick();cardTick()}catch(e){window.__showErr('ui '+e.message)}
@@ -6083,6 +6083,6 @@ PLT=(function(o){return function(){if(o())return true;try{if(night||chIdx()!==8)
 noxWorld=(function(o){return function(){try{if(chIdx()===8&&!PLT())return;if(chIdx()===8&&chP()<.2)return}catch(e){}return o()}})(noxWorld);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='2.60',GAME_DATE='23/10/2026 à 10h22';
+const GAME_VER='2.61',GAME_DATE='23/10/2026 à 10h36';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
