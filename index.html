@@ -5932,7 +5932,7 @@ newMap=(function(o){return function(){try{laySync();SV.layV=SV.layV||{};if(layOn
 // au moins 40 s de route tranquille entre deux interruptions (chapitres au nouveau découpage)
 setInterval(()=>{try{if(paused||cs||MGX||cardOpen||stopReq||hl||pz)calmT=0}catch(e){}},250);
 mgTick=(function(o){return function(dt){o(dt);try{if(dt>0&&!stopReq&&Math.hypot(v.x,v.y)>15)calmT+=dt}catch(e){}}})(mgTick);
-function calmOK(){return !layOn()||calmT>=40}
+function calmOK(){return !layOn()||calmT>=25}
 for(const nm of ['trlWorld','tourWorld','coasWorld','cineWorld','plantWorld','pzWorld','paraWorld','funWorld','bdWorld','callWorld']){try{const o=window[nm];if(typeof o==='function')window[nm]=function(...a){if(!calmOK())return;return o.apply(this,a)}}catch(e){}}
 popOK=(function(o){return function(){return o()&&(calmOK()||(typeof popCD!=='undefined'&&popCD<-45))}})(popOK);
 // personnages facultatifs : environ deux sur trois par voyage, tirés au hasard
@@ -6218,7 +6218,7 @@ g.fillStyle=blk?'#0c0b0a':'rgba(0,0,0,.35)';for(let xx=x0+4;xx<x1-3;xx+=5)g.fill
 cusAcc=(function(o){return function(tm){o(tm);try{rbDraw()}catch(e){}}})(cusAcc);
 // ===== 2.73 : mini-jeux plus nombreux (+25 %) et mieux répartis sur le chapitre =====
 // calendrier visé : .07 animal · .2 animal · .27 remorque · .36 moteur · .44 prélèvement · .46-.72 touristes · .55 animal · pont cassé (lieu fixe) · .66 panne · .66-.95 enclos · .76 animal · .84 touristes (2e groupe) · .9 animal
-helpPlan=(function(o){return function(){const i=chIdx(),L=o().slice();L.unshift({f:.07,k:NEWH[(2*i+2+TS())%10]});L.push({f:.9,k:NEWH[(2*i+3+TS())%10]});const out=L.sort((a,b)=>a.f-b.f);if(typeof calmT!=='undefined'&&layOn()&&calmT<30&&!hev){const j=SV.hpI||0;if(out[j])out[j]=Object.assign({},out[j],{f:2})}return out}})(helpPlan);
+helpPlan=(function(o){return function(){const i=chIdx(),L=o().slice();L.unshift({f:.07,k:NEWH[(2*i+2+TS())%10]});L.push({f:.9,k:NEWH[(2*i+3+TS())%10]});const out=L.sort((a,b)=>a.f-b.f);if(typeof calmT!=='undefined'&&layOn()&&calmT<20&&!hev){const j=SV.hpI||0;if(out[j])out[j]=Object.assign({},out[j],{f:2})}return out}})(helpPlan);
 trlWorld=(function(o){return function(){try{if(SV.trlL!==level&&chP()<.25)return}catch(e){}return o()}})(trlWorld);
 function tour2World(){try{if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd)return;if(SV.tour2L===level||SV.tourL!==level||onFerry()||jokeSad()||!calmOK())return;const f=chP();if(f<.82||f>.95)return;if(typeof storyBusy==='function'&&storyBusy())return;
 SV.tour2L=level;const lang=tourLang(chIdx()),who=TOURL[lang][2];tourWX=c.x+420;say('Encore des touristes perdus ! On s’arrête les aider ?',3.2,who);stopReq={x:c.x+330,cb:()=>setTimeout(()=>{tourOpen()},350)}}catch(e){}}
@@ -7285,6 +7285,6 @@ drawObs=(function(o){return function(x0,x1){o(x0,x1);try{va3TortDraw(performance
 
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.07',GAME_DATE='24/10/2026 à 00h58';
+const GAME_VER='3.08',GAME_DATE='24/10/2026 à 08h35';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
