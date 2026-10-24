@@ -6997,6 +6997,53 @@ function va6Glass(tm){g.save();g.beginPath();g.moveTo(-4.4,-19);g.lineTo(-4.4,-2
 // --- 3.03 : retour de Sardaigne raccourci (plus de cinématique de départ, traversée et arrivée courtes)
 CS.sarA1.L=()=>[[1,'n','Bonifacio, perché sur sa falaise. Le bateau accoste et le Cherokee redescend sur le quai.'],[5.5,'a','La Corse… On est à la maison. Direction la forêt de l’Ospedale !']];CS.sarA1.end=10;
 sarCross=(function(o){return function(back){if(!back)return o(back);fadeTo(()=>{btAfter=()=>{blackNow();try{openCine('sarA1')}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},350)};openBoat(true);if(bt){bt.D=9;bt.L=[[.8,'m','Au revoir la Sardaigne… On a ce qu’il nous faut.'],[4,'a','Regarde, Bonifacio sur sa falaise. On rentre.'],[7,'m','Le chien a déjà reconnu l’odeur du maquis !']]}})}})(sarCross);
+// ===== 3.09 : rejouer les mini-jeux depuis le menu (sans rien changer au voyage) =====
+const VA9_G=[
+ ['🦔','Aider un animal',()=>{const ks=Object.keys(HELP).filter(k=>{const H=HELP[k];return H&&H.ph&&!H.smp&&!H.wh&&!H.mech&&!H.cb&&!/^s_/.test(k)});openHelp(ks[Math.floor(Math.random()*ks.length)])}],
+ ['🧪','Prélèvement',()=>{const sp=CHAP[Math.floor(Math.random()*CHAP.length)].totem[0];HELP['s_'+sp]=smpDef(sp);openHelp('s_'+sp)}],
+ ['🔭','Photo d’animaux',()=>openObs()],
+ ['🔧','Pièces du moteur',()=>{ppOpen();try{const c0=gid('cho').querySelector('button[data-i="0"]');if(c0)c0.click()}catch(e){}}],
+ ['🧪','Tri des fioles',()=>tubeOpen(()=>{})],
+ ['🚜','La remorque',()=>trlOpen()],
+ ['🌉','Le pont à reconstruire',()=>brOpen(()=>{})],
+ ['🐄','L’enclos',()=>pzOpen('farm')],
+ ['🌿','Les plantes',()=>pzOpen('plant')],
+ ['🚗','Le bouchon',()=>pzOpen('rh')],
+ ['🗺','Les touristes',()=>tourOpen()],
+ ['🟡','Le sous-marin',()=>fbStart()],
+ ['🐎','La poursuite à cheval',()=>horseOpen()]];
+var va9P=null;
+(function(){const st9=document.createElement('style');st9.textContent=`#va9{position:fixed;inset:0;z-index:205;display:none;align-items:center;justify-content:center;background:rgba(20,12,6,.72);padding:10px}
+#va9 .w{width:min(760px,96vw);max-height:calc(100vh - 20px);overflow:auto;background:#f6ecd8;color:#2b241b;border-radius:20px;border:4px solid #6a3a1e;padding:12px 16px 14px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+#va9 h2{margin:0;text-align:center;color:#a8282a;font-size:21px}#va9 .s{text-align:center;font-size:12.5px;opacity:.75;margin:2px 0 10px}
+#va9 .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+#va9 .g button{margin:0;border:0;border-radius:14px;padding:10px 8px;background:#2b211a;color:#fff;font:700 15px "Avenir Next",Arial,sans-serif;min-height:0;height:auto;display:flex;align-items:center;gap:6px;justify-content:center}
+#va9 .x{display:flex;justify-content:center;margin-top:10px}#va9 .x button{margin:0;min-width:160px}`;document.head.appendChild(st9);
+ const d=document.createElement('div');d.id='va9';d.innerHTML='<div class="w"><h2>Rejouer les mini-jeux</h2><div class="s">Pour le plaisir : rien ne change dans ton voyage (cœurs, missions, sauvegarde).</div><div class="g" id="va9g"></div><div class="x"><button class="b" id="va9x">◀ Retour au menu</button></div></div>';document.body.appendChild(d);
+ const gr=gid('va9g');VA9_G.forEach((q,i)=>{const b=document.createElement('button');b.dataset.i=i;b.innerHTML=(typeof deEmo==='function'?deEmo(q[0]+' '+q[1]):q[0]+' '+q[1]);gr.appendChild(b)});
+ gr.addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;e.stopPropagation();va9Play(+b.dataset.i)});
+ gid('va9x').addEventListener('click',e=>{e.stopPropagation();d.style.display='none'});
+ const mb=document.createElement('button');mb.className='b';mb.id='mmg';mb.innerHTML=(typeof deEmo==='function'?deEmo('🎯 Rejouer les mini-jeux'):'🎯 Rejouer les mini-jeux');const nw=gid('mnew');nw.parentNode.insertBefore(mb,nw);
+ mb.addEventListener('click',e=>{e.stopPropagation();snd('click');d.style.display='flex'})})();
+function va9Busy(){try{return !!(hl||pp||pz||fb||MGX||obv||cs||chQ||gid('pzv').style.display==='block'||gid('hlv').style.display==='block')}catch(e){return false}}
+function va9Play(i){const q=VA9_G[i];if(!q)return;va9P={snap:JSON.stringify(SV),lv:level,t:0,seen:0,g:{cardQ:cardQ.slice(),docQ:docQ.slice(),talkQ:talkQ.slice(),hev,mev,sev,stopReq,flatW,flatP,inj,carry,mis,misCD,sayT,dmg,temp,fuel,inGame}};inGame=false;cardQ.length=0;docQ.length=0;talkQ.length=0;gid('va9').style.display='none';gid('menu').style.display='none';paused=true;st.gas=0;st.brake=0;
+ try{q[2]()}catch(e){console.error('mini-jeu '+e.message);va9End()}}
+function va9End(){const P=va9P;if(!P)return;va9P=null;try{SV=JSON.parse(P.snap)}catch(e){}try{level=P.lv}catch(e){}
+ try{const G=P.g;cardQ.length=0;cardQ.push(...G.cardQ);docQ.length=0;docQ.push(...G.docQ);talkQ.length=0;talkQ.push(...G.talkQ);hev=G.hev;mev=G.mev;sev=G.sev;stopReq=G.stopReq;flatW=G.flatW;flatP=G.flatP;inj=G.inj;carry=G.carry;mis=G.mis;misCD=G.misCD;sayT=G.sayT;dmg=G.dmg;temp=G.temp;fuel=G.fuel;inGame=G.inGame;fb=null;document.body.classList.remove('cine');gid('hlv').style.display='none';gid('pzv').style.display='none';gid('dogp').style.display='none'}catch(e){}
+ try{saveTrip()}catch(e){}openMenu();gid('va9').style.display='flex'}
+// pendant l'entraînement : pas de suite d'histoire (cinématique des bidons, cartes, missions)
+openCine=(function(o){return function(k){if(va9P){try{fb=null}catch(e){}return}return o(k)}})(openCine);
+mgTick=(function(o){return function(dt){o(dt);try{if(va9P&&cardOpen){gid('card').style.display='none';cardOpen=false;curCd=null}}catch(e){}}})(mgTick);
+// pendant l'entraînement, la sauvegarde du voyage n'est jamais écrite
+saveTrip=(function(o){return function(){if(va9P)return;return o()}})(saveTrip);
+setInterval(()=>{try{if(!va9P)return;if(va9Busy()){va9P.seen=1;va9P.t=0}else if(va9P.seen){va9P.t+=.25;if(va9P.t>=.75)va9End()}else{va9P.t+=.25;if(va9P.t>3)va9End()}}catch(e){}},250);
+// ===== 3.09 (suite) : les pop-ups ne passent plus d'un chapitre à l'autre =====
+cardTick=(function(o){return function(){try{if(va5G||es)return;if(chP()>=.88)for(const q of cardQ)if(!/^Chapitre /.test(q.t||''))q.now=1}catch(e){}return o()}})(cardTick);
+docTick=(function(o){return function(){try{if(va5G||es)return}catch(e){}return o()}})(docTick);
+labTick=(function(o){return function(dt,run){try{if(chP()>=.85&&SV.smpP)for(const k of Object.keys(SV.smpP))SV.smpP[k].t=Math.min(SV.smpP[k].t,0)}catch(e){}return o(dt,run)}})(labTick);
+openEnd=(function(o){return function(i){try{cardQ.length=0;docQ.length=0;talkQ.length=0}catch(e){}return o(i)}})(openEnd);
+// --- 3.09 : pas de nuit collée à un garage, un magasin ou une station (les amoureux passaient derrière les bâtiments)
+noSleep=(function(o){return function(){if(o())return true;try{const x=c.x,n=(q,r)=>Math.abs(q-x)<r;if(gars.some(q=>n(q.x+170,330)))return true;if(shp.some(q=>n(q.x+120,300)))return true;if(stns.some(q=>n(q.x+200,420)))return true;if(typeof paintShops==='function'&&paintShops().some(q=>n(q+110,300)))return true}catch(e){}return false}})(noSleep);
 // ===== 3.07 : corrections de partie (nouveau voyage, pop-ups, panne sèche, bulles, matin, vitesse) =====
 // --- nouveau voyage : Cherokee rouge d'origine et propre
 wipeTrip=(function(o){return function(){o();try{mudL=0;mudHi=0}catch(e){}try{cusInit();cusApply()}catch(e){}try{applyUp()}catch(e){}}})(wipeTrip);
@@ -7137,12 +7184,14 @@ function va5Draw(t){if(!va5G)return;const x=gid('va5c').getContext('2d'),tm=t/10
   // une hirondelle ou deux
   for(let i=0;i<2;i++){const bx2=((tm*60+i*300)%(Wd+80))-40,by2=96+i*22+Math.sin(tm*3+i)*6,fl=Math.sin(tm*14+i)*4;g.strokeStyle='#2a2622';g.lineWidth=1.6;g.beginPath();g.moveTo(bx2-7,by2-fl);g.quadraticCurveTo(bx2-3,by2-2,bx2,by2);g.quadraticCurveTo(bx2+3,by2-2,bx2+7,by2-fl);g.stroke()}
   // bulle : ce que disent Mila et Andrea
-  const L=VA5_TALK[Math.floor((t-va5G.t0)/4200)%VA5_TALK.length],isA=L[0]==='a',bxx=isA?ax+10:mx+10,byy=isA?gy-120:gy-112;g.font='700 13px Georgia,serif';const tw=Math.min(300,g.measureText(L[1]).width+22);
-  const bl=Math.max(8,Math.min(Wd-tw-8,bxx-tw/2));g.fillStyle='rgba(255,252,244,.96)';rr(g,bl,byy-24,tw,30,10);g.fill();g.beginPath();g.moveTo(bxx-6,byy+6);g.lineTo(bxx,byy+16);g.lineTo(bxx+6,byy+6);g.fill();
-  g.fillStyle=isA?'#2f5f9a':'#7a3fb0';g.textAlign='center';g.textBaseline='middle';const words=L[1];let fs=13;while(g.measureText(words).width>tw-14&&fs>9){fs--;g.font='700 '+fs+'px Georgia,serif'}g.fillText(words,bl+tw/2,byy-9);g.textBaseline='alphabetic';
+  const L=VA5_TALK[Math.floor((t-va5G.t0)/4200)%VA5_TALK.length],isA=L[0]==='a',bxx=isA?ax+6:mx+6;g.font='700 14px Georgia,serif';
+  const maxW=Math.min(330,Wd*.4),words=L[1].split(' '),lines=[];let cur='';for(const w2 of words){const tt=cur?cur+' '+w2:w2;if(g.measureText(tt).width>maxW-24&&cur){lines.push(cur);cur=w2}else cur=tt}lines.push(cur);
+  const tw=Math.max(...lines.map(l=>g.measureText(l).width))+26,bh=lines.length*18+14,byy=(isA?gy-112:gy-104)-bh;
+  const bl=Math.max(8,Math.min(Wd-tw-8,bxx-tw/2));g.fillStyle='rgba(255,252,244,.97)';rr(g,bl,byy,tw,bh,11);g.fill();g.beginPath();const tx0=Math.max(bl+14,Math.min(bl+tw-14,bxx));g.moveTo(tx0-6,byy+bh-1);g.lineTo(tx0,byy+bh+10);g.lineTo(tx0+6,byy+bh-1);g.fill();
+  g.fillStyle=isA?'#2f5f9a':'#7a3fb0';g.textAlign='center';g.textBaseline='middle';lines.forEach((l,k)=>g.fillText(l,bl+tw/2,byy+7+9+k*18));g.textBaseline='alphabetic';
   try{wxOver(g,Wd,420,tm)}catch(e){}
   g.setTransform(1,0,0,1,0,0)})}
-loop=(function(o){return function(t){o(t);try{if(va5G&&gid('cus').style.display!=='block'&&gid('engv').style.display!=='flex')va5Draw(t)}catch(e){}}})(loop);
+loop=(function(o){return function(t){try{if(va5G){paused=true;st.gas=0;st.brake=0;v.x=0;v.y=0;if(cardOpen){gid('card').style.display='none';cardOpen=false;if(curCd)cardQ.unshift(curCd);curCd=null}}}catch(e){}o(t);try{if(va5G){paused=true;if(gid('cus').style.display!=='block'&&gid('engv').style.display!=='flex')va5Draw(t)}}catch(e){}}})(loop);
 closeEnd=(function(o){return function(){const i=es?es.i:-1;o();try{if(i>=0&&i<CHAP.length-1&&level>1)va5Open(i)}catch(e){}}})(closeEnd);
 // ===== 3.04 : l'appel de Lucia au lac en cinématique =====
 // --- 3.04 : l'appel de Lucia au lac de l'Ospedale (cinématique), puis l'usine Noxacorp qui ferme et Marchetti en prison
@@ -7285,6 +7334,6 @@ drawObs=(function(o){return function(x0,x1){o(x0,x1);try{va3TortDraw(performance
 
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.08',GAME_DATE='24/10/2026 à 08h35';
+const GAME_VER='3.09',GAME_DATE='24/10/2026 à 08h50';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
