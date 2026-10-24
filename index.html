@@ -7003,15 +7003,15 @@ const VA9_G=[
  ['🧪','Prélèvement',()=>{const sp=CHAP[Math.floor(Math.random()*CHAP.length)].totem[0];HELP['s_'+sp]=smpDef(sp);openHelp('s_'+sp)}],
  ['🔭','Photo d’animaux',()=>openObs()],
  ['🔧','Pièces du moteur',()=>{ppOpen();try{const c0=gid('cho').querySelector('button[data-i="0"]');if(c0)c0.click()}catch(e){}}],
- ['🧪','Tri des fioles',()=>tubeOpen(()=>{})],
- ['🚜','La remorque',()=>trlOpen()],
- ['🌉','Le pont à reconstruire',()=>brOpen(()=>{})],
- ['🐄','L’enclos',()=>pzOpen('farm')],
- ['🌿','Les plantes',()=>pzOpen('plant')],
- ['🚗','Le bouchon',()=>pzOpen('rh')],
- ['🗺','Les touristes',()=>tourOpen()],
+ ['🧪','Tri des fioles',()=>tubeOpen(()=>{}),10],
+ ['🚜','La remorque',()=>trlOpen(),10],
+ ['🌉','Le pont à reconstruire',()=>brOpen(()=>{}),10],
+ ['🐄','L’enclos',()=>pzOpen('farm'),10],
+ ['🌿','Les plantes',()=>pzOpen('plant'),10],
+ ['🚗','Le bouchon',()=>pzOpen('rh'),10],
+ ['🗺','Les touristes',()=>tourOpen(),10],
  ['🟡','Le sous-marin',()=>fbStart()],
- ['🐎','La poursuite à cheval',()=>horseOpen()]];
+ ['🐎','La poursuite à cheval',()=>horseOpen(),3]];
 var va9P=null;
 (function(){const st9=document.createElement('style');st9.textContent=`#va9{position:fixed;inset:0;z-index:205;display:none;align-items:center;justify-content:center;background:rgba(20,12,6,.72);padding:10px}
 #va9 .w{width:min(760px,96vw);max-height:calc(100vh - 20px);overflow:auto;background:#f6ecd8;color:#2b241b;border-radius:20px;border:4px solid #6a3a1e;padding:12px 16px 14px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
@@ -7021,16 +7021,19 @@ var va9P=null;
 #va9 .x{display:flex;justify-content:center;margin-top:10px}#va9 .x button{margin:0;min-width:160px}`;document.head.appendChild(st9);
  const d=document.createElement('div');d.id='va9';d.innerHTML='<div class="w"><h2>Rejouer les mini-jeux</h2><div class="s">Pour le plaisir : rien ne change dans ton voyage (cœurs, missions, sauvegarde).</div><div class="g" id="va9g"></div><div class="x"><button class="b" id="va9x">◀ Retour au menu</button></div></div>';document.body.appendChild(d);
  const gr=gid('va9g');VA9_G.forEach((q,i)=>{const b=document.createElement('button');b.dataset.i=i;b.innerHTML=(typeof deEmo==='function'?deEmo(q[0]+' '+q[1]):q[0]+' '+q[1]);gr.appendChild(b)});
- gr.addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;e.stopPropagation();va9Play(+b.dataset.i)});
+ gr.addEventListener('click',e=>{const lb=e.target.closest('button[data-lv]');if(lb){e.stopPropagation();va9Play(+lb.dataset.g,+lb.dataset.lv);return}if(e.target.closest('#va9bk')){e.stopPropagation();va9List();return}const b=e.target.closest('button[data-i]');if(!b)return;e.stopPropagation();const q=VA9_G[+b.dataset.i];if(q[3])va9Levels(+b.dataset.i);else va9Play(+b.dataset.i)});
  gid('va9x').addEventListener('click',e=>{e.stopPropagation();d.style.display='none'});
  const mb=document.createElement('button');mb.className='b';mb.id='mmg';mb.innerHTML=(typeof deEmo==='function'?deEmo('🎯 Rejouer les mini-jeux'):'🎯 Rejouer les mini-jeux');const nw=gid('mnew');nw.parentNode.insertBefore(mb,nw);
- mb.addEventListener('click',e=>{e.stopPropagation();snd('click');d.style.display='flex'})})();
+ mb.addEventListener('click',e=>{e.stopPropagation();snd('click');va9List();d.style.display='flex'})})();
+function va9List(){const gr=gid('va9g');gr.innerHTML='';VA9_G.forEach((q,i)=>{const b=document.createElement('button');b.dataset.i=i;b.innerHTML=deEmo(q[0]+' '+q[1]+(q[3]?' · '+q[3]+' niveaux':''));gr.appendChild(b)})}
+function va9Levels(i){const q=VA9_G[i],gr=gid('va9g');gr.innerHTML='';const n=q[3];for(let k=1;k<=n;k++){const b=document.createElement('button');b.dataset.g=i;b.dataset.lv=k;b.textContent=n===3?['Facile','Normal','Difficile'][k-1]:'Niveau '+k+(k===1?' · facile':k===n?' · difficile':'');gr.appendChild(b)}const bk=document.createElement('button');bk.id='va9bk';bk.innerHTML=deEmo('◀ '+q[1]+' : choisis le niveau');bk.style.background='#6a3a1e';gr.prepend(bk)}
 function va9Busy(){try{return !!(hl||pp||pz||fb||MGX||obv||cs||chQ||gid('pzv').style.display==='block'||gid('hlv').style.display==='block')}catch(e){return false}}
-function va9Play(i){const q=VA9_G[i];if(!q)return;va9P={snap:JSON.stringify(SV),lv:level,t:0,seen:0,g:{cardQ:cardQ.slice(),docQ:docQ.slice(),talkQ:talkQ.slice(),hev,mev,sev,stopReq,flatW,flatP,inj,carry,mis,misCD,sayT,dmg,temp,fuel,inGame}};inGame=false;cardQ.length=0;docQ.length=0;talkQ.length=0;gid('va9').style.display='none';gid('menu').style.display='none';paused=true;st.gas=0;st.brake=0;
+function va9Play(i,lv){const q=VA9_G[i];if(!q)return;va9P={snap:JSON.stringify(SV),lv:level,t:0,seen:0,g:{cardQ:cardQ.slice(),docQ:docQ.slice(),talkQ:talkQ.slice(),hev,mev,sev,stopReq,flatW,flatP,inj,carry,mis,misCD,sayT,dmg,temp,fuel,inGame}};inGame=false;cardQ.length=0;docQ.length=0;talkQ.length=0;gid('va9').style.display='none';gid('menu').style.display='none';paused=true;st.gas=0;st.brake=0;
+ try{if(lv){if(q[3]===3)SV.diff=lv-1;else level=lv}}catch(e){}
  try{q[2]()}catch(e){console.error('mini-jeu '+e.message);va9End()}}
 function va9End(){const P=va9P;if(!P)return;va9P=null;try{SV=JSON.parse(P.snap)}catch(e){}try{level=P.lv}catch(e){}
  try{const G=P.g;cardQ.length=0;cardQ.push(...G.cardQ);docQ.length=0;docQ.push(...G.docQ);talkQ.length=0;talkQ.push(...G.talkQ);hev=G.hev;mev=G.mev;sev=G.sev;stopReq=G.stopReq;flatW=G.flatW;flatP=G.flatP;inj=G.inj;carry=G.carry;mis=G.mis;misCD=G.misCD;sayT=G.sayT;dmg=G.dmg;temp=G.temp;fuel=G.fuel;inGame=G.inGame;fb=null;document.body.classList.remove('cine');gid('hlv').style.display='none';gid('pzv').style.display='none';gid('dogp').style.display='none'}catch(e){}
- try{saveTrip()}catch(e){}openMenu();gid('va9').style.display='flex'}
+ try{saveTrip()}catch(e){}openMenu();va9List();gid('va9').style.display='flex'}
 // pendant l'entraînement : pas de suite d'histoire (cinématique des bidons, cartes, missions)
 openCine=(function(o){return function(k){if(va9P){try{fb=null}catch(e){}return}return o(k)}})(openCine);
 mgTick=(function(o){return function(dt){o(dt);try{if(va9P&&cardOpen){gid('card').style.display='none';cardOpen=false;curCd=null}}catch(e){}}})(mgTick);
@@ -7336,6 +7339,6 @@ drawObs=(function(o){return function(x0,x1){o(x0,x1);try{va3TortDraw(performance
 
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.10',GAME_DATE='24/10/2026 à 09h00';
+const GAME_VER='3.11',GAME_DATE='24/10/2026 à 09h03';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
