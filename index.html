@@ -7044,6 +7044,8 @@ labTick=(function(o){return function(dt,run){try{if(chP()>=.85&&SV.smpP)for(cons
 openEnd=(function(o){return function(i){try{cardQ.length=0;docQ.length=0;talkQ.length=0}catch(e){}return o(i)}})(openEnd);
 // --- 3.09 : pas de nuit collée à un garage, un magasin ou une station (les amoureux passaient derrière les bâtiments)
 noSleep=(function(o){return function(){if(o())return true;try{const x=c.x,n=(q,r)=>Math.abs(q-x)<r;if(gars.some(q=>n(q.x+170,330)))return true;if(shp.some(q=>n(q.x+120,300)))return true;if(stns.some(q=>n(q.x+200,420)))return true;if(typeof paintShops==='function'&&paintShops().some(q=>n(q+110,300)))return true}catch(e){}return false}})(noSleep);
+// --- 3.10 : au départ du bac, le premier plan (herbe, terre sombre) ne recouvre plus la mer entre le quai et le bateau
+scenery=(function(o){return function(x0,x1,front,tm){if(!front)return o(x0,x1,front,tm);let clip=false;try{const G=ferG;if(G&&G.lv===level&&G.on&&G.Q2>x0&&G.Q1<x1){clip=true;g.save();g.beginPath();g.rect(x0-500,-5000,(G.Q1-2)-(x0-500),12000);g.rect(G.Q2+2,-5000,(x1+500)-(G.Q2+2),12000);g.clip()}}catch(e){clip=false}try{return o(x0,x1,front,tm)}finally{if(clip)g.restore()}}})(scenery);
 // ===== 3.07 : corrections de partie (nouveau voyage, pop-ups, panne sèche, bulles, matin, vitesse) =====
 // --- nouveau voyage : Cherokee rouge d'origine et propre
 wipeTrip=(function(o){return function(){o();try{mudL=0;mudHi=0}catch(e){}try{cusInit();cusApply()}catch(e){}try{applyUp()}catch(e){}}})(wipeTrip);
@@ -7334,6 +7336,6 @@ drawObs=(function(o){return function(x0,x1){o(x0,x1);try{va3TortDraw(performance
 
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.09',GAME_DATE='24/10/2026 à 08h50';
+const GAME_VER='3.10',GAME_DATE='24/10/2026 à 09h00';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>

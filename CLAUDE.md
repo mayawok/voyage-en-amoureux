@@ -1,4 +1,4 @@
-# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.09)
+# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.10)
 
 ## Le projet
 - Jeu 2D de franchissement en 4x4 (Jeep Cherokee XJ phase 2 Sport 5 portes) en Corse, en français, joué sur iPhone en mode paysage (raccourci écran d'accueil). Site : https://voyagedesamoureux.netlify.app/
@@ -45,6 +45,7 @@
 - **Menu** : reprendre, son, volumes séparés (`#volp` : musique `busM`, moteur `busE`, effets/voix `busF`), plein écran, difficulté Facile/Normal/Difficile (`DIFF`), aide (`AIDE`, 5 onglets, à tenir à jour), sauvegarde de secours (`BAK`), nouveau voyage.
 
 ## Dernières versions
+- **3.10** : bac : le premier plan (`scenery(...,front)`) est découpé au-dessus de la mer entre les deux quais (il pouvait recouvrir la mer entre le quai et le bateau au départ).
 - **3.09** : « Rejouer les mini-jeux » dans le menu (sans rien changer au voyage) ; plus de pop-ups ni de conduite derrière l'étape au garage ; bulles du garage sur plusieurs lignes ; pas de nuit « Dormir ici » collée à un garage, un magasin, une station ou la peinture.
 - **3.08** : événements de la route plus fréquents : 25 s de route calme au lieu de 40 (animaux à aider : 20 s au lieu de 30).
 - **3.07** : nouveau voyage = Cherokee rouge et propre ; plus de relevés/prélèvements au ch10 ; cartes sans attente de 40 s ; résultats du labo en ~1 min ; bulle « Dormir ici » même moteur coupé ou en pleine discussion ; fin du ch1 : bouton après le passage du camion ; panne sèche = moteur qui tousse et on roule au pas (`va7Dry`, plus de consommation, ~8 km/h) ; pique-nique en bulle optionnelle (`#picb`), bulle « Prépa moteur » (`#engb`) comme la peinture ; « Bien dormi ? » au réveil (`VA7_AM`) ; distance d'arrivée toujours dans l'objectif ; vitesse max +15 % sans changer l'accélération (`va7F`).
