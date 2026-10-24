@@ -5546,13 +5546,13 @@ down(){if(H.res)return;if(H.hy<=0.5){H.vy=640;snd('click')}},
 tick(dt){if(!(dt>0))return;H.t+=dt;if(H.flash>0)H.flash-=dt;
 if(H.hy>0||H.vy>0){H.hy+=H.vy*dt;H.vy-=1650*dt;if(H.hy<=0){H.hy=0;H.vy=0;for(let i=0;i<6;i++)H.dust.push({x:150+Math.random()*40,y:370,vx:-60-Math.random()*80,vy:-30-Math.random()*40,t:0})}}
 if(H.res){H.spd*=.97;H.x+=H.spd*dt;return}
-H.spd=sp0+H.t*3.2;const s=H.spd*(H.stum>0?.55:1);H.x+=s*dt;if(H.stum>0)H.stum-=dt;
-H.D-=(H.stum>0?-2.5:2.55)*dt*(sp0/300);
-if(H.x+900>=H.nx){const ty=['rock','wall','log','water','bush'][Math.floor(Math.random()*5)],W2={rock:[42,30],wall:[64,34],log:[72,22],water:[96,0],bush:[48,30]}[ty];H.ob.push({wx:H.nx,ty,w:W2[0],h:W2[1],hit:0});H.nx+=340+Math.random()*360+Math.min(200,H.t*2)}
-for(const o of H.ob){const sx=170+(o.wx-H.x);if(!o.hit&&sx+o.w*.4>148&&sx-o.w*.4<198&&H.hy<(o.ty==='water'?6:o.h-8)){o.hit=1;H.hits++;H.D+=16;H.stum=.7;H.flash=.4;snd('thud');vib(60)}}
+H.spd=sp0+H.t*4.2;const s=H.spd*(H.stum>0?.55:1);H.x+=s*dt;if(H.stum>0)H.stum-=dt;
+H.D-=(H.stum>0?-3:1.9)*dt*(sp0/300);
+if(H.x+900>=H.nx){const ty=['rock','wall','log','water','bush'][Math.floor(Math.random()*5)],W2={rock:[42,30],wall:[64,34],log:[72,22],water:[96,0],bush:[48,30]}[ty];H.ob.push({wx:H.nx,ty,w:W2[0],h:W2[1],hit:0});if(H.t>6&&Math.random()<.3){const t2=['rock','log','bush'][Math.floor(Math.random()*3)],W3={rock:[42,30],log:[72,22],bush:[48,30]}[t2];const gp=H.spd*1.05+20+Math.random()*30;H.ob.push({wx:H.nx+gp,ty:t2,w:W3[0],h:W3[1],hit:0});H.nx+=gp}H.nx+=H.spd*1.0+Math.random()*H.spd*.75}
+for(const o of H.ob){const sx=170+(o.wx-H.x);if(!o.hit&&sx+o.w*.4>148&&sx-o.w*.4<198&&H.hy<(o.ty==='water'?6:o.h-8)){o.hit=1;H.hits++;H.D+=18;H.stum=.75;H.flash=.4;snd('thud');vib(60)}}
 H.ob=H.ob.filter(o=>o.wx-H.x>-400);
 if(H.hy<=0&&Math.random()<dt*20)H.dust.push({x:150,y:372,vx:-80-Math.random()*60,vy:-20-Math.random()*30,t:0});for(const d of H.dust){d.t+=dt;d.x+=d.vx*dt;d.y+=d.vy*dt;d.vy+=80*dt}H.dust=H.dust.filter(d=>d.t<.8);
-if(H.D<=0){H.D=0;H.res='win';snd('chime');vib(40);H.ui()}else if(H.D>=130||H.hits>=5){H.res='lose';snd('click');H.ui()}},
+if(H.D<=0){H.D=0;H.res='win';snd('chime');vib(40);H.ui()}else if(H.D>=130||H.hits>=4){H.res='lose';snd('click');H.ui()}},
 draw(x,tm){onCtx(x,()=>{const Wd=800,gy=300;g.save();g.translate(-300,0);coscBG(1400,gy,tm,H.x);g.restore();
 // route au loin et camionnette
 g.fillStyle='#c8b58a';g.fillRect(-300,gy-2,Wd+600,7);g.fillStyle='rgba(255,255,255,.5)';for(let i=0;i<14;i++){const X=((i*70-H.x*.6)%Wd+Wd)%Wd;g.fillRect(X,gy+1,22,1.2)}
@@ -5579,7 +5579,7 @@ else{g.fillStyle='#3f6a2a';g.beginPath();g.arc(sx-12,y-12,14,0,7);g.arc(sx+10,y-
 g.fillStyle='rgba(190,170,120,.5)';for(const d of H.dust){g.beginPath();g.arc(d.x,d.y,3+d.t*10,0,7);g.globalAlpha=1-d.t/.8;g.fill()}g.globalAlpha=1;
 const ph=H.hy>0?1.2:tm*(H.spd/50);if(H.flash>0&&Math.floor(tm*20)%2)g.globalAlpha=.4;eqDraw(175,374-H.hy,1.55,ph,'#7a4220',1);g.globalAlpha=1;
 // jauge
-const pr=1-Math.min(1,H.D/100);g.fillStyle='rgba(0,0,0,.35)';rr(g,250,84,300,12,6);g.fill();g.fillStyle='#e0a54a';rr(g,250,84,300*pr,12,6);g.fill();g.fillStyle='#223';g.font='800 13px Arial';g.textAlign='left';g.fillText('Distance : '+Math.round(H.D*3)+' m',250,114);g.textAlign='right';g.fillText('Faux pas : '+H.hits+' / 5',550,114);
+const pr=1-Math.min(1,H.D/100);g.fillStyle='rgba(0,0,0,.35)';rr(g,250,84,300,12,6);g.fill();g.fillStyle='#e0a54a';rr(g,250,84,300*pr,12,6);g.fill();g.fillStyle='#223';g.font='800 13px Arial';g.textAlign='left';g.fillText('Distance : '+Math.round(H.D*3)+' m',250,114);g.textAlign='right';g.fillText('Faux pas : '+H.hits+' / 4',550,114);
 if(H.t<3.5&&!H.res){g.fillStyle='rgba(20,16,12,.7)';rr(g,280,180,240,36,12);g.fill();g.fillStyle='#fff';g.font='800 16px Arial';g.textAlign='center';g.fillText('Touche pour sauter !',400,203)}});
 }};
 H.after=win=>{SV.noxWin=win?1:0;blackNow();try{openCine(win?'nox2':'nox3')}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},400)};
@@ -6997,6 +6997,161 @@ function va6Glass(tm){g.save();g.beginPath();g.moveTo(-4.4,-19);g.lineTo(-4.4,-2
 // --- 3.03 : retour de Sardaigne raccourci (plus de cinématique de départ, traversée et arrivée courtes)
 CS.sarA1.L=()=>[[1,'n','Bonifacio, perché sur sa falaise. Le bateau accoste et le Cherokee redescend sur le quai.'],[5.5,'a','La Corse… On est à la maison. Direction la forêt de l’Ospedale !']];CS.sarA1.end=10;
 sarCross=(function(o){return function(back){if(!back)return o(back);fadeTo(()=>{btAfter=()=>{blackNow();try{openCine('sarA1')}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},350)};openBoat(true);if(bt){bt.D=9;bt.L=[[.8,'m','Au revoir la Sardaigne… On a ce qu’il nous faut.'],[4,'a','Regarde, Bonifacio sur sa falaise. On rentre.'],[7,'m','Le chien a déjà reconnu l’odeur du maquis !']]}})}})(sarCross);
+// ===== 3.12 : un grand décor par chapitre au bord de la route, dans l'esprit du port de Saint-Florent =====
+// chaque chapitre a son tableau (baie, calanques, aiguilles, étang, lac, falaises…), posé sur un tronçon plat et libre
+const VA12_SITES={0:{f:.25,hw:700,k:'fautea'},1:{f:.3,hw:720,k:'lion'},2:{f:.32,hw:620,k:'gorge'},3:{f:.74,hw:700,k:'needles',flat:340},4:{f:.74,hw:720,k:'calanques'},5:{f:.74,hw:640,k:'etang'},7:{f:.74,hw:720,k:'granite'},8:{f:.72,hw:700,k:'lac',avoid:[.08,.5]},9:{f:.32,hw:720,k:'bonif'}};
+var va12C={};
+var va12Busy=0;
+function va12X(){const ci=chIdx(),S=VA12_SITES[ci];if(!S)return -1;const l=level;if(va12C[l]!==undefined)return va12C[l];if(va12Busy)return -1;va12Busy=1;let best=-1,bs=1e9;
+ try{const hw=S.hw;for(const win of[.16,.4,1]){for(let x=Math.round(MAP_L*Math.max(.06,S.f-win)/100)*100;x<MAP_L*Math.min(.92,S.f+win);x+=100){
+  if(S.avoid&&x/MAP_L>S.avoid[0]&&x/MAP_L<S.avoid[1])continue;let lo=1e9,hi=-1e9;for(let d=-hw;d<=hw;d+=50){const t=T(x+d);if(t<lo)lo=t;if(t>hi)hi=t}if(hi-lo>(S.flat||140))continue;const sc=hi-lo+Math.abs(x/MAP_L-S.f)*1200;if(sc>=bs)continue;
+  try{let bad=false;for(let d=-hw-250;d<=hw+250;d+=50){const q=x+d;if(tunAt(q)>=0||ferIn(q)||cvIn(q,50)||sceneAt(q)||bridgeAt(q)>=0||rockW(q)>0||hardS(q)>=0||fordS(q)>=0){bad=true;break}}if(bad)continue;
+   if(occAt(x,hw+200))continue;const bk=typeof brkS==='function'?brkS():-1;if(bk!=null&&bk!==-1&&Math.abs((bk.x!=null?bk.x:bk)-x)<hw+400)continue;
+   if(typeof stfX==='function'&&stfX()>0&&Math.abs(stfX()-x)<3000)continue}catch(e){continue}
+  bs=sc;best=x}if(best>0)break}}catch(e){}
+ va12Busy=0;va12C[l]=best;return best}
+function va12Near(x,m){try{if(va12Busy)return false;const px=va12X();if(px<0)return false;const S=VA12_SITES[chIdx()];return Math.abs(x-px)<S.hw+(m||250)}catch(e){return false}}
+// tout ce qui se place ensuite (stations, garages, campings, vendeurs, pique-nique…) évite le décor
+spNear=(function(o){return function(x){return o(x)||va12Near(x,300)}})(spNear);
+occAt=(function(o){return function(x,r,skip){if(o(x,r,skip))return true;return va12Near(x,(r||0))}})(occAt);
+mgTick=(function(o){return function(dt){try{va12X()}catch(e){}o(dt)}})(mgTick);
+{const op=pzL.push;pzL.push=function(...a){const r=op.apply(this,a);try{for(const m of a){if(va12Near(m.x,260)){const px=va12X(),hw=VA12_SITES[chIdx()].hw;m.x=px+hw+340}}}catch(e){}return r}}
+// couleur adaptée à la nuit
+function va12N(c,dk){if(!dk)return c;const n=parseInt(c.slice(1),16),r=n>>16,g2=(n>>8)&255,b=n&255;const m=(a,t)=>Math.round(a*.42+t*.58);return'rgb('+m(r,26)+','+m(g2,34)+','+m(b,54)+')'}
+// une étendue d'eau entre l'horizon et la route (mer, étang, lac), avec reflets, vaguelettes, scintillements, pluie
+function va12Water(px,hw,sy,dk,tm,P){const qy=d=>T(px+d)-3,W0=px-hw,WW=hw*2;
+ const sg=g.createLinearGradient(0,sy,0,sy+80);sg.addColorStop(0,va12N(P[0],dk));sg.addColorStop(.25,va12N(P[1],dk));sg.addColorStop(1,va12N(P[2],dk));g.fillStyle=sg;
+ const poly=()=>{g.beginPath();g.moveTo(W0,sy);g.lineTo(W0+WW,sy);for(let d=hw;d>=-hw;d-=20)g.lineTo(px+d,qy(d));g.closePath()};poly();g.fill();
+ g.save();poly();g.clip();
+ g.fillStyle=dk?'rgba(160,190,230,.10)':'rgba(255,255,255,.28)';g.fillRect(W0,sy,WW,3);
+ const calm=P[3]||1;for(let j=0;j<9;j++){const f=j/8,yy=sy+7+f*f*44,len=(8+f*22)*calm,n=Math.round((18+f*10)*hw/760),sp=(j%2?1:-1)*(6+f*10)*calm;g.strokeStyle=dk?'rgba(200,220,255,'+(.10+f*.14)+')':'rgba(255,255,255,'+(.14+f*.28)*calm+')';g.lineWidth=.8+f*1.2;g.lineCap='round';
+  for(let k=0;k<n;k++){const xx=W0+((k*WW/n+hs(j*31+k)*60+tm*sp)%WW+WW)%WW,yo=Math.sin(tm*1.8+k+j)*.8;g.beginPath();g.moveTo(xx,yy+yo);g.quadraticCurveTo(xx+len/2,yy+yo-1.2-f*1.4,xx+len,yy+yo);g.stroke()}}
+ for(let k=0;k<Math.round(40*hw/760);k++){const al=Math.sin(tm*2.4+k*2.1);if(al<.55)continue;const xx=W0+hs(k*3.7)*WW,yy=sy+6+hs(k*5.1)*30;g.fillStyle=dk?'rgba(255,240,200,'+(al-.55)*.9+')':'rgba(255,255,240,'+(al-.55)*2+')';g.fillRect(xx,yy,3+hs(k)*4,1.2)}
+ if(typeof wI!=='undefined'&&wI>.2&&wxKind()!=='snow'){g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=.8;for(let k=0;k<26;k++){const ph=(tm*1.2+hs(k*9.3))%1,xx=W0+hs(k*7.7+Math.floor(tm*1.2+hs(k*9.3)))*WW,yy=sy+10+hs(k*2.9)*40;g.globalAlpha=(1-ph)*Math.min(1,wI);g.beginPath();g.ellipse(xx,yy,1+ph*7,.4+ph*1.8,0,0,7);g.stroke()}g.globalAlpha=1}
+ g.restore();
+ g.strokeStyle=dk?'rgba(220,235,255,.25)':'rgba(255,255,255,.6)';g.lineWidth=1.6;g.beginPath();for(let d=-hw;d<=hw;d+=10){const y=qy(d)-1+Math.sin(tm*2.2+d*.05)*1.1*calm;d===-hw?g.moveTo(px+d,y):g.lineTo(px+d,y)}g.stroke()}
+// pointe rocheuse qui ferme une baie (même dessin que Saint-Florent, couleurs au choix)
+function va12Point(ex,sd,sy,dk,tm,c1,c2,veg){const gy=Math.max(T(ex-sd*60),T(ex))+2;g.fillStyle=va12N(c1,dk);g.beginPath();g.moveTo(ex-sd*120,gy);g.quadraticCurveTo(ex-sd*96,sy+8,ex-sd*40,sy-14);g.quadraticCurveTo(ex,sy-30,ex+sd*80,sy-26);g.lineTo(ex+sd*80,gy);g.closePath();g.fill();
+ g.fillStyle=va12N(c2,dk);g.beginPath();g.moveTo(ex-sd*110,gy);g.quadraticCurveTo(ex-sd*86,sy+16,ex-sd*30,sy-4);g.lineTo(ex+sd*80,sy+2);g.lineTo(ex+sd*80,gy);g.closePath();g.fill();
+ g.strokeStyle='rgba(0,0,0,.18)';g.lineWidth=1;for(let r=0;r<4;r++){g.beginPath();g.moveTo(ex-sd*(80-r*12),sy+4+r*9);g.lineTo(ex+sd*70,sy+r*9);g.stroke()}
+ if(veg!==false){g.fillStyle=va12N(veg||'#5f7d3e',dk);for(let b=0;b<6;b++){g.beginPath();g.arc(ex-sd*30+sd*b*18,sy-22+Math.abs(b-2)*2,6+hs(b+sd*5)*4,0,7);g.fill()}}
+ g.strokeStyle=dk?'rgba(220,235,255,.25)':'rgba(255,255,255,.55)';g.lineWidth=1.4;g.beginPath();for(let t=0;t<=1;t+=.1){const xx=ex-sd*(118-t*80),yy=gy-(gy-sy-8)*t*t+Math.sin(tm*2+t*6)*1.2;t===0?g.moveTo(xx,yy):g.lineTo(xx,yy)}g.stroke()}
+// tour génoise ronde
+function va12Tower(x,base,h,dk){g.fillStyle=va12N('#cbb894',dk);g.beginPath();g.moveTo(x-15,base);g.lineTo(x-12,base-h);g.lineTo(x+12,base-h);g.lineTo(x+15,base);g.fill();g.fillStyle=va12N('#b39f7a',dk);g.fillRect(x-14,base-h-7,28,7);for(let i=0;i<5;i++){g.fillStyle=va12N('#a08c68',dk);g.fillRect(x-14+i*6,base-h-11,4,4)}
+ g.fillStyle='rgba(0,0,0,.18)';g.fillRect(x+4,base-h,8,h);g.fillStyle=va12N('#3a3026',dk);g.fillRect(x-3,base-h*.62,5,8);g.fillRect(x-2,base-h*.3,4,6)}
+// bateau au mouillage
+function va12Boat(bx,by,hc,sc2,mast,tm){const rk=Math.sin(tm*1.1+bx*.3)*.04;g.save();g.translate(bx,by+Math.sin(tm*1.3+bx)*1.4);g.rotate(rk);g.scale(.8,.8);
+ g.fillStyle=hc;g.beginPath();g.moveTo(-30,-6);g.lineTo(30,-6);g.quadraticCurveTo(34,-6,28,4);g.lineTo(-26,4);g.quadraticCurveTo(-34,-2,-30,-6);g.fill();g.fillStyle=sc2;g.fillRect(-29,-3,58,3);
+ if(mast){g.strokeStyle='#5a5048';g.lineWidth=1.6;g.beginPath();g.moveTo(0,-6);g.lineTo(0,-56);g.stroke();g.fillStyle='rgba(240,236,226,.9)';g.beginPath();g.moveTo(1,-52);g.lineTo(1,-10);g.lineTo(20,-10);g.fill()}
+ else{g.fillStyle='#f4f1ea';g.fillRect(-8,-16,18,10);g.fillStyle='#3a4a5a';g.fillRect(-5,-14,5,5);g.fillRect(2,-14,5,5)}g.restore()}
+// pin laricio
+function va12Pine(x,y,h,dk,sw){g.strokeStyle=va12N('#5a4030',dk);g.lineWidth=Math.max(1.5,h*.05);g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+(sw||0)*h*.2,y-h*.6,x+(sw||0)*h*.12,y-h);g.stroke();
+ g.fillStyle=va12N('#2f5a34',dk);for(let i=0;i<4;i++){const yy=y-h*(.55+i*.13),w2=h*(.32-i*.06);g.beginPath();g.ellipse(x+(sw||0)*h*.12+(i%2?4:-4),yy,w2,h*.06,0,0,7);g.fill()}g.fillStyle=va12N('#3f6e3e',dk);g.beginPath();g.ellipse(x+(sw||0)*h*.12,y-h*.95,h*.12,h*.05,0,0,7);g.fill()}
+function va12Bush(x,y,s,c,dk){g.fillStyle=va12N(c||'#5f7d3e',dk);g.beginPath();g.arc(x-s*.6,y-s*.5,s*.7,0,7);g.arc(x+s*.5,y-s*.6,s*.8,0,7);g.arc(x,y-s,s*.7,0,7);g.fill()}
+// --- les tableaux
+const VA12_DRAW={
+ fautea(px,hw,sy,yt,dk,tm){va12Water(px,hw,sy,dk,tm,['#9fd4e6','#4fb0cf','#2a8cb3']);
+  // îlots au large et voilier
+  g.fillStyle=va12N('#8a7c62',dk);g.beginPath();g.ellipse(px-200,sy+2,46,7,0,Math.PI,0);g.fill();g.beginPath();g.ellipse(px+120,sy+1,24,4,0,Math.PI,0);g.fill();
+  va12Boat(px+260,sy+26,'#f4f1ea','#2e7dc8',1,tm);va12Boat(px-380,sy+34,'#2e6db8','#f4f1ea',0,tm);
+  // plage et parasols
+  g.fillStyle=va12N('#ead8ae',dk);g.beginPath();g.moveTo(px-260,T(px-260)-2);for(let d=-260;d<=60;d+=20)g.lineTo(px+d,T(px+d)-7-Math.sin((d+260)/320*Math.PI)*5);g.lineTo(px+60,T(px+60));g.lineTo(px-260,T(px-260));g.fill();
+  for(const [d,c] of[[-200,'#e8334a'],[-120,'#f2c230'],[-40,'#2e7dc8']]){const y=T(px+d)-8;g.strokeStyle='#6a5a48';g.lineWidth=1.4;g.beginPath();g.moveTo(px+d,y);g.lineTo(px+d,y-22);g.stroke();g.fillStyle=va12N(c,dk);g.beginPath();g.moveTo(px+d-14,y-20);g.quadraticCurveTo(px+d,y-32,px+d+14,y-20);g.fill();g.fillStyle='rgba(255,255,255,.7)';g.beginPath();g.moveTo(px+d-5,y-22);g.quadraticCurveTo(px+d,y-29,px+d+4,y-22);g.fill()}
+  // pointe rocheuse et tour génoise
+  va12Point(px+hw,1,sy,dk,tm,'#b8a88a','#9c8b6c','#5f7d3e');va12Tower(px+hw-30,sy-24,46,dk);va12Point(px-hw,-1,sy,dk,tm,'#a8987a','#8c7b5c','#58743a');
+  for(let i=0;i<8;i++)va12Bush(px-hw+40+i*24,T(px-hw+40+i*24)-2,7+hs(i)*4,i%2?'#5f7d3e':'#6f8d48',dk)},
+ lion(px,hw,sy,yt,dk,tm){va12Water(px,hw,sy,dk,tm,['#b8e6ee','#5cc8d6','#2a9ab8']);
+  // la grande plage blanche de Roccapina
+  g.fillStyle=va12N('#f4ead2',dk);g.beginPath();g.moveTo(px-hw+100,T(px-hw+100));for(let d=-hw+100;d<=hw-160;d+=20)g.lineTo(px+d,T(px+d)-6-Math.sin((d+hw-100)/(hw*2-260)*Math.PI)*7);g.lineTo(px+hw-160,T(px+hw-160));g.fill();
+  // le lion de pierre couché sur le promontoire
+  const lx=px+hw-210,lb=sy+8;g.fillStyle=va12N('#c9a77a',dk);g.beginPath();g.moveTo(lx-150,lb+30);g.quadraticCurveTo(lx-140,lb-30,lx-80,lb-40);g.quadraticCurveTo(lx-40,lb-48,lx-10,lb-60);g.quadraticCurveTo(lx+10,lb-96,lx+46,lb-92);g.quadraticCurveTo(lx+78,lb-88,lx+80,lb-56);g.quadraticCurveTo(lx+70,lb-40,lx+92,lb-30);g.lineTo(lx+150,lb+30);g.closePath();g.fill();
+  g.fillStyle=va12N('#a8865a',dk);g.beginPath();g.moveTo(lx-10,lb-60);g.quadraticCurveTo(lx+10,lb-96,lx+46,lb-92);g.quadraticCurveTo(lx+20,lb-80,lx+10,lb-50);g.closePath();g.fill();
+  g.fillStyle='rgba(60,40,20,.35)';g.beginPath();g.ellipse(lx+58,lb-70,5,3,0,0,7);g.fill();g.strokeStyle='rgba(80,56,30,.35)';g.lineWidth=1.2;for(let i=0;i<5;i++){g.beginPath();g.moveTo(lx-120+i*40,lb+20);g.quadraticCurveTo(lx-100+i*40,lb-10,lx-70+i*40,lb-20);g.stroke()}
+  va12Tower(lx-110,lb-28,34,dk);va12Point(px+hw,1,sy,dk,tm,'#c9a77a','#a8865a',false);va12Point(px-hw,-1,sy,dk,tm,'#b89a6a','#9a7c4c','#6f8d48');
+  for(let i=0;i<6;i++)va12Bush(px-hw+30+i*26,T(px-hw+30+i*26)-1,6+hs(i+4)*4,'#6f8d48',dk);va12Boat(px-150,sy+30,'#f4f1ea','#c8382c',0,tm)},
+ gorge(px,hw,sy,yt,dk,tm){// vallée du Fium'orbu : rivière, pont génois en dos d'âne, cascade, châtaigniers
+  const qy=d=>T(px+d)-2,ry=sy+30;
+  // versants de la vallée qui descendent jusqu'à la route
+  g.fillStyle=va12N('#8aa070',dk);g.beginPath();g.moveTo(px-hw,qy(-hw));for(let d=-hw;d<=-60;d+=30){const u=(d+hw)/(hw-60);g.lineTo(px+d,sy-40+u*u*70)}g.lineTo(px-60,ry);g.lineTo(px+60,ry);for(let d=60;d<=hw;d+=30){const u=(hw-d)/(hw-60);g.lineTo(px+d,sy-40+u*u*70)}g.lineTo(px+hw,qy(hw));for(let d=hw;d>=-hw;d-=20)g.lineTo(px+d,qy(d));g.closePath();g.fill();
+  // rochers de la gorge
+  for(const sd of[-1,1]){const ex=px+sd*90;g.fillStyle=va12N('#9a8f80',dk);g.beginPath();g.moveTo(ex,ry+4);g.lineTo(ex+sd*6,sy-10);g.lineTo(ex+sd*40,sy-30);g.lineTo(ex+sd*90,sy-20);g.lineTo(ex+sd*130,ry);g.closePath();g.fill();g.strokeStyle='rgba(0,0,0,.15)';g.lineWidth=1;for(let r=0;r<4;r++){g.beginPath();g.moveTo(ex+sd*(14+r*26),sy-20+r*4);g.lineTo(ex+sd*(18+r*26),ry);g.stroke()}}
+  // cascade au fond de la gorge
+  g.fillStyle=dk?'rgba(220,235,255,.45)':'rgba(255,255,255,.85)';g.fillRect(px-5,sy-26,10,ry-sy+20);for(let k=0;k<6;k++){const u=(tm*1.5+k/6)%1;g.fillStyle='rgba(255,255,255,'+(1-u)*.8+')';g.beginPath();g.arc(px-5+hs(k)*10,ry-4+u*5,3+u*4,0,7);g.fill()}
+  // la rivière qui s'élargit vers la route
+  const wg=g.createLinearGradient(0,ry,0,ry+40);wg.addColorStop(0,va12N('#9fd4e0',dk));wg.addColorStop(1,va12N('#3a8ab0',dk));g.fillStyle=wg;g.beginPath();g.moveTo(px-30,ry-2);g.lineTo(px+30,ry-2);g.quadraticCurveTo(px+90,ry+20,px+170,qy(170));g.lineTo(px-170,qy(-170));g.quadraticCurveTo(px-90,ry+20,px-30,ry-2);g.closePath();g.fill();
+  g.strokeStyle=dk?'rgba(220,235,255,.25)':'rgba(255,255,255,.6)';g.lineWidth=1.2;for(let k=0;k<14;k++){const u=((tm*.35+k/14)%1),xx=px-60+hs(k)*120,yy=ry+u*(qy(0)-ry-4);g.beginPath();g.moveTo(xx-u*30,yy);g.lineTo(xx-u*30+8+u*8,yy+1);g.stroke()}
+  // pont génois en dos d'âne au-dessus de la rivière
+  const by=ry+14;g.fillStyle=va12N('#b0a080',dk);g.beginPath();g.moveTo(px-120,by+12);g.quadraticCurveTo(px,by-46,px+120,by+12);g.lineTo(px+120,by);g.quadraticCurveTo(px,by-60,px-120,by);g.closePath();g.fill();
+  g.fillStyle=va12N('#3a5058',dk);g.beginPath();g.moveTo(px-70,by+12);g.quadraticCurveTo(px,by-30,px+70,by+12);g.closePath();g.fill();
+  g.strokeStyle='rgba(0,0,0,.22)';g.lineWidth=.8;for(let i=-6;i<=6;i++){const t=i/7,xx=px+t*104,yy=by-2-(1-t*t)*28;g.beginPath();g.moveTo(xx,yy);g.lineTo(xx,yy+9);g.stroke()}
+  // châtaigniers sur les versants
+  for(let i=0;i<10;i++){const d=-hw+50+i*((hw*2-100)/9);if(Math.abs(d)<200)continue;const x=px+d,u=Math.abs(d)/hw,y=Math.min(qy(d),sy-40+(1-u)*(1-u)*70+8),s=16+hs(i+3)*10;g.fillStyle=va12N('#5a3e26',dk);g.fillRect(x-2,y-s,4,s);g.fillStyle=va12N(i%2?'#4f7a34':'#5f8a3e',dk);g.beginPath();g.arc(x-s*.4,y-s*1.1,s*.55,0,7);g.arc(x+s*.4,y-s*1.15,s*.6,0,7);g.arc(x,y-s*1.5,s*.6,0,7);g.fill()}},
+ needles(px,hw,sy,yt,dk,tm){// aiguilles de Bavella : grandes dents de granit rose, pins laricio tordus
+  const base=yt-6;g.fillStyle=va12N('#7a8a5a',dk);g.beginPath();g.moveTo(px-hw,base);g.lineTo(px+hw,base);for(let d=hw;d>=-hw;d-=20)g.lineTo(px+d,T(px+d));g.closePath();g.fill();const N=[[-560,150,46],[-470,210,52],[-380,170,40],[-300,250,58],[-200,190,44],[-110,280,62],[-10,220,50],[90,300,66],[200,230,50],[300,180,44],[400,240,54],[500,170,42],[590,130,40]];
+  for(const [d,h,w] of N){const x=px+d*hw/700,c=va12N(h>240?'#d08a62':'#c47e58',dk),c2=va12N('#a8603e',dk);g.fillStyle=c;g.beginPath();g.moveTo(x-w,base);g.lineTo(x-w*.6,base-h*.55);g.lineTo(x-w*.3,base-h*.86);g.quadraticCurveTo(x,base-h-8,x+w*.25,base-h*.9);g.lineTo(x+w*.55,base-h*.5);g.lineTo(x+w,base);g.closePath();g.fill();
+   g.fillStyle=c2;g.beginPath();g.moveTo(x+w*.25,base-h*.9);g.lineTo(x+w*.55,base-h*.5);g.lineTo(x+w,base);g.lineTo(x+w*.2,base);g.closePath();g.fill();
+   g.strokeStyle='rgba(80,40,20,.25)';g.lineWidth=1;for(let r=0;r<4;r++){g.beginPath();g.moveTo(x-w*.4+r*w*.25,base-h*(.2+r*.15));g.lineTo(x-w*.3+r*w*.25,base-h*(.05+r*.12));g.stroke()}
+   if(!dk&&h>200){g.fillStyle='rgba(255,236,210,.35)';g.beginPath();g.moveTo(x-w*.3,base-h*.86);g.quadraticCurveTo(x,base-h-8,x+w*.1,base-h*.92);g.lineTo(x-w*.1,base-h*.7);g.closePath();g.fill()}}
+  // nuages accrochés aux sommets
+  if(!dk){g.fillStyle='rgba(255,255,255,.55)';for(let i=0;i<4;i++){const cx=px-400+i*260+Math.sin(tm*.1+i)*30,cy=base-230+hs(i)*40;g.beginPath();g.ellipse(cx,cy,60,10,0,0,7);g.ellipse(cx+30,cy-6,40,9,0,0,7);g.fill()}}
+  // forêt de pins laricio au pied
+  for(let i=0;i<22;i++){const d=-hw+20+i*(hw*2-40)/21,x=px+d;va12Pine(x,T(x)-1,40+hs(i+7)*36,dk,(hs(i+2)-.5)*1.4)}
+  for(let i=0;i<10;i++){const x=px-hw+40+i*(hw*2-80)/9;rockD(x,T(x),18+hs(i)*10,10+hs(i+1)*8,va12N('#b87a58',dk))}},
+ calanques(px,hw,sy,yt,dk,tm){va12Water(px,hw,sy+18,dk,tm,['#7fb8d8','#2f7fae','#1c5c88']);
+  // le golfe de Porto, les falaises rouges qui plongent dans la mer
+  const C=[[-hw,-1],[hw,1]];for(const [d,sd] of C){const ex=px+d;g.fillStyle=va12N('#c8502a',dk);g.beginPath();g.moveTo(ex-sd*280,T(ex-sd*280));g.lineTo(ex-sd*240,sy-10);g.lineTo(ex-sd*190,sy-70);g.lineTo(ex-sd*150,sy-52);g.lineTo(ex-sd*110,sy-110);g.lineTo(ex-sd*60,sy-86);g.lineTo(ex-sd*20,sy-130);g.lineTo(ex+sd*80,sy-120);g.lineTo(ex+sd*80,T(ex));g.closePath();g.fill();
+   g.fillStyle=va12N('#a83a1e',dk);g.beginPath();g.moveTo(ex-sd*190,sy-70);g.lineTo(ex-sd*150,sy-52);g.lineTo(ex-sd*150,sy+20);g.lineTo(ex-sd*240,sy+18);g.closePath();g.fill();g.beginPath();g.moveTo(ex-sd*20,sy-130);g.lineTo(ex-sd*60,sy-86);g.lineTo(ex-sd*70,sy+20);g.lineTo(ex+sd*10,sy+20);g.closePath();g.fill();
+   g.strokeStyle='rgba(90,20,10,.3)';g.lineWidth=1.2;for(let r=0;r<8;r++){g.beginPath();g.moveTo(ex-sd*(230-r*30),sy-60+r*5);g.quadraticCurveTo(ex-sd*(220-r*30),sy-20,ex-sd*(232-r*30),sy+16);g.stroke()}
+   g.fillStyle=va12N('#3f6a2a',dk);for(let b=0;b<8;b++){g.beginPath();g.arc(ex-sd*(200-b*30),sy-74-hs(b+sd)*40+Math.abs(b-4)*8,6+hs(b)*4,0,7);g.fill()}
+   g.strokeStyle=dk?'rgba(220,235,255,.25)':'rgba(255,255,255,.6)';g.lineWidth=1.4;g.beginPath();for(let t=0;t<=1;t+=.1){const xx=ex-sd*(240-t*230),yy=sy+20+Math.sin(tm*2+t*8)*1.4;t===0?g.moveTo(xx,yy):g.lineTo(xx,yy)}g.stroke()}
+  // rocher en forme de visage (« les rochers ont des visages ») au milieu du golfe
+  const fx=px+60,fy=sy+16;g.fillStyle=va12N('#b8441f',dk);g.beginPath();g.moveTo(fx-40,fy);g.quadraticCurveTo(fx-46,fy-60,fx-6,fy-66);g.quadraticCurveTo(fx+34,fy-62,fx+38,fy-24);g.lineTo(fx+44,fy);g.closePath();g.fill();g.fillStyle='rgba(60,10,0,.4)';g.beginPath();g.ellipse(fx-12,fy-40,5,3,0,0,7);g.ellipse(fx+12,fy-40,5,3,0,0,7);g.fill();g.strokeStyle='rgba(60,10,0,.4)';g.lineWidth=2;g.beginPath();g.arc(fx,fy-28,10,.3,Math.PI-.3);g.stroke();
+  va12Boat(px-200,sy+44,'#f4f1ea','#c8382c',1,tm);va12Boat(px+260,sy+52,'#e8c040','#2a5a8a',0,tm)},
+ etang(px,hw,sy,yt,dk,tm){va12Water(px,hw,sy+10,dk,tm,['#a8c8b8','#6a9a8a','#3f7468',.45]);
+  // nénuphars, roseaux, héron, cistudes sur un tronc
+  for(let i=0;i<14;i++){const x=px-hw+80+hs(i+3)*(hw*2-160),y=sy+26+hs(i+7)*36;g.fillStyle=va12N('#4f8a3e',dk);g.beginPath();g.ellipse(x,y,9,3,0,.3,Math.PI*2-.3);g.lineTo(x,y);g.fill();if(i%3===0){g.fillStyle=dk?'#c8b8c8':'#f6e6f0';g.beginPath();g.arc(x+3,y-2,2.4,0,7);g.fill()}}
+  const lgx=px+120,lgy=sy+40;g.fillStyle=va12N('#6a4a2a',dk);g.beginPath();g.ellipse(lgx,lgy,60,6,-.05,0,7);g.fill();g.fillStyle=va12N('#8a6a3a',dk);g.beginPath();g.ellipse(lgx+58,lgy-1,5,6,0,0,7);g.fill();
+  for(const d of[-30,0,28]){g.save();g.translate(lgx+d,lgy-6);g.scale(.32,.32);try{artA(g,'cistude',tm*.3+d)}catch(e){}g.restore()}
+  // héron cendré
+  const hx=px-160,hy=sy+34;g.strokeStyle=va12N('#5a5a5a',dk);g.lineWidth=1.6;g.beginPath();g.moveTo(hx-2,hy);g.lineTo(hx-3,hy-16);g.moveTo(hx+3,hy);g.lineTo(hx+2,hy-16);g.stroke();g.fillStyle=va12N('#9aa0a6',dk);g.beginPath();g.ellipse(hx,hy-22,9,6,-.3,0,7);g.fill();g.strokeStyle=va12N('#9aa0a6',dk);g.lineWidth=3;g.beginPath();g.moveTo(hx+5,hy-26);g.quadraticCurveTo(hx+12,hy-34,hx+8,hy-42);g.stroke();g.fillStyle=va12N('#e8e8e4',dk);g.beginPath();g.arc(hx+8,hy-43,3,0,7);g.fill();g.fillStyle='#e8b84a';g.beginPath();g.moveTo(hx+10,hy-44);g.lineTo(hx+20,hy-42);g.lineTo(hx+10,hy-41);g.fill();
+  // roseaux tout autour
+  for(let i=0;i<70;i++){const d=-hw+hs(i+11)*hw*2,x=px+d,y=(i%3===0?T(x)-2:sy+8+hs(i+5)*10),h=14+hs(i+9)*22,sw=Math.sin(tm*1.4+i)*2;g.strokeStyle=va12N(i%2?'#7a8a4a':'#8a9a5a',dk);g.lineWidth=1.3;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+sw*.5,y-h*.6,x+sw,y-h);g.stroke();if(i%4===0){g.fillStyle=va12N('#6a4a2a',dk);g.fillRect(x+sw-1.5,y-h-6,3,8)}}
+  for(let i=0;i<8;i++){const x=px-hw+30+i*(hw*2-60)/7;va12Bush(x,sy+10,10+hs(i)*5,'#5f7d4e',dk)}},
+ granite(px,hw,sy,yt,dk,tm){va12Water(px,hw,sy,dk,tm,['#c8f0f0','#5cd0d6','#2aa0bc']);
+  // Gallura : boules de granit rose sculptées par le vent
+  const R=[[-hw+40,60,46],[-hw+110,40,30],[-hw+170,28,22],[-260,22,16],[-120,30,20],[180,26,18],[hw-240,34,26],[hw-150,58,44],[hw-60,72,52]];
+  for(const [d,h,w] of R){const x=px+d,b=d<-hw+200||d>hw-260?T(x):sy+30;g.fillStyle=va12N('#e0a890',dk);g.beginPath();g.moveTo(x-w,b);g.quadraticCurveTo(x-w*1.05,b-h*.9,x-w*.2,b-h);g.quadraticCurveTo(x+w*.9,b-h*1.05,x+w,b-h*.2);g.lineTo(x+w,b);g.closePath();g.fill();
+   g.fillStyle=va12N('#c88a72',dk);g.beginPath();g.moveTo(x+w*.1,b-h*.95);g.quadraticCurveTo(x+w*.9,b-h*1.05,x+w,b-h*.2);g.lineTo(x+w,b);g.lineTo(x+w*.3,b);g.closePath();g.fill();
+   g.fillStyle='rgba(120,60,40,.3)';g.beginPath();g.ellipse(x-w*.2,b-h*.45,w*.22,h*.14,0,0,7);g.fill()}
+  // tour nuragique en pierres sèches
+  const nx=px+hw-110,nb=T(nx)-56;g.fillStyle=va12N('#a89a84',dk);g.beginPath();g.moveTo(nx-26,nb+4);g.lineTo(nx-18,nb-34);g.lineTo(nx+18,nb-34);g.lineTo(nx+26,nb+4);g.fill();g.strokeStyle='rgba(0,0,0,.2)';g.lineWidth=.8;for(let r=0;r<6;r++){g.beginPath();g.moveTo(nx-24+r*1.3,nb-r*6);g.lineTo(nx+24-r*1.3,nb-r*6);g.stroke()}g.fillStyle=va12N('#3a3026',dk);g.fillRect(nx-4,nb-8,8,12);
+  va12Boat(px-60,sy+30,'#f4f1ea','#2e7dc8',1,tm);for(let i=0;i<8;i++)va12Bush(px-hw+30+i*20,T(px-hw+30+i*20)-50+i*4,6,'#7a8a4a',dk)},
+ lac(px,hw,sy,yt,dk,tm){// lac de l'Ospedale : forêt de pins qui se reflète, barrage
+  // forêt sur l'autre rive
+  for(let i=0;i<28;i++){const x=px-hw+i*(hw*2)/27,h=46+hs(i+3)*30;va12Pine(x,sy+2,h,dk,(hs(i)-.5)*.6)}
+  va12Water(px,hw,sy+2,dk,tm,['#6a9aa8','#3f7888','#2a5a6a',.55]);
+  // reflets des pins
+  g.save();g.globalAlpha=dk?.15:.28;for(let i=0;i<28;i++){const x=px-hw+i*(hw*2)/27,h=(46+hs(i+3)*30)*.7;g.fillStyle='#1f3a2a';g.beginPath();g.moveTo(x-6,sy+4);g.lineTo(x+6,sy+4);g.lineTo(x+Math.sin(tm+i)*2,sy+4+h);g.closePath();g.fill()}g.restore();
+  // barrage à droite
+  const dx=px+hw-120,dy=sy+4;g.fillStyle=va12N('#b8b4aa',dk);g.beginPath();g.moveTo(dx,dy-18);g.lineTo(dx+120,dy-18);g.lineTo(dx+120,T(px+hw));g.lineTo(dx-10,T(dx));g.closePath();g.fill();g.fillStyle=va12N('#8f8a80',dk);g.fillRect(dx,dy-22,120,5);for(let i=0;i<6;i++){g.fillStyle='rgba(0,0,0,.12)';g.fillRect(dx+8+i*20,dy-17,2,22)}
+  // rochers de granit au bord et barque
+  for(let i=0;i<7;i++){const x=px-hw+60+i*(hw*2-260)/6;rockD(x,sy+16+hs(i)*20,20+hs(i+2)*14,8+hs(i+1)*8,va12N('#a8a094',dk))}
+  va12Boat(px-80,sy+36,'#7a5a3a','#5a3a1a',0,tm)},
+ bonif(px,hw,sy,yt,dk,tm){va12Water(px,hw,sy+16,dk,tm,['#a8dcee','#3fa8cc','#1f7ea8']);
+  // falaises de calcaire blanc et la vieille ville perchée
+  const cx=px+80,top=sy-52;g.fillStyle=va12N('#ece4cf',dk);g.beginPath();g.moveTo(cx-hw+120,sy+20);g.lineTo(cx-hw+140,top+20);g.lineTo(cx-60,top);g.lineTo(cx+hw-240,top+6);g.lineTo(cx+hw-220,sy+20);g.closePath();g.fill();
+  g.strokeStyle='rgba(150,130,100,.35)';g.lineWidth=1;for(let r=0;r<10;r++){const yy=top+12+r*10;g.beginPath();g.moveTo(cx-hw+150,yy);for(let d=cx-hw+150;d<cx+hw-230;d+=40)g.lineTo(d,yy+Math.sin(d*.05+r)*2);g.stroke()}
+  g.fillStyle='rgba(120,110,90,.25)';g.beginPath();g.moveTo(cx-hw+120,sy+20);g.lineTo(cx-hw+250,sy+20);g.lineTo(cx-hw+230,top+60);g.closePath();g.fill();
+  // maisons hautes de la citadelle au bord du vide
+  for(let i=0;i<12;i++){const hx=cx-260+i*34,hh=18+hs(i+2)*16,hy=top+2;g.fillStyle=va12N(['#e8d8b8','#d9c49a','#f0e4cc','#cdb48a'][i%4],dk);g.fillRect(hx,hy-hh,30,hh+2);g.fillStyle=va12N('#b5532a',dk);g.fillRect(hx-2,hy-hh-4,34,5);for(let r=0;r<Math.floor(hh/12);r++){g.fillStyle=dk?(hs(i*5+r)<.5?'#ffd27a':'#2a2a35'):'#4a5a6a';g.fillRect(hx+6,hy-hh+6+r*12,5,6);g.fillRect(hx+19,hy-hh+6+r*12,5,6)}}
+  g.fillStyle=va12N('#c8bfa8',dk);g.fillRect(cx+170,top-40,14,40);g.fillRect(cx+164,top-46,26,8);
+  va12Boat(px-hw+300,sy+40,'#f4f1ea','#2e7dc8',0,tm);va12Boat(px+hw-120,sy+50,'#f4f1ea','#c8382c',1,tm);
+  va12Point(px-hw,-1,sy+16,dk,tm,'#e4dcc6','#c8bfa8','#7a8a4a');va12Point(px+hw,1,sy+16,dk,tm,'#e4dcc6','#c8bfa8','#7a8a4a')}};
+function va12Draw(x0,x1){const px=va12X();if(px<0)return;const S=VA12_SITES[chIdx()];if(!S)return;const hw=S.hw;if(px+hw+300<x0||px-hw-300>x1)return;const tm=performance.now()/1000;let yt=1e9;for(let d=-hw;d<=hw;d+=50)yt=Math.min(yt,T(px+d));
+ const dk=(typeof night!=='undefined'&&night)||hourNow()>=19||hourNow()<7,sy=yt-62;const f=VA12_DRAW[S.k];if(f)f(px,hw,sy,yt,dk,tm)}
+portDraw=(function(o){return function(x0,x1){o(x0,x1);try{va12Draw(x0,x1)}catch(e){}}})(portDraw);
+// --- 3.12 : les bulles de dialogue passent devant les boutons (dormir, photo, pique-nique, peinture…)
+(function(){const st=document.createElement('style');st.textContent='#bub{z-index:7!important}#slpb,#pact,#picb,#engb,#paintb,#washb{z-index:5!important}';document.head.appendChild(st)})();
 // ===== 3.09 : rejouer les mini-jeux depuis le menu (sans rien changer au voyage) =====
 const VA9_G=[
  ['🦔','Aider un animal',()=>{const ks=Object.keys(HELP).filter(k=>{const H=HELP[k];return H&&H.ph&&!H.smp&&!H.wh&&!H.mech&&!H.cb&&!/^s_/.test(k)});openHelp(ks[Math.floor(Math.random()*ks.length)])}],
@@ -7339,6 +7494,6 @@ drawObs=(function(o){return function(x0,x1){o(x0,x1);try{va3TortDraw(performance
 
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.11',GAME_DATE='24/10/2026 à 09h03';
+const GAME_VER='3.12',GAME_DATE='24/10/2026 à 11h51';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
