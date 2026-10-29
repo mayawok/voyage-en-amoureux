@@ -1,4 +1,4 @@
-# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.12)
+# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.13)
 
 ## Le projet
 - Jeu 2D de franchissement en 4x4 (Jeep Cherokee XJ phase 2 Sport 5 portes) en Corse, en français, joué sur iPhone en mode paysage (raccourci écran d'accueil). Site : https://voyagedesamoureux.netlify.app/
@@ -46,6 +46,7 @@
 - **Menu** : reprendre, son, volumes séparés (`#volp` : musique `busM`, moteur `busE`, effets/voix `busF`), plein écran, difficulté Facile/Normal/Difficile (`DIFF`), aide (`AIDE`, 5 onglets, à tenir à jour), sauvegarde de secours (`BAK`), nouveau voyage.
 
 ## Dernières versions
+- **3.13** : corrections du 29/10 (bloc `// ===== 3.13`) : bac du ch2 (drapeau `SV.frL` périmé remis à zéro) ; sous-marin de L'Albatros (le report d'événements du bac `ferDefer` bloquait `openCine('sub')`) ; pas de magasin au bord du bac ; garages Corse 4x4 placés une seule fois (`cusPlDone`) ; faon : plus de pique-nique ni de bulles derrière un mini-jeu (`va13Over`), cinématique devant le cabinet vétérinaire, faon encore vivant (« quelques heures »), objectif retiré ; boue sur les pneus qui se lave aux gués (`va13TM`) ; marchepieds et roue de secours aux couleurs de la livrée (`VA13_SKC`) ; levier 2H/4H/N/4L sans noms de terrain ; maillots de bain à Fautea (`va13Swim`) ; vraie roue du Cherokee dans le changement de roue ; Mathis : sang sur le pouce + blessure en réparant expliquée ; photo : l'homme en combinaison caché dans les cercles ; lièvre : la mère au sol ; plus de vendeurs sur le plateau du Coscione (`va13PltX`) ; camping/hôtel proposés à partir de 19 h ; un seul bouton « Dormir » ; page à la taille de l'écran au lancement en paysage ; carnet : « Aller à ce chapitre » avec avertissement (`#va13w`) ; sauvetage si la voiture reste en l'air.
 - **3.12** : poursuite à cheval plus difficile (obstacles plus serrés et parfois doublés, 4 faux pas au lieu de 5, poursuite plus longue) ; un grand décor par chapitre comme à Saint-Florent ; les bulles de dialogue passent devant les boutons (`#bub` au-dessus de `#slpb`, `#pact`…).
 - **3.11** : « Rejouer les mini-jeux » : choix du niveau quand le jeu en a plusieurs (10 niveaux = ceux des 10 chapitres, 3 pour le cheval), sans rien développer de nouveau dans les jeux.
 - **3.10** : bac : le premier plan (`scenery(...,front)`) est découpé au-dessus de la mer entre les deux quais (il pouvait recouvrir la mer entre le quai et le bateau au départ).
