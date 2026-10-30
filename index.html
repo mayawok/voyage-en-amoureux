@@ -7601,8 +7601,25 @@ coInfo2=(function(o){return function(i){const reached=Math.min(CHAP.length,level
  gid('va13wn').addEventListener('click',e=>{e.stopPropagation();hide()});
  gid('va13wy').addEventListener('click',e=>{e.stopPropagation();const i=ch;hide();if(i>=0)goChapter(i)});
  document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.va13go');if(!b)return;e.stopPropagation();e.preventDefault();ch=+b.dataset.ch;gid('va13wt').innerHTML='Tu vas sauter directement au chapitre '+(ch+1)+' · '+CHAP[ch].fin+'.<br>L’enquête, les rencontres et les surprises des chapitres d’avant ne seront pas vécues dans l’ordre : ce n’est pas idéal pour l’histoire. Tu pourras toujours rejouer les chapitres précédents depuis le carnet.';d.style.display='flex'},true)})();
+// ===== 3.14 : vraie bande son (morceaux ElevenLabs) pour la conduite de jour et de fin d'après-midi =====
+// Les ambiances qui ont un fichier dans musique/ jouent ce fichier en boucle (fondu enchaîné de 4 s) ;
+// les autres gardent la musique synthétisée. Si un fichier ne charge pas, la musique synthétisée reste.
+const VA14_MF={day:'musique/day.mp3',day2:'musique/day2.mp3',eve:'musique/eve.mp3'},VA14_VOL=.55,VA14_XF=4;
+var va14B={},va14L={},va14G=null,va14Cur=null;
+function va14Load(k){if(!AC||va14L[k]||!VA14_MF[k])return;va14L[k]=1;fetch(VA14_MF[k]).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).then(a=>new Promise((ok,ko)=>AC.decodeAudioData(a,ok,ko))).then(b=>{va14B[k]=b}).catch(()=>{va14L[k]=2})}
+function va14Src(k,t){const s=AC.createBufferSource(),g1=AC.createGain();s.buffer=va14B[k];g1.gain.setValueAtTime(0.0001,t);g1.gain.exponentialRampToValueAtTime(1,t+VA14_XF);s.connect(g1);g1.connect(va14G);s.start(t);return {s,g:g1,t0:t,end:t+s.buffer.duration}}
+function va14Fade(n,t){try{n.g.gain.cancelScheduledValues(t);n.g.gain.setValueAtTime(Math.max(.0001,n.g.gain.value),t);n.g.gain.exponentialRampToValueAtTime(.0001,t+VA14_XF);n.s.stop(t+VA14_XF+.1)}catch(e){}}
+musTick=(function(o){return function(on){o(on);try{if(!AC||!MUS.gn)return;
+ if(!va14G){va14G=AC.createGain();va14G.gain.value=0;va14G.connect(busM());for(const k in VA14_MF)if(k===MUS.mode)va14Load(k);setTimeout(()=>{for(const k in VA14_MF)va14Load(k)},8000)}
+ const k=MUS.mode,has=!!va14B[k],now=AC.currentTime;if(VA14_MF[k])va14Load(k);
+ const vol=(on&&!SET.mute&&!SET.nomus)?VA14_VOL:0;
+ if(has){MUS.gn.gain.cancelScheduledValues(now);MUS.gn.gain.setTargetAtTime(0,now,.4);va14G.gain.setTargetAtTime(vol,now,.6);
+  if(!va14Cur||va14Cur.k!==k){if(va14Cur)va14Fade(va14Cur.n,now);va14Cur={k,n:va14Src(k,now+.05)}}
+  else if(now>va14Cur.n.end-VA14_XF-.5){const nx=va14Src(k,va14Cur.n.end-VA14_XF);va14Fade(va14Cur.n,va14Cur.n.end-VA14_XF);va14Cur.n=nx}}
+ else if(va14Cur){va14Fade(va14Cur.n,now);va14Cur=null}
+}catch(e){}}})(musTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.13',GAME_DATE='29/10/2026 à 10h45';
+const GAME_VER='3.14',GAME_DATE='30/10/2026 à 09h24';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
