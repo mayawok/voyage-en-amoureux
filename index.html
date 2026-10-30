@@ -7604,7 +7604,7 @@ coInfo2=(function(o){return function(i){const reached=Math.min(CHAP.length,level
 // ===== 3.14 : vraie bande son (morceaux ElevenLabs) pour la conduite de jour et de fin d'après-midi =====
 // Les ambiances qui ont un fichier dans musique/ jouent ce fichier en boucle (fondu enchaîné de 4 s) ;
 // les autres gardent la musique synthétisée. Si un fichier ne charge pas, la musique synthétisée reste.
-const VA14_MF={day:'musique/day.mp3',day2:'musique/day2.mp3',eve:'musique/eve.mp3'},VA14_VOL=.55,VA14_XF=4;
+const VA14_MF={day:'musique/day.mp3',day2:'musique/day2.mp3',eve:'musique/eve.mp3',bzh:'musique/bzh.mp3'},VA14_VOL=.55,VA14_XF=4;
 var va14B={},va14L={},va14G=null,va14Cur=null;
 function va14Load(k){if(!AC||va14L[k]||!VA14_MF[k])return;va14L[k]=1;fetch(VA14_MF[k]).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).then(a=>new Promise((ok,ko)=>AC.decodeAudioData(a,ok,ko))).then(b=>{va14B[k]=b}).catch(()=>{va14L[k]=2})}
 function va14Src(k,t){const s=AC.createBufferSource(),g1=AC.createGain();s.buffer=va14B[k];g1.gain.setValueAtTime(0.0001,t);g1.gain.exponentialRampToValueAtTime(1,t+VA14_XF);s.connect(g1);g1.connect(va14G);s.start(t);return {s,g:g1,t0:t,end:t+s.buffer.duration}}
@@ -7620,6 +7620,6 @@ musTick=(function(o){return function(on){o(on);try{if(!AC||!MUS.gn)return;
 }catch(e){}}})(musTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.14',GAME_DATE='30/10/2026 à 09h24';
+const GAME_VER='3.15',GAME_DATE='30/10/2026 à 13h29';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
