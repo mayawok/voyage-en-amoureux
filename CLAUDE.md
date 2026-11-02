@@ -1,4 +1,4 @@
-# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.17)
+# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.18)
 
 ## Le projet
 - Jeu 2D de franchissement en 4x4 (Jeep Cherokee XJ phase 2 Sport 5 portes) en Corse, en français, joué sur iPhone en mode paysage (raccourci écran d'accueil). Site : https://voyagedesamoureux.netlify.app/
@@ -46,6 +46,7 @@
 - **Menu** : reprendre, son, volumes séparés (`#volp` : musique `busM`, moteur `busE`, effets/voix `busF`), plein écran, difficulté Facile/Normal/Difficile (`DIFF`), aide (`AIDE`, 5 onglets, à tenir à jour), sauvegarde de secours (`BAK`), nouveau voyage.
 
 ## Dernières versions
+- **3.18** : menu sans fond : plus de panneau derrière les boutons, titre et textes en blanc avec ombre directement sur l'image d'accueil.
 - **3.17** : écran d'accueil illustré : image `img/accueil.jpg` (générée par l'utilisateur avec ChatGPT, baie de Fautea, Mila, Andrea, le chien et le Cherokee) en fond du menu, avec lent zoom, reflets sur l'eau, vaguelettes et goélands (surcharge de `ttlDraw`, `va17Img`) ; carte du menu déplacée à gauche, en verre dépoli.
 - **3.16** : musique `title` (ElevenLabs, 60 s) pour le menu et le titre « Voyage en amoureux » au début d'un chapitre (`musScene` renvoie `'title'` si `#menu` ouvert ou `introT>0` ; ambiance synthétisée de secours = `CH.day`).
 - **3.15** : musique `bzh` (appels de la famille en Bretagne) en vrai morceau ElevenLabs (60 s en boucle).

@@ -7623,9 +7623,11 @@ musTick=(function(o){return function(on){o(on);try{if(!AC||!MUS.gn)return;
 var va17Img=null,va17Ok=false;
 (function(){try{va17Img=new Image();va17Img.onload=()=>{va17Ok=true};va17Img.src='img/accueil.jpg';
  const st17=document.createElement('style');st17.textContent=`#menu{justify-content:flex-start!important;padding-left:max(3.5vw,env(safe-area-inset-left))!important;padding-right:16px!important}
-#menu .card{width:min(330px,42vw)!important;background:rgba(250,242,226,.86)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:2px solid rgba(255,255,255,.7);border-radius:22px!important;box-shadow:0 12px 40px rgba(20,40,60,.35)!important}
-#menu .card h1{color:#a8282a;letter-spacing:.5px;text-shadow:0 2px 0 rgba(255,255,255,.8)}
-#menu .card>small{color:#5a6a7a;letter-spacing:2px;text-transform:uppercase;font-size:11px}`;document.head.appendChild(st17)}catch(e){}})();
+#menu .card{width:min(330px,42vw)!important;background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border:0!important;box-shadow:none!important}
+#menu .card h1{color:#fff!important;font-size:30px!important;letter-spacing:.5px;text-shadow:0 2px 0 #7a1c1e,0 3px 12px rgba(0,0,0,.55)}
+#menu .card>small{color:#fff!important;letter-spacing:2px;text-transform:uppercase;font-size:11px;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+#menu .card .b{box-shadow:0 4px 14px rgba(0,0,0,.35)}
+#menu .card #mhint,#menu .card p,#menu .card #mver,#menu .card div:not(.b){color:#fff!important;text-shadow:0 1px 5px rgba(0,0,0,.85)}`;document.head.appendChild(st17)}catch(e){}})();
 ttlDraw=(function(o){return function(t){if(!va17Ok)return o(t);const cv2=gid('ttl');if(!cv2)return;const w=Math.round(W*DPR),h=Math.round(HH*DPR);if(cv2.width!==w||cv2.height!==h){cv2.width=w;cv2.height=h}
  const x=cv2.getContext('2d'),tm=t/1000,iw=va17Img.naturalWidth,ih=va17Img.naturalHeight;x.setTransform(DPR,0,0,DPR,0,0);
  // lent zoom et léger glissement (va-et-vient de 40 s)
@@ -7641,6 +7643,6 @@ ttlDraw=(function(o){return function(t){if(!va17Ok)return o(t);const cv2=gid('tt
  const gl=x.createLinearGradient(0,0,W*.5,0);gl.addColorStop(0,'rgba(20,40,70,.28)');gl.addColorStop(1,'rgba(20,40,70,0)');x.fillStyle=gl;x.fillRect(0,0,W*.5,HH)}})(ttlDraw);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.17',GAME_DATE='02/11/2026 à 11h11';
+const GAME_VER='3.18',GAME_DATE='02/11/2026 à 11h16';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
