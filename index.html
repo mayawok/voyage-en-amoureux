@@ -7714,8 +7714,21 @@ g.beginPath();g.moveTo(x0,yb);for(let x=x0;x<=x1;x+=10)g.lineTo(x,T(x)+14);g.lin
 // --- tour génoise en image
 towerDraw=(function(o){return function(x0,x1){if(!va25Cv('tour',0,0))return o(x0,x1);const i=chIdx(),L=[];if(i===0)L.push(1150);if(i===CHAP.length-1)L.push(MAP_L-900);
 for(const tx of L){if(tx<x0-200||tx>x1+200)continue;va25Sp('tour',tx,T(tx)+6,230,0,false)}}})(towerDraw);
+// ===== 3.26 : vrais bruitages (dossier sons/, l'ancien son synthétisé reste en secours) =====
+const VA26_F={horn:'horn',hornFar:'horn',start:'start',stall:'stall',bark:'bark',neigh:'neigh',splash:'splash',thunder:'thunder',bells:'bells',winch0:'winch'};
+const VA26_V={horn:.9,hornFar:.28,start:.9,stall:.9,bark:.8,neigh:.8,splash:.85,thunder:.9,bells:.7,winch0:.8};
+const va26B={},va26L={};
+function va26Load(f){if(!AC||va26B[f]||va26L[f]===1)return;if(va26L[f]>1&&performance.now()-va26L[f]<15000)return;va26L[f]=1;
+const bases=['',...VA24_CDN];const one=i=>fetch(bases[i]+'sons/'+f+'.mp3').then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).then(a=>new Promise((ok,ko)=>{const pr=AC.decodeAudioData(a,ok,ko);if(pr&&pr.catch)pr.catch(ko)})).catch(e=>{if(i+1<bases.length)return one(i+1);throw e});
+one(0).then(b=>{va26B[f]=b;va26L[f]=2}).catch(()=>{va26L[f]=performance.now()})}
+setInterval(()=>{if(AC)for(const f of new Set(Object.values(VA26_F)).add('heli'))va26Load(f)},3000);
+function va26Play(f,k,loop){const s=AC.createBufferSource(),gn=AC.createGain();s.buffer=va26B[f];gn.gain.value=VA26_V[k]||.8;s.connect(gn);gn.connect(sfxOut());s.start();return{s,gn}}
+let va26H=null;
+function va26Heli(){if(!va26B.heli)return false;const t=AC.currentTime;if(!va26H){const s=AC.createBufferSource(),gn=AC.createGain();s.buffer=va26B.heli;s.loop=true;gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(.75,t+.6);s.connect(gn);gn.connect(sfxOut());s.start();va26H={s,gn}}va26H.t=performance.now();return true}
+setInterval(()=>{if(va26H&&performance.now()-va26H.t>450){const h=va26H;va26H=null;try{const t=AC.currentTime;h.gn.gain.cancelScheduledValues(t);h.gn.gain.setValueAtTime(h.gn.gain.value,t);h.gn.gain.linearRampToValueAtTime(0,t+.5);h.s.stop(t+.55)}catch(e){}}},200);
+snd=(function(o){return function(k,a){if(AC&&!SET.mute&&AC.state==='running'){try{if(k==='heli'){if(va26Heli())return}else{const f=VA26_F[k];if(f&&va26B[f]){va26Play(f,k);return}}}catch(e){}}o(k,a)}})(snd);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.25',GAME_DATE='02/11/2026 à 15h14';
+const GAME_VER='3.26',GAME_DATE='02/11/2026 à 15h22';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
