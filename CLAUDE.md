@@ -1,4 +1,4 @@
-# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.16)
+# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.17)
 
 ## Le projet
 - Jeu 2D de franchissement en 4x4 (Jeep Cherokee XJ phase 2 Sport 5 portes) en Corse, en français, joué sur iPhone en mode paysage (raccourci écran d'accueil). Site : https://voyagedesamoureux.netlify.app/
@@ -46,6 +46,7 @@
 - **Menu** : reprendre, son, volumes séparés (`#volp` : musique `busM`, moteur `busE`, effets/voix `busF`), plein écran, difficulté Facile/Normal/Difficile (`DIFF`), aide (`AIDE`, 5 onglets, à tenir à jour), sauvegarde de secours (`BAK`), nouveau voyage.
 
 ## Dernières versions
+- **3.17** : écran d'accueil illustré : image `img/accueil.jpg` (générée par l'utilisateur avec ChatGPT, baie de Fautea, Mila, Andrea, le chien et le Cherokee) en fond du menu, avec lent zoom, reflets sur l'eau, vaguelettes et goélands (surcharge de `ttlDraw`, `va17Img`) ; carte du menu déplacée à gauche, en verre dépoli.
 - **3.16** : musique `title` (ElevenLabs, 60 s) pour le menu et le titre « Voyage en amoureux » au début d'un chapitre (`musScene` renvoie `'title'` si `#menu` ouvert ou `introT>0` ; ambiance synthétisée de secours = `CH.day`).
 - **3.15** : musique `bzh` (appels de la famille en Bretagne) en vrai morceau ElevenLabs (60 s en boucle).
 - **3.14** : vraie bande son : morceaux générés sur ElevenLabs par l'utilisateur pour la conduite de jour (`day`, `day2`) et de fin d'après-midi (`eve`), dans `musique/`, joués en boucle avec fondu de 4 s (`VA14_MF`, `va14B`, surcharge de `musTick`) ; les autres ambiances (`night`, `love`, `tense`, `sad`, `chase`, `mini`, `photo`, `boat`, `bzh`, `win`, `joy`, `end`, `cred`, `tbc`, `susp`) restent synthétisées tant qu'il n'y a pas de fichier : pour en ajouter une, déposer `musique/<nom>.mp3` et l'ajouter à `VA14_MF`. Prompts et durées prévus : voir la conversation du 30/10 (18 morceaux, instrumentaux).

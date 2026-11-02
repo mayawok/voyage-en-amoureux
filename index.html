@@ -7619,8 +7619,28 @@ musTick=(function(o){return function(on){o(on);try{if(!AC||!MUS.gn)return;
   else if(now>va14Cur.n.end-VA14_XF-.5){const nx=va14Src(k,va14Cur.n.end-VA14_XF);va14Fade(va14Cur.n,va14Cur.n.end-VA14_XF);va14Cur.n=nx}}
  else if(va14Cur){va14Fade(va14Cur.n,now);va14Cur=null}
 }catch(e){}}})(musTick);
+// ===== 3.17 : écran d'accueil illustré (baie de Fautea, image img/accueil.jpg) =====
+var va17Img=null,va17Ok=false;
+(function(){try{va17Img=new Image();va17Img.onload=()=>{va17Ok=true};va17Img.src='img/accueil.jpg';
+ const st17=document.createElement('style');st17.textContent=`#menu{justify-content:flex-start!important;padding-left:max(3.5vw,env(safe-area-inset-left))!important;padding-right:16px!important}
+#menu .card{width:min(330px,42vw)!important;background:rgba(250,242,226,.86)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:2px solid rgba(255,255,255,.7);border-radius:22px!important;box-shadow:0 12px 40px rgba(20,40,60,.35)!important}
+#menu .card h1{color:#a8282a;letter-spacing:.5px;text-shadow:0 2px 0 rgba(255,255,255,.8)}
+#menu .card>small{color:#5a6a7a;letter-spacing:2px;text-transform:uppercase;font-size:11px}`;document.head.appendChild(st17)}catch(e){}})();
+ttlDraw=(function(o){return function(t){if(!va17Ok)return o(t);const cv2=gid('ttl');if(!cv2)return;const w=Math.round(W*DPR),h=Math.round(HH*DPR);if(cv2.width!==w||cv2.height!==h){cv2.width=w;cv2.height=h}
+ const x=cv2.getContext('2d'),tm=t/1000,iw=va17Img.naturalWidth,ih=va17Img.naturalHeight;x.setTransform(DPR,0,0,DPR,0,0);
+ // lent zoom et léger glissement (va-et-vient de 40 s)
+ const u=.5-.5*Math.cos(tm*Math.PI/20),z=1.02+.05*u,sc=Math.max(W/iw,HH/ih)*z,dw=iw*sc,dh=ih*sc,ox=(W-dw)*(.55+.25*u),oy=(HH-dh)*.6;
+ x.imageSmoothingQuality='high';x.drawImage(va17Img,ox,oy,dw,dh);const P=(px,py)=>[ox+px*dw,oy+py*dh];
+ // reflets du soleil sur l'eau turquoise
+ x.save();x.globalCompositeOperation='lighter';for(let i=0;i<70;i++){const a=hh2(i+300),b=hh2(i+400),px=.08+a*.62,py=.55+b*.2;if(((px-.38)/.34)**2+((py-.65)/.13)**2>1)continue;const p=P(px,py),s=.5+.5*Math.sin(tm*(1.4+hh2(i+500)*2)+i*2.1);if(s<.55)continue;x.globalAlpha=(s-.55)*1.6;x.fillStyle='#ffffff';const l=(2+b*5)*sc*1.4;x.fillRect(p[0]-l/2,p[1],l,Math.max(1,sc*1.6))}x.restore();x.globalAlpha=1;
+ // vaguelettes sur la plage
+ x.strokeStyle='rgba(255,255,255,.55)';x.lineWidth=Math.max(1,sc*2);for(let i=0;i<3;i++){const ph=(tm*.25+i/3)%1;x.globalAlpha=Math.sin(ph*Math.PI)*.7;x.beginPath();for(let k=0;k<=24;k++){const a=Math.PI*(.62+k/24*.5),px=.42+Math.cos(a)*(.38-ph*.012),py=.66+Math.sin(a)*(.15-ph*.01);const p=P(px,py);k?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1])}x.stroke()}x.globalAlpha=1;
+ // goélands
+ x.strokeStyle='rgba(60,60,70,.75)';x.lineWidth=Math.max(1.2,sc*2.2);x.lineCap='round';for(let i=0;i<3;i++){const sp=.012+i*.004,px=((tm*sp+i*.37)%1.3)-.15,py=.16+i*.07+Math.sin(tm*.6+i)*.015,p=P(px,py),fl=Math.sin(tm*5+i*2)*.6,s=(9-i*2)*sc*1.6;x.beginPath();x.moveTo(p[0]-s,p[1]-s*.3*fl);x.quadraticCurveTo(p[0]-s*.4,p[1]-s*.5,p[0],p[1]);x.quadraticCurveTo(p[0]+s*.4,p[1]-s*.5,p[0]+s,p[1]-s*.3*fl);x.stroke()}
+ // voile doux à gauche pour la lisibilité du menu
+ const gl=x.createLinearGradient(0,0,W*.5,0);gl.addColorStop(0,'rgba(20,40,70,.28)');gl.addColorStop(1,'rgba(20,40,70,0)');x.fillStyle=gl;x.fillRect(0,0,W*.5,HH)}})(ttlDraw);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.16',GAME_DATE='02/11/2026 à 11h05';
+const GAME_VER='3.17',GAME_DATE='02/11/2026 à 11h11';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
