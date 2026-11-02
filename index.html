@@ -7612,7 +7612,7 @@ coInfo2=(function(o){return function(i){const reached=Math.min(CHAP.length,level
 // ===== 3.14 : vraie bande son (morceaux ElevenLabs) pour la conduite de jour et de fin d'après-midi =====
 // Les ambiances qui ont un fichier dans musique/ jouent ce fichier en boucle (fondu enchaîné de 4 s) ;
 // les autres gardent la musique synthétisée. Si un fichier ne charge pas, la musique synthétisée reste.
-const VA14_MF={day:'musique/day.mp3',day2:'musique/day2.mp3',eve:'musique/eve.mp3',bzh:'musique/bzh.mp3',title:'musique/title.mp3'},VA14_VOL=.55,VA14_XF=4;
+const VA14_MF={sad:'musique/sad.mp3',day:'musique/day.mp3',day2:'musique/day2.mp3',eve:'musique/eve.mp3',bzh:'musique/bzh.mp3',title:'musique/title.mp3'},VA14_VOL=.55,VA14_XF=4;
 musScene=(function(o){return function(){try{if(gid('menu').style.display!=='none'||introT>0)return 'title'}catch(e){}return o()}})(musScene);
 var va14B={},va14L={},va14G=null,va14Cur=null;
 var va14S={};function va14Load(k){if(!AC||va14L[k]===1||va14B[k]||!VA14_MF[k])return;if(va14L[k]===2&&performance.now()-(va14L['t_'+k]||0)<15000)return;va14L[k]=1;va14S[k]='…';fetch(VA14_MF[k]).then(r=>{if(!r.ok)throw 'HTTP '+r.status;va14S[k]='décodage';return r.arrayBuffer()}).then(a=>new Promise((ok,ko)=>{const pr=AC.decodeAudioData(a,ok,e=>ko('décodage impossible'));if(pr&&pr.catch)pr.catch(()=>ko('décodage impossible'))})).then(b=>{va14B[k]=b;va14S[k]='ok'}).catch(e=>{va14L[k]=2;va14L['t_'+k]=performance.now();va14S[k]=String(e&&e.message||e)})}
@@ -7723,8 +7723,8 @@ g.beginPath();g.moveTo(x0,yb);for(let x=x0;x<=x1;x+=10)g.lineTo(x,T(x)+14);g.lin
 towerDraw=(function(o){return function(x0,x1){if(!va25Cv('tour',0,0))return o(x0,x1);const i=chIdx(),L=[];if(i===0)L.push(1150);if(i===CHAP.length-1)L.push(MAP_L-900);
 for(const tx of L){if(tx<x0-200||tx>x1+200)continue;va25Sp('tour',tx,T(tx)+6,230,0,false)}}})(towerDraw);
 // ===== 3.26 : vrais bruitages (dossier sons/, l'ancien son synthétisé reste en secours) =====
-const VA26_F={horn:'horn',hornFar:'horn',start:'start',stall:'stall',bark:'bark',neigh:'neigh',splash:'splash',thunder:'thunder',bells:'bells',winch0:'winch'};
-const VA26_V={horn:.9,hornFar:.28,start:.9,stall:.9,bark:.8,neigh:.8,splash:.42,thunder:.9,bells:.7,winch0:.8};
+const VA26_F={crash:'crash',beat:'beat',roar:'roar',shutter:'shutter',ferry:'ferry',flat:'flat',plank:'plank',crunch:'crunch',horn:'horn',hornFar:'horn',start:'start',stall:'stall',bark:'bark',neigh:'neigh',splash:'splash',thunder:'thunder',bells:'bells',winch0:'winch'};
+const VA26_V={crash:.8,beat:.6,roar:.9,shutter:.7,ferry:.8,flat:.8,plank:.45,crunch:.8,horn:.9,hornFar:.28,start:.9,stall:.9,bark:.8,neigh:.8,splash:.42,thunder:.9,bells:.7,winch0:.8};
 const va26B={},va26L={};
 function va26Load(f){if(!AC||va26B[f]||va26L[f]===1)return;if(va26L[f]>1&&performance.now()-va26L[f]<15000)return;va26L[f]=1;
 const bases=['',...VA24_CDN];const one=i=>fetch(bases[i]+'sons/'+f+'.mp3').then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).then(a=>new Promise((ok,ko)=>{const pr=AC.decodeAudioData(a,ok,ko);if(pr&&pr.catch)pr.catch(ko)})).catch(e=>{if(i+1<bases.length)return one(i+1);throw e});
@@ -7897,6 +7897,6 @@ prisonerFig=(function(o){return function(sc,tm){try{if(va38Fig('mc_cuff',0,0,1))
 dogDraw=(function(o){return function(x,y,f,mode,tm,leg){try{const t=tm||0;let n='dg_stand';if(mode==='trot'||mode==='jump')n='dg_walk';else if(mode==='sit')n='dg_sit';else if(mode==='lie')n='dg_lie';else{const q=Math.floor(t*2.2)%6;n=q===0?'dg_wag':q===3?'dg_look':'dg_stand'}if(va38Fig(n,x,y,f<0?-1:1))return}catch(e){}o(x,y,f,mode,tm,leg)}})(dogDraw);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.38',GAME_DATE='02/11/2026 à 19h52';
+const GAME_VER='3.39',GAME_DATE='02/11/2026 à 21h48';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
