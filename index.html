@@ -7659,8 +7659,16 @@ for(let x=ox;x<W;x+=tw)g.drawImage(im,x,0,tw+1,hh);
 g.fillStyle='#5ce4dc';g.fillRect(0,hh-1,W,HH-hh+1);
 if(sy<HH*.47){g.globalAlpha=a*.9;const gl=g.createRadialGradient(sx,sy,6,sx,sy,70);gl.addColorStop(0,'rgba(255,225,130,.55)');gl.addColorStop(1,'rgba(255,225,130,0)');g.fillStyle=gl;g.fillRect(sx-70,sy-70,140,140);g.fillStyle='#ffe27a';g.beginPath();g.arc(sx,sy,22,0,7);g.fill()}
 g.globalAlpha=1;return a}
+// ===== 3.24 : musique de secours si le site répond 404 ou un fichier illisible =====
+const VA24_CDN=['https://cdn.jsdelivr.net/gh/mayawok/voyage-en-amoureux@main/','https://raw.githubusercontent.com/mayawok/voyage-en-amoureux/main/'];
+function va24Try(u,k){return fetch(u).then(r=>{if(!r.ok)throw 'HTTP '+r.status;va14S[k]='décodage';return r.arrayBuffer()}).then(a=>new Promise((ok,ko)=>{const pr=AC.decodeAudioData(a,ok,e=>ko('décodage impossible'));if(pr&&pr.catch)pr.catch(()=>ko('décodage impossible'))}))}
+va14Load=function(k){if(!AC||va14L[k]===1||va14B[k]||!VA14_MF[k])return;if(va14L[k]===2&&performance.now()-(va14L['t_'+k]||0)<15000)return;va14L[k]=1;va14S[k]='…';
+const errs=[],bases=['',VA24_CDN[0],VA24_CDN[1]];
+bases.reduce((pr,b,i)=>pr.catch(e=>{if(e!==null){errs.push(String(e&&e.message||e));va14S[k]='secours '+i+'…'}return va24Try(b+VA14_MF[k],k)}),Promise.reject(null))
+.then(buf=>{va14B[k]=buf;va14S[k]=errs.length?'ok (secours)':'ok'})
+.catch(e=>{va14L[k]=2;va14L['t_'+k]=performance.now();va14S[k]=errs.concat(String(e&&e.message||e)).join(' puis ')})};
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.23',GAME_DATE='02/11/2026 à 14h07';
+const GAME_VER='3.24',GAME_DATE='02/11/2026 à 14h18';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
