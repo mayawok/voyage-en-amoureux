@@ -213,7 +213,7 @@ body{background:#14100c}
 body.cine #intro,body.cine #note,body.cine #place{display:none!important}
 
 #mis{box-sizing:border-box;overflow:hidden}
-</style></head><body>
+</style></head><body><div id="va37l" style="position:fixed;left:0;top:0;right:0;bottom:0;z-index:99999;background:linear-gradient(#10202c,#1d3a4a);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Georgia,serif"><div style="font-size:30px;text-shadow:0 2px 6px #000">Voyage en amoureux</div><div style="opacity:.7;margin:6px 0 18px;font-size:14px">Mila &amp; Andrea · Corse</div><div style="width:240px;height:8px;background:rgba(255,255,255,.2);border-radius:4px;overflow:hidden"><div id="va37b" style="height:100%;width:4%;background:#f2c230;transition:width .3s"></div></div><div id="va37t" style="font-size:13px;opacity:.7;margin-top:10px">Chargement…</div></div>
 <canvas id="c"></canvas>
 <canvas id="dash"></canvas><canvas id="bub"></canvas>
 <div id="sab"></div>
@@ -7876,8 +7876,15 @@ function va36Draw(x,y,k,p){const ch=k?'m':'a';let ps=va36Pose(k,x,p);if(ch==='m'
  g.translate(x,by);g.scale(f,1);g.drawImage(c,-w*ax,-h,w,h);g.restore();return true}
 person=(function(o){return function(x,y,k,p){p=p||{};if(!va13Swim&&!p.swim&&!window.__va36off&&va25Cv('p_'+(k?'m':'a')+'_stand',0,0)){try{va34U()}catch(e){}let t=false;try{t=va34T(g)}catch(e){}try{if(va36Draw(x,y,k,p))return}catch(e){}finally{if(t){g.restore();VA34.dp=0}}}return o(x,y,k,p)}})(person);
 for(const n in VA25_SP)if(n.indexOf('p_')===0)try{va25Img(n)}catch(e){}
+// ===== 3.37 : écran de chargement, vraies têtes dans le Cherokee =====
+(function(){try{const L=document.getElementById('va37l');if(!L)return;const names=Object.keys(VA25_SP);let tot=names.length,ok=0,done=false;
+const fin=function(){if(done)return;done=true;L.style.transition='opacity .5s';L.style.opacity='0';setTimeout(function(){L.style.display='none'},600)};
+const up=function(){ok++;const b=document.getElementById('va37b'),t=document.getElementById('va37t');if(b)b.style.width=Math.min(100,4+96*ok/tot)+'%';if(t)t.textContent='Chargement… '+Math.round(100*ok/tot)+' %';if(ok>=tot)setTimeout(fin,200)};
+names.forEach(function(n,i){setTimeout(function(){try{const s=VA25_SP[n],im=new Image();im.onload=function(){VA25.im[n]=im;up()};im.onerror=up;im.src=s.src}catch(e){up()}},i*4)});
+setTimeout(fin,15000)}catch(e){try{document.getElementById('va37l').style.display='none'}catch(e2){}}})();
+head=(function(o){return function(k,x,y,sc,f){try{if(!window.__va36off&&sc<1.2){const c=va25Cv(k?'p_m_stand':'p_a_stand',va36Dk(),0);if(c){const hh=c.height*.2,w=c.width,d=13*sc*(f||1),r=d/ (c.width*.8),dw=w*r,dh=hh*r;g.save();g.translate(x,y);if(f<0)g.scale(-1,1);g.drawImage(c,0,0,w,hh,-dw*.5,-dh*.55,dw,dh);g.restore();return}}}catch(e){}o(k,x,y,sc,f)}})(head);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.36',GAME_DATE='02/11/2026 à 19h23';
+const GAME_VER='3.37',GAME_DATE='02/11/2026 à 19h34';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
