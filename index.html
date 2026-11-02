@@ -7621,7 +7621,7 @@ musTick=(function(o){return function(on){o(on);try{if(!AC||!MUS.gn)return;
 }catch(e){}}})(musTick);
 // ===== 3.17 : écran d'accueil illustré (baie de Fautea, image img/accueil.jpg) =====
 var va17Img=null,va17Ok=false;
-(function(){try{va17Img=new Image();va17Img.onload=()=>{va17Ok=true};va17Img.src='img/accueil.jpg';
+(function(){try{window.va17Try=function(){if(va17Ok||(va17Img&&va17Img.__ld))return;va17Img=new Image();va17Img.__ld=1;va17Img.onload=()=>{va17Ok=true};va17Img.onerror=()=>{va17Img.__ld=0};va17Img.src='img/accueil.jpg'+(window.va17N?'?r='+Date.now():'');window.va17N=(window.va17N||0)+1};va17Try();setInterval(()=>{try{if(!va17Ok&&va17Img&&!va17Img.__ld)va17Try()}catch(e){}},4000);
  const st17=document.createElement('style');st17.textContent=`#menu{justify-content:flex-start!important;padding-left:max(3.5vw,env(safe-area-inset-left))!important;padding-right:16px!important}
 #menu .card{width:min(330px,42vw)!important;background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border:0!important;box-shadow:none!important}
 #menu .card h1{color:#fff!important;font-size:30px!important;letter-spacing:.5px;text-shadow:0 2px 0 #7a1c1e,0 3px 12px rgba(0,0,0,.55)}
@@ -7643,6 +7643,6 @@ ttlDraw=(function(o){return function(t){if(!va17Ok)return o(t);const cv2=gid('tt
  const gl=x.createLinearGradient(0,0,W*.5,0);gl.addColorStop(0,'rgba(20,40,70,.28)');gl.addColorStop(1,'rgba(20,40,70,0)');x.fillStyle=gl;x.fillRect(0,0,W*.5,HH)}})(ttlDraw);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.18',GAME_DATE='02/11/2026 à 11h16';
+const GAME_VER='3.19',GAME_DATE='02/11/2026 à 11h16';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
