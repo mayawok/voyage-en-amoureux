@@ -1,4 +1,4 @@
-# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.22)
+# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.23)
 
 ## Le projet
 - Jeu 2D de franchissement en 4x4 (Jeep Cherokee XJ phase 2 Sport 5 portes) en Corse, en français, joué sur iPhone en mode paysage (raccourci écran d'accueil). Site : https://voyagedesamoureux.netlify.app/
@@ -46,6 +46,7 @@
 - **Menu** : reprendre, son, volumes séparés (`#volp` : musique `busM`, moteur `busE`, effets/voix `busF`), plein écran, difficulté Facile/Normal/Difficile (`DIFF`), aide (`AIDE`, 5 onglets, à tenir à jour), sauvegarde de secours (`BAK`), nouveau voyage.
 
 ## Dernières versions
+- **3.23** : premier fond peint (image ChatGPT de l'utilisateur) pour le chapitre 1 : ciel, mer et collines fleuries d'une seule image JPEG (2052×480, ~60 Ko, bords raccordés par fondu) intégrée en base64 dans `VA23_IMG` (clé = `chIdx()`, 0 = ch1 ; pour un autre chapitre : ajouter une entrée). Dessinée par `va23Bg(ta,dayF,tm,sx,sy)` appelée dans `draw0` juste avant `farSnow` : défilement lent (0,035 × caméra), fondu selon le jour (`dayF`, la nuit garde les étoiles) et l'altitude (comme la mer), soleil redessiné par-dessus ; quand elle est visible, seule la dune « near » est gardée devant (les collines « far » sont ignorées). Les autres chapitres sont inchangés. Demandes ChatGPT prêtes pour les 10 chapitres : document `images-chatgpt.md` du projet claude.ai « Voyage ».
 - **3.22** : musique toujours synthétisée sur iPhone : `sw.js` réécrit (cache `va-cache-3` ; seule la page passe par le délai de 6 s, les fichiers `musique/` et `img/` sont demandés normalement puis gardés en cache) ; nouvel essai de chargement toutes les 15 s en cas d'échec ; état de chaque musique affiché sous la version du menu (`va14S`, « musique : title ok / HTTP 404 / décodage impossible… ») pour le diagnostic.
 - **3.21** : l'image d'accueil est intégrée au fichier (`VA21_IMG`, JPEG 1400 px en base64, ~200 Ko) car `img/accueil.jpg` ne se chargeait pas sur l'iPhone de l'utilisateur ; le fichier reste en secours.
 - **3.20** : sur iPhone l'ancien fond « coucher de soleil » du menu (`mbgC`/`menuBgDraw`, 2.x) passait devant l'image d'accueil : il est caché dès que l'image est chargée, et `menuBgDraw` dessine l'image.
