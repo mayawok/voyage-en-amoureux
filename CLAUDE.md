@@ -1,4 +1,4 @@
-# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.27)
+# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.33)
 
 ## Le projet
 - Jeu 2D de franchissement en 4x4 (Jeep Cherokee XJ phase 2 Sport 5 portes) en Corse, en français, joué sur iPhone en mode paysage (raccourci écran d'accueil). Site : https://voyagedesamoureux.netlify.app/
@@ -46,6 +46,7 @@
 - **Menu** : reprendre, son, volumes séparés (`#volp` : musique `busM`, moteur `busE`, effets/voix `busF`), plein écran, difficulté Facile/Normal/Difficile (`DIFF`), aide (`AIDE`, 5 onglets, à tenir à jour), sauvegarde de secours (`BAK`), nouveau voyage.
 
 ## Dernières versions
+- **3.33** : animaux en images à plusieurs poses (debout, broute, marche, couché ; `VA31T`, `va31Draw`, surcharge de `artA` et `sheep`, indices `window.__anP` 'w' marche / 'l' couché et `__anS` variante) : vache (2 robes), cheval, âne, chèvre, mouflon, cerf, sanglier, renard, hérisson, lapin (`lievre`), goéland (en vol), tortue, mouton ; poules, coqs, cochons, cigogne, héron : images reçues et découpées mais pas branchées. Roue du Cherokee : plus de retour à l'ancien dessin quand la roue s'écrase (écrasement par échelle verticale) et rotation limitée à .06 rad par image (jantes qui apparaissaient/disparaissaient, taille qui changeait).
 - **3.32** : décor de bord de route beaucoup moins chargé et en petits groupes : surcharge de `decor` (bloc `// ===== 3.32`) qui ne laisse passer que certaines « zones » de 12 emplacements (16 à la plage, `ALT<95`) avec peu d'éléments dedans ; touche aussi `seasonDeco`. Reste à faire : animaux de décor en images (prompts envoyés), les vaches/cochons actuels sont dessinés par le code.
 - **3.31** : fonds du soir pour le ch3 Arrivadu, ch4 Bavella et ch5 Piana (`VA27.E` clés 2, 3, 4) ; plateaux (ch4 .33-.62, ch9 .12-.46) : les stations et magasins (`stns`/`shp`) placés dedans sont déplacés après le plateau (`va30Move`, bloc `// ===== 3.30b`) ; plus de décors lointains (`va25Far`) à Piana (ils flottaient sur la mer) ; barre LED refaite (`va30Led`, boîtier, 8 optiques, halo allumé) et petite galerie de toit permanente (`va30Rack`) sur le Cherokee en image. Manquent : soir ch1, 2, 6, 7 et nuit ch2, 8-10.
 - **3.30** : corrections du Cherokee en image : carrosserie à l'échelle x .122 / y .15 (longueur 122, haut -33) pour que les accessoires retombent à leur place (roue de secours arrière -62, pare-buffle -3, snorkel -11, roue sur le capot, rails de toit redessinés par `va29Body`, drapeau `window.__va29on`) ; roues en image : rotation visuelle limitée à .2 rad par image (`VA29.w`) contre l'effet de clignotement à grande vitesse.
