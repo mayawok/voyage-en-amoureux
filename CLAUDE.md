@@ -1,4 +1,4 @@
-# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.21)
+# Voyage en amoureux — notes pour Claude (version condensée, à jour en 3.22)
 
 ## Le projet
 - Jeu 2D de franchissement en 4x4 (Jeep Cherokee XJ phase 2 Sport 5 portes) en Corse, en français, joué sur iPhone en mode paysage (raccourci écran d'accueil). Site : https://voyagedesamoureux.netlify.app/
@@ -46,6 +46,7 @@
 - **Menu** : reprendre, son, volumes séparés (`#volp` : musique `busM`, moteur `busE`, effets/voix `busF`), plein écran, difficulté Facile/Normal/Difficile (`DIFF`), aide (`AIDE`, 5 onglets, à tenir à jour), sauvegarde de secours (`BAK`), nouveau voyage.
 
 ## Dernières versions
+- **3.22** : musique toujours synthétisée sur iPhone : `sw.js` réécrit (cache `va-cache-3` ; seule la page passe par le délai de 6 s, les fichiers `musique/` et `img/` sont demandés normalement puis gardés en cache) ; nouvel essai de chargement toutes les 15 s en cas d'échec ; état de chaque musique affiché sous la version du menu (`va14S`, « musique : title ok / HTTP 404 / décodage impossible… ») pour le diagnostic.
 - **3.21** : l'image d'accueil est intégrée au fichier (`VA21_IMG`, JPEG 1400 px en base64, ~200 Ko) car `img/accueil.jpg` ne se chargeait pas sur l'iPhone de l'utilisateur ; le fichier reste en secours.
 - **3.20** : sur iPhone l'ancien fond « coucher de soleil » du menu (`mbgC`/`menuBgDraw`, 2.x) passait devant l'image d'accueil : il est caché dès que l'image est chargée, et `menuBgDraw` dessine l'image.
 - **3.19** : l'image d'accueil est rechargée toutes les 4 s si elle n'a pas pu se charger (`va17Try`), au lieu de rester sur l'ancien écran titre.

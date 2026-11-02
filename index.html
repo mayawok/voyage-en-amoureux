@@ -7607,7 +7607,7 @@ coInfo2=(function(o){return function(i){const reached=Math.min(CHAP.length,level
 const VA14_MF={day:'musique/day.mp3',day2:'musique/day2.mp3',eve:'musique/eve.mp3',bzh:'musique/bzh.mp3',title:'musique/title.mp3'},VA14_VOL=.55,VA14_XF=4;
 musScene=(function(o){return function(){try{if(gid('menu').style.display!=='none'||introT>0)return 'title'}catch(e){}return o()}})(musScene);
 var va14B={},va14L={},va14G=null,va14Cur=null;
-function va14Load(k){if(!AC||va14L[k]||!VA14_MF[k])return;va14L[k]=1;fetch(VA14_MF[k]).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).then(a=>new Promise((ok,ko)=>AC.decodeAudioData(a,ok,ko))).then(b=>{va14B[k]=b}).catch(()=>{va14L[k]=2})}
+var va14S={};function va14Load(k){if(!AC||va14L[k]===1||va14B[k]||!VA14_MF[k])return;if(va14L[k]===2&&performance.now()-(va14L['t_'+k]||0)<15000)return;va14L[k]=1;va14S[k]='…';fetch(VA14_MF[k]).then(r=>{if(!r.ok)throw 'HTTP '+r.status;va14S[k]='décodage';return r.arrayBuffer()}).then(a=>new Promise((ok,ko)=>{const pr=AC.decodeAudioData(a,ok,e=>ko('décodage impossible'));if(pr&&pr.catch)pr.catch(()=>ko('décodage impossible'))})).then(b=>{va14B[k]=b;va14S[k]='ok'}).catch(e=>{va14L[k]=2;va14L['t_'+k]=performance.now();va14S[k]=String(e&&e.message||e)})}
 function va14Src(k,t){const s=AC.createBufferSource(),g1=AC.createGain();s.buffer=va14B[k];g1.gain.setValueAtTime(0.0001,t);g1.gain.exponentialRampToValueAtTime(1,t+VA14_XF);s.connect(g1);g1.connect(va14G);s.start(t);return {s,g:g1,t0:t,end:t+s.buffer.duration}}
 function va14Fade(n,t){try{n.g.gain.cancelScheduledValues(t);n.g.gain.setValueAtTime(Math.max(.0001,n.g.gain.value),t);n.g.gain.exponentialRampToValueAtTime(.0001,t+VA14_XF);n.s.stop(t+VA14_XF+.1)}catch(e){}}
 musTick=(function(o){return function(on){o(on);try{if(!AC||!MUS.gn)return;
@@ -7645,8 +7645,10 @@ ttlDraw=(function(o){return function(t){if(!va17Ok)return o(t);const cv2=gid('tt
  const gl=x.createLinearGradient(0,0,W*.5,0);gl.addColorStop(0,'rgba(20,40,70,.28)');gl.addColorStop(1,'rgba(20,40,70,0)');x.fillStyle=gl;x.fillRect(0,0,W*.5,HH)}})(ttlDraw);
 // 3.20 : l'ancien fond « coucher de soleil » du menu (menuBgDraw) pouvait passer devant l'image d'accueil sur iPhone : on le cache et on dessine l'image
 menuBgDraw=(function(o){return function(tm){if(!va17Ok)return o(tm);try{if(mbgC)mbgC.style.display='none';ttlDraw(performance.now())}catch(e){}}})(menuBgDraw);
+// 3.22 : état de la musique affiché sous la version du menu (pour comprendre ce qui bloque sur iPhone)
+setInterval(()=>{try{const v=gid('mver');if(!v||gid('menu').style.display==='none')return;if(!v.dataset.base)v.dataset.base=v.textContent;const k=Object.keys(va14S);const t=v.dataset.base+(k.length?' · musique : '+k.map(q=>q+' '+va14S[q]).join(', '):' · musique : pas encore lancée');if(v.textContent!==t)v.textContent=t}catch(e){}},1000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.21',GAME_DATE='02/11/2026 à 11h37';
+const GAME_VER='3.22',GAME_DATE='02/11/2026 à 13h55';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
