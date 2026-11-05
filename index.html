@@ -7779,8 +7779,8 @@ const VA27={"N":{"0":{"src":"img/fonds/va27_4f8d7049.jpg","hz":0.65,"fill":"#131
 // --- images de nuit, de soir et du plateau ; l'image de jour ne disparaît plus avec l'altitude de la route
 const va27I={};
 function va27G(id,o){if(!o)return null;const r=va27I[id];if(r!==undefined)return r&&r.naturalWidth?r:null;va27I[id]=null;const im=new Image();im.onload=()=>{va27I[id]=im};im.src=o.src;return null}
-function va27Draw(im,P,al,ta){const hh=P.F*HH/P.hz,sc=hh/im.naturalHeight,tw=im.naturalWidth*sc,oy=-cl((ta-80)/220)*HH*.05;let ox=-((cam.x*.035))%tw;if(ox>0)ox-=tw;
-g.globalAlpha=al;for(let x=ox;x<W;x+=tw)g.drawImage(im,x,oy,tw+1,hh);g.fillStyle=P.fill;g.fillRect(0,hh+oy-1,W,HH-hh-oy+1);g.globalAlpha=1}
+function va27Draw(im,P,al,ta){const hh=P.F*HH/P.hz,sc=hh/im.naturalHeight,tw=im.naturalWidth*sc,oy=-cl((ta-80)/220)*HH*.05;let ox=-((cam.x*(P.fs||.035)))%tw;if(ox>0)ox-=tw;
+g.globalAlpha=al;for(let x=ox;x<W;x+=tw)g.drawImage(im,x,oy,tw+1,hh);if(P.haze)va43Haze(hh,oy,al,im);g.fillStyle=P.fill;g.fillRect(0,hh+oy-1,W,HH-hh-oy+1);g.globalAlpha=1}
 va23Bg=function(ta,dayF,tm,sx,sy){const k=chIdx(),pl=PLT(),P=VA25_P[k];if(!P)return 0;
 const dP=pl?VA27.PL:P,dim=pl?va27G('PL',VA27.PL):va23Get(k),eo=pl?null:VA27.E[k],no=pl?null:VA27.N[k],ei=va27G('E'+k,eo),ni=va27G('N'+k,no);
 if(!dim||!dim.naturalWidth)return 0;VA25.dk=Math.round(cl(1-dayF)*3);
@@ -7958,8 +7958,25 @@ village=(function(o){return function(px,y,k){try{const H=66+Math.floor(hs(k+4)*3
 const VA43_T={1:'rgba(255,214,150,.07)',3:'rgba(255,190,150,.06)',4:'rgba(255,160,120,.07)',5:'rgba(210,225,160,.06)',6:'rgba(255,180,100,.10)',7:'rgba(255,170,120,.08)',8:'rgba(255,170,90,.12)',9:'rgba(255,200,140,.08)'};
 va25Cv=(function(o){return function(n,b,hz){const c=o(n,b,hz);if(!c)return c;const t=VA43_T[chIdx()];if(!t||!/^(maison|eglise|bergerie|pin|olivier|chataignier|palmier|buisson|rochers|tour)/.test(n))return c;
 const key=n+b+'_'+hz+'_T'+chIdx();let q=VA25.cv[key];if(q)return q;q=document.createElement('canvas');q.width=c.width;q.height=c.height;const x=q.getContext('2d');x.drawImage(c,0,0);x.globalCompositeOperation='source-atop';x.fillStyle=t;x.fillRect(0,0,q.width,q.height);VA25.cv[key]=q;return q}})(va25Cv);
+// ===== 3.44 : profondeur du fond peint du chapitre 1 (étape B) : collines lointaines (lentes, dans la brume) et collines proches (plus rapides) =====
+// Le même fond est dessiné deux fois : en entier et lentement pour le lointain, puis seulement les collines vertes / roses / la plage (masque calculé une fois) plus vite par-dessus.
+VA25_P[0].fs=.02;VA25_P[0].haze=1;
+const VA43={nc:null,tried:0};
+function va43Haze(hh,oy,al,im){try{const h=hh/im.naturalHeight,y0=oy+196*h,y1=oy+268*h,gr=g.createLinearGradient(0,y0,0,y1);
+gr.addColorStop(0,'rgba(196,224,242,0)');gr.addColorStop(.18,'rgba(196,224,242,.42)');gr.addColorStop(.8,'rgba(196,224,242,.34)');gr.addColorStop(1,'rgba(196,224,242,0)');
+g.globalAlpha=al;g.fillStyle=gr;g.fillRect(0,y0,W,y1-y0);g.globalAlpha=1}catch(e){}}
+function va43Mask(im){if(VA43.nc||VA43.tried)return VA43.nc;VA43.tried=1;try{const w=im.naturalWidth,hgt=im.naturalHeight,c=document.createElement('canvas');c.width=w;c.height=hgt;const x=c.getContext('2d');x.drawImage(im,0,0);
+const y0=Math.round(hgt*.6),y1=Math.round(hgt*.85),d=x.getImageData(0,0,w,hgt),a=d.data;
+for(let y=0;y<hgt;y++){for(let i=0;i<w;i++){const p=(y*w+i)*4;let al=0;
+if(y>=y0&&y<=y1){const r=a[p],gg=a[p+1],b=a[p+2],t=Math.max(0,Math.min(1,(b-r-22)/42));/* bleu = ciel ou colline lointaine */al=1-t}/* la mer (bleue) reste dans le fond */
+a[p+3]=Math.round(al*255)}}
+x.putImageData(d,0,0);VA43.nc=c}catch(e){VA43.nc=null}return VA43.nc}
+va23Bg=(function(o){return function(ta,dayF,tm,sx,sy){const a=o(ta,dayF,tm,sx,sy);try{const k=chIdx(),P=VA25_P[k];if(k!==0||!a||PLT())return a;const im=va23Get(0);if(!im||!im.naturalWidth)return a;const m=va43Mask(im);if(!m)return a;
+const dA=sm(cl(dayF*1.3));if(dA<.02)return a;
+const hh=P.F*HH/P.hz,sc=hh/im.naturalHeight,tw=im.naturalWidth*sc,oy=-cl((ta-80)/220)*HH*.05*1.7;let ox=-((cam.x*.07+tw*.37))%tw;if(ox>0)ox-=tw;
+g.setTransform(DPR,0,0,DPR,0,0);g.globalAlpha=dA;for(let x=ox;x<W;x+=tw)g.drawImage(m,x,oy,tw+1,hh);g.globalAlpha=1}catch(e){}return a}})(va23Bg);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.43',GAME_DATE='05/11/2026 à 13h39';
+const GAME_VER='3.44',GAME_DATE='05/11/2026 à 13h46';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
