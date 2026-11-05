@@ -257,7 +257,7 @@ body.cine #intro,body.cine #note,body.cine #place{display:none!important}
 <button class="b ped" id="gas">▲ GAZ</button>
 </div>
 <script>(function(){try{const d=Object.getOwnPropertyDescriptor(HTMLImageElement.prototype,'src');if(!d||!d.set)return;const B=['','https://cdn.jsdelivr.net/gh/mayawok/voyage-en-amoureux@main/','https://raw.githubusercontent.com/mayawok/voyage-en-amoureux/main/'];
-Object.defineProperty(HTMLImageElement.prototype,'src',{get:d.get,configurable:true,enumerable:true,set:function(v){if(typeof v==='string'&&v.indexOf('img/')===0){const t=this;t.__vaP=v;t.__vaT=0;if(!t.__vaL){t.__vaL=1;t.addEventListener('error',function(){const p=t.__vaP;if(!p)return;if(t.__vaT<B.length-1){t.__vaT++;d.set.call(t,B[t.__vaT]+p)}else if((t.__vaR=(t.__vaR||0)+1)<=6){setTimeout(function(){t.__vaT=0;d.set.call(t,p+(p.indexOf('?')<0?'?':'&')+'r='+Date.now())},4000)}})}}else this.__vaP=null;d.set.call(this,v)}})}catch(e){}})();
+Object.defineProperty(HTMLImageElement.prototype,'src',{get:d.get,configurable:true,enumerable:true,set:function(v){if(typeof v==='string'&&v.indexOf('img/')===0){const t=this;t.__vaP=v;t.__vaT=0;if(!t.__vaL){t.__vaL=1;t.addEventListener('error',function(){const p=t.__vaP;if(!p)return;if(t.__vaT<B.length-1){t.__vaT++;try{t.crossOrigin='anonymous'}catch(e){}d.set.call(t,B[t.__vaT]+p)}else if((t.__vaR=(t.__vaR||0)+1)<=6){setTimeout(function(){t.__vaT=0;try{t.crossOrigin=null}catch(e){}d.set.call(t,p+(p.indexOf('?')<0?'?':'&')+'r='+Date.now())},4000)}})}}else this.__vaP=null;d.set.call(this,v)}})}catch(e){}})();
 
 var BRL=560,BRP=6000,BRO=2700,SCP=6000;
 
@@ -7975,8 +7975,14 @@ va23Bg=(function(o){return function(ta,dayF,tm,sx,sy){const a=o(ta,dayF,tm,sx,sy
 const dA=sm(cl(dayF*1.3));if(dA<.02)return a;
 const hh=P.F*HH/P.hz,sc=hh/im.naturalHeight,tw=im.naturalWidth*sc,oy=-cl((ta-80)/220)*HH*.05*1.7;let ox=-((cam.x*.07+tw*.37))%tw;if(ox>0)ox-=tw;
 g.setTransform(DPR,0,0,DPR,0,0);g.globalAlpha=dA;for(let x=ox;x<W;x+=tw)g.drawImage(m,x,oy,tw+1,hh);g.globalAlpha=1}catch(e){}return a}})(va23Bg);
+// ===== 3.45 : le Cherokee ne disparaît plus (barre seule) quand l'image ne peut pas être recolorée : images de secours demandées en CORS, et teinte de secours sans lire les pixels =====
+function va45Fb(col){const im=va25Img('v_cherokee');if(!im||!im.naturalWidth)return null;col=va29Hex(col||'#8f2230');let P=VA29.cv[col];if(P)return P;
+const w=700,h=Math.round(w*im.naturalHeight/im.naturalWidth),c1=document.createElement('canvas');c1.width=w;c1.height=h;const x=c1.getContext('2d');x.drawImage(im,0,0,w,h);
+x.globalCompositeOperation='color';x.fillStyle=col;x.globalAlpha=.9;x.fillRect(0,0,w,h);x.globalAlpha=1;x.globalCompositeOperation='destination-in';x.drawImage(im,0,0,w,h);
+const c2=document.createElement('canvas');c2.width=w;c2.height=h;P={full:c1,rest:c2};if(VA29.ks.length>10){delete VA29.cv[VA29.ks.shift()]}VA29.cv[col]=P;VA29.ks.push(col);return P}
+va29Get=(function(o){return function(col){if(window.__va45px===0)return va45Fb(col);try{return o(col)}catch(e){window.__va45px=0;try{return va45Fb(col)}catch(e2){return null}}}})(va29Get);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.44',GAME_DATE='05/11/2026 à 13h46';
+const GAME_VER='3.45',GAME_DATE='05/11/2026 à 19h29';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
