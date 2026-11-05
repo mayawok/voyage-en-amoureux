@@ -937,6 +937,7 @@ g.fillStyle='#222';g.font='bold 20px sans-serif';g.textAlign='center';g.fillText
 const hs=k=>Math.abs(Math.sin(k*91.7)*43758.5453)%1;
 function decor(k,x0){const h=hs(k);if(h>.55)return;const px=k*90+h*120,z=Z(px);if(z[3]!=='dry'||nearCamp(px)||sceneAt(px))return;
 const y=T(px),b=bi(ALT(px)+110);if(PLT()){pltDecor(px,y,k,h);return}if(ALT(px)<95){beach(px,y,k);return}
+if(va43Dec(px,y,b,k))return;
 if(b===0){g.fillStyle='#3f7a3a';g.beginPath();g.arc(px,y-6,9,0,7);g.arc(px+8,y-4,6,0,7);g.fill()}
 else if(b===1){g.fillStyle='#5b8a4a';g.fillRect(px-2.5,y-24,5,24);g.fillRect(px-9,y-17,4,8);g.fillRect(px-9,y-17,8,3);g.fillRect(px+5,y-14,4,7);g.fillRect(px+1,y-14,8,3)}
 else{g.fillStyle=b===2?'#2f4a3a':'#3a5a4a';g.beginPath();g.moveTo(px,y-40);g.lineTo(px-12,y);g.lineTo(px+12,y);g.fill();
@@ -7142,7 +7143,7 @@ const VA12_DRAW={
   for(let i=0;i<10;i++){const x=px-hw+40+i*(hw*2-80)/9;rockD(x,T(x),18+hs(i)*10,10+hs(i+1)*8,va12N('#b87a58',dk))}},
  calanques(px,hw,sy,yt,dk,tm){va12Water(px,hw,sy+18,dk,tm,['#7fb8d8','#2f7fae','#1c5c88']);
   // le golfe de Porto, les falaises rouges qui plongent dans la mer
-  const C=[[-hw,-1],[hw,1]];for(const [d,sd] of C){const ex=px+d;g.fillStyle=va12N('#c8502a',dk);g.beginPath();g.moveTo(ex-sd*280,T(ex-sd*280));g.lineTo(ex-sd*240,sy-10);g.lineTo(ex-sd*190,sy-70);g.lineTo(ex-sd*150,sy-52);g.lineTo(ex-sd*110,sy-110);g.lineTo(ex-sd*60,sy-86);g.lineTo(ex-sd*20,sy-130);g.lineTo(ex+sd*80,sy-120);g.lineTo(ex+sd*80,T(ex));g.closePath();g.fill();
+  const C=va43Bg()?[]:[[-hw,-1],[hw,1]];for(const [d,sd] of C){const ex=px+d;g.fillStyle=va12N('#c8502a',dk);g.beginPath();g.moveTo(ex-sd*280,T(ex-sd*280));g.lineTo(ex-sd*240,sy-10);g.lineTo(ex-sd*190,sy-70);g.lineTo(ex-sd*150,sy-52);g.lineTo(ex-sd*110,sy-110);g.lineTo(ex-sd*60,sy-86);g.lineTo(ex-sd*20,sy-130);g.lineTo(ex+sd*80,sy-120);g.lineTo(ex+sd*80,T(ex));g.closePath();g.fill();
    g.fillStyle=va12N('#a83a1e',dk);g.beginPath();g.moveTo(ex-sd*190,sy-70);g.lineTo(ex-sd*150,sy-52);g.lineTo(ex-sd*150,sy+20);g.lineTo(ex-sd*240,sy+18);g.closePath();g.fill();g.beginPath();g.moveTo(ex-sd*20,sy-130);g.lineTo(ex-sd*60,sy-86);g.lineTo(ex-sd*70,sy+20);g.lineTo(ex+sd*10,sy+20);g.closePath();g.fill();
    g.strokeStyle='rgba(90,20,10,.3)';g.lineWidth=1.2;for(let r=0;r<8;r++){g.beginPath();g.moveTo(ex-sd*(230-r*30),sy-60+r*5);g.quadraticCurveTo(ex-sd*(220-r*30),sy-20,ex-sd*(232-r*30),sy+16);g.stroke()}
    g.fillStyle=va12N('#3f6a2a',dk);for(let b=0;b<8;b++){g.beginPath();g.arc(ex-sd*(200-b*30),sy-74-hs(b+sd)*40+Math.abs(b-4)*8,6+hs(b)*4,0,7);g.fill()}
@@ -7745,9 +7746,13 @@ function va25Kind(){const i=chIdx();return[0,1,4,6,7,9].includes(i)?0:(i===3||i=
 const VA25_L=[['olivier','buisson1','buisson2','rochers','palmier','maison1','buisson3','olivier','bergerie','maison3'],['chataignier','pin','buisson2','bergerie','chataignier','rochers','maison2','buisson3','pin','olivier'],['pin','pin','rochers','buisson1','pin','bergerie','buisson3','chataignier','pin','rochers']];
 const VA25_H={olivier:62,palmier:96,pin:104,chataignier:92,buisson1:30,buisson2:34,buisson3:26,rochers:42,maison1:66,maison2:66,maison3:66,bergerie:46,eglise:92,tour:150};
 function va25Far(){const L=VA25_L[va25Kind()],ci=chIdx();
+if(ci===4||ci===5||ci===6||ci===7)return;/* 3.43 : mer ou étang derrière la route, rien ne doit flotter */
+const dn=VA25_P[ci]&&VA25_P[ci].dune;
 for(const [p,sw,by,hz,sc,sd] of[[.42,150,.625,2,.62,31],[.62,190,.652,1,.88,57]]){
 layerSlots(p,sw,(j,u)=>{const r=hs(j*7+ci*131+sd);if(r<.3)return;const n=L[Math.floor(hs(j*3+ci*17+sd)*L.length)],cx=u+hs(j+sd+5)*sw*.8;
-if(n==='bergerie'&&hs(j+sd)<.6)return;va25Sp(n,cx,by*HH/S,VA25_H[n]*sc*(.9+hs(j+sd+2)*.25),hz,hs(j+sd+3)>.5)})}}
+if(n==='bergerie'&&hs(j+sd)<.6)return;let yb=by*HH/S;
+if(dn){const wx=cx-cam.x*p+cam.x*.3;yb=(HH*.62-(Math.sin(wx*.007)*34+Math.sin(wx*.007*2.3+1)*34*.4)*S*.6)/S+(p<.5?4:12)}/* 3.43 : posé sur la colline */
+va25Sp(n,cx,yb,VA25_H[n]*sc*(.9+hs(j+sd+2)*.25),hz,hs(j+sd+3)>.5)})}}
 // --- texture du sol (herbe / terre / herbe sèche) en lumière douce
 const VA25_TXN={0:'herbe',1:'sec',2:'herbe',3:'terre',4:'terre',5:'herbe',6:'sec',7:'terre',8:'sec',9:'sec'};
 function va25Gr(x0,x1,yb){try{const n=VA25_TXN[chIdx()];let o=VA25.im['tx_'+n];if(o===undefined){VA25.im['tx_'+n]=null;const im=new Image();im.onload=()=>{VA25.im['tx_'+n]=im;VA25.im['tp_'+n]=g.createPattern(im,'repeat')};im.src=VA25_TX[n];return}
@@ -7937,8 +7942,24 @@ for(const o of [VA23_IMG,VA27,VA34_IMG,VA40,VA25_TX])try{pick(o)}catch(e){}
 const seen={};const q=L.filter(p=>!seen[p]&&(seen[p]=1));let i=0;
 const next=function(){if(i>=q.length)return;const p=q[i++],im=new Image();im.onload=im.onerror=function(){setTimeout(next,350)};im.src=p};
 setTimeout(next,25000)}catch(e){}})();
+// ===== 3.43 : décors plus cohérents (sprites peints au bord de la route, ombres douces, teinte par chapitre, rien ne flotte) =====
+function va43Bg(){try{const im=va23Get(chIdx());return !!(im&&im.naturalWidth)}catch(e){return false}}
+// buissons, cactus et sapins en triangle remplacés par les images peintes (l'ancien dessin reste en secours)
+function va43Dec(px,y,b,k){try{const i=chIdx(),r=hs(k+77);let n,H;
+if(b===0){n=['buisson1','buisson2','buisson3'][k%3];H=VA25_H[n]*(.8+r*.5)}
+else if(b===1){n=(i===0||i===1||i===6||i===7||i===9)?'rochers':'buisson2';H=VA25_H[n]*(.8+r*.5)}
+else{n=(i===2||i===8)?'chataignier':'pin';H=(n==='pin'?70:60)+r*40}
+if(!va25Cv(n,0,0))return false;const w=H*VA25_SP[n].w/VA25_SP[n].h;
+g.fillStyle='rgba(30,24,10,.17)';g.beginPath();g.ellipse(px,y+2,w*.3,3.2,0,0,7);g.fill();
+return va25Sp(n,px,y+3,H,0,hs(k+9)>.5)}catch(e){return false}}
+// ombre douce sous les maisons et les arbres de la route
+village=(function(o){return function(px,y,k){try{const H=66+Math.floor(hs(k+4)*34);g.fillStyle='rgba(30,24,10,.16)';g.beginPath();g.ellipse(px,Math.max(T(px-H*.4),T(px+H*.4))+(y-T(px))+6,H*.5,3.4,0,0,7);g.fill()}catch(e){}return o(px,y,k)}})(village);
+// une même lumière par chapitre sur les décors peints (une seule fois, mise en cache)
+const VA43_T={1:'rgba(255,214,150,.07)',3:'rgba(255,190,150,.06)',4:'rgba(255,160,120,.07)',5:'rgba(210,225,160,.06)',6:'rgba(255,180,100,.10)',7:'rgba(255,170,120,.08)',8:'rgba(255,170,90,.12)',9:'rgba(255,200,140,.08)'};
+va25Cv=(function(o){return function(n,b,hz){const c=o(n,b,hz);if(!c)return c;const t=VA43_T[chIdx()];if(!t||!/^(maison|eglise|bergerie|pin|olivier|chataignier|palmier|buisson|rochers|tour)/.test(n))return c;
+const key=n+b+'_'+hz+'_T'+chIdx();let q=VA25.cv[key];if(q)return q;q=document.createElement('canvas');q.width=c.width;q.height=c.height;const x=q.getContext('2d');x.drawImage(c,0,0);x.globalCompositeOperation='source-atop';x.fillStyle=t;x.fillRect(0,0,q.width,q.height);VA25.cv[key]=q;return q}})(va25Cv);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.42',GAME_DATE='05/11/2026 à 13h29';
+const GAME_VER='3.43',GAME_DATE='05/11/2026 à 13h39';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
