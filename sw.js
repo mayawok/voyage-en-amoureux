@@ -1,7 +1,7 @@
 // Voyage en amoureux : jeu jouable sans connexion.
 // Page du jeu : toujours la dernière version quand il y a du réseau, la copie gardée sinon.
 // Musiques et images : gardées une fois téléchargées ; elles sont demandées normalement (sans délai ni option spéciale).
-const C='va-cache-4';
+const C='va-cache-5';
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>c.addAll(['./','index.html','icon.png']).catch(()=>{})))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;const u=new URL(r.url);if(u.origin!==location.origin)return;
