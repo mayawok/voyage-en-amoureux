@@ -8329,63 +8329,36 @@ dkBusy=(function(o){return function(){return !!va50.ins||o()}})(dkBusy);
 var va50Im={};
 otTick=(function(o){return function(t){o(t);try{if(!ot||ot.ph!=='cred')return;const L=phLoad();if(!L.length)return;const k=HH/420,Wd=W/k,tm=t/1000;g.setTransform(DPR*k,0,0,DPR*k,0,0);const n=Math.floor(ot.t/4.5)%L.length,u=(ot.t%4.5)/4.5,al=Math.min(1,u*5,(1-u)*5);for(let s=0;s<2;s++){const p=L[(n+s*3)%L.length];if(!p||!p.d)continue;let im=va50Im[p.d.length+'_'+(p.ch||0)+s];if(!im){im=va50Im[p.d.length+'_'+(p.ch||0)+s]=new Image();im.src=p.d}if(!im.complete||!im.naturalWidth)continue;const w=Wd*.2,h=w*.78,x=s?Wd*.82:Wd*.18,y=210+Math.sin(tm*.6+s)*4;g.save();g.globalAlpha=al*.95;g.translate(x,y);g.rotate((s?.05:-.05)+Math.sin(tm*.5+s)*.01);g.fillStyle='#fffdf7';g.fillRect(-w/2-6,-h/2-6,w+12,h+34);const z=1+u*.06,sw=im.naturalWidth,sh=im.naturalHeight,sc=Math.max(w/sw,h/sh)*z;g.save();g.beginPath();g.rect(-w/2,-h/2,w,h);g.clip();g.drawImage(im,-sw*sc/2,-sh*sc/2,sw*sc,sh*sc);g.restore();g.fillStyle='#3a2a1a';g.font='600 11px Arial';g.textAlign='center';g.fillText((p.c||'').slice(0,28),0,h/2+20);g.restore()}g.setTransform(DPR,0,0,DPR,0,0)}catch(e){}}})(otTick);
 
-// ===== 3.51 : Mila et Andrea animés en pièces détachées (marche, parole, clignement, gestes) =====
-var VA51J={"a_c0": 309, "a_c1": 314, "a_c2": 316, "a_c3": 314, "m_c0": 511, "m_c1": 508, "m_c2": 503, "m_c3": 517};
-// squelette : coordonnées en px de la planche du personnage ; pieds au sol en (0,0)
-var VA51R={
- m:{s:{h:.92,t:1,g:1,ua:.68,fa:.68,th:.55,c:.68},
-  head:{n:'m_h',p:[118,262]},torso:{n:'m_torso',neck:[128,8],hip:[132,190],sh:[118,62]},
-  ua:{n:'m_ua',p:[77,40],e:[79,292]},fa:{n:'m_fa',p:[42,30]},
-  th:{n:'m_th',p:[118,60],k:[86,440]},c:{n:['m_c0','m_c2'],p:[[107,40],[142,40]]},
-  g:{open:[88,30],fist:[70,30],point:[60,30],phone:[60,30]},hipDx:16,legs:620},
- a:{s:{h:1,t:1,g:1,ua:1,fa:1,th:1,c:1},
-  head:{n:'a_h',p:[115,238]},torso:{n:'a_torso',neck:[118,6],hip:[120,262],sh:[112,48]},
-  ua:{n:'a_ua',p:[75,34],e:[46,152]},fa:{n:'a_fa',p:[39,30]},
-  th:{n:'a_th',p:[99,40],k:[61,300]},c:{n:['a_c0','a_c2'],p:[[75,38],[98,40]]},
-  g:{open:[67,34],fist:[60,34],point:[60,34],phone:[60,34]},hipDx:14,legs:500}};
-var VA51I={};
-function va51L(R){if(R.L)return R.L;const J=VA51J;return R.L=(R.th.k[1]-R.th.p[1])*R.s.th+(J[R.c.n[0]]-R.c.p[0][1])*R.s.c}
-function va51Im(n){let i=VA51I[n];if(!i){i=VA51I[n]=new Image();i.src=(window.VA51_BASE||'img/sprites/va51/')+n+'.webp'}return i.complete&&i.naturalWidth?i:null}
-function va51Ok(w){const R=VA51R[w];let ok=true;for(const n of[R.head.n+'0',R.torso.n,R.ua.n,R.fa.n,R.th.n,R.c.n[0],R.c.n[1]])if(!va51Im(n))ok=false;return ok}
-function va51P(x,n,p,s,ang,dark){const im=va51Im(n);if(!im)return;x.save();x.rotate(ang||0);x.scale(s,s);x.drawImage(im,-p[0],-p[1]);if(dark){x.globalCompositeOperation='source-atop';x.fillStyle='rgba(30,20,40,'+dark+')';x.fillRect(-p[0],-p[1],im.width,im.height)}x.restore()}
-// st : {ph: phase de marche (rad) ou null, sp: amplitude 0-1, face:0-5, g: geste ('open','fist','point','phone') ou null, br: respiration}
-function va51Leg(x,R,ph,sp,far){const s=R.s,lift=Math.sin(ph),th=Math.sin(ph)*.42*sp,kn=Math.max(0,-Math.cos(ph))*.75*sp;
- x.save();x.rotate(-th);
- // cuisse
- va51Pc(x,R.th.n,R.th.p,s.th,0,far);
- x.translate((R.th.k[0]-R.th.p[0])*s.th,(R.th.k[1]-R.th.p[1])*s.th);
- const ci=(sp>.2&&kn>.25)?1:0;va51Pc(x,R.c.n[ci],R.c.p[ci],s.c,kn,far);x.restore()}
-function va51Pc(x,n,p,s,ang,far){va51P(x,n,p,s,ang,far?.28:0)}
-function va51Arm(x,R,sw,far){const s=R.s;x.save();x.rotate(sw);va51Pc(x,R.ua.n,R.ua.p,s.ua,0,far);x.translate((R.ua.e[0]-R.ua.p[0])*s.ua,(R.ua.e[1]-R.ua.p[1])*s.ua);va51Pc(x,R.fa.n,R.fa.p,s.fa,Math.max(0,sw)*-.5-.08,far);x.restore()}
-function va51Fig(x,w,H,st){const R=VA51R[w];if(!R||!va51Ok(w))return false;st=st||{};const ph=st.ph||0,sp=st.ph==null?0:(st.sp==null?1:st.sp),br=Math.sin((st.t||0)*1.8)*.006;
- const k=H/(va51L(R)+ (R.torso.hip[1]-R.torso.neck[1]) + (R.head.p[1]-0)*.9);x.save();x.scale(k,k);
- const bob=-Math.abs(Math.cos(ph))*14*sp;x.translate(0,-va51L(R)+bob);
- // hanche
- const t=R.torso,sh=[t.sh[0]-t.hip[0],t.sh[1]-t.hip[1]],nk=[t.neck[0]-t.hip[0],t.neck[1]-t.hip[1]];
- // bras éloigné
- x.save();x.translate(sh[0]-10,sh[1]);va51Arm(x,R,-Math.sin(ph)*.45*sp+.04,1);x.restore();
- // jambe éloignée puis proche
- x.save();x.translate(-R.hipDx,0);va51Leg(x,R,ph+Math.PI,sp,1);x.restore();
- x.save();x.translate(R.hipDx,0);va51Leg(x,R,ph,sp,0);x.restore();
- // torse + tête
- x.save();x.scale(1+br*.5,1+br);va51P(x,t.n,t.hip,R.s.t,0,0);
- x.translate(nk[0],nk[1]);x.rotate((st.hr||0)+Math.sin((st.t||0)*1.1)*.02*(1-sp));va51P(x,R.head.n+(st.face||0),R.head.p,R.s.h,0,0);x.restore();
- // bras proche
- x.save();x.translate(sh[0]+6,sh[1]+4);if(st.g){va51P(x,w+'_g_'+st.g,R.g[st.g],R.s.g,-.15,0)}else va51Arm(x,R,Math.sin(ph)*.45*sp-.04,0);x.restore();
- x.restore();return true}
-var VA51_POSE={stand:1,walk:1,walk2:1,talk:1,point:1,phone:1,joy:1,worried:1,sad:1,surprise:1};
-function va51Go(){for(const w of['m','a']){va51Ok(w);for(let i=1;i<6;i++)va51Im(w+'_h'+i);for(const q of['open','fist','point','phone'])va51Im(w+'_g_'+q)}}setTimeout(va51Go,1500);
-va36Draw=(function(o){return function(x,y,k,p){try{if(window.__va51off||!VA51R)return o(x,y,k,p);const ch=k?'m':'a',ps=va36Pose(k,x,p);if(!VA51_POSE[ps]||va36Dk()>0||!va51Ok(ch))return o(x,y,k,p);
- const sc=va25Cv('p_'+ch+'_stand',0,0);if(!sc)return o(x,y,k,p);const H=sc.height*VA36.F[ch],tm=performance.now()/1000,f=p.f||1,by=y-(p.bob||0);
- const wk=ps==='walk'||ps==='walk2',key=ch+(k?1:0),bl=((tm+(k?1.7:0))%4.2)<.13;
- let face=0,gst=null;if(ps==='talk'){const u=Math.floor(tm*9+(k?3:0));face=[0,1,2,1,0,2,1,0][u%8];if(Math.floor(tm*.5+(k?1:0))%3===1)gst='open'}
- else if(ps==='joy'){face=4}else if(ps==='worried'||ps==='sad'){face=5}else if(ps==='surprise'){face=2}else if(ps==='point'){gst='point';face=1}else if(ps==='phone'){gst='phone';face=Math.floor(tm*6)%3===0?1:0}
- if(bl&&face!==4)face=3;
- g.save();if(p.al!=null)g.globalAlpha*=p.al;g.fillStyle='rgba(0,0,0,.18)';g.beginPath();g.ellipse(x,y+.5,H*.11,2.2,0,0,7);g.fill();
- g.translate(x,by);g.scale(f,1);const r=va51Fig(g,ch,H,{ph:wk?x*.16:null,sp:wk?1:0,face,g:gst,t:tm+(k?.9:0)});g.restore();return r||o(x,y,k,p)}catch(e){return o(x,y,k,p)}}})(va36Draw);
+// ===== 3.52 : régulateur (à droite de l'accélérateur) : roule à vitesse modérée jusqu'à la prochaine chose à faire, puis s'arrête sans couper le contact =====
+var va52={on:0,stop:0,why:'',lo:0,x0:0,ign:{}};const VA52_V=230;
+sizeDash=(function(o){return function(){o();try{const u=UI.u,g2=Zn.gas,cw=Math.round(34*u);g2.w-=cw+5;Zn.cruise={x:g2.x+g2.w+5,y:g2.y+Math.round((g2.h-cw*1.5)/2),w:cw,h:Math.round(cw*1.5)};const ss=Math.round(44*u*.62);Zn.boost={x:g2.x+g2.w-ss-4,y:g2.y+4,w:ss,h:ss}}catch(e){}}})(sizeDash);
+pedal2=(function(o){return function(z,on,kind){o(z,on,kind);if(kind!=='gas'||!Zn.cruise)return;try{const x=dg,q=Zn.cruise,cx=q.x+q.w/2,cy=q.y+q.h/2,a=va52.on?(va52.stop?'#ffb23a':'#46d36a'):'rgba(255,255,255,.75)';x.save();x.globalAlpha=va52.on?.95:.6;rr(x,q.x,q.y,q.w,q.h,10);x.fillStyle=va52.on?'rgba(20,40,24,.55)':'rgba(20,18,16,.32)';x.fill();x.lineWidth=2;x.strokeStyle=a;x.stroke();
+ // pictogramme : compteur avec flèche
+ const r=q.w*.3;x.strokeStyle=a;x.lineWidth=2;x.beginPath();x.arc(cx,cy-q.h*.08,r,Math.PI*.85,Math.PI*2.15);x.stroke();x.beginPath();x.moveTo(cx,cy-q.h*.08);x.lineTo(cx+r*.75,cy-q.h*.08-r*.55);x.stroke();
+ x.fillStyle=a;x.font='800 '+Math.round(q.w*.26)+'px Arial';x.textAlign='center';x.fillText(va52.on?'ON':'AUTO',cx,q.y+q.h-5);x.restore()}catch(e){}}})(pedal2);
+zhit=(function(o){return function(x,y){if(Zn.cruise&&inz(Zn.cruise,x,y,3))return'cruise';return o(x,y)}})(zhit);
+function va52Off(){if(va52.stop||va52.on){if(va52.stop)st.brake=0;st.gas=0}va52.on=0;va52.stop=0}
+function va52Toggle(){if(va52.on){va52Off();snd('click');return}if(!ign||!started){try{say('Il faut d’abord mettre le contact.',2.5,0)}catch(e){}return}va52.on=1;va52.stop=0;va52.lo=0;va52.x0=c.x;va52.ign={};
+ // ce qui est déjà sous les roues ou juste devant n'arrête pas
+ for(const o of obs)if(o.x>c.x-80&&o.x<c.x+120)va52.ign['o'+o.x]=1;for(const L of[stns,gars,shp])for(const p of L)if(Math.abs(p.x+110-c.x)<220)va52.ign['p'+p.x]=1;snd('click')}
+document.addEventListener('pointerdown',ev=>{try{if(paused||!inGame)return;const z=zhit(ev.clientX,ev.clientY);if(z==='cruise'){ev.preventDefault();va52Toggle()}else if((z==='gas'||z==='brake')&&va52.on)va52Off()}catch(e){}},true);
+addEventListener('keydown',e=>{if(e.key==='c'||e.key==='C'){if(!paused&&inGame)va52Toggle()}else if((e.key==='ArrowLeft'||e.key==='ArrowRight')&&va52.on)va52Off()});
+function va52Next(){const X=c.x,ty=Z(X)[3];
+ for(const o of obs)if(!o.done&&o.x>X+40&&o.x<X+330&&!va52.ign['o'+o.x])return'obstacle';
+ for(const L of[stns,gars,shp])for(const p of L){const tx=p.x+110;if(tx>X&&tx<X+170&&!va52.ign['p'+p.x])return'arrêt'}
+ try{if(typeof paintX!=='undefined'){const pxs=Array.isArray(paintX)?paintX:[];for(const q of pxs){const tx=(q.x||q)+110;if(tx>X&&tx<X+170&&!va52.ign['p'+tx])return'arrêt'}}}catch(e){}
+ for(let d=160;d<=320;d+=40){const t=Z(X+d)[3];if(t!==ty&&(t==='ford'||t==='mud'||t==='slip'||t==='rock'))return'terrain'}
+ try{if(bridgeAt(X+260)>=0&&brOpen&&!(SV.brOK||{})[level]&&bridgeAt(X)<0)return'pont'}catch(e){}
+ return''}
+mgTick=(function(o){return function(dt){o(dt);try{if(!va52.on)return;if(!ign||crashed||stalled||cardOpen||cs||stopReq||(typeof hl!=='undefined'&&hl)||(typeof MGX!=='undefined'&&MGX)||(typeof pz!=='undefined'&&pz)||es||va5G){va52Off();return}
+ const sp=Math.hypot(v.x,v.y);
+ if(!va52.stop){const w=va52Next();if(w){va52.stop=1;va52.why=w}else{st.brake=0;st.gas=v.x<VA52_V?1:0;
+  // bloqué (côte, talus) : on s'arrête et on laisse la main
+  if(sp<25&&c.x-va52.x0>60)va52.lo+=dt;else va52.lo=0;if(c.x-va52.x0<60&&sp<25)va52.lo+=dt*.5;if(va52.lo>2.2){va52.stop=1;va52.why='bloqué'}}}
+ if(va52.stop){st.gas=0;st.brake=1;if(sp<6){st.brake=0;va52.on=0;va52.stop=0;try{say(va52.why==='bloqué'?'On n’avance plus : à toi de jouer.':va52.why==='obstacle'?'Il y a quelque chose devant.':va52.why==='terrain'?'Le terrain change devant.':va52.why==='pont'?'Le pont, devant…':'On s’arrête ici ?',2.2,0)}catch(e){}}}}catch(e){}}})(mgTick);
 
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.51',GAME_DATE='10/11/2026 à 20h44';
+const GAME_VER='3.52',GAME_DATE='10/11/2026 à 20h49';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
