@@ -3078,7 +3078,7 @@ const G=new Array(36).fill(-1);V.forEach((v,i)=>{for(let j=0;j<v.l;j++){const r=
 V.forEach((v,i)=>{for(const d of[-1,1]){let p=P[i];while(true){const np=p+d;if(np<0||np+v.l>6)break;const r=v.h?v.r:(d>0?np+v.l-1:np),c=v.h?(d>0?np+v.l-1:np):v.c;if(G[r*6+c]!==-1)break;p=np;const N2=P.slice();N2[i]=p;const k=key(N2);if(!seen.has(k)){seen.set(k,{pk:key(P),mv:[i,p]});Q.push(N2)}}}})}return null}
 function rhGen(R,nv){const V=[{h:1,r:2,c:R()<.5?0:1,l:2,me:1}];const G=new Array(36).fill(0);const mark=v=>{for(let j=0;j<v.l;j++)G[v.h?v.r*6+v.c+j:(v.r+j)*6+v.c]=1};mark(V[0]);let tries=0;
 while(V.length<nv&&tries++<400){const h=R()<.5,l=R()<.3?3:2,r=Math.floor(R()*(h?6:7-l)),c=Math.floor(R()*(h?7-l:6));if(h&&r===2)continue;const v={h,r,c,l};let ok=true;for(let j=0;j<l;j++){if(G[h?r*6+c+j:(r+j)*6+c]){ok=false;break}}if(ok){V.push(v);mark(v)}}return V}
-function rhStart(){const i=chIdx(),S=RHS[(i+TS())%RHS.length],R=mb32(5000+level*91+TS()*7919+(SV.rhTry||0)),tgt=5+i;let best=null,bl=0,t0=performance.now();
+function rhStart(){const i=chIdx(),S=RHS[(i+TS())%RHS.length],R=mb32(5000+level*91+TS()*7919+(SV.rhTry||0)),tgt=Math.max(3,5+i+DF().tb*2);let best=null,bl=0,t0=performance.now();
 while(performance.now()-t0<650){const V=rhGen(R,9+Math.floor(R()*4)+Math.min(3,i>>1));const sol=rhSolve(V);if(!sol||sol.length<2)continue;if(sol.length>bl&&sol.length<=tgt+3){best=V;bl=sol.length}if(bl>=tgt)break}
 if(!best){best=[{h:1,r:2,c:0,l:2,me:1},{h:0,r:1,c:3,l:2},{h:0,r:2,c:5,l:3},{h:1,r:4,c:3,l:3}];bl=rhSolve(best).length}
 const V=best.map((v,j)=>Object.assign({},v,{p:v.h?v.c:v.r,o:0,sk:j===0?null:(v.l===3?S.L3:S.L2)[j%(v.l===3?S.L3:S.L2).length]}));
@@ -4983,7 +4983,7 @@ const M=K.map(r=>Array.from(r)),b=Array.from(F);for(let i=0;i<N;i++){let p=i;for
 const u=new Array(N).fill(0);for(let i=N-1;i>=0;i--){let sum=b[i];for(let cc=i+1;cc<N;cc++)sum-=M[i][cc]*u[cc];u[i]=sum/(M[i][i]||1e-12)}
 const U=i=>map[i]>=0?[u[map[i]],u[map[i]+1]]:[0,0];let maxU=0;for(let i=0;i<n;i++){const q=U(i);maxU=Math.max(maxU,Math.hypot(q[0],q[1]))}
 const f=beams.map(bm=>{const A=nodes[bm.a],B=nodes[bm.b],dx=B.x-A.x,dy=B.y-A.y,L=Math.hypot(dx,dy),ua=U(bm.a),ub=U(bm.b);return EA/L*(((ub[0]-ua[0])*dx+(ub[1]-ua[1])*dy)/L)});return{U,f,maxU}}
-function brOpen(after){const ci=chIdx(),n=4+Math.floor(ci/2),S=50,Y=250,XL=400-n*S/2,XR=400+n*S/2,CAP=262,MAXL=S*2.3,budget=4*n+1;
+function brOpen(after){const ci=chIdx(),n=4+Math.floor(ci/2),S=50,Y=250,XL=400-n*S/2,XR=400+n*S/2,CAP=262,MAXL=S*2.3,budget=4*n+1-DF().tb*2;
 const B={k:'bridge',n,S,Y,XL,XR,nodes:[],beams:[],hist:[],sel:-1,downP:null,mode:'edit',t:0,car:0,res:null,fails:(SV.brFail&&SV.brFail[level])||0,msg:'',msgT:0,stress:null,brk:-1,fallT:0,
 start(){for(let j=0;j<=2;j++){B.nodes.push({x:XL,y:Y+j*S,fix:1});B.nodes.push({x:XR,y:Y+j*S,fix:1})}B.ui()},
 ui(){let h='<div style="position:absolute;left:2%;top:2.5%;right:2%;display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><span class="tr" style="font-weight:800">🌉 Le pont de bois est cassé : reconstruis-le !<br><span style="font-weight:600">'+(B.mode==='edit'?'Touche un point d’ancrage ⚓ puis un point de la grille pour poser une poutre (ou fais glisser). Touche une poutre pour l’enlever. Les triangles rendent le pont solide !':'Test en cours…')+'</span></span>';
@@ -8098,8 +8098,89 @@ closeEnd=(function(o){return function(){if(dkP){es=null;document.body.classList.
 va5Close=(function(o){return function(){if(dkP){va5G=null;gid('va5').style.display='none';try{va5Unlbl()}catch(e){}return}return o()}})(va5Close);
 setInterval(()=>{try{if(dkP){if(dkBusy()){dkP.seen=1;dkP.t=0}else if(dkP.seen){dkP.t+=.25;if(dkP.t>=.75)dkEnd()}else{dkP.t+=.25;if(dkP.t>3)dkEnd()}}
  const h=gid('dkhud');if(h&&h.style.display==='block'){h.textContent='chapitre '+(chIdx()+1)+' · '+Math.round(chP()*100)+' %\nx '+Math.round(c.x)+' / '+MAP_L+'\n'+hourNow().toFixed(1)+' h · météo '+(wxk||'clair')}}catch(e){}},250);
+// ===== 3.48 : mini-jeux plus confortables (tuto, passer, recommencer, difficulté, défis, aide treuil/4L) =====
+var va48={fr:0,S:null};
+const VA48_T={
+ farm:['L’enclos',['Un animal par ligne, par colonne et par couleur.','Deux animaux ne se touchent jamais, même en diagonale.','1 touche = croix, 2 touches = animal, 3 = vide.'],'Récompense : +5 cœurs'],
+ plant:['Les plantes',['Lis bien ce que demande la personne.','Touche la plante qui correspond.','Méfie-toi des plantes toxiques.'],'Récompense : +3 cœurs'],
+ jam:['Le bouchon',['Fais glisser les véhicules dans leur sens.','Libère la voie devant le Cherokee.','Sors-le par la droite.'],'Récompense : +4 cœurs'],
+ tube:['Le tri des fioles',['Touche une fiole, puis une autre pour verser.','Une seule couleur par tube.','Annuler et Recommencer sont en haut.'],'Récompense : +2 cœurs'],
+ trl:['La remorque',['Roule en douceur, ralentis dans les bosses.','Ne fais rien tomber et ne panique pas les bêtes.','Pas de treuil ici.'],'Récompense : +3 cœurs'],
+ bridge:['Le pont',['Touche un point d’ancrage, puis un point de la grille : une poutre.','Les triangles rendent le pont solide.','Puis lance le test.'],'Récompense : +3 cœurs'],
+ tour:['Les touristes',['Ils parlent une autre langue.','Choisis la bonne réponse.','Une bonne réponse fait plaisir à tout le monde.'],'Récompense : +2 cœurs'],
+ horse:['La poursuite à cheval',['Touche l’écran pour sauter.','Évite les obstacles.','Quatre faux pas et la camionnette s’échappe.'],'Récompense : la suite de l’histoire'],
+ sub:['Le sous-marin',['Touche l’écran pour remonter.','Passe entre les rochers.','Trois boucliers : sois prudent.'],'Récompense : la suite de l’histoire'],
+ help:['Aider un animal',['Suis les étapes indiquées à l’écran.','Sans brusquer l’animal.','Mila et Andrea s’occupent du reste.'],'Récompense : 2 à 3 cœurs'],
+ smp:['Le prélèvement',['Suis les étapes indiquées à l’écran.','Gestes doux, gants enfilés.','Les résultats arrivent par le labo.'],'Récompense : +3 cœurs']};
+const VA48_NOSKIP={tube:1,trl:1,tour:1,help:1,smp:1};
+(function(){const st=document.createElement('style');st.textContent=`#va48t{position:fixed;inset:0;z-index:222;display:none;align-items:center;justify-content:center;background:rgba(15,10,6,.62)}
+#va48t .w{width:min(430px,92vw);background:#f6ecd8;color:#2b241b;border-radius:18px;border:3px solid #6a3a1e;padding:12px 16px 14px;box-shadow:0 10px 36px rgba(0,0,0,.5);font-family:"Avenir Next",Arial,sans-serif}
+#va48t h3{margin:0 0 6px;text-align:center;color:#a8282a;font-size:19px}#va48t .l{display:flex;gap:9px;align-items:flex-start;margin:5px 0;font-size:14px;line-height:1.3}
+#va48t .l i{flex:0 0 22px;height:22px;border-radius:50%;background:#2b211a;color:#fff;font:800 12px/22px Arial;text-align:center;font-style:normal}
+#va48t .r{margin-top:8px;text-align:center;font-weight:800;font-size:13px;color:#6a3a1e}
+#va48t .pg{height:5px;background:#d9c7a4;border-radius:3px;margin-top:9px;overflow:hidden}#va48t .pg div{height:100%;width:100%;background:#a8282a;transform-origin:left;animation:va48b 3s linear forwards}
+@keyframes va48b{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+#va48t .t{text-align:center;font-size:11.5px;opacity:.6;margin-top:5px}
+#va48sk{position:fixed;left:max(12px,env(safe-area-inset-left));bottom:12px;z-index:221;display:none;border:0;border-radius:14px;padding:10px 16px;background:rgba(255,255,255,.92);color:#2b241b;font:800 14px Arial;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+#va48rt{position:fixed;left:50%;transform:translateX(-50%);bottom:18%;z-index:221;display:none;border:0;border-radius:14px;padding:11px 22px;background:#a8282a;color:#fff;font:800 16px Arial}
+@keyframes va48p{0%,100%{box-shadow:0 0 0 0 rgba(255,214,90,.0)}50%{box-shadow:0 0 0 6px rgba(255,214,90,.85)}}
+.va48p{animation:va48p 1.1s ease-in-out infinite!important;color:#ffd65a!important;border-radius:10px}
+#va48h{position:fixed;left:50%;transform:translateX(-50%);top:58px;z-index:9;display:none;background:rgba(24,20,16,.82);color:#f6ecd6;border:1.5px solid rgba(232,178,90,.55);border-radius:12px;padding:5px 12px;font:700 12.5px Arial;pointer-events:none}`;document.head.appendChild(st);
+ const t=document.createElement('div');t.id='va48t';document.body.appendChild(t);
+ t.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();va48Go()});
+ const sk=document.createElement('button');sk.id='va48sk';sk.textContent='Passer ce mini-jeu';document.body.appendChild(sk);sk.addEventListener('click',e=>{e.stopPropagation();va48Skip()});
+ const rt=document.createElement('button');rt.id='va48rt';rt.textContent='Recommencer';document.body.appendChild(rt);rt.addEventListener('click',e=>{e.stopPropagation();va48Retry()});
+ const h=document.createElement('div');h.id='va48h';document.body.appendChild(h);
+ document.addEventListener('click',e=>{try{const b=e.target.closest&&e.target.closest('button');if(!b||!va48.S)return;if(b.id==='tbr'||b.id==='pzre')va48Fail()}catch(er){}},true)})();
+function va48Key(k){try{const f=SV.va48f=SV.va48f||{};return f[k+level]||0}catch(e){return 0}}
+function va48Start(k){if(va48.S&&va48.S.k===k&&performance.now()-va48.S.t0<600)return;va48.S={k,t0:performance.now(),fails:va48Key(k),fl:0,hp:null,done:0,ini:0};
+ try{const n=SV.va48n=SV.va48n||{};const T=VA48_T[k];if(T&&((n[k]||0)<3||va9P||dkP)){n[k]=(n[k]||0)+1;const t=gid('va48t');t.innerHTML='<div class="w"><h3>'+T[0]+'</h3>'+T[1].map((q,i)=>'<div class="l"><i>'+(i+1)+'</i><span>'+q+'</span></div>').join('')+'<div class="r">'+T[2]+'</div><div class="pg"><div></div></div><div class="t">Touche pour commencer</div></div>';t.style.display='flex';va48.fr=1;va48.tt=performance.now()}}catch(e){}}
+function va48Go(){va48.fr=0;gid('va48t').style.display='none'}
+function va48Fail(){const S=va48.S;if(!S)return;S.fails++;try{const f=SV.va48f=SV.va48f||{};f[S.k+level]=S.fails}catch(e){}}
+function va48Win(){try{if(va48.S&&SV.va48f)delete SV.va48f[va48.S.k+level]}catch(e){}}
+function va48Skip(){const S=va48.S;if(!S||S.done)return;S.done=1;const h0=SV.hearts;gid('va48sk').style.display='none';
+ try{if(pz)pzClose(1);else if(MGX)mgxClose(true);else if(fb){fb.go=1;fb.t=FB_T}}catch(e){console.error('passer '+e.message)}
+ try{SV.hearts=h0;if(SV.va48f)delete SV.va48f[S.k+level]}catch(e){}
+ const q={farm:['a','Les bêtes se sont débrouillées toutes seules. On passe, mon cœur.'],plant:['m','Je demanderai au labo. On ne va pas y passer la journée.'],jam:['a','Le bouchon vient de se dégager tout seul. Allons-y !'],bridge:['a','Un voisin nous a prêté des planches. Le pont tient, passons.'],horse:['m','On les retrouvera plus loin. En route.'],sub:['m','Le sonar a fini le travail sans nous.']}[S.k];if(q)talkQ.push(q);
+ va48.S=null;va48.fr=0}
+function va48Retry(){const S=va48.S;gid('va48rt').style.display='none';if(!S||S.k!=='horse'||!MGX)return;try{va48Fail();gid('mgx').style.display='none';gid('mgxu').innerHTML='';MGX=null;horseOpen();va48.S.fails=va48Key('horse');va48Go()}catch(e){console.error('recommencer '+e.message)}}
+// jeux : démarrage -> tuto
+pzOpen=(function(o){return function(k){const r=o(k);va48Start(k==='farm'?'farm':k==='plant'?'plant':'jam');try{if(pz&&(pz.k==='farm'||pz.k==='jam')&&typeof pz.hint==='number'){const d=DF().tb;pz.hint=Math.max(0,pz.hint+(d<0?2:d>0?-1:0))}}catch(e){}return r}})(pzOpen);
+mgxOpen=(function(o){return function(d){const r=o(d);const m={tube:'tube',trl:'trl',bridge:'bridge',tour:'tour',horse:'horse'}[d&&d.k];if(m)va48Start(m);return r}})(mgxOpen);
+fbStart=(function(o){return function(){const r=o();va48Start('sub');return r}})(fbStart);
+openHelp=(function(o){return function(k){const r=o(k);try{va48Start(HELP[k]&&HELP[k].smp?'smp':'help')}catch(e){}return r}})(openHelp);
+// gel pendant le tuto
+pzTick=(function(o){return function(dt,tm){return o(va48.fr?0:dt,tm)}})(pzTick);
+mgxFrame=(function(o){return function(t){if(va48.fr)mgxT0=t;return o(t)}})(mgxFrame);
+hlTick=(function(o){return function(t){if(va48.fr)hlT0=t;return o(t)}})(hlTick);
+fbTick=(function(o){return function(t){if(va48.fr&&fb)fb.t0=t;return o(t)}})(fbTick);
+// surveillance : échecs, bouton Passer, Recommencer, aides de difficulté
+setInterval(()=>{try{const t=gid('va48t');if(va48.fr&&performance.now()-va48.tt>3000)va48Go();
+ const S=va48.S;const sk=gid('va48sk'),rt=gid('va48rt');
+ const live=!!(pz||MGX||fb);if(!live){if(S){if(S.k&&!S.done){/* fermé sans passer : succès ou abandon */}va48.S=null}sk.style.display='none';rt.style.display='none';if(va48.fr)va48Go();}
+ else if(S){
+  if(S.k==='farm'&&pz){if(S.hp!=null&&S.hp>0&&pz.hp<=0)va48Fail();S.hp=pz.hp;if(pz.won)va48Win()}
+  else if(S.k==='plant'&&pz){const n=Object.keys(pz.bad||{}).length;if(n>S.fl){S.fails+=n-S.fl;S.fl=n}if(pz.won)va48Win()}
+  else if(S.k==='jam'&&pz){if(pz.won)va48Win()}
+  else if(S.k==='bridge'&&MGX){if(S.ini===0&&MGX.fails!=null)S.ini=MGX.fails+1;if(MGX.fails!=null&&S.ini&&MGX.fails+1>S.ini){S.fails+=MGX.fails+1-S.ini;S.ini=MGX.fails+1}if(MGX.res==='win')va48Win()}
+  else if(S.k==='horse'&&MGX){if(MGX.res==='lose'&&!S.lo){S.lo=1;va48Fail()}if(MGX.res==='win')va48Win()}
+  else if(S.k==='sub'&&fb){if(fb.lives<=0&&!S.lo){S.lo=1;va48Fail()}if(fb.lives>0)S.lo=0}
+  const el=(performance.now()-S.t0)/1000,can=!VA48_NOSKIP[S.k]&&!va48.fr&&(S.fails>=3||el>=150)&&!(S.k==='bridge'&&MGX&&MGX.mode!=='edit'&&!MGX.res);
+  sk.style.display=can&&!S.done?'block':'none';
+  rt.style.display=(S.k==='horse'&&MGX&&MGX.res==='lose')?'block':'none';
+  if(S.k==='tour'&&MGX&&!MGX.res&&DF().tb<0&&!S.ez){S.ez=1;try{const b=[...gid('mgxu').querySelectorAll('.ans')].filter(x=>+x.dataset.i!==0)[0];if(b){b.style.opacity='.3';b.style.pointerEvents='none'}}catch(e){}}}
+ }catch(e){}},250);
+// défis des livrées : progression visible
+var va48A={};
+setInterval(()=>{try{if(typeof SKINS==='undefined'||!inGame||paused||va9P||dkP)return;const A=achO();for(const s of SKINS){if(skinOK(s[0]))continue;const v=s[3](A)|0,o=va48A[s[0]];if(o==null){va48A[s[0]]=v;continue}if(v>o){va48A[s[0]]=v;if(v<s[4]&&(v===1||v%2===0||s[4]-v<=2))note('Défi « '+s[1]+' » : '+v+'/'+s[4]+' · '+s[2],3.2)}}}catch(e){}},2000);
+// aide : treuil / 4L quand la voiture est bloquée
+var va48B=0;
+setInterval(()=>{try{const h=gid('va48h'),w=wbEl,l4=lps&&lps[3];let msg='';const stuck=inGame&&!paused&&started&&!night&&!crashed&&ign&&st.gas&&!work&&!winch&&!cardOpen&&Math.hypot(v.x,v.y)<7&&introT<=0&&!cs&&!MGX&&!pz&&!hl&&!fb;
+ va48B=stuck?va48B+.25:0;w.classList.remove('va48p');if(l4)l4.classList.remove('va48p');
+ if(va48B>=3){const ready=started&&(wReadyAt-playT)<=0;if(st.gear!==3&&l4){l4.classList.add('va48p');msg='Bloqué ? Essaie le 4L (le levier en bas à droite)'}else if(ready){w.classList.add('va48p');msg='Bloqué ? Le treuil est prêt (touche J)'}}
+ h.textContent=msg;h.style.display=msg?'block':'none'}catch(e){}},250);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.47',GAME_DATE='10/11/2026 à 18h00';
+const GAME_VER='3.48',GAME_DATE='10/11/2026 à 18h27';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
