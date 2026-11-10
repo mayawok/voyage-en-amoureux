@@ -8013,8 +8013,93 @@ corkD=(function(o){return function(x,y,tm,j){o(x,y);try{va46Pigs(x,y,tm||0,j||0,
 hayD=(function(o){return function(x,y,tm,j){o(x,y);try{va46Hens(x,y,tm||0,j||0)}catch(e){}}})(hayD);
 hutD=(function(o){return function(x,y,tm,j){o(x,y);try{if(ALT(x)>=80)va46Hens(x+38,y,tm||0,j||0)}catch(e){}}})(hutD);
 chapel=(function(o){return function(x,y){o(x,y);try{if(hs(Math.round(x)+77)>.45||ALT(x)>320)return;const tm=performance.now()/1000;va46An('cigogne_0',x-8,y-45+Math.sin(tm*.5+x)*.4,17,1)}catch(e){}}})(chapel);
+// ===== 3.47 : kit développeur (mot de passe 337.2) =====
+var DK_LBL={bella:'Bellavista : le chantier',pech:'Le pêcheur et le bidon',spray:'Le pulvérisateur',plk:'Les planches',ours:'L’ours',sub:'Le sous-marin',drums:'Les bidons',bats:'Les chauves-souris',coas:'Coasina',dogf:'Le chien trouve les bidons',lacCall:'Lac : l’appel de Lucia',love:'Les oisillons',nox1:'Noxacorp 1',nox2:'Noxacorp 2',nox3:'Noxacorp 3',picnic:'Le pique-nique',sarA0:'Sardaigne : départ (aller)',sarA1:'Sardaigne : arrivée (aller)',sarD0:'Sardaigne : départ (retour)',sarD1:'Sardaigne : arrivée (retour)',spy:'L’espion',lucia:'Lucia',veto:'La vétérinaire'};
+var dkP=null,dkOK=false,dkFps=0;
+(function(){
+ const s=document.createElement('style');s.textContent=`#dkpw,#dk{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(15,10,6,.78);padding:10px}
+#dkpw{z-index:230}#dk{z-index:210}
+#dkpw .w,#dk .w{background:#f6ecd8;color:#2b241b;border-radius:18px;border:4px solid #3a2a1e;padding:12px 16px 14px;box-shadow:0 10px 40px rgba(0,0,0,.5);font-family:"Avenir Next",Arial,sans-serif}
+#dkpw .w{width:min(340px,92vw);text-align:center}#dkpw input{width:80%;font:700 22px Arial;text-align:center;padding:8px;border-radius:10px;border:2px solid #6a3a1e;margin:8px 0}
+#dkpw .e{color:#a8282a;font-size:13px;min-height:16px}
+#dk .w{width:min(820px,97vw);max-height:calc(100vh - 20px);overflow:auto}
+#dk h2{margin:0;text-align:center;color:#a8282a;font-size:21px}#dk .s{text-align:center;font-size:12.5px;opacity:.75;margin:2px 0 8px}
+#dk .t{display:flex;gap:6px;justify-content:center;margin-bottom:8px}#dk .t button{margin:0;min-height:0;height:auto;padding:7px 14px;border:0;border-radius:12px;background:#d9c7a4;color:#2b241b;font:800 14px Arial}#dk .t button.on{background:#2b211a;color:#fff}
+#dk .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px}
+#dk .g button,#dk .r button{margin:0;border:0;border-radius:12px;padding:9px 8px;background:#2b211a;color:#fff;font:700 13.5px Arial;min-height:0;height:auto}
+#dk .r{display:flex;align-items:center;gap:6px;margin:5px 0;flex-wrap:wrap}#dk .r b{min-width:215px;font-size:13.5px}#dk .r button{padding:8px 14px;background:#6a3a1e}
+#dk h3{margin:10px 0 4px;font-size:14px;color:#6a3a1e}
+#dk .x{display:flex;justify-content:center;margin-top:10px}#dk .x button{margin:0;min-width:160px}
+#dkbk{position:fixed;left:max(10px,env(safe-area-inset-left));top:10px;z-index:231;display:none;border:0;border-radius:12px;padding:8px 14px;background:rgba(168,40,42,.95);color:#fff;font:800 13px Arial}
+#dkhud{position:fixed;right:8px;top:8px;z-index:150;display:none;background:rgba(0,0,0,.6);color:#fff;font:600 11px/1.35 monospace;padding:5px 8px;border-radius:8px;pointer-events:none;white-space:pre}`;
+ document.head.appendChild(s);
+ const pw=document.createElement('div');pw.id='dkpw';pw.innerHTML='<div class="w"><h2 style="margin:0;color:#a8282a;font-size:19px">Kit développeur</h2><div style="font-size:13px;opacity:.75">Mot de passe</div><input id="dkin" type="text" inputmode="decimal" autocomplete="off" autocapitalize="off"><div class="e" id="dke"></div><div style="display:flex;gap:8px;justify-content:center"><button class="b" id="dkno" style="margin:0">Annuler</button><button class="b rdy" id="dkyes" style="margin:0">Entrer</button></div></div>';document.body.appendChild(pw);
+ const d=document.createElement('div');d.id='dk';d.innerHTML='<div class="w"><h2>Kit développeur</h2><div class="s">Les cinématiques se rejouent sans toucher à ton voyage. Les sauts de chapitre déplacent vraiment la partie (une copie de secours est faite avant).</div><div class="t"><button data-p="c" class="on">Cinématiques</button><button data-p="h">Chapitres</button><button data-p="o">Outils</button></div><div id="dkb"></div><div class="x"><button class="b" id="dkx">◀ Retour au menu</button></div></div>';document.body.appendChild(d);
+ const bk=document.createElement('button');bk.id='dkbk';bk.textContent='◀ Retour au kit';document.body.appendChild(bk);
+ const hud=document.createElement('div');hud.id='dkhud';document.body.appendChild(hud);
+ const mb=document.createElement('button');mb.className='b';mb.id='mdk';mb.textContent='Kit développeur';const nw=gid('mnew');nw.parentNode.insertBefore(mb,nw);
+ mb.addEventListener('click',e=>{e.stopPropagation();snd('click');if(dkOK)dkShow();else{gid('dkin').value='';gid('dke').textContent='';pw.style.display='flex';setTimeout(()=>{try{gid('dkin').focus()}catch(e){}},50)}});
+ const tryPw=()=>{const v=gid('dkin').value.trim().replace(',','.');if(v==='337.2'){dkOK=true;pw.style.display='none';dkShow()}else{gid('dke').textContent='Mot de passe incorrect';gid('dkin').value=''}};
+ gid('dkyes').addEventListener('click',e=>{e.stopPropagation();tryPw()});gid('dkno').addEventListener('click',e=>{e.stopPropagation();pw.style.display='none'});
+ gid('dkin').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')tryPw()});gid('dkin').addEventListener('keyup',e=>e.stopPropagation());
+ gid('dkx').addEventListener('click',e=>{e.stopPropagation();d.style.display='none'});
+ d.querySelector('.t').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;e.stopPropagation();dkTab(b.dataset.p)});
+ gid('dkb').addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b)return;e.stopPropagation();try{dkAct(b.dataset.a,b.dataset.v)}catch(er){console.error('kit '+er.message)}});
+ bk.addEventListener('click',e=>{e.stopPropagation();dkEnd()})})();
+function dkShow(){gid('dk').style.display='flex';dkTab(gid('dk').dataset.tab||'c')}
+function dkB(a,v,txt){return '<button data-a="'+a+'" data-v="'+v+'">'+txt+'</button>'}
+function dkTab(p){const d=gid('dk');d.dataset.tab=p;d.querySelectorAll('.t button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));let h='';
+ if(p==='c'){h+='<h3>Cinématiques du voyage</h3><div class="g">';for(const k of Object.keys(CS))h+=dkB('cine',k,DK_LBL[k]||k);h+='</div><h3>Autres scènes</h3><div class="g">'+dkB('sp','bzh','Intro en Bretagne')+dkB('sp','fin','Finale à Fautea')+dkB('sp','prop','Demande en mariage');
+  for(let i=0;i<CHAP.length;i++)h+=dkB('end',i,'Fin du chapitre '+(i+1));
+  for(let i=0;i<CHAP.length-1;i++)h+=dkB('gar',i,'Étape au garage '+(i+1));
+  try{for(const k of Object.keys(FERRY))h+=dkB('bac',k,'Bac : '+FERRY[k].t)}catch(e){}
+  h+='</div>'}
+ else if(p==='h'){h+='<h3>Aller dans un chapitre</h3>';for(let i=0;i<CHAP.length;i++){h+='<div class="r"><b>'+(i+1)+'. '+CHAP[i].p.split(' · ').slice(-1)[0]+'</b>'+dkB('go',i+':0','Début')+dkB('go',i+':.25','25 %')+dkB('go',i+':.5','Milieu')+dkB('go',i+':.75','75 %')+dkB('go',i+':.93','Fin')+'</div>'}}
+ else{h+='<h3>Voyage en cours</h3><div class="r"><b>Position</b>'+dkB('mv','-.05','−5 %')+dkB('mv','.05','+5 %')+dkB('mv','.15','+15 %')+'</div><div class="r"><b>Heure</b>'+dkB('clk','9','Matin')+dkB('clk','13','Midi')+dkB('clk','18','Soir')+dkB('clk','22.5','Nuit')+'</div><div class="r"><b>Météo</b>'+dkB('wx','','Clair')+dkB('wx','rain','Pluie')+dkB('wx','storm','Orage')+dkB('wx','fog','Brouillard')+dkB('wx','snow','Neige')+'</div><div class="r"><b>Voiture</b>'+dkB('fuel','1','Plein d’essence')+dkB('fix','','Tout réparer')+dkB('heart','100','+100 cœurs')+'</div>'+
+  '<h3>Mini-jeux</h3><div class="r"><b>Rejouer un mini-jeu</b>'+dkB('mg','','Ouvrir la liste')+'</div><h3>Sauvegarde</h3><div class="r"><b>Copie du kit</b>'+dkB('bak','','Faire une copie')+dkB('res','','Restaurer la copie')+'</div><div class="r"><b>Texte de la sauvegarde</b>'+dkB('cp','','Copier')+'</div><h3>Affichage</h3><div class="r"><b>Infos techniques (position, images/s)</b>'+dkB('hud','','Afficher / cacher')+'</div><div class="r"><span id="dkinfo" style="font-size:12px;opacity:.7">Les actions de cet onglet agissent sur le voyage en cours.</span></div>'}
+ gid('dkb').innerHTML=h}
+function dkMsg(t){const e=gid('dkinfo');if(e)e.textContent=t;try{note(t)}catch(er){}}
+function dkAct(a,v){
+ if(a==='cine')return dkPlay(()=>openCine(v));
+ if(a==='sp')return dkPlay(()=>{if(v==='bzh')openBzh();else if(v==='fin')openFinale();else startOutro()});
+ if(a==='end')return dkPlay(()=>openEnd(+v));
+ if(a==='gar')return dkPlay(()=>va5Open(+v));
+ if(a==='bac')return dkPlay(()=>openBoat(false,FERRY[v]));
+ if(a==='go'){const q=v.split(':');return dkGo(+q[0],+q[1])}
+ if(a==='mv'){c.x=Math.max(200,Math.min(MAP_L-300,c.x+(+v)*MAP_L));settleCar();respawn=c.x;try{if(cam)cam.x=c.x}catch(e){}return dkMsg('Position : '+Math.round(chP()*100)+' %')}
+ if(a==='clk'){SV.clk=+v;night=null;return dkMsg('Heure : '+v+' h')}
+ if(a==='wx'){wxk=v;wxSaid=0;wxS=lvlT;wxD=9999;return dkMsg('Météo : '+(v||'clair'))}
+ if(a==='fuel'){fuel=1;return dkMsg('Réservoir plein')}
+ if(a==='fix'){repairAll();return dkMsg('Voiture réparée')}
+ if(a==='heart'){SV.hearts=(SV.hearts||0)+(+v);return dkMsg('Cœurs : '+SV.hearts)}
+ if(a==='mg'){gid('dk').style.display='none';va9List();gid('va9').style.display='flex';return}
+ if(a==='bak'){try{localStorage[SKEY+'_dkbak']=JSON.stringify(SV);dkMsg('Copie faite')}catch(e){dkMsg('Copie impossible')}return}
+ if(a==='res'){try{const t=localStorage[SKEY+'_dkbak'];if(!t)return dkMsg('Pas de copie');SV=JSON.parse(t);level=SV.stL||level;saveTrip();dkMsg('Copie restaurée : relance la page')}catch(e){dkMsg('Restauration impossible')}return}
+ if(a==='cp'){try{navigator.clipboard.writeText(JSON.stringify(SV));dkMsg('Sauvegarde copiée')}catch(e){dkMsg('Copie impossible')}return}
+ if(a==='hud'){const h=gid('dkhud');h.style.display=h.style.display==='block'?'none':'block';return}}
+function dkPlay(fn){if(dkP)return;dkP={snap:JSON.stringify(SV),lv:level,x:c.x,t:0,seen:0,g:{cardQ:cardQ.slice(),docQ:docQ.slice(),talkQ:talkQ.slice(),stopReq,inGame,hev,mev,mis,sayT}};inGame=false;cardQ.length=0;docQ.length=0;talkQ.length=0;gid('dk').style.display='none';gid('menu').style.display='none';gid('va9').style.display='none';paused=true;st.gas=0;st.brake=0;gid('dkbk').style.display='block';
+ try{fn()}catch(e){console.error('kit cinématique '+e.message);dkEnd()}}
+function dkBusy(){try{return !!(cs||bz||fn||ot||es||bt||va5G||cardOpen||chQ)}catch(e){return false}}
+function dkEnd(){const P=dkP;if(!P)return;dkP=null;try{SV=JSON.parse(P.snap)}catch(e){}
+ try{level=P.lv;c.x=P.x;const G=P.g;cardQ.length=0;cardQ.push(...G.cardQ);docQ.length=0;docQ.push(...G.docQ);talkQ.length=0;talkQ.push(...G.talkQ);stopReq=G.stopReq;inGame=G.inGame;hev=G.hev;mev=G.mev;mis=G.mis;sayT=G.sayT}catch(e){}
+ try{cs=null;bz=null;fn=null;ot=null;es=null;bt=null;va5G=null;gid('va5').style.display='none';try{va5Unlbl()}catch(e){}document.body.classList.remove('cine');for(const i of ['bzs','bzx','esx','csx'])if(gid(i))gid(i).style.display='none';try{gid('btv').style.display='none'}catch(e){}gid('fade').style.opacity='0';gid('card').style.display='none';cardOpen=false;curCd=null}catch(e){}
+ gid('dkbk').style.display='none';try{saveTrip()}catch(e){}openMenu();dkShow()}
+function dkGo(i,f){try{localStorage[SKEY+'_dkbak']=JSON.stringify(SV)}catch(e){}
+ gid('dk').style.display='none';gid('menu').style.display='none';
+ goChapter2(i);
+ if(f>0){c.x=Math.round(f*MAP_L);settleCar();respawn=c.x;try{if(cam){cam.x=c.x}}catch(e){}
+  try{const ch=CHP();let n=0;for(const q of ch.stops)if(q.f<=f)n++;SV.stI=n}catch(e){}
+  try{for(const e of spList())if(e.x<c.x)SV.ev[evK(e.k)]=1}catch(e){}
+  SV.clk=8+f*9;lvlT=lvlDur*f*.7;nextRestT=lvlT+60}
+ try{applyUp()}catch(e){}try{settleCar()}catch(e){}paused=false;last=performance.now();try{saveTrip()}catch(e){}try{note('Kit : chapitre '+(i+1)+' à '+Math.round(f*100)+' %')}catch(e){}}
+saveTrip=(function(o){return function(){if(dkP)return;return o()}})(saveTrip);
+// fin de chapitre / garage pendant le kit : on ne passe pas au chapitre suivant
+closeEnd=(function(o){return function(){if(dkP){es=null;document.body.classList.remove('cine');try{gid('esx').style.display='none'}catch(e){}return}return o()}})(closeEnd);
+va5Close=(function(o){return function(){if(dkP){va5G=null;gid('va5').style.display='none';try{va5Unlbl()}catch(e){}return}return o()}})(va5Close);
+setInterval(()=>{try{if(dkP){if(dkBusy()){dkP.seen=1;dkP.t=0}else if(dkP.seen){dkP.t+=.25;if(dkP.t>=.75)dkEnd()}else{dkP.t+=.25;if(dkP.t>3)dkEnd()}}
+ const h=gid('dkhud');if(h&&h.style.display==='block'){h.textContent='chapitre '+(chIdx()+1)+' · '+Math.round(chP()*100)+' %\nx '+Math.round(c.x)+' / '+MAP_L+'\n'+hourNow().toFixed(1)+' h · météo '+(wxk||'clair')}}catch(e){}},250);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.46',GAME_DATE='10/11/2026 à 17h51';
+const GAME_VER='3.47',GAME_DATE='10/11/2026 à 18h00';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
