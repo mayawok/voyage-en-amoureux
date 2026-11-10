@@ -920,11 +920,11 @@ g.strokeStyle='rgba(255,255,255,.12)';g.lineWidth=1;g.beginPath();g.arc(ax,ay,R+
 // Le chien, langue au vent
 g.save();if(va29B){g.translate(-20,-20.5);g.scale(.8,.8);g.translate(20,23)}
 if(!dogGone()&&!(dogAnim&&dogAnim.t>.12&&dogAnim.t<DOGD-.12)&&!(night&&night.m&&night.m.car&&night.t>.6)){const dS=window.__dogS||0;if(dS==='rain'){try{va3DogRain()}catch(e){}}else{g.save();if(dS==='sleep')g.translate(1,6);
-g.fillStyle='#8a5a2e';g.save();g.translate(-23,-27);g.rotate(.4+sp*.7+fl*.18);g.beginPath();g.ellipse(-1,5,3.2,6.5,0,0,7);g.fill();g.restore();
+if(!va46DH(dS,sp,fl)){g.fillStyle='#8a5a2e';g.save();g.translate(-23,-27);g.rotate(.4+sp*.7+fl*.18);g.beginPath();g.ellipse(-1,5,3.2,6.5,0,0,7);g.fill();g.restore();
 g.fillStyle='#d9a560';g.beginPath();g.arc(-20,-23,7.5,0,7);g.fill();g.beginPath();g.ellipse(-13,-20,6,4.2,0,0,7);g.fill();
 g.fillStyle='#1d1914';g.beginPath();g.arc(-8.5,-21.5,2,0,7);g.fill();if(night||dS==='sleep'){g.strokeStyle='#1d1914';g.lineWidth=1;g.beginPath();g.moveTo(-19,-25.5);g.lineTo(-15,-25.5);g.stroke()}else{g.beginPath();g.arc(-17,-25.5,1.4,0,7);g.fill()}if(sp>.35&&!night&&dS!=='rain'){g.fillStyle='#7a4c24';g.save();g.translate(-25,-28);g.rotate(1.2+fl*.5);g.beginPath();g.ellipse(-1,5,2.6,6,0,0,7);g.fill();g.restore()}
 g.strokeStyle='#5a3418';g.lineWidth=1;g.beginPath();g.moveTo(-17,-18.4);g.lineTo(-10,-18.4);g.stroke();
-if(!night&&!dS&&sp>.03){g.fillStyle='#ee6f86';g.beginPath();g.moveTo(-14.5,-18.4);g.quadraticCurveTo(-14.5+fl*3,-13,-13+fl*5,-8.5);g.lineTo(-9.5+fl*5,-9);g.quadraticCurveTo(-10+fl*3,-13,-10,-18.4);g.fill()}
+if(!night&&!dS&&sp>.03){g.fillStyle='#ee6f86';g.beginPath();g.moveTo(-14.5,-18.4);g.quadraticCurveTo(-14.5+fl*3,-13,-13+fl*5,-8.5);g.lineTo(-9.5+fl*5,-9);g.quadraticCurveTo(-10+fl*3,-13,-10,-18.4);g.fill()}}
 g.restore();if(dS==='sleep'){const zt=performance.now()/1000;g.fillStyle='rgba(255,255,255,.9)';g.font='bold 5px Arial';for(let q=0;q<2;q++){const u=(zt*.5+q*.5)%1;g.globalAlpha=1-u;g.fillText('z',-14+u*6,-30-u*10)}g.globalAlpha=1}}}
 g.restore();try{cusAcc(tm)}catch(e){}if(SV.one.surf){g.save();g.translate(-24,(SV.cus&&SV.cus.roof)?(SV.cus.roof==='tent'?-51:-49):-41);g.rotate(-.03);g.fillStyle='#ffd23f';g.beginPath();g.ellipse(0,0,27,3.8,0,0,7);g.fill();g.fillStyle='#e8334a';g.fillRect(-14,-1,22,1.6);g.restore()}
 if(SV.one.led)try{va30Led()}catch(e){}
@@ -6721,7 +6721,7 @@ draw:(Wd,gy,T2,tm)=>{const se=season();const sk=g.createLinearGradient(0,0,0,gy)
   for(let i=0;i<3;i++){g.fillStyle='#6a3a6a';g.beginPath();g.arc(cx+22+i*4,ty-18.5,2,0,7);g.fill()}
   g.fillStyle='rgba(120,180,220,.75)';g.fillRect(cx+36,ty-30,5,13);g.fillStyle='#2a6aa8';g.fillRect(cx+36.5,ty-33,4,3)});
  // le chien sous la table
- try{grp(cx,ty,2.2,()=>{dogDraw(cx+2+Math.sin(T2*.6)*10,ty+12+(window.__v34on?14:0),Math.sin(T2*.3)>0?1:-1,T2%6<3?'trot':'sit',tm)})}catch(e){}
+ try{grp(cx,ty,2.2,()=>{dogDraw(cx+2+Math.sin(T2*.6)*10,ty+12+(window.__v34on?14:0),Math.sin(T2*.3)>0?1:-1,T2%12<3?'trot':T2%12<7?'sit':'lie',tm)})}catch(e){}
  // papillons ou feuilles qui tombent
  for(let i=0;i<6;i++){const u=(T2*.12+i/6)%1,px=Wd*(.2+hh2(i)*.7)+Math.sin(T2*1.5+i)*20,py=se==='autumn'?u*gy:gy-120+Math.sin(T2*2+i)*30;if(se==='autumn'){g.fillStyle=['#d9632b','#e8a33a'][i%2];g.save();g.translate(px,py);g.rotate(T2*2+i);g.beginPath();g.ellipse(0,0,5,2.5,0,0,7);g.fill();g.restore()}else{const fl=Math.abs(Math.sin(tm*12+i));g.fillStyle=['#f2c230','#fff','#ff9a5a'][i%3];g.beginPath();g.ellipse(px-3*fl,py,3*fl+.5,4,0,0,7);g.ellipse(px+3*fl,py,3*fl+.5,4,0,0,7);g.fill()}}
  // cœurs à la fin
@@ -7564,8 +7564,8 @@ CS.veto.draw=(Wd,gy,T2,tm)=>{
  grp(cx,gy,2,()=>{
   // la vétérinaire en blouse, sortie sur le pas de la porte
   const vx=cx+46;npcFig(vx,gy,['#f6f6f6','#3a4a5a',0,'#c99a5a',0,0,1],0,tm);
-  g.strokeStyle='#2a2a2a';g.lineWidth=1;g.beginPath();g.moveTo(vx-3,gy-38);g.quadraticCurveTo(vx,gy-30,vx+3,gy-38);g.stroke();
-  if(T2>10.5&&T2<16){g.lineWidth=1.2;g.beginPath();g.moveTo(vx,gy-32);g.quadraticCurveTo(vx-10,gy-26,cx+8,gy-30+Math.sin(tm*3));g.stroke();g.fillStyle='#bbb';g.beginPath();g.arc(cx+8,gy-30+Math.sin(tm*3),1.8,0,7);g.fill()}
+  g.strokeStyle='#2a2a2a';g.lineWidth=1;if(!window.__vtS){g.beginPath();g.moveTo(vx-3,gy-38);g.quadraticCurveTo(vx,gy-30,vx+3,gy-38);g.stroke()}
+  if(T2>10.5&&T2<16){g.lineWidth=1.2;g.beginPath();g.moveTo(window.__vtS?vx-12:vx,window.__vtS?gy-22:gy-32);g.quadraticCurveTo(vx-10,gy-26,cx+8,gy-30+Math.sin(tm*3));g.stroke();g.fillStyle='#bbb';g.beginPath();g.arc(cx+8,gy-30+Math.sin(tm*3),1.8,0,7);g.fill()}
   // une couverture posée sur un banc, le faon dessus
   g.fillStyle='#7a5a3a';g.fillRect(cx-26,gy-14,4,14);g.fillRect(cx+24,gy-14,4,14);g.fillStyle='#8a6a42';g.fillRect(cx-30,gy-17,62,5);g.fillStyle='#c84a4a';g.fillRect(cx-26,gy-20,52,4);g.fillStyle='#e8d8b0';for(let i=0;i<6;i++)g.fillRect(cx-24+i*9,gy-20,3,4);
   faonLie(g,cx,gy-28,.26,br);
@@ -7981,8 +7981,40 @@ const w=700,h=Math.round(w*im.naturalHeight/im.naturalWidth),c1=document.createE
 x.globalCompositeOperation='color';x.fillStyle=col;x.globalAlpha=.9;x.fillRect(0,0,w,h);x.globalAlpha=1;x.globalCompositeOperation='destination-in';x.drawImage(im,0,0,w,h);
 const c2=document.createElement('canvas');c2.width=w;c2.height=h;P={full:c1,rest:c2};if(VA29.ks.length>10){delete VA29.cv[VA29.ks.shift()]}VA29.cv[col]=P;VA29.ks.push(col);return P}
 va29Get=(function(o){return function(col){if(window.__va45px===0)return va45Fb(col);try{return o(col)}catch(e){window.__va45px=0;try{return va45Fb(col)}catch(e2){return null}}}})(va29Get);
+// ===== 3.46 : on branche ce qui était prêt : sons (moteur, sirène, appel du faon), poses (Marchetti, vétérinaire, Lucia, chien couché, chien à la vitre), animaux (cochons, poules, coq, cigogne) =====
+// --- sons : moteur et sirène en boucle (se coupent en fondu quand on cesse de les rappeler), appel du faon en un coup
+try{VA26_F.faon='faon-appel';VA26_V.faon=4}catch(e){}
+const VA46_L={motor:{g:1.6,hold:320,fade:.35},siren:{g:3.4,hold:1150,fade:.5}},va46A={},va46S={};
+function va46Seam(b,fs){const n=b.length,sr=b.sampleRate,f=Math.min(Math.round(fs*sr),n>>2),m=n-f,o=AC.createBuffer(b.numberOfChannels,m,sr);for(let c=0;c<b.numberOfChannels;c++){const s=b.getChannelData(c),d=o.getChannelData(c);for(let i=0;i<m;i++)d[i]=s[i];for(let i=0;i<f;i++){const w=i/f*Math.PI/2;d[i]=s[i]*Math.sin(w)+s[m+i]*Math.cos(w)}}return o}
+function va46Loop(k){const P=VA46_L[k];if(!AC||SET.mute||AC.state!=='running'||!P||!va26B[k])return false;let H=va46A[k];if(!H){const t=AC.currentTime;if(!va46S[k])va46S[k]=va46Seam(va26B[k],.3);const s=AC.createBufferSource(),gn=AC.createGain();s.buffer=va46S[k];s.loop=true;gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(P.g,t+.25);s.connect(gn);gn.connect(sfxOut());s.start();H=va46A[k]={s,gn}}H.t=performance.now();return true}
+setInterval(()=>{try{if(AC){va26Load('motor');va26Load('siren')}for(const k in va46A){const H=va46A[k],P=VA46_L[k];if(performance.now()-H.t>P.hold){delete va46A[k];const t=AC.currentTime;H.gn.gain.cancelScheduledValues(t);H.gn.gain.setValueAtTime(H.gn.gain.value,t);H.gn.gain.linearRampToValueAtTime(0,t+P.fade);H.s.stop(t+P.fade+.05)}}}catch(e){}},150);
+snd=(function(o){return function(k,a){try{if(VA46_L[k]&&va46Loop(k))return}catch(e){}o(k,a)}})(snd);
+// appel du faon : quand on le trouve, et chez la vétérinaire
+openHelp=(function(o){return function(k){const r=o.apply(this,arguments);try{if(k==='faon')setTimeout(()=>snd('faon'),900);if(k==='cache'&&chs&&chs.ph===3)chs.mc='arms'}catch(e){}return r}})(openHelp);
+openCine=(function(o){return function(k){const r=o.apply(this,arguments);try{if(k==='veto'){setTimeout(()=>snd('faon'),3500);setTimeout(()=>snd('faon'),12000)}}catch(e){}return r}})(openCine);
+// --- poses : vétérinaire (chez elle), Lucia (contrôle de la piste, chapelle de Piana)
+function va46Pose(a,b,wv){const c=(typeof cs!=='undefined')?cs:null;
+ if(a==='#f6f6f6'&&b==='#3a4a5a'&&c&&c.k==='veto'){const t=c.t;window.__vtS=1;return t>=10.5&&t<16.5?'vt_kneel':t>=19.5?'vt_worried':t>=6&&t<10.5?'vt_talk':'vt_stand'}
+ if(a==='#24407a'&&b==='#1a2a4a'&&c&&c.k==='nox2'&&c.t>=21.5)return 'lu_cross';
+ if(a==='#5a6a7a'&&b==='#2f2f35')return wv?'lu_touched':'lu_stand';
+ return null}
+npcFig=(function(o){return function(x,y,k,wv,tm){try{const n=va46Pose(k[0],k[1],wv);if(n&&va38Fig(n,x,y,n==='vt_kneel'?-1:1))return}catch(e){}window.__vtS=0;o(x,y,k,wv,tm)}})(npcFig);
+// --- Marchetti : il descend de la voiture de gendarmerie, fait signe, attend les bras croisés, puis tourne la boîte de velours entre ses doigts
+function va46Mar(x){const C=chs,now=performance.now();if(!C.m0)C.m0=now;if(!C.mc)C.mc='hands';if(C.mc==='arms'&&!hl)C.mc='nerv';const u=Math.min(1,(now-C.m0)/2600),mx=x+70+u*70,my=T(mx)+2;va38Fig(u<1?'mc_stand':C.mc==='hands'?'mc_hands':C.mc==='arms'?'mc_arms':'mc_nerv',mx,my,1)}
+polCar=(function(o){return function(x,fl){o(x,fl);try{if(chs&&chs.ph===3&&Math.abs(x-chs.px)<.01)va46Mar(x)}catch(e){}}})(polCar);
+// --- chien : couché pendant le pique-nique (voir la scène), et vrai chien (tête du sprite) à la vitre du Cherokee
+function va46DH(dS,sp,fl){if(window.__va46off||dS==='sleep'||dS==='rain'||night)return false;const c=va25Cv('dg_stand',VA25.dk||0,0);if(!c)return false;const k=c.width/167;g.save();g.translate(-17.5,-23);g.rotate(fl*.05);g.drawImage(c,92*k,0,75*k,56*k,-10.5,-8,21,15.7);g.restore();return true}
+// --- animaux : cochons sous les chênes-lièges, poules et coq près des meules et des cabanes, cigogne sur les chapelles
+function va46An(n,x,y,w,fl){const c=va25Cv('an_'+n,VA25.dk||0,0);if(!c)return false;const k=w/c.width,h=c.height*k;g.save();g.translate(x,y);if(fl<0)g.scale(-1,1);g.drawImage(c,-w/2,-h,w,h);g.restore();return true}
+function va46W(n,w){const c0=va25Cv('an_'+n+'_0',VA25.dk||0,0);return c0?w/c0.width:0}
+function va46Pigs(x,y,tm,j,n){for(let i=0;i<n;i++){const ph=((tm*.07+i*.31+j*.17)%1+1)%1,p=ph<.45?0:ph<.7?1:ph<.9?2:3,px=x+(i%2?1:-1)*(22+i*12)+(p===2?Math.sin(tm*.6+i)*8:0);va46An('cochon_'+p,px,y+1,26,(i+j)%2?1:-1)}}
+function va46Hens(x,y,tm,j){const q=Math.floor(tm*.9+j)%6,cp=q===1||q===4?1:0;va46An('coq_'+cp,x-30,y+1,11,1);va46An('poule_0',x-42,y+1,9,-1);va46An('poule_0',x+30+Math.sin(tm*.4+j)*4,y+1,9,1);if(Math.floor(tm*.7+j*2)%5===0)va46An('poule_0',x+44,y+1,8,-1)}
+corkD=(function(o){return function(x,y,tm,j){o(x,y);try{va46Pigs(x,y,tm||0,j||0,2)}catch(e){}}})(corkD);
+hayD=(function(o){return function(x,y,tm,j){o(x,y);try{va46Hens(x,y,tm||0,j||0)}catch(e){}}})(hayD);
+hutD=(function(o){return function(x,y,tm,j){o(x,y);try{if(ALT(x)>=80)va46Hens(x+38,y,tm||0,j||0)}catch(e){}}})(hutD);
+chapel=(function(o){return function(x,y){o(x,y);try{if(hs(Math.round(x)+77)>.45||ALT(x)>320)return;const tm=performance.now()/1000;va46An('cigogne_0',x-8,y-45+Math.sin(tm*.5+x)*.4,17,1)}catch(e){}}})(chapel);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.45',GAME_DATE='05/11/2026 à 19h29';
+const GAME_VER='3.46',GAME_DATE='10/11/2026 à 17h51';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
