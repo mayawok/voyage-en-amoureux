@@ -8357,8 +8357,27 @@ mgTick=(function(o){return function(dt){o(dt);try{if(!va52.on)return;if(!ign||cr
   if(sp<25&&c.x-va52.x0>60)va52.lo+=dt;else va52.lo=0;if(c.x-va52.x0<60&&sp<25)va52.lo+=dt*.5;if(va52.lo>2.2){va52.stop=1;va52.why='bloqué'}}}
  if(va52.stop){st.gas=0;st.brake=1;if(sp<6){st.brake=0;va52.on=0;va52.stop=0;try{say(va52.why==='bloqué'?'On n’avance plus : à toi de jouer.':va52.why==='obstacle'?'Il y a quelque chose devant.':va52.why==='terrain'?'Le terrain change devant.':va52.why==='pont'?'Le pont, devant…':'On s’arrête ici ?',2.2,0)}catch(e){}}}}catch(e){}}})(mgTick);
 
+// ===== 3.53 : icône de treuil dessinée, jauge d'essence = pompe qui se vide (vert, jaune, rouge) =====
+function va53Pump(x,X,Y,W,H,col,lw){const bw=W*.66;x.beginPath();rr(x,X,Y,bw,H,Math.min(5,bw*.22));if(col){x.fillStyle=col;x.fill()}else x.stroke();
+ x.beginPath();x.moveTo(X+bw,Y+H*.24);x.quadraticCurveTo(X+W*.98,Y+H*.24,X+W*.95,Y+H*.42);x.lineTo(X+W*.95,Y+H*.7);x.quadraticCurveTo(X+W*.95,Y+H*.8,X+bw+1,Y+H*.8);x.lineWidth=lw;x.strokeStyle=col||x.strokeStyle;x.stroke()}
+bars=function(z,tm){try{const x=dg,f=cl(dv.fuel),H=z.h-12,W=Math.min(z.w-6,H*.62),X=z.x+(z.w-W)/2,Y=z.y+6,lw=Math.max(2,W*.12),col=f>.5?'rgb('+Math.round(255*(1-f)*2)+',210,80)':'rgb(255,'+Math.round(60+150*f*2)+',50)',bl=f<.13?(.55+.45*Math.sin(tm*8)):1;
+ x.save();x.globalAlpha=bl;va53Pump(x,X,Y,W,H,'rgba(160,160,165,.35)',lw);
+ x.save();x.beginPath();x.rect(X-4,Y+H*(1-f),W+8,H*f+4);x.clip();va53Pump(x,X,Y,W,H,col,lw);x.restore();
+ x.strokeStyle='rgba(255,255,255,.55)';x.lineWidth=1.1;x.beginPath();rr(x,X,Y,W*.66,H,Math.min(5,W*.66*.22));x.stroke();
+ x.fillStyle='rgba(20,18,16,.55)';rr(x,X+W*.66*.18,Y+H*.12,W*.66*.64,H*.2,2);x.fill();x.restore()}catch(e){}};
+ibtn=(function(o){return function(z,k,state,frac){if(k!=='winch')return o(z,k,state,frac);const x=dg,ft=x.fillText;x.fillText=function(){};try{o(z,k,state,frac)}finally{x.fillText=ft}
+ const cx=z.x+z.w/2,cy=z.y+z.h/2,r=z.w/2;x.save();x.globalAlpha=state==='wait'?.55:1;x.strokeStyle='#fff';x.fillStyle='#fff';x.lineWidth=1.6;x.lineCap='round';x.lineJoin='round';
+ // socle
+ x.fillRect(cx-r*.58,cy+r*.18,r*.86,r*.12);
+ // tambour avec le câble enroulé
+ x.beginPath();rr(x,cx-r*.5,cy-r*.42,r*.7,r*.56,r*.1);x.stroke();for(let i=1;i<5;i++){const xx=cx-r*.5+i*r*.14;x.beginPath();x.moveTo(xx,cy-r*.4);x.lineTo(xx-r*.05,cy+r*.12);x.stroke()}
+ x.beginPath();x.arc(cx-r*.5,cy-r*.14,r*.12,0,7);x.fill();x.beginPath();x.arc(cx+r*.2,cy-r*.14,r*.12,0,7);x.fill();
+ // câble qui sort et crochet
+ x.beginPath();x.moveTo(cx+r*.2,cy-r*.38);x.quadraticCurveTo(cx+r*.5,cy-r*.42,cx+r*.52,cy-r*.05);x.lineTo(cx+r*.52,cy+r*.18);x.stroke();
+ x.lineWidth=2;x.beginPath();x.arc(cx+r*.42,cy+r*.28,r*.13,-.2,Math.PI*1.05);x.stroke();x.restore()}})(ibtn);
+
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.52',GAME_DATE='10/11/2026 à 20h49';
+const GAME_VER='3.53',GAME_DATE='10/11/2026 à 20h52';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
