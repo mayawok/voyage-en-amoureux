@@ -8179,8 +8179,70 @@ setInterval(()=>{try{const h=gid('va48h'),w=wbEl,l4=lps&&lps[3];let msg='';const
  va48B=stuck?va48B+.25:0;w.classList.remove('va48p');if(l4)l4.classList.remove('va48p');
  if(va48B>=3){const ready=started&&(wReadyAt-playT)<=0;if(st.gear!==3&&l4){l4.classList.add('va48p');msg='Bloqué ? Essaie le 4L (le levier en bas à droite)'}else if(ready){w.classList.add('va48p');msg='Bloqué ? Le treuil est prêt (touche J)'}}
  h.textContent=msg;h.style.display=msg?'block':'none'}catch(e){}},250);
+// ===== 3.49 : lecture du terrain, rallye chronométré, chien qui flaire, carte animée, pluie et phares, réactions, envol d'oiseaux =====
+var va49Z={},va49R={x:0,y:0},va49P={vx:0,vy:0},va49Bd=[],va49Run=null,va49DP=null,va49Dw=0,va49Rain=0;
+(function(){const st=document.createElement('style');st.textContent=`#va49r{position:fixed;left:50%;transform:translateX(-50%);top:100px;z-index:9;display:none;background:rgba(24,20,16,.85);color:#ffd65a;border:1.5px solid rgba(232,178,90,.6);border-radius:12px;padding:4px 14px;font:800 15px "Avenir Next",Arial,sans-serif;pointer-events:none}
+#va49d{position:fixed;left:50%;transform:translateX(-50%);bottom:30%;z-index:8;display:none}
+#va49m{position:fixed;inset:0;z-index:215;display:none;background:#0d1a24}#va49m canvas{position:absolute;inset:0;width:100%;height:100%}
+#va49m .t{position:absolute;left:0;right:0;top:14px;text-align:center;color:#fff;font:800 20px "Avenir Next",Arial,sans-serif;text-shadow:0 2px 6px rgba(0,0,0,.7)}
+#va49m .s{position:absolute;left:0;right:0;bottom:16px;text-align:center;color:#fff;font:600 13px Arial;opacity:.8;text-shadow:0 1px 4px rgba(0,0,0,.7)}`;document.head.appendChild(st);
+ const r=document.createElement('div');r.id='va49r';document.body.appendChild(r);
+ const d=document.createElement('button');d.id='va49d';d.className='b rdy';d.textContent='Envoyer le chien flairer';document.body.appendChild(d);
+ d.addEventListener('click',e=>{e.stopPropagation();va49Dog()});
+ const m=document.createElement('div');m.id='va49m';m.innerHTML='<canvas id="va49mc"></canvas><div class="t" id="va49mt"></div><div class="s">Touche pour passer</div>';document.body.appendChild(m);
+ m.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();va49MEnd()})})();
+// --- 1. lecture du terrain : profondeur de l'eau et de la boue
+function va49Pool(xa,xb,lv,mud,tm){for(let x=xa;x<xb;x+=6){const dd=Math.max(0,Math.min(1,(T(x)-lv)/48));g.fillStyle=mud?'rgba(20,10,4,'+(.06+.4*dd)+')':'rgba(5,30,70,'+(.06+.42*dd)+')';g.fillRect(x,lv,6.5,Math.max(0,T(x)+16-lv))}
+ g.fillStyle=mud?'rgba(255,238,205,.30)':'rgba(255,255,255,.34)';for(let i=0;i<4;i++){const xx=xa+((i*61+tm*(mud?7:14))%Math.max(30,xb-xa-34));g.beginPath();g.ellipse(xx+14,lv+1.4,mud?13:11,1.6,0,0,7);g.fill()}
+ const gr=g.createLinearGradient(0,lv,0,lv+3.5);gr.addColorStop(0,mud?'rgba(255,230,190,.55)':'rgba(255,255,255,.55)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.fillRect(xa,lv,xb-xa,3.5)}
+deepDraw=(function(o){return function(x0,x1){o(x0,x1);try{const s=deepS();if(s<0||s>x1+100||s+500<x0)return;const tm=performance.now()/1000,lv=Math.max(T(s),T(s+480))+18;let xa=s,xb=s+480;while(xa<s+240&&T(xa)<=lv)xa+=3;while(xb>s+240&&T(xb)<=lv)xb-=3;va49Pool(xa,xb,lv,1,tm)}catch(e){}}})(deepDraw);
+fordDraw=(function(o){return function(x0,x1){o(x0,x1);try{const tm=performance.now()/1000;for(let j=Math.floor((x0-5000)/3200);j<=Math.floor((x1-2000)/3200);j++){const s=fordP(j);if(s<0||s+320<x0||s-80>x1)continue;const lv=Math.max(T(s),T(s+300))+16;let xa=s,xb=s+300;while(xa<s+150&&T(xa)<=lv)xa+=3;while(xb>s+150&&T(xb)<=lv)xb-=3;va49Pool(xa,xb,lv,0,tm)}}catch(e){}}})(fordDraw);
+// --- 2. rallye chronométré facultatif (un par chapitre)
+const VA49_RL=3000;
+function va49RS(){try{if(chIdx()===7||chIdx()===9)return -1;const l='L'+level;if(va49Z[l]===undefined){const ds=deepS(),ss=slipS(),cand=[];const okx=(q)=>{if(bridgeAt(q)>=0||hardS(q)>=0||rockW(q)>0)return false;try{if(typeof tunAt==='function'&&tunAt(q)>=0)return false}catch(e){}const sq=sceneSeg(q);if(sq&&q<sq.s+sq.len+100&&q>sq.s-100)return false;return true};for(let q=Math.round(MAP_L*.22/100)*100;q<MAP_L*.84;q+=100){let ok=true;for(let z=q-100;z<=q+VA49_RL+100&&ok;z+=100)if(!okx(z))ok=false;if(!ok)continue;if(ds>=0&&q<ds+1900&&q+VA49_RL>ds-300)continue;if(ss>=0&&q<ss+1900&&q+VA49_RL>ss-300)continue;if(cand.length&&q-cand[cand.length-1]<VA49_RL+1500)continue;cand.push(q)}const pr=[.3,.46,.38,.54,.62][level%5];const x=cand.length?cand.reduce((a,q)=>Math.abs(q-MAP_L*pr)<Math.abs(a-MAP_L*pr)?q:a,cand[0]):-1;va49Z[l]=x}return va49Z[l]}catch(e){return -1}}
+function va49Fmt(t){const m=Math.floor(t/60),s=t-m*60;return m+' min '+(s<10?'0':'')+s.toFixed(1).replace('.',',')+' s'}
+function va49RallyTick(){try{const hud=gid('va49r'),s=va49RS();if(s<0||!inGame||va9P||dkP){hud.style.display='none';return}
+ const k='L'+level;va49Run=va49Run&&va49Run.l===level?va49Run:null;SV.rallyD=SV.rallyD||{};
+ if(!va49Run){hud.style.display='none';if(c.x>s-700&&c.x<s-60&&!va49Z.said_L&&!night&&started){va49Z['s'+k]=va49Z['s'+k]||0;if(!va49Z['s'+k]){va49Z['s'+k]=1;say('Une portion de rallye facultative ! Passe l’arche et le chrono se lance.',4,1)}}
+  if(c.x>=s&&c.x<s+90&&started&&!night&&!va49Z['d'+k]&&c.x>=s-5&&v.x>20){va49Run={l:level,t:0,s,best:null};say('Chrono lancé ! Tiens-toi bien !',2.4,0)}return}
+ const R=va49Run;if(!paused)R.t+=.1;
+ if(night||c.x<s-120||crashed){va49Run=null;hud.style.display='none';return}
+ hud.textContent=va49Fmt(R.t)+' · '+Math.max(0,Math.round((s+VA49_RL-c.x)/30))+' m';hud.style.display='block';
+ if(c.x>=s+VA49_RL){const t=R.t;va49Run=null;hud.style.display='none';va49Z['d'+k]=1;const ch=chIdx();SV.rally=SV.rally||{};const L=(SV.rally[ch]||[]).concat([+t.toFixed(1)]).sort((a,b)=>a-b).slice(0,3);const rank=L.indexOf(+t.toFixed(1))+1;SV.rally[ch]=L;
+  const first=!SV.rallyD[ch];if(first){SV.rallyD[ch]=1;SV.hearts+=3}const nm=['1er','2e','3e'];
+  cardQ.push({now:1,t:'Rallye · chapitre '+(ch+1),L:[['n','Temps : '+va49Fmt(t)+(rank===1&&L.length>1?' · nouveau record !':'')+(first?' · +3 cœurs':'')],['n','Meilleurs temps : '+L.map((q,i)=>nm[i]+' '+va49Fmt(q)).join(' · ')],['a',rank===1?'Quel pilote ! Même le chien a fermé les yeux.':'Pas mal du tout. On peut faire mieux, non ?']]});snd('done');try{saveTrip()}catch(e){}}}catch(e){}}
+slipDraw=(function(o){return function(x0,x1){o(x0,x1);try{const s=va49RS();if(s<0)return;const tm=performance.now()/1000;for(const [px,lab,fin] of [[s,'RALLYE · DÉPART',0],[s+VA49_RL,'ARRIVÉE',1]]){if(px<x0-80||px>x1+80)continue;const py=T(px);g.fillStyle='#3a2a1e';g.fillRect(px-70,py-92,4,92);g.fillRect(px+66,py-92,4,92);g.fillStyle='#fff';g.fillRect(px-70,py-96,140,24);g.fillStyle='#222';for(let i=0;i<14;i++)for(let j=0;j<2;j++)if((i+j)%2===0)g.fillRect(px-70+i*10,py-96+j*12,10,12);g.fillStyle='rgba(168,40,42,.95)';g.fillRect(px-52,py-84,104,14);g.fillStyle='#fff';g.font='800 9px Arial';g.textAlign='center';g.textBaseline='middle';g.fillText(lab,px,py-77);g.textBaseline='alphabetic'}
+ const q=va49DS();if(q>=0&&!SV.va49dg?.['L'+level]&&q>x0-60&&q<x1+60){const py=T(q+60);g.fillStyle='rgba(255,236,160,'+(.35+.25*Math.sin(tm*3))+')';for(let i=0;i<4;i++){const a=tm*1.4+i*1.6;g.beginPath();g.arc(q+60+Math.cos(a)*10,py-12-Math.abs(Math.sin(a))*14,1.8,0,7);g.fill()}}}catch(e){}}})(slipDraw);
+// --- 3. le chien flaire quelque chose
+function va49DS(){try{if(chIdx()===7)return -1;const l='L'+level;if(va49Z['dg'+l]===undefined){let x=zonePick(va49Z,[.16,.24,.4,.5,.58,.66,.74],260,'dgz'+l);const rs=va49RS();if(x>=0&&rs>=0&&x>rs-400&&x<rs+VA49_RL+400)x=(rs+VA49_RL+500<MAP_L*.88)?rs+VA49_RL+500:rs-700;va49Z['dg'+l]=x}return va49Z['dg'+l]}catch(e){return -1}}
+function va49DogTick(){try{const b=gid('va49d'),q=va49DS(),k='L'+level;SV.va49dg=SV.va49dg||{};if(q<0||SV.va49dg[k]||!inGame||paused||night||va9P||dkP||dogGone()||dogAnim||MGX||pz||hl||cs){b.style.display='none';return}
+ if(c.x>q-900&&c.x<q-200&&!va49Z['ds'+k]&&started&&ign){va49Z['ds'+k]=1;say('Le chien s’agite à la vitre… il a flairé quelque chose, plus loin.',4,1)}
+ const near=Math.abs(c.x-q)<190&&Math.hypot(v.x,v.y)<30&&started;b.style.display=near?'block':'none';if(near)b.textContent=(!ign&&st.hb)?'Envoyer le chien flairer':'Envoyer le chien (coupe le contact)'}catch(e){}}
+function va49Dog(){if(dogAnim||dogGone())return;if(ign){say('Coupe le contact et serre le frein à main pour le laisser sortir.',3.2,1);return}st.hb=1;st.gas=0;dogAnim={t:0,x0:c.x};va49DP={k:'L'+level,t:0};gid('va49d').style.display='none'}
+dogTick=(function(o){return function(dt){const had=!!dogAnim;o(dt);try{if(va49DP){if(dogAnim){const dp=gid('dogp');dp.textContent='Le chien flaire, truffe au sol…';dp.style.display='block'}else if(had){const k=va49DP.k;va49DP=null;SV.va49dg=SV.va49dg||{};SV.va49dg[k]=1;const src=((level+Math.round(va49DS()/100))%2)===0;
+ if(src){SV.food=Math.min(1,(SV.food||0)+.25);SV.hearts+=1;cardQ.push({now:1,t:'Une source cachée',L:[['m','Regarde ! Il a trouvé une source sous les fougères. L’eau est fraîche et claire.'],['a','Bon chien ! On remplit les gourdes. Tu as mérité un biscuit.']]})}
+ else{SV.hearts+=3;cardQ.push({now:1,t:'Une cache sous la pierre',L:[['m','Une boîte en fer ! Un carnet de randonneurs de 1987 et une photo.'],['a','Il l’a sentie à travers la terre. Ce chien vaut de l’or. +3 cœurs']]})}
+ try{saveTrip()}catch(e){}}}}catch(e){}}})(dogTick);
+// --- 4. carte animée entre deux chapitres
+var va49Tm=null,va49Cb=null;
+function va49Map(sel,cb){if(typeof coDraw!=='function'||va49Tm||sel>=CHAP.length||sel<0){cb();return}va49Cb=cb;const m=gid('va49m'),cv=gid('va49mc');m.style.display='block';try{gid('va49mt').textContent='Chapitre '+(sel+1)+' · '+CO_R[sel][0]+' → '+CO_R[sel][1]}catch(e){gid('va49mt').textContent='Chapitre '+(sel+1)}const t0=performance.now();let n=0;
+ va49Tm=setInterval(()=>{const p=Math.min(1,(performance.now()-t0)/4800),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;try{coDraw(cv,sel,Math.min(.999,e))}catch(er){}if(p>=1||++n>400)va49MEnd()},33)}
+function va49MEnd(){if(va49Tm){clearInterval(va49Tm);va49Tm=null}gid('va49m').style.display='none';const f=va49Cb;va49Cb=null;if(f)try{f()}catch(e){console.error(e)}}
+va5Close=(function(o){return function(){const i=va5G?va5G.i:null;if(dkP||i==null||va9P)return o();va49Map(i+1,()=>o())}})(va5Close);
+// --- 5. la pluie rend la piste glissante ; papillons de nuit dans les phares
+Z=(function(o){return function(x){const r=o(x);try{if((wxk==='rain'||wxk==='storm')&&wI>.4&&(SV.diff!==0)){const t=r[3];if(t==='dry'||t==='slip'){const k=t==='dry'?.88:.85;va49Rain=1;return[r[0]*k,r[1]*k,t==='dry'?'Piste mouillée':r[2],t]}}}catch(e){}return r}})(Z);
+// --- 6. réactions des passagers aux bosses et aux accélérations
+head=(function(o){return function(k,x,y,sc,f){if(sc<1.2&&!window.__va49off){return o(k,x+va49R.x*(k?1:.7),y+va49R.y*(k?1:.55),sc,f)}return o(k,x,y,sc,f)}})(head);
+va46DH=(function(o){return function(dS,sp,fl){if(window.__va49off)return o(dS,sp,fl);g.save();g.translate(va49R.x*1.7,va49R.y*.5);const r=o(dS,sp,fl);g.restore();return r}})(va46DH);
+// --- 7. le klaxon fait s'envoler les oiseaux ; papillons de nuit ; mesure des secousses (une fois par image)
+snd=(function(o){return function(k,a){if(k==='horn')try{va49Birds()}catch(e){}o(k,a)}})(snd);
+function va49Birds(){if(night||paused||!inGame||va9P)return;const n=5+Math.floor(Math.random()*5);for(let i=0;i<n;i++){const x=c.x+90+Math.random()*420;va49Bd.push({x,y:T(x)-8-Math.random()*26,vx:60+Math.random()*80,vy:-90-Math.random()*90,t:0,w:Math.random()*6,s:.8+Math.random()*.6})}}
+dustDraw=(function(o){return function(){o();try{const dvy=v.y-va49P.vy,dvx=v.x-va49P.vx;va49P.vx=v.x;va49P.vy=v.y;if(paused||!inGame){va49R.x*=.8;va49R.y*=.8}else{va49R.y=va49R.y*.78+Math.max(-1.6,Math.min(2.2,-dvy*.035))*.6;va49R.x=va49R.x*.85+Math.max(-1.6,Math.min(1.6,-dvx*.06))*.5}
+ const tm=performance.now()/1000,dt=.016;g.strokeStyle='#2a2028';g.lineWidth=1.3;for(let i=va49Bd.length-1;i>=0;i--){const b=va49Bd[i];b.t+=dt;b.x+=b.vx*dt;b.y+=b.vy*dt;b.vy+=(b.t<.6?-30:20)*dt;if(b.t>4){va49Bd.splice(i,1);continue}const wv=Math.sin(tm*18+b.w)*4*b.s;g.globalAlpha=Math.min(1,(4-b.t));g.beginPath();g.moveTo(b.x-6*b.s,b.y-wv);g.lineTo(b.x,b.y);g.lineTo(b.x+6*b.s,b.y-wv);g.stroke()}g.globalAlpha=1;
+ if(isDark()&&typeof lampOn!=='undefined'&&lampOn&&!paused){const hx=c.x+88,hy=c.y-24;for(let i=0;i<9;i++){const a=tm*(1.3+i*.17)+i*2.1,r=14+(i%4)*11,mx=hx+Math.cos(a)*r*1.6+ (i%3)*8,my=hy+Math.sin(a*1.3)*r*.7-4,fl=Math.sin(tm*26+i*3);g.fillStyle='rgba(255,250,225,.9)';g.beginPath();g.ellipse(mx-1.6,my,1.7+fl*.9,1,0.5,0,7);g.ellipse(mx+1.6,my,1.7+fl*.9,1,-0.5,0,7);g.fill();g.fillStyle='rgba(60,45,30,.9)';g.fillRect(mx-.5,my-.5,1,2)}}}catch(e){}}})(dustDraw);
+setInterval(()=>{va49RallyTick();va49DogTick()},100);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.48',GAME_DATE='10/11/2026 à 18h27';
+const GAME_VER='3.49',GAME_DATE='10/11/2026 à 18h44';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
