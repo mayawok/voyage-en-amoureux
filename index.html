@@ -1186,7 +1186,7 @@ if(night){const mx=W/2-Rx*Math.sin(bs),my=cy0+Ry*Math.cos(bs);if(my<HH*.95){g.fi
 let va23A=0;try{va23A=va23Bg(ta,dayF,tm,sx,sy)}catch(e){}if(!(va23A>.6))farSnow(ta);for(const L of(va23A>.6?(VA25_P[chIdx()]&&VA25_P[chIdx()].dune?[[.3,'near',34,.007]]:[]):[[.12,'far',110,.003],[.3,'near',60,.007]])){g.fillStyle=mix(L[1],ta);g.beginPath();g.moveTo(0,HH);
 for(let x=0;x<=W+20;x+=20){const wx=x/S+cam.x*L[0];g.lineTo(x,HH*.62-(Math.sin(wx*L[3])*L[2]+Math.sin(wx*L[3]*2.3+1)*L[2]*.4)*S*.6)}
 g.lineTo(W,HH);g.fill()}
-if(PLT()){if(!(va23A>.6))pltBack(ta,tm)}else{if(va23A<.6){farCliff(ta);farGran(ta);farCal(ta);farPine(ta);farLake(ta);farVillage(ta)}else va25Far();farFlock(ta)}
+if(PLT()){if(!(va23A>.6))pltBack(ta,tm)}else{if(va23A<.6){farCliff(ta);farGran(ta);farCal(ta);farPine(ta);farLake(ta);farVillage(ta)}else va25Far();if(va23A<.6)farFlock(ta)}
 birds(ta,dayF,tm);heliDraw(tm);
 const topY=58,ty=HH*(.64-.05*IZ-.13*NZ),ox=W*(.33+.17*Math.max(IZ,NZ))-cam.x*S,oy=ty-cam.y*S;scr.ox=ox;scr.oy=oy;
 g.setTransform(DPR*S,0,0,DPR*S,DPR*ox,DPR*oy);
@@ -8600,7 +8600,7 @@ function va57Step(cd,n){const t=gid('va57t'),P=[].slice.call(gid('cdB').children
  if(n<cd.L.length-1){go.textContent='Suite ▶';go.classList.remove('nx')}else{go.textContent=s.lab;go.classList.toggle('nx',s.nx)}
  const bx=gid('card').querySelector('.cd');try{bx.scrollTop=bx.scrollHeight}catch(e){}}
 openCard=(function(o){return function(cd){o(cd);try{va57Show(cd)}catch(e){}}})(openCard);
-(function(){let tt=0;const el=gid('card');el.addEventListener('pointerdown',e=>{try{const b=e.target.closest&&e.target.closest('#cdGo');const cd=curCd;if(!b||!cd||!cd.va57||cd.va57.n>=cd.L.length-1)return;if(performance.now()<va58L.u)return;e.preventDefault();e.stopImmediatePropagation();tt=performance.now();va57Step(cd,cd.va57.n+1);va58Lock(Math.min(3000,800+String(cd.L[cd.va57.n][1]).length*16));snd('click')}catch(er){}},true);
+(function(){let tt=0;const el=gid('card');el.addEventListener('pointerdown',e=>{try{const b=e.target.closest&&e.target.closest('#cdGo');const cd=curCd;if(!b||!cd||!cd.va57||cd.va57.n>=cd.L.length-1)return;if(performance.now()<va58L.u)return;e.preventDefault();e.stopImmediatePropagation();tt=performance.now();va57Step(cd,cd.va57.n+1);va58Lock(va62Read(String(cd.L[cd.va57.n][1])));snd('click')}catch(er){}},true);
  el.addEventListener('click',e=>{try{const b=e.target.closest&&e.target.closest('#cdGo');const cd=curCd;if(!b)return;if(performance.now()-tt<800||(cd&&cd.va57&&cd.va57.n<cd.L.length-1)){e.preventDefault();e.stopImmediatePropagation()}}catch(er){}},true)})();
 // ===== 3.58 : 3 rapports au lieu de 5, magasins sur terrain plat et jamais sur le plateau, boutons des cartes verrouillés un court instant =====
 function va58Flat(x,len){let mn=1e9,mx=-1e9;for(let d=-30;d<=len+30;d+=15){const t=T(x+d);if(t<mn)mn=t;if(t>mx)mx=t}if(mx-mn>10)return false;try{if(typeof va56At==='function')for(let d=-60;d<=len+60;d+=60)if(va56At(x+d))return false}catch(e){}return true}
@@ -8621,8 +8621,10 @@ var va58T=0;
 mgTick=(function(o){return function(dt){o(dt);try{va58T-=dt;if(va58T>0)return;va58T=2;for(const m of shp){if(m.x-c.x>1500&&m.x-c.x<9000)m.va58=0;va58Fix(m,300,true);if(m.y!=null&&Math.abs(m.y-T(m.x+110))>1&&m.x-c.x>900)m.y=T(m.x+110)}for(const m of stns)va58Fix(m,220,false);for(const m of gars)va58Fix(m,200,false)}catch(e){}}})(mgTick);
 // -- cartes : le bouton ne réagit pas pendant un court instant (pas de saut par erreur)
 var va58L={u:0};
-function va58Lock(ms){va58L.u=performance.now()+ms;try{const b=gid('cdGo');b.style.opacity='.45';clearTimeout(va58L.t);va58L.t=setTimeout(()=>{b.style.opacity=''},ms)}catch(e){}}
-openCard=(function(o){return function(cd){o(cd);try{va58Lock(1600)}catch(e){}}})(openCard);
+// 3.62 : le bouton est caché tant que la réplique n'a pas eu le temps d'être lue (≈ 15 caractères par seconde)
+function va62Read(t){t=String(t||'').replace(/<[^>]*>/g,'');return Math.max(1500,Math.min(7000,900+t.length*65))}
+function va58Lock(ms){va58L.u=performance.now()+ms;try{const b=gid('cdGo');b.style.visibility='hidden';b.style.opacity='';clearTimeout(va58L.t);va58L.t=setTimeout(()=>{b.style.visibility=''},ms)}catch(e){}}
+openCard=(function(o){return function(cd){o(cd);try{let t='';if(cd&&cd.va57&&cd.L&&cd.L[0])t=String(cd.L[0][1]);else if(cd&&cd.L)t=cd.L.map(l=>Array.isArray(l)?l[1]:l).join(' ');va58Lock(va62Read(t))}catch(e){try{va58Lock(1600)}catch(e2){}}}})(openCard);
 (function(){const el=gid('card');const blk=e=>{try{if(performance.now()<va58L.u&&e.target.closest&&e.target.closest('#cdGo')){e.preventDefault();e.stopImmediatePropagation()}}catch(er){}};el.addEventListener('pointerdown',blk,true);el.addEventListener('click',blk,true)})();
 // ===== 3.23 : chenilles triangulaires (atelier Corse 4x4, après les pneus 35″) =====
 // Même suspension et même hauteur que les 35″ ; chaque chenille pivote autour du moyeu et suit la pente du sol.
@@ -8655,6 +8657,6 @@ breakOne=(function(o){return function(){if(SV&&SV.cus&&SV.cus.trk){dmg=0;return}
 wheel=(function(o){return function(x,y,r){if(SV&&SV.cus&&SV.cus.trk){try{return va23Track(x,y,r)}catch(e){}}return o(x,y,r)}})(wheel);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.61',GAME_DATE='11/11/2026 à 21h03';
+const GAME_VER='3.62',GAME_DATE='11/11/2026 à 21h16';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
