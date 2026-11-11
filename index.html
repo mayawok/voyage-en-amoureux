@@ -8455,7 +8455,7 @@ bars=function(z,tm){try{const x=dg,f=cl(dv.fuel),H=(z.h-14)*.78,W2=H*.62,X=z.x+(
  x.fillStyle='rgba(30,30,32,.8)';rr(x,bx-2,Y+H-H*.08,bw+4,H*.08,1.5);x.fill();
  // corps vide puis plein
  const body=()=>{rr(x,bx,by,bw,bh,bw*.18)};body();x.fillStyle='rgba(160,160,165,.35)';x.fill();
- x.save();body();x.clip();x.fillStyle=col;x.fillRect(bx,by+bh*(1-f),bw,bh*f+1);
+ x.save();body();x.clip();x.fillStyle=col;{const sy=by+bh*(1-f),tl=Math.max(-.5,Math.min(.5,-(a||0)*.9+va55.s)),wv=Math.sin(tm*9)*Math.min(2,Math.abs(va55.s)*6)*bh*.03;x.beginPath();x.moveTo(bx-2,sy-tl*bw*.5+wv);x.quadraticCurveTo(bx+bw*.5,sy-wv*1.5,bx+bw+2,sy+tl*bw*.5+wv);x.lineTo(bx+bw+2,by+bh+2);x.lineTo(bx-2,by+bh+2);x.closePath();if(f>0.003)x.fill()}
  // reflet
  x.fillStyle='rgba(255,255,255,.18)';x.fillRect(bx+bw*.1,by,bw*.12,bh);x.restore();
  body();x.strokeStyle='rgba(255,255,255,.7)';x.lineWidth=1;x.stroke();
@@ -8491,8 +8491,11 @@ miniMap=(function(o){return function(tm){o(tm);try{const z=Zn.map,x=dg;if(z.w<90
 // objectif : étiquette plus légère
 (function(){const s=document.createElement('style');s.textContent='#obj{background:rgba(18,14,10,.5)!important;border-width:1px!important;border-color:rgba(255,214,90,.5)!important;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:4px 9px 5px!important}';document.head.appendChild(s)})();
 
+// ===== 3.55 : l'essence bouge dans la jauge (bosses, accélérations, inclinaison) =====
+var va55={s:0,vs:0,vx:0,vy:0};
+dustDraw=(function(o){return function(){o();try{if(paused||!inGame)return;const ax=v.x-va55.vx,ay=v.y-va55.vy;va55.vx=v.x;va55.vy=v.y;va55.vs+=(-ax*.0009+Math.abs(ay)*.0004*(Math.random()<.5?-1:1))-va55.s*.18;va55.vs*=.86;va55.s+=va55.vs;va55.s=Math.max(-.45,Math.min(.45,va55.s))}catch(e){}}})(dustDraw);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.54',GAME_DATE='10/11/2026 à 21h25';
+const GAME_VER='3.55',GAME_DATE='11/11/2026 à 08h32';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
