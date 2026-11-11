@@ -1404,7 +1404,7 @@ sbEl.addEventListener('pointerdown',e=>{const b=e.target.closest('.sbb');if(!b||
 const pzJ=()=>{if(PLT())return null;for(const q of pzL){const px=q.x;if(c.x>px-260&&c.x<px+170)return q.j}return null};
 function uiShops(){const sp=Math.hypot(v.x,v.y);let cx=null;
 if(started&&!night&&!crashed&&!paused&&st.hb&&sp<25){
-const hrN=hourNow(),nightT=hrN>=19.5,cpN=camps.some(m=>c.x>m.a-60&&c.x<m.b+60);const tunN=nightT&&!ign&&!cpN&&noSleep();if(tunN&&window.__tunNo!==level+':'+Math.round(c.x/700)){window.__tunNo=level+':'+Math.round(c.x/700);try{if(tunAt(c.x)>=0||tunAt(c.x+260)>=0||tunAt(c.x-260)>=0)say('On ne va pas dormir dans un tunnel… Sortons d’abord, on s’arrêtera juste après.',3.6,1)}catch(e){}}if(nightT&&!ign&&!cpN&&!tunN){const vil=sceneAt(c.x)===1||sceneAt(c.x+200)===1||sceneAt(c.x-200)===1;if(vil)cx={x:c.x,y:c.y-150,it:[['hotel','🏨','Hôtel du village',4]],key:'sl1'}}else{
+const hrN=hourNow(),nightT=hrN>=19.5,cpN=camps.some(m=>c.x>m.a-60&&c.x<m.b+60);const tunN=nightT&&!ign&&!cpN&&noSleep();if(tunN&&window.__tunNo!==level+':'+Math.round(c.x/700)){window.__tunNo=level+':'+Math.round(c.x/700);try{if(tunAt(c.x)>=0||tunAt(c.x+260)>=0||tunAt(c.x-260)>=0)say('On va pas dormir dans un tunnel. On sort d’abord, on s’arrête juste après.',3.6,0)}catch(e){}}if(nightT&&!ign&&!cpN&&!tunN){const vil=sceneAt(c.x)===1||sceneAt(c.x+200)===1||sceneAt(c.x-200)===1;if(vil)cx={x:c.x,y:c.y-150,it:[['hotel','🏨','Hôtel du village',4]],key:'sl1'}}else{
 const op=obsP.find(q=>c.x>q.x-170&&c.x<q.x+90&&obsUseful(q)),sm=op?null:shp.find(m=>c.x>m.x+10&&c.x<m.x+250);if(op)cx={x:op.x,y:op.y-70,it:[['obs','🔭','Observer',0]],key:'o'+op.x};else 
 if(sm)cx={x:sm.x+145,y:sm.y-96,it:sm.k==='food'?[['umenu','🛒','Entrer chez Utile',0]]:shopItems(sm),key:'s'+sm.x+(carry?'c':'')+(sm.extra?'e':'')};
 else{const m=PLT()?null:stns.find(q=>c.x>q.x+40&&c.x<q.x+240),mw=null;
@@ -1598,11 +1598,11 @@ function dogGo(){return started&&!night&&!crashed&&!cardOpen&&!paused&&introT<=0
 function dogTick(dt){const dp=gid('dogp'),sp=Math.hypot(v.x,v.y);
 if(dogAnim){dogAnim.t+=dt;dp.textContent='🐕 Le chien se dégourdit les pattes…';dp.style.display='block';
 if(dogAnim.t>.1&&!dogAnim.b1){dogAnim.b1=1;bark()}
-if(dogAnim.t>DOGD){dogAnim=null;dogNeed=0;nbStat('walk');dogT=260+Math.random()*140;dp.style.display='none';SV.hearts+=2;pops.push({x:c.x,y:c.y-70,t0:performance.now(),c:'#ff5a7a',txt:'+2 ❤'});note('🐕 Le chien est soulagé !');snd('ding');saveTrip();if(sayT<=0)say('Il est tout content !',3,1)}return}
+if(dogAnim.t>DOGD){dogAnim=null;dogNeed=0;nbStat('walk');dogT=260+Math.random()*140;dp.style.display='none';SV.hearts+=2;pops.push({x:c.x,y:c.y-70,t0:performance.now(),c:'#ff5a7a',txt:'+2 ❤'});note('🐕 Le chien est soulagé !');snd('ding');saveTrip();if(sayT<=0)say('Il est tout content, le chien !',3,0)}return}
 if(!dogGo()){if(night||!dogNeed)dp.style.display='none';else if(!dogGo())dp.style.display='none';return}
-if(!dogNeed){if(ign&&sp>20){dogT-=dt;if(dogT<=0){dogNeed=1;dogHintT=0;say('Le chien s’agite… on s’arrête le promener ?',4,1)}}dp.style.display='none';return}
+if(!dogNeed){if(ign&&sp>20){dogT-=dt;if(dogT<=0){dogNeed=1;dogHintT=0;say('Le chien s’agite. On s’arrête le promener ?',4,0)}}dp.style.display='none';return}
 dp.textContent='🐕 Le chien veut se dégourdir les pattes : coupe le contact 🔑';dp.style.display='block';
-dogHintT+=dt;if(dogHintT>70&&sayT<=0){dogHintT=0;say('Le pauvre chien attend…',3,1)}
+dogHintT+=dt;if(dogHintT>70&&sayT<=0){dogHintT=0;say('Le pauvre chien attend.',3,0)}
 if(st.hb&&!ign&&sp<12&&!work&&!stalled){dogAnim={t:0,x0:c.x};st.gas=0}}
 function dogDraw(x,y,f,mode,tm,leg){g.save();g.translate(x,y);g.scale(f*1.15,1.15);
 const tr=mode==='trot'?Math.sin(tm*22):0;g.fillStyle='#b98a4c';
@@ -1704,12 +1704,12 @@ function pltTick(dt){flee=Math.max(0,flee+(((wxk==='storm'&&wI>.4)?.75:0)-flee)*
 const run=started&&!night&&!crashed&&!paused&&introT<=0;
 if(run&&ign){obsNT-=dt;if(obsNT<=0){obsNT=lvlDur*.6+Math.random()*50;placeObsPt()}}
 if(run&&mis&&mis.kind==='photo'&&!obsP.some(q=>q.x>c.x+150))placeObsPt();
-for(const m of obsP)if(run&&!m.said&&m.x>c.x&&m.x-c.x<650&&sayT<=0&&obsUseful(m)){m.said=1;say('Un point d’observation ! On s’arrête photographier les animaux ?',3.8,1)}
+for(const m of obsP)if(run&&!m.said&&m.x>c.x&&m.x-c.x<650&&sayT<=0&&obsUseful(m)){m.said=1;say('Un point d’observation. On s’arrête photographier les animaux ?',3.8,0)}
 if(run&&ign&&!PLT()&&pzWant()!=null){let x=c.x+1400,n=0;const bad=x=>!(parkOK(x)&&parkOK(x+60)&&parkOK(x+125))||spNear(x)||spNear(x+120)||shp.some(q=>Math.abs(q.x+100-x)<460)||stns.some(q=>Math.abs(q.x+110-x)<460)||camps.some(m=>Math.abs(m.x+100-x)<520)||obsP.some(q=>Math.abs(q.x-x)<300)||obs.some(o=>Math.abs(o.x-x)<260);while(bad(x)&&n++<80)x+=60;pzL.push({j:pzWant(),x});if(pzL.length>3)pzL.shift()}
 if(run&&ign){if(flatLvl!==level){flatLvl=level;flatAt=[lvlT+lvlDur*(.12+Math.random()*.3)];if(Math.random()<.6)flatAt.push(lvlT+lvlDur*(.5+Math.random()*.3))}if(flatAt.length&&lvlT>=flatAt[0]&&rockW(c.x)>.02&&!hardNear(c.x)&&Math.abs(v.x)>60&&flatW<0&&!stalled&&!work){flatAt.shift();breakOne()}}
 if(!PLT()){runs.length=0;return}
 if(pltSnowy()&&wxk!=='snow'){wxk='snow';wxS=lvlT-6;wxD=1e5}
-if(run&&pltSaid!==level&&sayT<=0&&ign){pltSaid=level;say('Les pozzines ! Des petites mares partout… roule doucement, c’est fragile.',4.2,1)}
+if(run&&pltSaid!==level&&sayT<=0&&ign){pltSaid=level;say('Les pozzines, ma chérie. Roule doucement, c’est fragile.',4.2,0)}
 if(run){runT-=dt;if(runT<=0){runT=35+Math.random()*25;const n=3+Math.floor(Math.random()*2);for(let i=0;i<n;i++)runs.push({x:cam.x-W*.4/S-60-i*42,ph:Math.random()*6,col:['#5a3a22','#2b211b','#8a5a34','#3b2a20'][i%4],age:0});if(sayT<=0&&Math.random()<.6)say('Regarde, des chevaux sauvages qui courent avec nous !',3.6,0)}}
 const sp=Math.abs(v.x);for(let i=runs.length-1;i>=0;i--){const r=runs[i];r.age+=dt;r.x+=(Math.max(150,sp+40)+(r.age>14?(r.age-14)*50:0)-flee*0)*dt;if(r.x>cam.x+W/S+400||r.age>45)runs.splice(i,1)}
 if(Math.hypot(v.x,v.y)>35&&dt>0){for(let i=0;i<2;i++){const wx=c.x+WL[i][0]*Math.cos(a),k=Math.floor(wx/110);for(const kk of[k-1,k]){const p=pozAt(kk);if(p&&Math.abs(wx-p.x)<p.w/2&&lastSpl!==kk*2+i){lastSpl=kk*2+i;for(let j=0;j<7;j++)drops.push({x:wx,y:p.y-1,vx:v.x*.25+(Math.random()-.5)*120,vy:-(70+Math.random()*100),t:0});snd(pltSnowy()?'crunch':'splash')}}}}}
@@ -1809,7 +1809,7 @@ if(u>=1){tw.flip=null;tw.ph=2;crashed=false;c.y=T(c.x)-60;a=ta;v.x=v.y=0;w=0;set
 const DEPAN=['#e07a1a','#2f3f5a',1,'#4a4a4a',1,0,0];
 const PUN={culasse:'un joint de culasse',direction:'un boîtier de direction',thermostat:'un thermostat',embrayage:'un kit d’embrayage',alternateur:'un alternateur',bougie:'une bougie',radiateur:'un radiateur',filtre:'un filtre à huile',plaquettes:'des plaquettes de frein',amortisseur:'un amortisseur',courroie2:'une courroie',pompe:'une pompe à eau'};
 var ppSmk=0;
-function ppStall(){ign=0;stalled=false;snd('hiss');snd('thud');vib([80,40,120]);v.x*=.55;ppSmk=6;say('Oh non… ça fume ! Le moteur a calé d’un coup !',3.8,1);setTimeout(()=>{if(sayT<=0||true)say('Ça sent le brûlé… Je regarde sous le capot.',3.4,0)},2600);stopReq={x:c.x+220,cb:()=>setTimeout(ppOpen,2200)}}
+function ppStall(){ign=0;stalled=false;snd('hiss');snd('thud');vib([80,40,120]);v.x*=.55;ppSmk=6;say('Mince, ça fume ! Le moteur a calé d’un coup.',3.8,0);setTimeout(()=>{if(sayT<=0||true)say('Ça sent le brûlé… Je regarde sous le capot.',3.4,0)},2600);stopReq={x:c.x+220,cb:()=>setTimeout(ppOpen,2200)}}
 function smkDraw(tm){if(ppSmk<=0||night)return;ppSmk-=1/60;const ca=Math.cos(a),sa=Math.sin(a),hx=c.x+44*ca+20*sa,hy=c.y+44*sa-20*ca;for(let i=0;i<9;i++){const u=((tm*.7+i/9)%1);g.fillStyle='rgba('+(90+60*u|0)+','+(90+60*u|0)+','+(95+60*u|0)+','+(.55*(1-u)*Math.min(1,ppSmk/2))+')';g.beginPath();g.arc(hx-u*28+Math.sin(i*1.7+tm)*6,hy-u*70,5+u*16,0,7);g.fill()}}
 function nightZoom(){if(!night||!night.m)return 0;const n=night,a1=n.m.car?sm(cl((n.t-.2)/1.4)):sm(cl((n.t-(n.we+1))/2.2)),a2=1-sm(cl((n.t-(n.tot-1.6))/1.4));return a1*a2}
 function nightLove(){if(!night||NZ<.6)return;const n=night,t=n.t-n.we;const L=t>2.4&&t<5.4?['a','Je t’aime ❤️']:t>5.8&&t<8.8?['m','Fais de beaux rêves, mon amour 🌙']:null;if(!L)return;
@@ -1901,21 +1901,19 @@ function nmOf(sp){return ENC[sp]?ENC[sp][0]:(OBALL[sp]?OBALL[sp][2]:sp)}
 function sickAdd(sp){SV.sick=SV.sick||{};SV.sickT=SV.sickT||{};try{if(obv&&obv.sickTxt)SV.sickT[sp]=obv.sickTxt}catch(e){}if(SV.sick[sp]!=null)return;SV.sick[sp]=chIdx();SV.hearts+=2;nbNew()}
 function sickH(){const K=Object.keys(SV.sick||{});if(!K.length)return'';return'<h4 style="margin:14px 0 6px;font:800 14px Arial;color:#7b3fa0">🩺 Animaux malades photographiés : '+K.length+'</h4>'+K.map(sp=>'<div class="nbj"><canvas width="168" height="126" data-a="'+sp+'" data-l="0"></canvas><div style="flex:1"><h4>🩺 '+nmOf(sp)+'</h4><p>Photographié avec '+((SV.sickT&&SV.sickT[sp])||SICK[sp]||'l’air malade')+' (chapitre '+(SV.sick[sp]+1)+'). Une observation de plus pour l’enquête.</p></div></div>').join('')}
 Object.assign(MSG,{
-ob_van:['Un camping-car arrêté au milieu de la piste… un petit coup de klaxon ?','§Des touristes en camping-car ! Klaxonne gentiment, ils vont se pousser.','Ils font une pause photo en pleine piste… klaxonne, mon cœur !'],
-vanDone:['§Ils nous font coucou ! Bonnes vacances à eux !','Ils repartent… et ils nous saluent par la fenêtre !','§Merci les vacanciers ! Bonne route !'],
-towFlip:['§On aurait dû prendre le Mercedes… Bon, j’appelle la dépanneuse.','Plus de peur que de mal ! La dépanneuse arrive, mon cœur.','§Tout le monde va bien ? La dépanneuse va nous remettre sur nos roues.'],
-ch0:['La tour de Fautea, toujours debout face à la mer. Elle en a vu passer, des tempêtes.','§Ce chantier Bellavista, là-haut… tu crois vraiment que c’est lui ?','Les tortues d’Hermann sortent quand il fait doux, pas en plein midi. Quelque chose cloche.','§Le maquis sent le ciste et l’immortelle. Ça m’avait manqué.','Je note tout : l’heure, le lieu, le comportement. Une bonne enquête, c’est des détails.','Si l’Institut m’a appelée, c’est que c’est sérieux.'],
-ch1:['§Regarde le rocher, là-bas : on dirait vraiment un lion couché.','Le N-12… une molécule de synthèse n’arrive pas toute seule dans une tortue.','Les puffins rentrent au nid la nuit. S’ils se trompent d’heure, c’est mauvais signe.','§Tu me dis où tu veux t’arrêter pour tes prélèvements ?','Il me faut des échantillons de plusieurs espèces pour comparer.','§L’eau est turquoise par ici. On se croirait au bout du monde.'],
-ch2:['Si ce n’est pas Bellavista… alors qui ? Et pourquoi se cacher ?','§Garde l’appareil photo à portée de main. On ne sait jamais.','Le cerf de Corse avait disparu de l’île. Il a été réintroduit, il revient de loin.','§La rivière est glacée, même en été. Le Cherokee va adorer les gués.','Si Bellavista est innocent, alors d’où vient le N-12 ?','§Des bergeries partout dans la vallée… on se croirait hors du temps.','Je veux être sûre avant d’accuser qui que ce soit.','§Ces châtaigniers doivent être centenaires.'],
-ch3:['§Tu as vu comme les gendarmes ont salué la voiture du Conseiller ?','Ici, tout le monde sait. Mais personne ne parle.','§Le 4x4 noir… il est encore derrière nous ?','Une coopérative, un fabricant, une société de démoustication… Tout se tient, mais il me faut des preuves.','Le plateau du Coscione, c’est un monde à part. Pas une maison, juste le vent.','§Les aiguilles de Bavella ! On dirait des dents de granit.','Les mouflons descendent trop bas. Ils fuient quelque chose là-haut.','§Je roule doucement, promis. Les pozzines sont fragiles.'],
-ch4:['§Qui a touché au Cherokee ? Ça ne peut pas être un hasard.','S’ils s’en prennent à la voiture, c’est qu’on les dérange. On est sur la bonne piste.','§Les calanques de Piana… le granit est presque de la couleur du Cherokee.','Les balbuzards ont des coquilles d’œufs plus fines. Comme à l’époque du DDT.','§On reste ensemble, quoi qu’il arrive. Personne ne t’arrêtera.','La route de Piana tourne sans arrêt. Pense aux freins !'],
-ch5:['§Je regarde le rétroviseur toutes les deux minutes… Marchetti peut surgir n’importe quand.','Lucia risque sa carrière pour nous. On n’a pas le droit d’échouer.','§La Balagne… des villages perchés sur chaque colline.','La cistude, c’est une petite tortue d’eau douce. Elle a besoin d’un étang propre.','La fiche du N-12 le dit noir sur blanc : toxique pour la faune aquatique.','§Ils savaient, et ils ont continué. Ça me met en colère.','Mes analyses tiennent la route. Il faut juste qu’elles soient incontestables.'],
-ch6:['§Une « proposition amicale »… ils pensaient vraiment pouvoir t’acheter ?','Le lézard tyrrhénien ne vit qu’ici et en Sardaigne. Je ne le laisserai pas disparaître.','§Le désert des Agriates, pas un mètre de goudron. Le Cherokee est dans son élément.','Il me manque un groupe témoin : une région sans N-12, pour comparer.','§On voit déjà le golfe de Saint-Florent, au bout de la piste.'],
-ch7:['En Sardaigne, le N-12 est interdit. Si les animaux vont bien là-bas, j’ai ma preuve.','§Les falaises de Bonifacio vues de la mer… je n’oublierai jamais ça.','Le faucon d’Éléonore niche sur les falaises et chasse les petits oiseaux qui migrent.','§La Gallura, du granit rose partout. On dirait un autre monde.','Ici, les animaux vont bien. C’est exactement ce que je voulais voir.'],
-ch8:['La sittelle corse n’existe nulle part ailleurs au monde. Elle vit dans les pins laricio.','Tu es bien silencieux aujourd’hui… tout va bien ?','§Tout va très bien. Je réfléchis, c’est tout.','J’envoie bientôt tout mon dossier. J’ai un peu le trac.','§La forêt de l’Ospedale sent la résine. On respire, enfin.'],
-ch9:['Le dossier est parti. Maintenant, on attend.','§Fautea n’est plus très loin… ça me rend tout chose.','§Tu sais quoi ? C’est le plus beau voyage de ma vie.','On a fait le tour de l’île, ensemble. Je suis fière de nous.','§Encore quelques virages et on y est. Ferme les yeux si tu veux… non, en fait, garde-les ouverts !']});
-
-
+ob_van:['Un camping-car au milieu de la piste. Un petit coup de klaxon ?','Des touristes ! Klaxonne gentiment, ils vont se pousser.','Ils font une pause photo en pleine piste. Klaxonne, ma chérie.'],
+vanDone:['Ils nous font coucou. Bonnes vacances à eux !','Ils repartent, et ils nous saluent par la fenêtre.','Allez, bonne route les vacanciers !'],
+towFlip:['On aurait dû prendre le Mercedes… Bon, j’appelle la dépanneuse.','Plus de peur que de mal. La dépanneuse arrive, ma chérie.','Tout le monde va bien ? La dépanneuse nous remet sur nos roues.'],
+ch0:['La tour de Fautea, toujours debout face à la mer.','Ce chantier Bellavista, là-haut. Tu crois vraiment que c’est lui, ma chérie ?','Les tortues d’Hermann sortent pas en plein midi, c’est ça ? Y a un truc qui cloche.','Ça sent le ciste et l’immortelle. Ça m’avait manqué.','Tu notes tout, hein ? L’heure, le lieu… ton carnet va être plein.','Si l’Institut t’a appelée, c’est que c’est sérieux.'],
+ch1:['Regarde le rocher, là-bas. On dirait un lion couché.','Le N-12, ça arrive pas tout seul dans une tortue, ça.','Dis, les puffins rentrent la nuit, normalement ?','Tu me dis où tu veux t’arrêter pour tes prélèvements ?','Il te faut des échantillons de plusieurs espèces, c’est ça ?','L’eau est turquoise par ici. On se croirait au bout du monde.'],
+ch2:['Si c’est pas Bellavista, alors qui ? Et pourquoi se cacher ?','Garde l’appareil photo à portée de main, on sait jamais.','Le cerf de Corse avait disparu, non ? Et il est revenu.','La rivière est glacée, même en été. Le Cherokee va adorer les gués.','Si Bellavista est innocent, il vient d’où, le N-12 ?','Des bergeries partout dans la vallée. On se croirait hors du temps.','Tu veux être sûre avant d’accuser quelqu’un, hein.','Ces châtaigniers doivent avoir des siècles.'],
+ch3:['T’as vu comme les gendarmes ont salué la voiture du Conseiller ?','Ici, tout le monde sait. Personne parle.','Le 4x4 noir… il est encore derrière nous ?','Une coopérative, un fabricant, une société de démoustication… il te faut des preuves, j’ai compris.','Le plateau du Coscione… pas une maison, juste le vent.','Les aiguilles de Bavella ! On dirait des dents de granit.','Les mouflons descendent trop bas, tu disais ? Ils fuient quelque chose.','Je roule doucement, promis. Les pozzines sont fragiles.'],
+ch4:['Qui a touché au Cherokee ? Ça peut pas être un hasard.','S’ils s’en prennent à la voiture, c’est qu’on les dérange. On est sur la bonne piste.','Les calanques de Piana. Le granit est presque de la couleur du Cherokee.','Les balbuzards ont des coquilles plus fines, tu m’as dit. Comme avec le DDT.','On reste ensemble, quoi qu’il arrive, ma chérie.','La route de Piana tourne sans arrêt. Accroche-toi.'],
+ch5:['Je regarde le rétroviseur toutes les deux minutes. Marchetti peut surgir n’importe quand.','Lucia risque sa carrière pour nous. On n’a pas le droit d’échouer.','La Balagne. Des villages perchés sur chaque colline.','La cistude, c’est la petite tortue d’eau douce ? Il lui faut un étang propre.','La fiche du N-12 le dit : toxique pour la faune aquatique.','Ils savaient, et ils ont continué. Ça me met en colère.','Tes analyses tiennent la route. Il faut juste qu’elles soient incontestables.'],
+ch6:['Une « proposition amicale »… ils pensaient vraiment pouvoir nous acheter ?','Le lézard tyrrhénien, il vit qu’ici et en Sardaigne, non ? On le laissera pas disparaître.','Le désert des Agriates, pas un mètre de goudron. Le Cherokee est dans son élément.','Il te manque un groupe témoin, c’est ça ? Une région sans N-12.','On voit déjà le golfe de Saint-Florent, au bout de la piste.'],
+ch7:['En Sardaigne, le N-12 est interdit. Si les animaux vont bien là-bas, t’as ta preuve.','Les falaises de Bonifacio vues de la mer. J’oublierai jamais ça.','Le faucon d’Éléonore niche sur les falaises, tu m’as dit ?','La Gallura, du granit rose partout. On dirait un autre monde.','Ici, les animaux vont bien. C’est exactement ce que tu voulais voir.'],
+ch8:['La sittelle corse, y en a nulle part ailleurs au monde. Tu m’as expliqué, hein.','Ça va, ma chérie ? T’as l’air ailleurs.','Tu m’en voudras pas, mais je te sens pensive.','Tu envoies bientôt ton dossier ? T’as le trac ?','La forêt de l’Ospedale sent la résine. Ça fait du bien.'],
+ch9:['Le dossier est parti. Maintenant, on attend.','Fautea n’est plus très loin. Ça me fait tout drôle.','Tu sais quoi ? C’est le plus beau voyage de ma vie.','On a fait le tour de l’île, ensemble. Je suis fier de nous.','Encore quelques virages et on y est. Ferme les yeux si tu veux… non, en fait, garde-les ouverts.']});
 // ===== v28 : histoire en 10 chapitres =====
 function chIdx(){return (level-1)%CHAP.length}
 NAMES.length=0;for(const ch of CHAP)NAMES.push(ch.fin);
@@ -2431,7 +2429,7 @@ g.setTransform(DPR,0,0,DPR,0,0)}
 var es=null;let esT0=0;
 function sleepHere(hot){const x=c.x-120,m={x,a:x-160,b:x+360,y:T(x+120),name:hot?'Hôtel du village':'Dans le Cherokee',hotel:!!hot,car:!hot,tmp:1};camps.push(m);curCamp=m;v.x=v.y=0;w=0;settleCar();gid('intro').classList.remove('on');introT=0;arrive(m);setTimeout(()=>{const i=camps.indexOf(m);},0)}
 function foodTick(dt){if(!started||night||paused||introT>0)return;if(SV.food===undefined)SV.food=1;SV.food=Math.max(0,SV.food-dt/520);
-if(SV.food<.25&&!foodSaid){foodSaid=1;say('J’ai faim… on s’arrête dans une épicerie, mon cœur ?',3.8,1)}if(SV.food>.5)foodSaid=0;
+if(SV.food<.25&&!foodSaid){foodSaid=1;say('J’ai faim, moi. On s’arrête dans une épicerie ?',3.8,0)}if(SV.food>.5)foodSaid=0;
 if(SV.food<=0){hunT+=dt;if(hunT>30){hunT=0;if(SV.hearts>0){SV.hearts--;pops.push({x:c.x,y:c.y-56,t0:performance.now(),c:'#ff5a7a',txt:'−1 ❤ (faim)'})}}}}
 let foodSaid=0,hunT=0,chEnd=0;
 function finishDraw(){const x=MAP_L;if(Math.abs(x-cam.x)>W/S+200)return;const y=T(x);const tx=CHP().fin;g.font='800 14px Arial';let fs=14;while(g.measureText(tx).width>220&&fs>9){fs--;g.font='800 '+fs+'px Arial'}const hw=Math.max(78,g.measureText(tx).width/2+14);g.fillStyle='#5a3c1e';g.fillRect(x-hw+8,y-110,7,110);g.fillRect(x+hw-15,y-110,7,110);g.fillStyle='#f3e6c4';g.fillRect(x-hw,y-128,hw*2,30);g.strokeStyle='#8f2230';g.lineWidth=3;g.strokeRect(x-hw,y-128,hw*2,30);g.fillStyle='#8f2230';g.textAlign='center';g.textBaseline='middle';g.fillText(tx,x,y-113);for(let i=0;i<8;i++){g.fillStyle=i%2?'#ffd24a':'#e8334a';g.beginPath();g.moveTo(x-70+i*18,y-98);g.lineTo(x-61+i*18,y-86);g.lineTo(x-52+i*18,y-98);g.fill()}}
@@ -2584,8 +2582,8 @@ const evK=k=>k+level;
 function spTick(dt){if(!started||night||crashed||paused||dt<=0||!inGame)return;SV.ev=SV.ev||{};const L=spList();
 for(const e of L){if(e.k==='chase')continue;if(SV.ev[evK(e.k)]||e.go)continue;const d=e.x-c.x;
 if(d<680&&d>-260&&!stopReq&&!hl&&!pp&&!cardOpen&&!sev&&!mev&&rockW(c.x)<.02&&!hardNear(c.x)){e.go=1;
-if(e.k==='haz'){obsP.push({x:e.x,y:T(e.x),said:1,haz:1});say('Un point de vue sur la vallée… je voudrais photographier les cerfs. On s’arrête ?',4,1);stopReq={x:e.x-40,cb:()=>{SV.ev[evK('haz')]=1;openObsHaz()}}}
-else if(e.k==='love'){say('Attends, ralentis… tu entends ces petits cris dans l’arbre ?',3.6,1);stopReq={x:e.x-120,cb:()=>{SV.ev[evK('love')]=1;SV.ev.love9=1;saveTrip();setTimeout(()=>{sayT=0;fadeTo(()=>openCine('love'))},700)}}}
+if(e.k==='haz'){obsP.push({x:e.x,y:T(e.x),said:1,haz:1});say('Un point de vue sur la vallée. Tu voudrais photographier les cerfs ? On s’arrête ?',4,0);stopReq={x:e.x-40,cb:()=>{SV.ev[evK('haz')]=1;openObsHaz()}}}
+else if(e.k==='love'){say('Attends, ralentis. Tu entends ces petits cris dans l’arbre ?',3.6,0);stopReq={x:e.x-120,cb:()=>{SV.ev[evK('love')]=1;SV.ev.love9=1;saveTrip();setTimeout(()=>{sayT=0;fadeTo(()=>openCine('love'))},700)}}}
 else if(e.k==='gend'){say('La gendarmerie ! On leur montre la photo, mon cœur.',3.6,1);stopReq={x:e.x-130,cb:()=>{SV.ev[evK('gend')]=1;SV.ev.gend=1;cardQ.unshift({now:1,t:'🚓 Gendarmerie',L:SP_GEND()});saveTrip()}}}
 else if(e.k==='barr'){say('Des gyrophares près de la rivière… c’est là que je voulais faire mon prélèvement !',4,1);stopReq={x:e.x-150,cb:()=>{SV.ev[evK('barr')]=1;SV.ev.barr=1;cardQ.unshift({now:1,t:'🚧 Zone interdite',L:SP_BARR(),cb:()=>{choice2(()=>{HELP.riv.cb=()=>{SV.ev.riv=1;nbNew();say(CHX('prelev')===1?'Deux flacons : amont et aval. Si l’amont est propre… on tient la source.':'Le flacon est caché dans la glacière. Ni vu ni connu.',3.6,1);saveTrip()};setTimeout(()=>openHelp('riv'),300)})}});saveTrip()}}}}}
 chaseTick(dt)}
@@ -3025,7 +3023,7 @@ function qzFix(N,g2,R){const reg=g2.reg,qs=new Set(g2.sol.map((c,r)=>r*N+c));for
 for(const p of cand){const r=Math.floor(p/N),c=p%N,old=reg[p];for(const q of rShuf([r>0?p-N:-1,r<N-1?p+N:-1,c>0?p-1:-1,c<N-1?p+1:-1].filter(q=>q>=0&&reg[q]!==old),R)){reg[p]=reg[q];if(qzConn(N,reg,old)){done=true;break}reg[p]=old}if(done)break}if(!done)return false}return qzSols(N,reg,2).length===1}
 function qzStart(){const i=chIdx(),T=QZT[(i+TS())%QZT.length],N=[6,6,6,7,7,7,7,8,8,8][i]||7,R=mb32(1000+level*37+TS()*7919+(SV.qzTry||0));let best=null,t0=performance.now();
 for(let a=0;a<200&&performance.now()-t0<700;a++){const g2=qzGen(N,R);if(qzFix(N,g2,R)){best=g2;break}if(!best)best=g2}
-pz={k:'farm',T,N,reg:best.reg,sol:best.sol,uniq:qzCount(N,best.reg,2)===1,m:new Array(N*N).fill(0),ax:new Array(N*N).fill(0),hp:3,fl:-1,flT:0,won:0,hint:1,t:0,after:w=>{SV.qzL=level;if(w){SV.hearts+=5;pops.push({x:c.x,y:c.y-70,t0:performance.now(),c:'#ff5a7a',txt:'+5 ❤'});cardQ.push({t:'Le carnet de Mila · '+T.n.split(' · ')[1],L:[['m','J’ai aidé '+T.n.split(' · ')[0]+' à organiser son terrain. Chaque '+T.an+' a son coin, au calme.'],['a','Tu es vraiment incroyable avec les animaux, mon amour.']]})}else say('On repassera l’aider une autre fois.',3,1)}};
+pz={k:'farm',T,N,reg:best.reg,sol:best.sol,uniq:qzCount(N,best.reg,2)===1,m:new Array(N*N).fill(0),ax:new Array(N*N).fill(0),hp:3,fl:-1,flT:0,won:0,hint:1,t:0,after:w=>{SV.qzL=level;if(w){SV.hearts+=5;pops.push({x:c.x,y:c.y-70,t0:performance.now(),c:'#ff5a7a',txt:'+5 ❤'});cardQ.push({t:'Le carnet de Mila · '+T.n.split(' · ')[1],L:[['m','J’ai aidé '+T.n.split(' · ')[0]+' à organiser son terrain. Chaque '+T.an+' a son coin, au calme.'],['a','Tu es vraiment incroyable avec les animaux, mon amour.']]})}else say('On repassera l’aider une autre fois.',3,0)}};
 gid('pzk').textContent='Chapitre '+(i+1)+' · un coup de main';gid('pzt').textContent='Organiser le terrain';
 pzQ([[T.w,T.n.toUpperCase(),T.ask],['👩‍🔬','MILA','Avec plaisir ! Laisse-moi faire un plan.']]);
 gid('pzr').innerHTML='<div><i>🎨</i>1 '+T.an+' par couleur</div><div><i>↔️↕️</i>1 par ligne et par colonne</div><div><i>🚫</i>Ils ne se touchent pas, même en diagonale</div>';
@@ -3189,18 +3187,18 @@ x.fillStyle='#e9e2d0';for(let i=0;i<3;i++){x.fillRect(W*.04+i*14,hz-HH*.07-i*3,1
 for(let i=0;i<2;i++){const ph=((tm*.5+i*.5)%1);if(ph<.35){const q=ph/.35,dx=W*(.3+.35*i)+q*40,dy=hz+HH*.12-Math.sin(q*Math.PI)*24;x.save();x.translate(dx,dy);x.rotate(-1+q*2);x.fillStyle='#5a6a7a';x.beginPath();x.ellipse(0,0,13,4.5,0,0,7);x.fill();x.beginPath();x.moveTo(-2,-4);x.lineTo(3,-10);x.lineTo(5,-3);x.fill();x.restore()}}}
 function ferryWorld(dt){const i=chIdx();if(!FERRY[i]||SV.frL===level)return;if(!started||night||crashed||paused||introT>0||cardOpen||hl||pz||bt||obv||bz||fn||es||chEnd)return;
 if(stopReq||hev||mev||sev||work||stalled||flatW>=0||tow||sayT>0||(typeof chs!=='undefined'&&chs))return;const px=portX();if(px<0||c.x<px-700||c.x>px-60)return;
-SV.frL=level;say('Voilà le port ! Le bac nous attend, on embarque le Cherokee ?',3.4,1);stopReq={x:px-30,cb:()=>setTimeout(()=>{snd('ferry');openBoat(false,FERRY[i])},500)}}
+SV.frL=level;say('Voilà le port. Le bac nous attend, on embarque ?',3.4,0);stopReq={x:px-30,cb:()=>setTimeout(()=>{snd('ferry');openBoat(false,FERRY[i])},500)}}
 
 // ===== v68 : nouvelles conversations + appels téléphoniques =====
 Object.assign(MSG,{
-skyN:['Regarde la Grande Ourse, juste au-dessus des montagnes.','§Tu me montres encore Cassiopée ? Le W, là-haut ?','§Il y a tellement plus d’étoiles ici qu’en Bretagne…','Orion se lève. Ton chasseur préféré, ma chérie.','§On cherche notre constellation ce soir ?','La Voie lactée… on dirait de la poussière de sucre.','§Fais un vœu si tu vois une étoile filante !','L’étoile Polaire, là. Avec elle, on ne se perd jamais.'],
-skyD:['§Pas un seul nuage, ce ciel est d’un bleu incroyable.','Ce soir, le ciel sera dégagé : on regardera les étoiles.','§J’ai hâte de voir les étoiles d’ici, cette nuit.','Avec un ciel pareil, on verra la Voie lactée ce soir.'],
-bzh:['La maison en Bretagne me manque un peu… pas toi ?','§Tu crois que le garage tourne bien sans toi ?','Le garage marche bien, tu sais. Je crois que j’ai trouvé ma voie.','§Et moi la mienne : les animaux, le terrain, le labo…','§On a de la chance : chacun fait ce qu’il aime.','En rentrant, je te ferai une étagère dans le garage pour tes échantillons !','§J’aime notre maison en Bretagne. Mais j’aime encore plus quand on est sur la route ensemble.','Les clients du garage vont me demander mes photos de Corse, c’est sûr.'],
-life:['Tu es l’amour de ma vie, Mila.','§Tu es l’amour de ma vie, tu le sais ?','Je referais toute cette route mille fois, du moment que c’est avec toi.','§Avec toi, je me sens à ma place.'],
+skyN:['Regarde la Grande Ourse, juste au-dessus des montagnes.','Tu me montres Cassiopée, ma chérie ? Le W, là-haut ?','Y a tellement plus d’étoiles qu’en Bretagne.','Orion se lève. Ton chasseur préféré.','On cherche notre constellation ce soir ?','La Voie lactée… on dirait de la poussière de sucre.','Fais un vœu si tu vois une étoile filante.','La Polaire, là. Avec elle, on se perd jamais.'],
+skyD:['Pas un nuage. Ce ciel est d’un bleu incroyable.','Ce soir, le ciel sera dégagé. On regardera les étoiles.','J’ai hâte de voir les étoiles d’ici, cette nuit.','Avec un ciel pareil, on verra la Voie lactée ce soir.'],
+bzh:['La maison en Bretagne me manque un peu. Pas toi ?','Tu crois que ça tourne bien au garage sans moi ?','Le garage marche bien, tu sais. Je crois que j’ai trouvé ma voie.','Et toi, la tienne : les animaux, le terrain, le labo.','On a de la chance, chacun fait ce qu’il aime.','En rentrant, je te fais une étagère dans le garage pour tes échantillons.','J’aime notre maison. Mais j’aime encore plus quand on est sur la route ensemble.','Les clients du garage vont me demander mes photos de Corse, c’est sûr.'],
+life:['Tu es l’amour de ma vie, Mila.','Je referais toute cette route mille fois, du moment que c’est avec toi.','Avec toi, je suis à ma place.','Je t’aime, ma chérie.'],
 lifeR:['§Toi aussi, tu es l’amour de ma vie ❤️','Et toi le mien, pour toujours ❤️'],
-torse:['§Tu sais que je te préfère torse nu, mon amour ?','§Il fait chaud… tu pourrais enlever ton t-shirt, non ? 😏','§Franchement, torse nu, ça te va beaucoup mieux.','§Le paysage est beau… mais je préfère quand tu conduis torse nu.'],
-torseR:['Ha ha, je vois clair dans ton jeu !','Seulement si tu le demandes gentiment 😏','Encore ? Tu es incorrigible, ma chérie !'],
-plancton:['§Ce soir, on va voir le plancton lumineux sur la plage de Fautea ?','Le plancton lumineux… c’est comme si la mer avait ses propres étoiles.','§Quand on marche dans l’eau la nuit, le plancton s’allume à chaque pas !','On ira se baigner de nuit, pour voir les vagues briller.','§Des étoiles dans le ciel, et d’autres dans les vagues… Fautea, c’est magique.']});
+torse:['Il fait chaud, là. J’enlève mon t-shirt ?','Tu veux que je conduise torse nu ?','Je mets le t-shirt ou je l’enlève, ma chérie ?','Il fait trop chaud pour un t-shirt, non ?'],
+torseR:['§Ha ha, je vois clair dans ton jeu.','§Seulement si tu le demandes gentiment.','§Encore ? Tu es incorrigible.'],
+plancton:['Ce soir, on va voir le plancton lumineux sur la plage de Fautea ?','Le plancton lumineux, c’est comme si la mer avait ses étoiles.','Quand on marche dans l’eau la nuit, ça s’allume à chaque pas.','On ira se baigner de nuit, pour voir les vagues briller.','Des étoiles dans le ciel, et d’autres dans les vagues. Fautea, c’est magique.']});
 function chatPick(){const h=hourNow(),r=Math.random(),ix=chIdx();
 if(ix===9&&r<.22)return['plancton'];
 if(r<.24)return[h>=18.5||h<6?'skyN':'skyD'];
@@ -3391,7 +3389,7 @@ g.fillStyle='rgba(120,90,60,.8)';for(let i=0;i<6;i++){const x=s+60+i*65,b=(tm*.7
 g.fillStyle='#4f7d3a';for(let i=0;i<8;i++){const x=s+(i<4?-20+i*12:470+(i-4)*12);g.fillRect(x,T(x)-14,2,14);g.fillStyle='#6b4a2a';g.fillRect(x-1,T(x)-18,4,6);g.fillStyle='#4f7d3a'}
 const px=s-40,py=T(px);g.fillStyle='#7a5a36';g.fillRect(px-1.5,py-36,3,36);g.fillStyle='#f4f1ea';g.fillRect(px-22,py-46,44,13);g.fillStyle='#6b4a2a';g.font='bold 7px Arial';g.textAlign='center';g.fillText('BOUE PROFONDE',px,py-37)}
 function slipTick(dt){if(!started||night||crashed||paused)return;const s=slipS();if(s<0)return;const k=level+':'+s;
-if(c.x>s-500&&c.x<s+40&&!slipSaid[k]){slipSaid[k]=1;say('Ça glisse ! 4x4 et ⚡ !',2,1)}
+if(c.x>s-500&&c.x<s+40&&!slipSaid[k]){slipSaid[k]=1;say('Ça glisse. Mets le 4x4 et le boost.',2,0)}
 if(c.x>s-200&&c.x<s+120){const dp=gid('dogp');if(!dogAnim&&!dogNeed&&!mev&&!sev){dp.textContent='🌧️ Côte : 4x4 + ⚡';dp.style.display='block'}}else{const dp=gid('dogp');if(dp.textContent.indexOf('🌧️ Côte')===0)dp.style.display='none'}
 if(c.x>s+1800&&c.x<s+3500&&!slipSaid[k+'r']&&(st.gear===1||st.gear===3)&&Z(c.x)[3]==='dry'&&sayT<=0){slipSaid[k+'r']=1;say('Je repasse en 2 roues motrices.',2.4,0)}}
 function deepPhys(dt){const s=deepS();if(s<0||!deepAt(c.x))return;if(!deep||deep.s!==s||deep.l!==level){deep={s,l:level,stuck:(SV.deepL!==level)?(Math.random()<1/3):false,t:0,called:0};SV.deepL=level;if(!deep.stuck)say(Math.random()<.5?'Ça colle… garde les gaz, en 4L !':'On s’enfonce ! Reste sur les gaz, mon cœur !',3,1)}
@@ -3539,7 +3537,7 @@ function qzFix(N,g2,R){const reg=g2.reg,qs=new Set(g2.sol.map((c,r)=>r*N+c)),one
 for(const p of cand){const r=Math.floor(p/N),c=p%N,old=reg[p];for(const q of rShuf([r>0?p-N:-1,r<N-1?p+N:-1,c>0?p-1:-1,c<N-1?p+1:-1].filter(q=>q>=0&&reg[q]!==old&&!ones.has(reg[q])),R)){reg[p]=reg[q];if(qzConn(N,reg,old)){done=true;break}reg[p]=old}if(done)break}if(!done)return false}return qzSols(N,reg,2).length===1}
 function qzStart(){const i=chIdx(),T=QZT[(i+TS())%QZT.length],N=[6,6,6,7,7,7,7,8,8,8][i]||7,nO=i<4?2:1,R=mb32(1000+level*37+TS()*7919+(SV.qzTry||0));let best=null,t0=performance.now();
 for(let a=0;a<300&&performance.now()-t0<800;a++){const g2=qzGen(N,R,nO);if(qzFix(N,g2,R)){best=g2;break}if(!best)best=g2}
-pz={k:'farm',T,N,reg:best.reg,sol:best.sol,uniq:qzCount(N,best.reg,2)===1,m:new Array(N*N).fill(0),ax:new Array(N*N).fill(0),hp:3,fl:-1,flT:0,won:0,hint:1,t:0,press:null,after:w=>{SV.qzL=level;SV.qzOK=level;if(w){SV.hearts+=5;pops.push({x:c.x,y:c.y-70,t0:performance.now(),c:'#ff5a7a',txt:'+5 ❤'});cardQ.push({t:'Le carnet de Mila · '+T.n.split(' · ')[1],L:[['m','J’ai aidé '+T.n.split(' · ')[0]+' à organiser son terrain. Chaque '+T.an+' a son coin, au calme.'],['a','Tu es vraiment incroyable avec les animaux, mon amour.']]})}else say('On repassera l’aider une autre fois.',3,1)}};
+pz={k:'farm',T,N,reg:best.reg,sol:best.sol,uniq:qzCount(N,best.reg,2)===1,m:new Array(N*N).fill(0),ax:new Array(N*N).fill(0),hp:3,fl:-1,flT:0,won:0,hint:1,t:0,press:null,after:w=>{SV.qzL=level;SV.qzOK=level;if(w){SV.hearts+=5;pops.push({x:c.x,y:c.y-70,t0:performance.now(),c:'#ff5a7a',txt:'+5 ❤'});cardQ.push({t:'Le carnet de Mila · '+T.n.split(' · ')[1],L:[['m','J’ai aidé '+T.n.split(' · ')[0]+' à organiser son terrain. Chaque '+T.an+' a son coin, au calme.'],['a','Tu es vraiment incroyable avec les animaux, mon amour.']]})}else say('On repassera l’aider une autre fois.',3,0)}};
 gid('pzk').textContent='Chapitre '+(i+1)+' · un coup de main';gid('pzt').textContent='Organiser le terrain';
 pzQ([[T.w,T.n.toUpperCase(),T.ask],['👩‍🔬','MILA','Avec plaisir ! Laisse-moi faire un plan.']]);
 gid('pzr').innerHTML='<div><i>🎨</i>1 '+T.an+' par couleur</div><div><i>↔️↕️</i>1 par ligne et par colonne</div><div><i>🚫</i>Ils ne se touchent pas, même en diagonale</div>';
@@ -3647,13 +3645,13 @@ if(key!=='bougies'){x.globalAlpha=.55;x.fillStyle='#2a2d31';rr(x,cx-W*.24,HH*.1,
 x.globalAlpha=1;const vg=x.createRadialGradient(cx,cy,60*k,cx,cy,W*.6);vg.addColorStop(0,'rgba(255,240,200,.08)');vg.addColorStop(1,'rgba(0,0,0,.35)');x.fillStyle=vg;x.fillRect(0,0,W,HH)}
 Object.assign(MSG,{
 snap:['Tiens, j’ai reçu un snap de Clem !','Oh, un snap d’Alexis ! Regarde ça.','Clem m’a envoyé un snap, il te fait un coucou !','Alexis vient de m’envoyer un snap, il veut des photos de Corse.','Encore un snap de Clem… il est jaloux de nos vacances, je crois.'],
-snapR:['§Fais voir ! Dis-lui bonjour de ma part.','§Envoie-lui une photo du Cherokee !','§Haha, réponds-lui avec une photo de moi et du chien !'],
-ark:['Tu te rappelles notre partie sur ARK ? Il faut vraiment qu’on la termine, on ne l’a jamais finie !','En rentrant, on reprend notre partie sur ARK, d’accord ?'],
-arkR:['§Oh oui, il faut absolument qu’on la finisse !','§Promis, on la termine en rentrant.','§Marché conclu !'],
-dist:['Tu te rappelles, quand on était à distance ? Moi je venais te voir à Toulouse, et toi tu venais en Corse.'],
-distR:['§On ne s’en rendait pas compte, mais on avait de la chance de pouvoir faire tout ça.','§À l’époque, l’avion ne coûtait pas si cher. Quelle chance on avait.'],
-home:['§Je suis tellement heureuse de vivre avec toi maintenant.','§On construit notre petite maison comme on l’aime. C’est parfait pour nous.'],
-homeR:['Moi aussi, je suis très heureux de vivre avec toi. On construit notre petite maison comme on l’aime.','C’est parfait pour nous, mon amour.','C’est exactement la vie que je voulais, avec toi.']});
+snapR:['§Fais voir ! Dis-lui bonjour.','§Envoie-lui une photo du Cherokee.','§Réponds-lui avec une photo de nous et du chien.'],
+ark:['Tu te rappelles notre partie sur ARK ? On l’a jamais finie.','En rentrant, on reprend ARK, d’accord ?'],
+arkR:['§Oh oui, faut qu’on la finisse.','§Promis, on la termine en rentrant.','§Marché conclu.'],
+dist:['Tu te rappelles quand on était à distance ? Moi je venais te voir à Toulouse, toi tu venais en Corse.'],
+distR:['§On se rendait pas compte de la chance qu’on avait.','§À l’époque, l’avion coûtait pas cher. Quelle chance.'],
+home:['Je suis bien heureux de vivre avec toi maintenant.','On construit notre petite maison comme on l’aime. C’est parfait pour nous.'],
+homeR:['§Moi aussi, je suis heureuse de vivre avec toi.','§C’est exactement la vie que je voulais.','§Je t’aime.']});
 SAYP.add('snapR');SAYP.add('arkR');SAYP.add('distR');SAYP.add('homeR');
 function chatPick(){const h=hourNow(),r=Math.random(),ix=chIdx();
 if(ix===9&&r<.15)return['plancton'];
@@ -3945,7 +3943,7 @@ if(p>=1){fv=null;SV.frL=level;paused=false;last=performance.now();respawn=G.Q2+1
 if(crashed||night)return;
 if(c.x>G.Q1+FER_FL-30&&c.x<G.Q2-FER_FL+30){c.x=SV.frL===level?G.Q2+150:G.Q1-150;v.x=v.y=0;settleCar();return}
 if(SV.frL!==level){if(stopReq&&!stopReq.fer&&stopReq.x>G.Q1-80&&stopReq.x<G.Q2+120)stopReq.x=G.Q1-170;
-if(!G.said&&c.x>G.Q1-1000&&c.x<G.Q1-200&&!paused&&sayT<=0){G.said=1;say('Voilà le bac ! Roule doucement jusque sur le pont.',3,1)}
+if(!G.said&&c.x>G.Q1-1000&&c.x<G.Q1-200&&!paused&&sayT<=0){G.said=1;say('Voilà le bac. Roule doucement jusque sur le pont.',3,0)}
 if(!paused&&c.x>G.Q1+20&&!G.board){G.board=1;stopReq={x:G.Q1+FER_FL*.42,fer:1,cb:()=>setTimeout(ferStart,300)}}
 if(c.x>G.Q1+FER_FL-70){c.x=G.Q1+FER_FL-70;v.x=Math.min(0,v.x);if(!fv&&!paused){stopReq=null;ferStart()}}
 if(G.board&&c.x<G.Q1-120)G.board=0}
@@ -4006,13 +4004,13 @@ function cvTick(rdt){const G=cvG.lv===level?cvG:cvGeo();if(!G||!G.on){cvDark+=(0
 const u=sm(cl((c.x-G.a-80)/420))*sm(cl((G.b-80-c.x)/420));cvDark+=(u-cvDark)*Math.min(1,rdt*3);
 if(!inGame||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||cs||bt||obv)return;SV.cv=SV.cv||{};const E=SV.cv[level]=SV.cv[level]||{};
 if(!E.ent&&c.x>G.a-850&&c.x<G.a+300){E.ent=1;say('Une grotte ! La piste passe sous la montagne… J’allume les phares.',3,0);setTimeout(()=>{if(!lampOn){lampOn=true;snd('click')}},1400)}
-if(!E.net&&c.x>G.a+180&&c.x<G.b){E.net=1;note('📵 Plus de réseau sous la montagne',3.4);setTimeout(()=>{if(sayT<=0)say('Plus de réseau… On est vraiment coupés du monde, là-dessous.',3,1)},3800)}
+if(!E.net&&c.x>G.a+180&&c.x<G.b){E.net=1;note('📵 Plus de réseau sous la montagne',3.4);setTimeout(()=>{if(sayT<=0)say('Plus de réseau. On est coupés du monde, là-dessous.',3,0)},3800)}
 if(c.x>G.a&&c.x<G.b&&Math.random()<rdt*.25)snd('drip');
 if(cvEv(E,'spel',G.a+900,()=>{E.spel=1;cvCard('🔦 Des spéléologues',[['n','Deux spéléologues, casques et lampes frontales, enroulent des cordes au bord de la piste.'],['v','<b>Paola, spéléologue :</b> « Doucement ! Ici, pas de réseau, et les secours mettent des heures à arriver. Roulez au pas et gardez vos phares allumés. »'],['m','Je suis biologiste. Il y a des chauves-souris, dans cette grotte ?'],['v','<b>Paola :</b> « Une grande colonie de minioptères, plus loin, sous la voûte. Ne les réveillez pas trop ! »'],['v','<b>Giulio, spéléologue :</b> « Et ouvrez l’œil : un petit garçon, Luca, s’est éloigné d’un groupe de visite. Neuf ans, un ciré jaune. Ses parents l’attendent à la sortie. »'],['a','On le cherche avec vous. Promis.']])}))return;
-if(cvEv(E,'bats',G.a+2250,()=>{say('Les chauves-souris ! Arrête-toi là, mon cœur.',2.6,1);setTimeout(()=>fadeTo(()=>openCine('bats')),900)}))return;
+if(cvEv(E,'bats',G.a+2250,()=>{say('Les chauves-souris, ma chérie. Arrête-toi là.',2.6,0);setTimeout(()=>fadeTo(()=>openCine('bats')),900)}))return;
 if(cvEv(E,'kid',G.a+3600,()=>{E.kid=1;cvCard('🧒 Un petit garçon perdu',[['n','Assis contre une paroi pleine de cristaux, un petit garçon en ciré jaune serre une lampe de poche qui clignote.'],['m','Luca ? C’est toi, Luca ? N’aie pas peur, on est des amis. Tes parents te cherchent partout.'],['v','<b>Luca :</b> « Ma lampe… elle marche presque plus. J’ai suivi une chauve-souris, et après je savais plus par où on était venus… »'],['a','Tu veux monter avec nous ? Le Cherokee a les plus gros phares de toute la Sardaigne.'],['v','<b>Luca :</b> « …D’accord. »'],['n','🧒 Luca monte à l’arrière du Cherokee. Raccompagne-le jusqu’à la sortie de la grotte.']])}))return;
 if(E.kid&&!E.kidOK&&cvEv(E,'par',G.b+420,()=>{E.kidOK=1;SV.hearts+=6;try{pops.push({x:c.x,y:c.y-70,t0:performance.now(),c:'#ff5a7a',txt:'+6 ❤'})}catch(e){}cvCard('💞 Luca retrouve ses parents',[['n','À la sortie, en plein soleil, une femme et un homme courent vers le Cherokee.'],['v','<b>La maman de Luca :</b> « Luca ! Oh, Luca ! » Elle le serre dans ses bras à l’étouffer.'],['v','<b>Le papa :</b> « Grazie… merci, merci mille fois. Sans réseau là-dessous, on ne savait plus quoi faire… »'],['m','Il a été très courageux. Et maintenant, il connaît le nom savant des chauves-souris !'],['v','<b>Luca :</b> « Miniopterus schreibersii ! »'],['a','Prends soin de ta lampe, champion.'],['n','💞 +6 ❤ · La famille de Luca vous remercie.']])}))return;
-if(!E.out&&c.x>G.b-60){E.out=1;try{albAdd('cave')}catch(e){}note('📶 Ça capte à nouveau !',3);if(lampOn&&sayT<=0)say('Le soleil ! Tu peux éteindre les phares.',2.6,1)}
+if(!E.out&&c.x>G.b-60){E.out=1;try{albAdd('cave')}catch(e){}note('📶 Ça capte à nouveau !',3);if(lampOn&&sayT<=0)say('Le soleil. Tu peux éteindre les phares.',2.6,0)}
 if(E.bats&&!E.lab&&c.x>G.b+1600&&sayT<=0){E.lab=1;cardQ.push({t:'📧 Mail du labo · chauves-souris sardes',L:[['n','Guano : aucune trace de N-12. Écouvillons cutanés : pas de Pseudogymnoascus destructans, le champignon du « nez blanc ».'],['m','Parfait : ici, sans N-12, les chauves-souris vont bien. C’est exactement le groupe témoin qu’il me fallait.'],['a','Et les chauves-souris corses ?'],['m','Elles chassent les insectes au-dessus des zones traitées… Si on retrouve du N-12 dans leur guano, la comparaison sera sans appel.']]});saveTrip()}}
 
 
@@ -4181,12 +4179,12 @@ chapReset=(function(o){return function(){o();try{if(chIdx()===SCI_CH&&SV.subL===
 var oursPre=null;
 function oursWorld(rdt){if(chIdx()!==8||(SV.csd&&SV.csd.ours)){oursPre=null;return}
 if(oursPre){if(paused||cardOpen)return;oursPre.t+=rdt;if(!lampOn&&oursPre.t>1.4){lampOn=true;snd('click')}
-if(oursPre.t>3.2&&!oursPre.s2){oursPre.s2=1;say('Tu entends ? Quelque chose bouge entre les arbres…',3,1)}
+if(oursPre.t>3.2&&!oursPre.s2){oursPre.s2=1;say('Tu entends ? Quelque chose bouge entre les arbres.',3,0)}
 if(oursPre.stopped&&oursPre.t>=5.2&&!oursPre.go){oursPre.go=1;fadeTo(()=>openCine('ours'))}
 if(!oursPre.stopped&&!stopReq&&oursPre.t>2){stopReq={x:c.x+200,cb:()=>{oursPre&&(oursPre.stopped=1)}}}return}
 if(!inGame||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||cs||stopReq||work||flatW>=0||tow||fv)return;
 const f=chP();if(f<.45)return;const forest=sceneAt(c.x)===2&&sceneAt(c.x+700)===2;
-if(forest||f>.88){oursPre={t:0};sayT=0;say('Il fait déjà nuit… et on est en pleine forêt.',3,1);stopReq={x:c.x+650,cb:()=>{oursPre&&(oursPre.stopped=1)}}}}
+if(forest||f>.88){oursPre={t:0};sayT=0;say('Il fait déjà nuit, et on est en pleine forêt.',3,0);stopReq={x:c.x+650,cb:()=>{oursPre&&(oursPre.stopped=1)}}}}
 darkAmt=(function(o){return function(d){const r=o(d);if(oursPre&&!cs){const k=.86*sm(cl(oursPre.t/4));if(k>r.A)r.A=k}return r}})(darkAmt);
 CS.ours.onEnd=(function(o){return function(){oursPre=null;o()}})(CS.ours.onEnd);
 // nouvelles musiques
@@ -4718,7 +4716,7 @@ const mlx=T2<15?S2(Wd*.42):S2(cx+125);person(mlx,gy,1,{f:-1,a1:T2>20&&T2<26?1.5:
 try{Object.assign(ALBK,{cs_coas:['🛢️','Les bidons du castellu','#f2a36a','#e9e6dc'],cs_dogf:['🐕','Le chien retrouvé','#bcd8e8','#c8302a'],cs_spy:['🕵️','Le faux automobiliste','#8fc6e8','#8a8f96']})}catch(e){}
 musScene=(function(o){return function(){try{if(cs){if(cs.k==='coas'||cs.k==='spy')return 'tense';if(cs.k==='dogf')return cs.t<21?'worry':'love'}}catch(e){}return o()}})(musScene);
 // déclenchement de la scène des bidons, après les ruines de Coasina
-function coasWorld(){try{if(cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd)return;SV.csd=SV.csd||{};if(chIdx()!==1||SV.csd.coas||SV.csq_coas===level)return;const f=chP();if(f>=.81&&f<.95){SV.csq_coas=level;say('Arrêtons-nous au pied du castellu, la vue doit être belle d’en bas.',3.4,1);stopReq={x:c.x+320,cb:()=>setTimeout(()=>fadeTo(()=>openCine('coas')),400)}}}catch(e){}}
+function coasWorld(){try{if(cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd)return;SV.csd=SV.csd||{};if(chIdx()!==1||SV.csd.coas||SV.csq_coas===level)return;const f=chP();if(f>=.81&&f<.95){SV.csq_coas=level;say('On s’arrête au pied du castellu ? La vue doit être belle d’en bas.',3.4,0);stopReq={x:c.x+320,cb:()=>setTimeout(()=>fadeTo(()=>openCine('coas')),400)}}}catch(e){}}
 mgTick=(function(o){return function(dt){o(dt);coasWorld()}})(mgTick);
 
 // ===== 2.05 : cadre commun des nouveaux mini-jeux (écran plein, espace virtuel 800×450) =====
@@ -5652,7 +5650,7 @@ musScene=(function(o){return function(){try{if(cs&&cs.k==='nox1')return cs.t<14?
 // --- déclenchement : un berger fait signe au bord de la route (chapitre de l'Ospedale, avant la forêt)
 var noxWX=null;
 function noxWorld(){try{if(chIdx()!==8||SV.noxL===level||SV.noxAsk===level)return;if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd||tow)return;const f=chP();if(f<.14||f>.4)return;if(typeof dogGone==='function'&&dogGone())return;
-SV.noxAsk=level;noxWX=c.x+560;say('Andrea, ralentis ! Ce berger nous fait de grands signes…',3.4,1);stopReq={x:c.x+420,cb:()=>setTimeout(()=>{cardQ.unshift({now:1,t:'Un berger nous arrête',L:[['v','<b>Le berger :</b> « Regardez ! Regardez, là-haut, sur le plateau ! Ils attrapent les bêtes ! »'],['m','Sur le plateau du Coscione ? On y va !']],cb:()=>setTimeout(()=>fadeTo(()=>openCine('nox1')),300)})},300)}}catch(e){}}
+SV.noxAsk=level;noxWX=c.x+560;say('Ralentis, ce berger nous fait de grands signes.',3.4,0);stopReq={x:c.x+420,cb:()=>setTimeout(()=>{cardQ.unshift({now:1,t:'Un berger nous arrête',L:[['v','<b>Le berger :</b> « Regardez ! Regardez, là-haut, sur le plateau ! Ils attrapent les bêtes ! »'],['m','Sur le plateau du Coscione ? On y va !']],cb:()=>setTimeout(()=>fadeTo(()=>openCine('nox1')),300)})},300)}}catch(e){}}
 mgTick=(function(o){return function(dt){o(dt);noxWorld()}})(mgTick);
 npcDraw=(function(o){return function(tm){o(tm);try{if(noxWX!=null&&SV.noxAsk===level&&SV.noxL!==level&&Math.abs(noxWX-c.x)<1500){npcFig(noxWX,T(noxWX),['#7a6a4a','#3a3a3a',3,'#c8c8c8',1,2,0],1,tm);if(c.x<noxWX-60){const y=T(noxWX)-82;g.fillStyle='rgba(255,255,255,.95)';rr(g,noxWX-70,y-18,140,24,10);g.fill();g.fillStyle='#2a1d0e';g.font='800 12px Arial';g.textAlign='center';g.textBaseline='middle';g.fillText('Regardez ! Regardez !',noxWX,y-6)}}}catch(e){}}})(npcDraw);
 
@@ -6120,7 +6118,7 @@ function washDraw(m,tm){const bx=m.x-230,y=T(bx+70);g.save();const on=washT>0;
  const rot=on?tm*14:tm*.3;for(const k of[0,1]){const cx=bx+40+k*60;g.save();g.translate(cx,y-40);g.fillStyle=k?'#ffce4a':'#3aa0e0';g.globalAlpha=.85;for(let i=0;i<10;i++){const ang=rot+i*.63;g.fillRect(-5+Math.cos(ang)*3,-34,10,68)}g.globalAlpha=1;g.fillStyle='#ddd';g.fillRect(-2,-38,4,76);g.restore()}
  g.fillStyle='rgba(255,255,255,.75)';g.fillRect(bx+12,y-76,116,3);g.fillStyle='#5aa8cc';for(let i=0;i<6;i++)g.fillRect(bx+18+i*20,y-74,4,4);g.restore()}
 // le lavage : le Cherokee reste en place, brosses, mousse et eau, puis il brille
-function startWash(){if(washT)return;washT=5.5;st.gas=0;try{snd('ferry')}catch(e){}say('Brosses, mousse, rinçage… Il va être tout beau !',3,1)}
+function startWash(){if(washT)return;washT=5.5;st.gas=0;try{snd('ferry')}catch(e){}say('Brosses, mousse, rinçage. Il va être tout beau.',3,0)}
 mgTick=(function(o){return function(dt){o(dt);try{if(washT>0){washT-=dt;st.gas=0;v.x*=.8;mudL=Math.max(0,mudL-dt*.35);if(washT<=0){washT=0;mudL=0;note('🫧 Carrosserie toute propre !');say('Il brille comme au premier jour !',3,0)}}}catch(e){}}})(mgTick);
 npcDraw=(function(o){return function(tm){o(tm);try{if(washT>0){const p=1-washT/5.5;for(let i=0;i<26;i++){const u=(tm*1.6+i/26)%1,x=c.x-60+((i*37)%120),y=c.y-48+u*60;g.fillStyle=p<.5?'rgba(255,255,255,.85)':'rgba(140,200,255,.8)';g.beginPath();g.arc(x,y,p<.5?4+((i*7)%5):1.8,0,7);g.fill()}
  for(const k of[0,1]){const bx=c.x-40+k*80+Math.sin(tm*2+k)*20;g.save();g.translate(bx,c.y-20);g.fillStyle=k?'rgba(255,206,74,.75)':'rgba(58,160,224,.75)';for(let i=0;i<8;i++){const ang=tm*14+i*.8;g.fillRect(-5+Math.cos(ang)*3,-30,10,60)}g.restore()}}}catch(e){}}})(npcDraw);
@@ -6230,7 +6228,7 @@ for(let i=0;i<22;i++){const fx2=hh2(i+80)*Wd,fy2=gy+44+hh2(i+90)*40;g.strokeStyl
 musScene=(function(o){return function(){try{if(cs&&cs.k==='love')return 'love'}catch(e){}return o()}})(musScene);
 // ===== 2.64 : lavage sous les rouleaux, plein à la pompe =====
 var washSaid={},engSaid={};
-mgTick=(function(o){return function(dt){o(dt);try{if(!started||night||cs||PLT())return;for(const m of stns){if(!m.wash||washSaid[level+':'+m.x])continue;if(c.x>m.x-700&&c.x<m.x-300&&v.x>0&&sayT<=0){washSaid[level+':'+m.x]=1;say('Un lavage ! Si tu veux laver le Cherokee, arrête-toi sous les rouleaux. Pour le plein, c’est à la pompe, juste après.',4.6,1)}}for(const m of stns){if(!m.eng||engSaid[level+':'+m.x])continue;if(c.x>m.x+60&&c.x<m.x+260&&v.x>40&&sayT<=0){engSaid[level+':'+m.x]=1;say('Un atelier de prépa moteur, juste après la station ! Arrête-toi devant si tu veux bricoler le moteur.',4.2,1)}}}catch(e){}}})(mgTick);
+mgTick=(function(o){return function(dt){o(dt);try{if(!started||night||cs||PLT())return;for(const m of stns){if(!m.wash||washSaid[level+':'+m.x])continue;if(c.x>m.x-700&&c.x<m.x-300&&v.x>0&&sayT<=0){washSaid[level+':'+m.x]=1;say('Un lavage. Si tu veux laver le Cherokee, arrête-toi sous les rouleaux. Pour le plein, c’est à la pompe, juste après.',4.6,0)}}for(const m of stns){if(!m.eng||engSaid[level+':'+m.x])continue;if(c.x>m.x+60&&c.x<m.x+260&&v.x>40&&sayT<=0){engSaid[level+':'+m.x]=1;say('Un atelier de prépa moteur, juste après la station. Arrête-toi devant si tu veux que je bricole le moteur.',4.2,0)}}}catch(e){}}})(mgTick);
 // ===== 2.65 : au chargement, le Cherokee se repose sur la route (plus de voiture qui flotte ou s'enfonce pendant l'écran titre) =====
 mgTick=(function(o){return function(dt){o(dt);try{if(introT>0&&!night&&!cs&&Math.abs(v.x)<2&&Math.abs(v.y)<2){settleCar();cam.y+=(c.y-cam.y)*.2}}catch(e){}}})(mgTick);
 // ===== 2.67 : le tri des fioles fait partie du mail du labo =====
@@ -6683,7 +6681,7 @@ b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();cons
 function phLoad(){try{return JSON.parse(localStorage.getItem('va_photos')||'[]')}catch(e){return[]}}
 function phSave(L){try{localStorage.setItem('va_photos',JSON.stringify(L))}catch(e){try{L.splice(0,3);localStorage.setItem('va_photos',JSON.stringify(L))}catch(_){}}}
 const PH_TXT=['Nous deux, au bout du monde','Le plus beau des panoramas','Souvenir de Corse','On reviendra ici','Mila, Andrea et le chien','Notre belvédère'];
-function takePhoto(px){if(phBusy)return;phBusy=1;st.gas=0;poseT=2.4;say('Souriez ! Le chien aussi…',2,1);
+function takePhoto(px){if(phBusy)return;phBusy=1;st.gas=0;poseT=2.4;say('Souriez ! Le chien aussi.',2,0);
  setTimeout(()=>{try{snd('shutter');vib(30);const fl=gid('phfl');fl.style.transition='none';fl.style.opacity='.95';void fl.offsetHeight;fl.style.transition='opacity .6s';setTimeout(()=>fl.style.opacity='0',60);
   const w=360,h=Math.round(w*HH/W),tc=document.createElement('canvas');tc.width=w;tc.height=h;const x=tc.getContext('2d');x.drawImage(cv,0,0,cv.width,cv.height,0,0,w,h);const d=tc.toDataURL('image/jpeg',.74);
   const L=phLoad(),cap=PH_TXT[L.length%PH_TXT.length];L.push({d,ch:Math.min(level,10),c:cap,z:(Z(px)||[])[2]||''});while(L.length>24)L.shift();phSave(L);
@@ -6738,11 +6736,11 @@ mgTick=(function(o){return function(dt){o(dt);try{if(dt<=0)return;upFix();const 
  for(let i=tendH.length-1;i>=0;i--){const h=tendH[i];h.t+=dt;if(h.t<0)continue;h.x+=h.vx*dt+Math.sin(h.t*3+i)*.3;h.y+=h.vy*dt;if(h.t>3)tendH.splice(i,1)}
  if(poseT>0)poseT-=dt;
  // pique-nique
- if(!busyNow()){SV.pic=SV.pic||{};const P=picSpots();for(let i=0;i<P.length;i++){const px=P[i],key=level+':'+i;if(SV.pic[key])continue;if(c.x>px-620&&c.x<px-200){if(i===1&&(SV.food??1)>.75){SV.pic[key]=1;if(sayT<=0)say('Une aire de pique-nique… on n’a pas faim, on s’arrêtera la prochaine fois.',3.4,0);continue}SV.pic[key]=1;say('Une aire de pique-nique ! On s’arrête manger un morceau ?',3.6,1);stopReq={x:px+25,cb:()=>{setTimeout(()=>{if(!cs&&!paused)fadeTo(()=>openCine('picnic'))},1200)}};break}}}
+ if(!busyNow()){SV.pic=SV.pic||{};const P=picSpots();for(let i=0;i<P.length;i++){const px=P[i],key=level+':'+i;if(SV.pic[key])continue;if(c.x>px-620&&c.x<px-200){if(i===1&&(SV.food??1)>.75){SV.pic[key]=1;if(sayT<=0)say('Une aire de pique-nique… on n’a pas faim, on s’arrêtera la prochaine fois.',3.4,0);continue}SV.pic[key]=1;say('Une aire de pique-nique. On s’arrête manger un morceau ?',3.6,0);stopReq={x:px+25,cb:()=>{setTimeout(()=>{if(!cs&&!paused)fadeTo(()=>openCine('picnic'))},1200)}};break}}}
  // photo souvenir
  const pb=gid('pact');let show=null;if(!busyNow()&&!phBusy&&sp<10){for(const px of panSpots()){if(Math.abs(c.x-px)<190&&!(SV.phs&&SV.phs[level+':'+px])){show=px;break}}}
- if(show!=null){if(pb.style.display!=='block'){pb.style.display='block';pb.dataset.a='photo';pb.dataset.x=show;pb.textContent='📷 Photo souvenir';SV.phSaid=SV.phSaid||{};if(!SV.phSaid[level+':'+show]&&sayT<=0){SV.phSaid[level+':'+show]=1;say('Quelle vue ! On fait une photo souvenir ?',3,1)}}}else if(pb.style.display==='block')pb.style.display='none';
- for(const px of panSpots()){SV.phA=SV.phA||{};const k2=level+':'+px;if(!SV.phA[k2]&&c.x>px-700&&c.x<px-300&&!busyNow()&&sayT<=0&&!(SV.phs&&SV.phs[k2])){SV.phA[k2]=1;say('Un belvédère ! Arrête-toi, on fera une photo.',3,1)}}
+ if(show!=null){if(pb.style.display!=='block'){pb.style.display='block';pb.dataset.a='photo';pb.dataset.x=show;pb.textContent='📷 Photo souvenir';SV.phSaid=SV.phSaid||{};if(!SV.phSaid[level+':'+show]&&sayT<=0){SV.phSaid[level+':'+show]=1;say('Quelle vue. On fait une photo souvenir ?',3,0)}}}else if(pb.style.display==='block')pb.style.display='none';
+ for(const px of panSpots()){SV.phA=SV.phA||{};const k2=level+':'+px;if(!SV.phA[k2]&&c.x>px-700&&c.x<px-300&&!busyNow()&&sayT<=0&&!(SV.phs&&SV.phs[k2])){SV.phA[k2]=1;say('Un belvédère. Arrête-toi, on fait une photo.',3,0)}}
  // arc-en-ciel après la pluie
  const rnow=(wxk==='rain'||wxk==='storm')&&wI>.4;if(rnow)wasRain=1;else if(wasRain&&wI<.05){wasRain=0;if(!night&&hr>7&&hr<19){rbT=50;if(sayT<=0)talkQ.push(['m','Regarde ! Un arc-en-ciel !'],['a','Fais un vœu… moi, c’est déjà fait.'])}}if(rbT>0)rbT-=dt;
  // vent, pétales, feuilles d'automne
@@ -6994,8 +6992,8 @@ scenery=(function(o){return function(x0,x1,front,tm){o(x0,x1,front,tm);if(front|
 // étiquettes cliquables (lavage, peinture), comme celle de la station
 (function(){const st=document.createElement('style');st.textContent=`#washb,#paintb{position:fixed;display:none;z-index:3;padding:8px 16px;font-size:19px;white-space:nowrap;transform:translate(-50%,-100%)}#washb.wait,#paintb.wait{background:var(--btn);color:var(--btn-t);opacity:.85}body.cine #washb,body.cine #paintb,body.intro #washb,body.intro #paintb{display:none!important}`;document.head.appendChild(st);
  for(const id of['washb','paintb']){const b=document.createElement('button');b.id=id;b.className='b wait';document.body.appendChild(b)}
- gid('washb').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();const b=gid('washb');if(b.dataset.r==='1'){startWash();b.style.display='none'}else if(sayT<=0)say('Arrête-toi sous les rouleaux, et on lance le lavage.',3,1)});
- gid('paintb').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();const b=gid('paintb');if(b.dataset.r==='1')openPaint();else if(sayT<=0)say('Arrête-toi devant la cabine de peinture.',3,1)})})();
+ gid('washb').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();const b=gid('washb');if(b.dataset.r==='1'){startWash();b.style.display='none'}else if(sayT<=0)say('Arrête-toi sous les rouleaux, et je lance le lavage.',3,0)});
+ gid('paintb').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();const b=gid('paintb');if(b.dataset.r==='1')openPaint();else if(sayT<=0)say('Arrête-toi devant la cabine de peinture, ma chérie.',3,0)})})();
 function openPaint(){cusMode='paint';openShop();cusMode='paint';cusHdr();try{cusRender()}catch(e){}}
 function cusHdr(){try{const cl=gid('cus').querySelector('.cl');cl.querySelector('h2').textContent=cusMode==='paint'?'PEINTURE NOSTRALE':'CORSE 4x4';cl.querySelector('small').textContent=cusMode==='paint'?'Carrosserie · jantes · livrées rares':'Atelier de préparation · pont élévateur'}catch(e){}}
 openShop=(function(o){return function(){if(cusMode!=='paint')cusMode='gar';o.apply(this,arguments);cusHdr()}})(openShop);
@@ -7015,7 +7013,7 @@ mgTick=(function(o){return function(dt){o(dt);try{const wb=gid('washb'),pb=gid('
  // peinture
  let px=null;if(!off)for(const q of paintShops()){if(q+110>cam.x-W*.35/S-100&&q+110<cam.x+W*.65/S+100){px=q;break}}
  if(px!=null){const sp=Math.hypot(v.x,v.y),near=c.x>px-30&&c.x<px+250;let lb,rd=0;if(!near)lb='🎨 Peinture Nostrale';else if(sp>=25)lb='🎨 Arrête-toi';else{lb='🎨 Entrer';rd=1}if(pb.textContent!==lb)pb.textContent=lb;pb.className='b'+(rd?' rdy':' wait');pb.dataset.r=rd?'1':'0';pb.style.display='block';pb.style.left=Math.round(scr.ox+(px+110)*S)+'px';pb.style.top=Math.round(scr.oy+(T(px+110)-136)*S)+'px';
-  const k2=level+':'+px;if(!paintSaid[k2]&&c.x<px&&c.x>px-700&&sayT<=0){paintSaid[k2]=1;say('Un magasin de peinture à côté de Corse 4x4 ! On pourrait changer la couleur du Cherokee… ou lui mettre une livrée rare.',4.4,1)}}else pb.style.display='none';
+  const k2=level+':'+px;if(!paintSaid[k2]&&c.x<px&&c.x>px-700&&sayT<=0){paintSaid[k2]=1;say('Un magasin de peinture à côté de Corse 4x4. On change la couleur du Cherokee ? Ou une livrée rare ?',4.4,0)}}else pb.style.display='none';
 }catch(e){}}})(mgTick);
 
 // --- 3.03 : sous la pluie, le chien est vraiment à l'intérieur, derrière la vitre fermée
@@ -7287,9 +7285,9 @@ mgTick=(function(o){return function(dt){o(dt);try{if(night){va7WasN=night.m||{}}
 var va7Pic=null;
 (function(){const b=document.createElement('button');b.id='picb';b.className='b wait';b.style.cssText='position:fixed;display:none;z-index:3;padding:8px 16px;font-size:19px;white-space:nowrap;transform:translate(-50%,-100%)';document.body.appendChild(b);
  const st5=document.createElement('style');st5.textContent='body.cine #picb,body.intro #picb,body.cine #engb,body.intro #engb{display:none!important}';document.head.appendChild(st5);
- b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(!va7Pic)return;if(b.dataset.r!=='1'){if(sayT<=0)say('Arrête-toi près de la table, et on sort le panier.',3,1);return}SV.pic=SV.pic||{};SV.pic[va7Pic.key]=1;b.style.display='none';st.gas=0;st.hb=1;fadeTo(()=>openCine('picnic'))});
+ b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(!va7Pic)return;if(b.dataset.r!=='1'){if(sayT<=0)say('Arrête-toi près de la table, on sort le panier.',3,0);return}SV.pic=SV.pic||{};SV.pic[va7Pic.key]=1;b.style.display='none';st.gas=0;st.hb=1;fadeTo(()=>openCine('picnic'))});
  const e2=document.createElement('button');e2.id='engb';e2.className='b wait';e2.style.cssText=b.style.cssText;document.body.appendChild(e2);
- e2.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(e2.dataset.r==='1')openEng();else if(sayT<=0)say('Arrête-toi devant l’atelier, et on regarde le moteur.',3,1)})})();
+ e2.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();if(e2.dataset.r==='1')openEng();else if(sayT<=0)say('Arrête-toi devant l’atelier, je regarde le moteur.',3,0)})})();
 mgTick=(function(o){return function(dt){
  // on neutralise l'ancien départ automatique du pique-nique : on marque les tables comme « proposées »
  const pk=[];try{if(SV.pic){}SV.pic=SV.pic||{};const P=picSpots();for(let i=0;i<P.length;i++){const key=level+':'+i;if(!SV.pic[key]){SV.pic[key]='b';pk.push(key)}}}catch(e){}
@@ -7297,7 +7295,7 @@ mgTick=(function(o){return function(dt){
  try{for(const k of pk)if(SV.pic[k]==='b')delete SV.pic[k]}catch(e){}
  try{const b=gid('picb'),off=!started||night||crashed||cs||paused||MGX||cardOpen,sp=Math.hypot(v.x,v.y);let show=null;
   if(!off){const P=picSpots();for(let i=0;i<P.length;i++){const px=P[i],key=level+':'+i;if(SV.pic&&SV.pic[key])continue;if(px>cam.x-W*.35/S-100&&px<cam.x+W*.65/S+100){show={px,key};break}}}
-  va7Pic=show;if(show){const near=Math.abs(c.x-show.px)<230;let lb,rd=0;if(!near)lb='🥪 Aire de pique-nique';else if(sp>=25)lb='🥪 Arrête-toi';else{lb='🥪 Pique-niquer';rd=1}if(b.textContent!==lb)b.textContent=lb;b.className='b'+(rd?' rdy':' wait');b.dataset.r=rd?'1':'0';b.style.display='block';b.style.left=Math.round(scr.ox+show.px*S)+'px';b.style.top=Math.round(scr.oy+(T(show.px)-92)*S)+'px';SV.picSaid=SV.picSaid||{};if(!SV.picSaid[show.key]&&c.x>show.px-700&&c.x<show.px-150&&sayT<=0){SV.picSaid[show.key]=1;say('Une aire de pique-nique ! Si tu as faim, on peut s’y arrêter.',3.4,1)}}else if(b.style.display!=='none')b.style.display='none';
+  va7Pic=show;if(show){const near=Math.abs(c.x-show.px)<230;let lb,rd=0;if(!near)lb='🥪 Aire de pique-nique';else if(sp>=25)lb='🥪 Arrête-toi';else{lb='🥪 Pique-niquer';rd=1}if(b.textContent!==lb)b.textContent=lb;b.className='b'+(rd?' rdy':' wait');b.dataset.r=rd?'1':'0';b.style.display='block';b.style.left=Math.round(scr.ox+show.px*S)+'px';b.style.top=Math.round(scr.oy+(T(show.px)-92)*S)+'px';SV.picSaid=SV.picSaid||{};if(!SV.picSaid[show.key]&&c.x>show.px-700&&c.x<show.px-150&&sayT<=0){SV.picSaid[show.key]=1;say('Une aire de pique-nique. Si t’as faim, on s’arrête.',3.4,0)}}else if(b.style.display!=='none')b.style.display='none';
   // atelier moteur : bulle comme la peinture
   const e2=gid('engb');let me=null;if(!off&&!PLT())me=stns.find(q=>q.eng&&q.x+365>cam.x-W*.35/S-100&&q.x+365<cam.x+W*.65/S+100);
   if(me){const near=c.x>me.x+250&&c.x<me.x+480;let lb,rd=0;if(!near)lb='🔧 Prépa moteur';else if(sp>=25)lb='🔧 Arrête-toi';else{lb='🔧 Entrer';rd=1}if(e2.textContent!==lb)e2.textContent=lb;e2.className='b'+(rd?' rdy':' wait');e2.dataset.r=rd?'1':'0';e2.style.display='block';e2.style.left=Math.round(scr.ox+(me.x+365)*S)+'px';e2.style.top=Math.round(scr.oy+(T(me.x+365)-140)*S)+'px'}else if(e2.style.display!=='none')e2.style.display='none';
@@ -7520,7 +7518,7 @@ function va3BlkDraw(x,tm,go,wa){const y=Math.max(T(x-50),T(x+50))+1,an=Math.atan
  g.restore()}
 // --- Chapitre 9 : Lucia appelle au lac, Marchetti est arrêté
 function va3ArrTick(){try{if(chIdx()!==8||SV.arrL===level||SV.stL!==level||(SV.stI||0)<3||!inGame||cardOpen||cs||MGX||hl||pz||stopReq||work||winch||chEnd)return;SV.arrL=level;SV.froid=0;
- say('On s’arrête un moment au bord du lac ? Il est trop beau.',3.4,1);stopReq={x:c.x+320,cb:()=>setTimeout(()=>fadeTo(()=>openCine('lacCall')),400)};saveTrip()}catch(e){}}
+ say('On s’arrête un moment au bord du lac ? Il est trop beau.',3.4,0);stopReq={x:c.x+320,cb:()=>setTimeout(()=>fadeTo(()=>openCine('lacCall')),400)};saveTrip()}catch(e){}}
 // --- Chapitre 10 : une tortue d'Hermann en bonne santé au bord du chemin de Fautea
 let va3TX=null;
 function va3TortTick(){try{if(chIdx()!==9){va3TX=null;return}if(va3TX&&va3TX.lv===level){if(va3TX.x>0&&!va3TX.said&&c.x>va3TX.x-560&&c.x<va3TX.x+100){va3TX.said=1;talkQ.push(['m','Andrea, regarde, au bord du chemin ! Une tortue d’Hermann, à l’ombre du ciste.'],['a','Elle mange tranquillement… comme une tortue normale.'],['m','Comme une tortue qui va bien. Sans le N-12, les autres vont guérir aussi.'])}return}if(SV.stL!==level||(SV.stI||0)<2)return;
@@ -8201,7 +8199,7 @@ function va49RS(){try{if(chIdx()===7||chIdx()===9)return -1;const l='L'+level;if
 function va49Fmt(t){const m=Math.floor(t/60),s=t-m*60;return m+' min '+(s<10?'0':'')+s.toFixed(1).replace('.',',')+' s'}
 function va49RallyTick(){try{const hud=gid('va49r'),s=va49RS();if(s<0||!inGame||va9P||dkP){hud.style.display='none';return}
  const k='L'+level;va49Run=va49Run&&va49Run.l===level?va49Run:null;SV.rallyD=SV.rallyD||{};
- if(!va49Run){hud.style.display='none';if(c.x>s-700&&c.x<s-60&&!va49Z.said_L&&!night&&started){va49Z['s'+k]=va49Z['s'+k]||0;if(!va49Z['s'+k]){va49Z['s'+k]=1;say('Une portion de rallye facultative ! Passe l’arche et le chrono se lance.',4,1)}}
+ if(!va49Run){hud.style.display='none';if(c.x>s-700&&c.x<s-60&&!va49Z.said_L&&!night&&started){va49Z['s'+k]=va49Z['s'+k]||0;if(!va49Z['s'+k]){va49Z['s'+k]=1;say('Une portion de rallye facultative. Passe l’arche et le chrono se lance.',4,0)}}
   if(c.x>=s&&c.x<s+90&&started&&!night&&!va49Z['d'+k]&&c.x>=s-5&&v.x>20){va49Run={l:level,t:0,s,best:null};say('Chrono lancé ! Tiens-toi bien !',2.4,0)}return}
  const R=va49Run;if(!paused)R.t+=.1;
  if(night||c.x<s-120||crashed){va49Run=null;hud.style.display='none';return}
@@ -8214,9 +8212,9 @@ slipDraw=(function(o){return function(x0,x1){o(x0,x1);try{const s=va49RS();if(s<
 // --- 3. le chien flaire quelque chose
 function va49DS(){try{if(chIdx()===7)return -1;const l='L'+level;if(va49Z['dg'+l]===undefined){let x=zonePick(va49Z,[.16,.24,.4,.5,.58,.66,.74],260,'dgz'+l);const rs=va49RS();if(x>=0&&rs>=0&&x>rs-400&&x<rs+VA49_RL+400)x=(rs+VA49_RL+500<MAP_L*.88)?rs+VA49_RL+500:rs-700;va49Z['dg'+l]=x}return va49Z['dg'+l]}catch(e){return -1}}
 function va49DogTick(){try{const b=gid('va49d'),q=va49DS(),k='L'+level;SV.va49dg=SV.va49dg||{};if(q<0||SV.va49dg[k]||!inGame||paused||night||va9P||dkP||dogGone()||dogAnim||MGX||pz||hl||cs){b.style.display='none';return}
- if(c.x>q-900&&c.x<q-200&&!va49Z['ds'+k]&&started&&ign){va49Z['ds'+k]=1;say('Le chien s’agite à la vitre… il a flairé quelque chose, plus loin.',4,1)}
+ if(c.x>q-900&&c.x<q-200&&!va49Z['ds'+k]&&started&&ign){va49Z['ds'+k]=1;say('Le chien s’agite à la vitre. Il a flairé quelque chose, plus loin.',4,0)}
  const near=Math.abs(c.x-q)<190&&Math.hypot(v.x,v.y)<30&&started;b.style.display=near?'block':'none';if(near)b.textContent=(!ign&&st.hb)?'Envoyer le chien flairer':'Envoyer le chien (coupe le contact)'}catch(e){}}
-function va49Dog(){if(dogAnim||dogGone())return;if(ign){say('Coupe le contact et serre le frein à main pour le laisser sortir.',3.2,1);return}st.hb=1;st.gas=0;dogAnim={t:0,x0:c.x};va49DP={k:'L'+level,t:0};gid('va49d').style.display='none'}
+function va49Dog(){if(dogAnim||dogGone())return;if(ign){say('Coupe le contact et serre le frein à main, qu’on le laisse sortir.',3.2,0);return}st.hb=1;st.gas=0;dogAnim={t:0,x0:c.x};va49DP={k:'L'+level,t:0};gid('va49d').style.display='none'}
 dogTick=(function(o){return function(dt){const had=!!dogAnim;o(dt);try{if(va49DP){if(dogAnim){const dp=gid('dogp');dp.textContent='Le chien flaire, truffe au sol…';dp.style.display='block'}else if(had){const k=va49DP.k;va49DP=null;SV.va49dg=SV.va49dg||{};SV.va49dg[k]=1;const src=((level+Math.round(va49DS()/100))%2)===0;
  if(src){SV.food=Math.min(1,(SV.food||0)+.25);SV.hearts+=1;cardQ.push({now:1,t:'Une source cachée',L:[['m','Regarde ! Il a trouvé une source sous les fougères. L’eau est fraîche et claire.'],['a','Bon chien ! On remplit les gourdes. Tu as mérité un biscuit.']]})}
  else{SV.hearts+=3;cardQ.push({now:1,t:'Une cache sous la pierre',L:[['m','Une boîte en fer ! Un carnet de randonneurs de 1987 et une photo.'],['a','Il l’a sentie à travers la terre. Ce chien vaut de l’or. +3 cœurs']]})}
@@ -8579,7 +8577,7 @@ const VA57_A=170;
 function va57Obs(){try{for(const q of obsP){if(q.haz)continue;const d=q.x-30-c.x;if(d>-8&&d<520&&!va52.ign['b'+q.x]&&obsUseful(q))return q}}catch(e){}return null}
 va52Toggle=(function(o){return function(){const was=va52.on;o();try{if(!was&&va52.on)for(const q of obsP)if(Math.abs(q.x-30-c.x)<50)va52.ign['b'+q.x]=1}catch(e){}}})(va52Toggle);
 mgTick=(function(o){return function(dt){o(dt);try{if(!va52.on||va52.stop)return;const q=va57Obs();if(!q)return;const d=q.x-30-c.x,vx=v.x,vd=Math.min(VA52_V,Math.sqrt(2*VA57_A*Math.max(0,d)));
- if(d<=3||(d<30&&vx<8)){st.gas=0;st.brake=1;if(Math.abs(vx)<5){st.brake=0;va52.on=0;va52.stop=0;va52.ign['b'+q.x]=1;try{say('Voilà, on est sur le point d’observation !',2.6,1)}catch(e){}}return}
+ if(d<=3||(d<30&&vx<8)){st.gas=0;st.brake=1;if(Math.abs(vx)<5){st.brake=0;va52.on=0;va52.stop=0;va52.ign['b'+q.x]=1;try{say('Voilà, on est sur le point d’observation.',2.6,0)}catch(e){}}return}
  if(vx>vd+5){st.gas=0;st.brake=1}else{st.brake=0;st.gas=(vx<vd-3)?1:0}}catch(e){}}})(mgTick);
 // -- portraits dans les dialogues avec une personne au bord de la route
 (function(){const st=document.createElement('style');st.textContent='#va57t{display:flex;justify-content:space-between;align-items:flex-end;margin:2px 2px 0}#va57t .g{display:flex;gap:10px}#va57t canvas{position:static!important;inset:auto!important;display:block;pointer-events:none;width:62px;height:62px;border-radius:50%;background:#efe2c8;border:3px solid #cbb994;transition:opacity .2s,transform .2s,border-color .2s;opacity:.4;transform:scale(.9)}#va57t canvas.on{opacity:1;transform:scale(1.08)}#va57t canvas.m.on{border-color:#7b3fa0}#va57t canvas.a.on{border-color:#b5532a}#va57t canvas.v.on{border-color:#2b5d3a}';document.head.appendChild(st);const d=document.createElement('div');d.id='va57t';d.style.display='none';d.innerHTML='<div class="g"><canvas class="m" width="124" height="124"></canvas><canvas class="a" width="124" height="124"></canvas></div><canvas class="v" width="124" height="124"></canvas>';const cd=gid('card').querySelector('.cd');cd.insertBefore(d,gid('cdGo'))})();
@@ -8628,6 +8626,6 @@ openCard=(function(o){return function(cd){o(cd);try{va58Lock(1600)}catch(e){}}})
 (function(){const el=gid('card');const blk=e=>{try{if(performance.now()<va58L.u&&e.target.closest&&e.target.closest('#cdGo')){e.preventDefault();e.stopImmediatePropagation()}}catch(er){}};el.addEventListener('pointerdown',blk,true);el.addEventListener('click',blk,true)})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.59',GAME_DATE='11/11/2026 à 18h24';
+const GAME_VER='3.60',GAME_DATE='11/11/2026 à 18h33';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
