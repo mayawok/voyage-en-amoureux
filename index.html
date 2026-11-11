@@ -8726,8 +8726,17 @@ function va63Restore(){if(!va63Snap)return;const S0=JSON.parse(va63Snap);SV.cus=
  gid('va63n').addEventListener('click',e=>{e.stopPropagation();va63Restore();go()});
  gid('va63k').addEventListener('click',e=>{e.stopPropagation();d.style.display='none'});
  setInterval(()=>{try{const vis=gid('cus').style.display&&gid('cus').style.display!=='none';if(vis&&!va63Snap)va63Snap=va63Take();if(!vis&&va63Snap&&d.style.display!=='flex')va63Snap=null;ub.style.display=(vis&&va63Snap&&va63Take()!==va63Snap)?'':'none'}catch(e){}},200)})();
+// ===== 3.64 : pièces du mini-jeu « trouve la pièce » en images (planches ChatGPT de l'utilisateur, img/pieces/) =====
+const VA64_P=['alternateur','amortisseur','ampoule','balai','bielle','bougie','cardan','collier','courroie2','croisillon','culasse','direction','disque','durite','embrayage','etrier','filtre','fusible','pignon','plaquettes','pompe','prechauffage','radiateur','relais','ressort','rotule','roulement','silent','sonde','thermostat'];
+var va64I={};
+function va64Load(){for(const k of VA64_P){if(va64I[k])continue;const im=new Image();im.decoding='async';im.src='img/pieces/'+k+'.webp';va64I[k]=im}}
+// nouvelle pièce de la 2e planche
+PARTS.prechauffage=['Bougie de préchauffage','une bougie de préchauffage',x=>{x.fillStyle='#c8ccd0';x.fillRect(-40,-4,70,8);x.fillStyle='#c9a24a';x.fillRect(30,-3,12,6)}];PUN.prechauffage='une bougie de préchauffage';
+for(const k of VA64_P){const P=PARTS[k];if(!P)continue;const o=P[2];P[2]=function(x){const im=va64I[k];if(im&&im.complete&&im.naturalWidth){const bw=118,bh=82,s=Math.min(bw/im.naturalWidth,bh/im.naturalHeight);const w=im.naturalWidth*s,h=im.naturalHeight*s;x.save();x.imageSmoothingQuality='high';x.drawImage(im,-w/2,-h/2-2,w,h);x.restore();return}return o(x)}}
+ppOpen=(function(o){return function(){va64Load();return o.apply(this,arguments)}})(ppOpen);
+setTimeout(()=>{try{va64Load()}catch(e){}},8000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.63',GAME_DATE='11/11/2026 à 21h34';
+const GAME_VER='3.64',GAME_DATE='11/11/2026 à 21h43';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
