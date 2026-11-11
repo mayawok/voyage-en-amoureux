@@ -284,7 +284,9 @@ let MAP_L=55000;const MAPS=[
 {alt:[[0,180],[.3,240],[.65,150],[1,30]],hm:.9,bg:{cal:0,snow:.2,vil:.6,flock:.5,gran:.4,cliff:0,lake:0,pine:.1}},
 {alt:[[0,60],[.2,40],[1,50]],hm:.7,bg:{cal:0,snow:0,vil:.3,flock:.2,gran:1,cliff:1,lake:0,pine:0}},
 {alt:[[0,40],[.3,60],[.55,250],[.85,430],[1,440]],hm:1,bg:{cal:0,snow:.4,vil:.3,flock:.3,gran:.5,cliff:0,lake:1,pine:1}},
-{alt:[[0,60],[.4,50],[.7,40],[1,30]],hm:.8,bg:{cal:.3,snow:.1,vil:.4,flock:.3,gran:.4,cliff:1,lake:0,pine:.2}}];
+{alt:[[0,430],[.15,640],[.5,700],[.75,660],[1,520]],hm:.8,bg:{cal:0,snow:.8,vil:.1,flock:.6,gran:.5,cliff:0,lake:0,pine:.3}},
+{alt:[[0,60],[.4,50],[.7,40],[1,30]],hm:.8,bg:{cal:.3,snow:.1,vil:.4,flock:.3,gran:.4,cliff:1,lake:0,pine:.2}},
+{alt:[[0,60],[.5,45],[1,30]],hm:.7,bg:{cal:0,snow:.15,vil:.6,flock:.4,gran:.3,cliff:0,lake:0,pine:.2}}];
 function MP(){let l=1;try{l=level||1}catch(e){}return MAPS[(l-1)%MAPS.length]}
 function MHM(){return MP().hm}
 function mapFrac(x){return Math.max(0,x)/MAP_L}
@@ -465,9 +467,10 @@ function toggleKey(){if(night||crashed)return;if(ign){ign=0;st.hb=1;snd('click')
 // ===== Sauvegarde, réglages, son, météo, trafic, garage… =====
 function gid(i){return document.getElementById(i)}
 const SKEY='4x4trip2',PKEY='4x4set1';
-const SV0=()=>({sq:0,cs:0,dn:0,unl:{},inv:{},spare:0,mis:null,has:0,lvl:1,tot:0,hearts:6,up:{susp:0,wheel:0,winch:0,tank:0,rad:0,boost:0},one:{led:0,tireR:0,surf:0},resp:null,got:[],cmp:null});
+const SV0=()=>({sq:0,cs:0,dn:0,unl:{},inv:{},spare:0,mis:null,has:0,lvl:1,tot:0,hearts:6,up:{susp:0,wheel:0,winch:0,tank:0,rad:0,boost:0},one:{led:0,tireR:0,surf:0},resp:null,got:[],cmp:null,v66:1});
 let SV=SV0(),SET={mute:0,tut:0};
-try{const q=JSON.parse(localStorage.getItem(SKEY)||'null');if(q&&q.has){SV=Object.assign(SV0(),q);SV.up=Object.assign(SV0().up,q.up||{});SV.one=Object.assign(SV0().one,q.one||{});SV.inv=Object.assign({},q.inv||{});SV.unl=Object.assign({},q.unl||{})}}catch(e){}
+try{const q=JSON.parse(localStorage.getItem(SKEY)||'null');if(q&&q.has){SV=Object.assign(SV0(),q);SV.v66=q.v66||0;SV.up=Object.assign(SV0().up,q.up||{});SV.one=Object.assign(SV0().one,q.one||{});SV.inv=Object.assign({},q.inv||{});SV.unl=Object.assign({},q.unl||{})}}catch(e){}
+try{if(va66Mig(SV)&&SV.has)localStorage.setItem(SKEY,JSON.stringify(SV))}catch(e){}
 try{const q=JSON.parse(localStorage.getItem(PKEY)||'null');if(q)Object.assign(SET,q)}catch(e){}
 SET.mode=0;
 let inGame=false,paused=false,newArm=0,lampOn=false,wipOn=false;
@@ -1487,9 +1490,17 @@ L:[['a','Retour en Corse ! Ventiseri, puis la forêt de l’Ospedale.'],['m','La
 stops:[{f:.05,n:'Retour en Corse',e:'⛴️',fx:'boatBack',L:[['m','Au revoir la Sardaigne… On reviendra.']]},
 {f:.28,n:'Ventiseri',e:'🚁',L:[['a','Écoute ! Les hélicoptères Puma de la base militaire.'],['m','Le chien n’aime pas du tout ce bruit.']]},
 {f:.78,n:'Lac de l’Ospedale',e:'🌲',L:[['m','Le lac de l’Ospedale… les pins se reflètent dans l’eau.'],['a','Demain, Bonifacio.'],['m','Tu as l’air nerveux, mon ange. Tout va bien ?'],['a','Tout va très bien.']]}]},
-{p:'Plage de Fautea · le goéland d’Audouin',fin:'Plage de Fautea',e:'🕊️',totem:['audouin','🕊️','Goéland d’Audouin',2,'fly'],
+{p:'Plateau du Coscione · le cheval corse',fin:'Plateau du Coscione',e:'🐎',totem:['cheval','🐎','Cheval corse',2,'ground'],
+L:[['a','Le plateau du Coscione. Personne à des kilomètres.'],['m','Juste des chevaux en liberté, et les pozzines. On dirait un tapis vert avec des petits miroirs.'],['a','Je roule doucement, promis. C’est fragile, ces trucs-là.']],
+stops:[{f:.3,n:'Bergeries du Coscione',e:'🐎',L:[['m','Regarde, les chevaux ! Ils sont libres, ici.'],['a','Et pas une maison. Juste le vent.']]},
+{f:.78,n:'Pozzines du Coscione',e:'💧',L:[['m','Les pozzines… l’eau est toute claire.'],['a','On s’arrête un peu, ma chérie ? C’est trop beau.']]}]},
+{p:'Bouches de Bonifacio · le goéland d’Audouin',fin:'Bonifacio',e:'🕊️',totem:['audouin','🕊️','Goéland d’Audouin',2,'fly'],
 L:[['m','Bonifacio et ses falaises blanches !'],['a','Le goéland d’Audouin niche sur les îles de la réserve. C’est un des goélands les plus rares de Méditerranée.'],['m','Tu as révisé ! Tu m’impressionnes, mon amour.']],
-stops:[{f:.3,n:'Bonifacio',e:'🏰',L:[['m','La citadelle au bord de la falaise… impressionnant.'],['a','Donne-moi la main, on ne craint rien.']]},
+stops:[{f:.3,n:'Falaises de Bonifacio',e:'🏰',L:[['m','La citadelle au bord de la falaise… impressionnant.'],['a','Donne-moi la main, on ne craint rien.']]},
+{f:.78,n:'Phare de Pertusato',e:'🌊',L:[['m','Le phare de Pertusato. En face, c’est la Sardaigne.'],['a','On en a fait, du chemin.']]}]},
+{p:'Plage de Fautea · la tortue d’Hermann',fin:'Plage de Fautea',e:'🌅',totem:['tortue','🐢','Tortue d’Hermann',1,'ground'],
+L:[['a','Dernière étape, ma chérie. Fautea.'],['m','Là où tout a commencé. J’ai hâte de revoir la tour.'],['a','Moi aussi.']],
+stops:[{f:.3,n:'Maquis de Fautea',e:'🌿',L:[['m','Ça sent le ciste. Comme le premier jour.'],['a','Ouvre l’œil, ma chérie. C’est le pays des tortues.']]},
 {f:.8,n:'Plage de Fautea',e:'🌅',L:[['m','Fautea… la tour génoise, la plage… On est revenus au début.']]}]}];
 const CHP=()=>CHAP[(level-1)%CHAP.length];
 const FACTS=['Le balbuzard pêcheur plonge les serres en avant pour attraper sa proie. C’est l’un des rares rapaces à pêcher !','Le mouflon de Corse vit dans les rochers en altitude. C’est le plus petit mouflon sauvage d’Europe.','La tortue d’Hermann peut vivre plus de cinquante ans et hiberne dès l’automne.','L’euprocte de Corse est un petit triton qu’on ne trouve que sur l’île, dans les ruisseaux frais.','La sittelle corse est un oiseau qui ne vit qu’en Corse, dans les forêts de pins laricio.','Le cerf de Corse avait disparu de l’île. Des scientifiques l’ont ramené, et il s’y plaît à nouveau.','Dans la réserve de Scandola, le mérou brun est protégé : il y est devenu bien plus gros qu’ailleurs.','Un hérisson peut marcher deux kilomètres par nuit pour trouver à manger.','Les oisillons quittent le nid avant de savoir voler : leurs parents continuent de les nourrir au sol.','Le gypaète barbu laisse tomber les os de très haut pour les casser. Il se nourrit surtout de leur moelle.'];
@@ -1678,7 +1689,7 @@ else if(mg.busy<=0){mg.busy=1.4;mg.pb.classList.add('busy');snd('tick')}});
 
 // ===== v26 : plateau du Coscione, points d'observation, orages =====
 var flatAt=[],flatLvl=-1;var obsP=[],obv=null,flee=0,runs=[],drops=[];let obsNT=80,runT=8,pltSaid=0,lastSpl=-1,obT0=0;
-function PLT(){try{if(chIdx()!==3)return false;const f=chP();return f>=.33&&f<.62}catch(e){return false}}
+function PLT(){try{const R=va66PR();if(!R)return false;const f=chP();return f>=R[0]+.01&&f<R[1]-.01}catch(e){return false}}
 function pltSnowy(){if(SV.pltL!==level){SV.pltL=level;SV.pltS=Math.random()<.45}return !!SV.pltS}
 AN.cheval={c:'#5a3a22',L:32,H:13,lg:14,tail:1};const PSPEC=['vache','cheval','cheval','mouflon'];
 
@@ -1859,9 +1870,13 @@ const NPCD=[
  {f:.4,sto:1,n:'Antoine, forestier',lk:['#3f6b3a','#4a3a2a',1,'#6a4a2a',1,2,0],L:[['v','<b>Antoine, forestier :</b> « Les pins qu’ils ont traités n’ont plus d’insectes. Les sittelles abandonnent leurs nids. »'],['m','Je le note. Avec la Sardaigne, mon dossier est presque complet.'],['v','<b>Antoine :</b> « Et vous, jeune homme, vous aviez une question ? »'],['a','Euh… plus tard ! Plus tard.'],['m','Une question sur quoi ?'],['a','Rien, rien. Les pins. On y va ?']]},
  {f:.2,n:'Maria, apicultrice',lk:['#f2e3b0','#6b5a3a',3,'#5a3a20',0,4,1],t:'Mes abeilles reprennent des forces… Je croise les doigts pour votre dossier !'},
  {f:.74,n:'Une randonneuse',lk:['#3a8fb5','#3a3a40',1,'#b5793a',0,2,1],t:'Le lac de l’Ospedale au milieu des pins laricio… c’est mon coin préféré.'}],
+[{f:.1,n:'Un randonneur du GR20',lk:['#d6452f','#3a3a40',1,'#6a4a2a',1,2,0],t:'Le Coscione au printemps, c’est le paradis. Regardez où vous mettez les roues : les pozzines, ça ne repousse pas !'},
+ {f:.4,sto:1,n:'Saveriu, berger',lk:['#7a5a3a','#3d3a33',2,'#cfcfcf',1,2,0],L:[['v','<b>Saveriu, berger :</b> « Des camionnettes montent la nuit, tous feux éteints. Le matin, mes chevaux ne veulent plus boire aux pozzines du bas. »'],['m','La nuit, sans phares… Merci, Saveriu. On va ouvrir l’œil.']]},
+ {f:.72,n:'Un berger à cheval',lk:['#8a6a3a','#2f2f35',2,'#3b2a1d',1,2,0],t:'Les chevaux sont libres sur le plateau. Roulez doucement, ils traversent sans prévenir !'}],
 [{f:.1,n:'Clara, journaliste',lk:['#b53a3a','#2f2f35',0,'#1a1410',0,3,1],t:'Mila ! Votre dossier fait la une demain matin. Cette fois, personne ne pourra l’étouffer.'},
  {f:.4,sto:1,n:'Ange, garde du littoral',lk:['#4f6b3a','#3d3a33',1,'#3b2a1d',0,0,0],L:[['v','<b>Ange, garde du littoral :</b> « Vous revoilà ! On dit que votre rapport est arrivé jusqu’aux autorités. Toute la côte compte sur vous. »'],['m','On a fait tout ce qu’on pouvait. Maintenant, on attend.'],['a','Tu vois, mon amour ? Tout ce chemin, ça valait la peine.']]},
- {f:.74,n:'Un pêcheur',lk:['#3d6f9e','#4a4a52',0,'#cfcfcf',1,1,0],t:'Bonne fin de route ! La tour de Fautea vous attend.'}]];
+ {f:.74,n:'Un marin de Bonifacio',lk:['#2f4f7a','#f4f4f4',1,'#3b2a1d',1,0,0],t:'Ça souffle dans les Bouches aujourd’hui ! Tenez bien vos chapeaux sur la falaise.'}],
+[{f:.5,n:'Un pêcheur',lk:['#3d6f9e','#4a4a52',0,'#cfcfcf',1,1,0],t:'Vous revoilà ! La tour de Fautea vous attend, elle n’a pas bougé.'}]];
 function npcList(){if(npcLv===level)return npcL;npcLv=level;npcL=[];let D=[];try{D=NPCD[chIdx()]||[]}catch(e){}
 D.forEach((d,i)=>{let x=Math.round(MAP_L*d.f),n=0;const bad=x=>wetRange(x-140,x+140)||rockW(x)>0||rockW(x+90)>0||rockW(x-90)>0||bridgeAt(x)>=0||bridgeAt(x+90)>=0||hardNear(x)||nearC(x)||tunNear(x)||stns.some(q=>Math.abs(q.x+110-x)<400)||gars.some(q=>Math.abs(q.x+100-x)<400);while(bad(x)&&n++<120)x+=80;npcL.push(Object.assign({x,i,bt:0},d))});return npcL}
 function npcTick(dt){if(!started||night||crashed||paused||dt<=0||!inGame)return;const L=npcList(),now=performance.now();SV.npc=SV.npc||{};
@@ -1913,7 +1928,9 @@ ch5:['Je regarde le rétroviseur toutes les deux minutes. Marchetti peut surgir 
 ch6:['Une « proposition amicale »… ils pensaient vraiment pouvoir nous acheter ?','Le lézard tyrrhénien, il vit qu’ici et en Sardaigne, non ? On le laissera pas disparaître.','Le désert des Agriates, pas un mètre de goudron. Le Cherokee est dans son élément.','Il te manque un groupe témoin, c’est ça ? Une région sans N-12.','On voit déjà le golfe de Saint-Florent, au bout de la piste.'],
 ch7:['En Sardaigne, le N-12 est interdit. Si les animaux vont bien là-bas, t’as ta preuve.','Les falaises de Bonifacio vues de la mer. J’oublierai jamais ça.','Le faucon d’Éléonore niche sur les falaises, tu m’as dit ?','La Gallura, du granit rose partout. On dirait un autre monde.','Ici, les animaux vont bien. C’est exactement ce que tu voulais voir.'],
 ch8:['La sittelle corse, y en a nulle part ailleurs au monde. Tu m’as expliqué, hein.','Ça va, ma chérie ? T’as l’air ailleurs.','Tu m’en voudras pas, mais je te sens pensive.','Tu envoies bientôt ton dossier ? T’as le trac ?','La forêt de l’Ospedale sent la résine. Ça fait du bien.'],
-ch9:['Le dossier est parti. Maintenant, on attend.','Fautea n’est plus très loin. Ça me fait tout drôle.','Tu sais quoi ? C’est le plus beau voyage de ma vie.','On a fait le tour de l’île, ensemble. Je suis fier de nous.','Encore quelques virages et on y est. Ferme les yeux si tu veux… non, en fait, garde-les ouverts.']});
+ch9:['Le Coscione. Pas une maison, juste le vent.','Je roule doucement, promis. Les pozzines sont fragiles.','T’as vu les chevaux ? Ils nous regardent passer.','Y a encore de la neige là-haut, sur l’Incudine.','Ça va, ma chérie ? Le dossier est parti, tu peux souffler.'],
+ch10:['Les falaises blanches. On dirait que la ville va tomber dans la mer.','Ça souffle, dans les Bouches. Tiens ton chapeau, ma chérie.','En face, c’est la Sardaigne. On y était y a pas longtemps.','Le goéland d’Audouin, c’est celui au bec rouge, c’est ça ?','On a fait le tour de l’île, ensemble. Je suis fier de nous.'],
+ch11:['Fautea n’est plus très loin. Ça me fait tout drôle.','Tu sais quoi ? C’est le plus beau voyage de ma vie.','Encore quelques virages et on y est. Ferme les yeux si tu veux… non, en fait, garde-les ouverts.','Ça sent le ciste. Comme le premier jour.']});
 // ===== v28 : histoire en 10 chapitres =====
 function chIdx(){return (level-1)%CHAP.length}
 NAMES.length=0;for(const ch of CHAP)NAMES.push(ch.fin);
@@ -2270,7 +2287,7 @@ chat:['Chat de village','Felis catus','Le gardien des ruelles corses, toujours �
 chien:['Notre chien','Canis familiaris','Copilote officiel du Cherokee. Adore la tête à la fenêtre, les promenades et les os.','Famille']};
 const NB_HELP=[['goeland','goeland','Goéland pris dans un fil de pêche','Fil de pêche coupé, il a repris son envol.'],['renard','renard','Renard et boîte de conserve','Patte libérée et un bol d’eau.'],['chouette','chouette','Chouette dans un grillage','Mailles coupées, envolée dans la nuit.'],['mouflon','mouflon','Mouflon dans une clôture','Cornes dégagées.'],['lezard','lezard','Lézard sur le goudron','Mis à l’ombre.'],['cerf','cerf','Cerf et sac plastique','Bois débarrassés du plastique.'],['lievre','lievre','Levraut seul','Laissé tranquille : sa mère reviendra.'],['cheval','cheval','Caillou dans le sabot','Caillou retiré.'],['huppe','huppe','Huppe sonnée','Remise au calme puis envolée.'],['chevre','chevre','Chevreau sur un rocher','Aidé à redescendre.'],['oiseau','sittelle','Oiseau blessé','Aile nettoyée, bandage posé, quelques gouttes d’eau… et il s’est envolé.'],['tortue','tortue','Tortue sur le dos','Retournée doucement puis aidée à traverser la route.'],['herisson','herisson','Hérisson pris dans un filet','Mailles coupées et un bol d’eau fraîche.'],['poisson','truite','Truites dans une flaque','Relâchées dans une vasque profonde avant que la flaque ne sèche.'],['abeille','abeille','Abeille épuisée','Repartie après quelques gouttes d’eau sucrée.'],['r_heri','herisson','Hérisson confié au véto','Ramassé au bord de la route et soigné chez le vétérinaire.'],['r_oisi','sittelle','Oisillon tombé du nid','Mis à l’abri et confié au vétérinaire.'],['r_tort','tortue','Tortue à la carapace fêlée','Transportée chez le vétérinaire.']];
 const NB_ROAD=['chien','vache','cheval','ane','chevre','mouflon','sanglier','lievre','lezard','chat'];
-const NB_J=['Retour à Fautea. Le même maquis, la même odeur. Mais trois tortues dehors en plein midi… quelque chose ne va pas.','Le lion de Roccapina veille toujours. Le labo a parlé : N-12. Un nom de code pour un poison ?','Bellavista est innocent. Mais j’ai photographié un homme en combinaison… et le gendarme n’a même pas voulu regarder. « L. » m’a glissé un mot.','Une rivière interdite, une voiture officielle qui passe sans s’arrêter. Ici, on appelle ça la loi du silence.','Le Cherokee saboté, puis Lucia près de la chapelle. Je ne suis plus seule. Piana était rouge comme ma colère.','Le gyrophare dans le rétroviseur… j’ai cru qu’on allait tout perdre. À l’étang, Andrea a chuchoté « je t’aime ». Plouf.','Ils ont voulu m’acheter. J’ai dit non. Le lézard tyrrhénien, roi des pierres chaudes, approuve.','La Sardaigne et ses falaises de granit rose. Sans N-12, tout va bien ici. J’ai ma preuve.','Deux inséparables serrés sur une branche. Le dossier est parti. Andrea avait l’air nerveux ce soir…','Fautea. Le début et la fin. Mon cœur bat encore trop fort pour écrire.'];
+const NB_J=['Retour à Fautea. Le même maquis, la même odeur. Mais trois tortues dehors en plein midi… quelque chose ne va pas.','Le lion de Roccapina veille toujours. Le labo a parlé : N-12. Un nom de code pour un poison ?','Bellavista est innocent. Mais j’ai photographié un homme en combinaison… et le gendarme n’a même pas voulu regarder. « L. » m’a glissé un mot.','Une rivière interdite, une voiture officielle qui passe sans s’arrêter. Ici, on appelle ça la loi du silence.','Le Cherokee saboté, puis Lucia près de la chapelle. Je ne suis plus seule. Piana était rouge comme ma colère.','Le gyrophare dans le rétroviseur… j’ai cru qu’on allait tout perdre. À l’étang, Andrea a chuchoté « je t’aime ». Plouf.','Ils ont voulu m’acheter. J’ai dit non. Le lézard tyrrhénien, roi des pierres chaudes, approuve.','La Sardaigne et ses falaises de granit rose. Sans N-12, tout va bien ici. J’ai ma preuve.','Deux inséparables serrés sur une branche. Le dossier est parti. Andrea avait l’air nerveux ce soir…','Le Coscione : les chevaux libres, les pozzines. Et l’appel de Lucia. C’est fini. J’ai pleuré dans l’herbe.','Bonifacio, la ville au bord du vide. Andrea regarde ses chaussures depuis ce matin…','Fautea. Le début et la fin. Mon cœur bat encore trop fort pour écrire.'];
 let nbTab='mut',nbPrevP=false;
 function nbNew(){SV.nbN=1;gid('nbdot').style.display='block'}
 function nbSeen(k2,key){SV.seen=SV.seen||{};if(!nbSeen.s)nbSeen.s=new Set();if(nbSeen.s.has(key))return;nbSeen.s.add(key);const nw=!SV.seen[k2];SV.seen[k2]=(SV.seen[k2]||0)+1;if(nw){nbNew();}}
@@ -2405,7 +2422,9 @@ const INV=[[['m','L’Institut m’a confié une mission : comprendre la mystér
 [['a','On l’a échappé belle avec Marchetti. Sans le téléphone qui filmait, on dormait au poste.'],['m','Et maintenant, une lettre sans signature me fait une « proposition amicale »…'],['a','D’abord les menaces, puis le sabotage, puis les gendarmes… et maintenant la carotte.'],['m','Lucia veut nous voir ce soir, au port de Saint-Florent. Elle dit qu’elle a enfin un nom.']],
 [['m','Lucia a appelé : Marchetti fait surveiller le port de Bonifacio. Il ne veut pas qu’on quitte l’île avec les échantillons.'],['a','Alors on prend le premier bateau, avant l’aube.'],['m','En Sardaigne, le N-12 est interdit. Si là-bas les animaux vont bien, j’ai ma preuve.']],
 [['m','Le dossier est presque prêt. Mais si je l’envoie aux autorités de l’île, il finira au fond d’un tiroir.'],['a','Alors on l’envoie à Paris. Et une copie à Clara, la journaliste de La Gazette de l’Île. Personne ne pourra l’enterrer.'],['m','Et Lucia transmettra son propre rapport à l’Inspection de la gendarmerie.'],['n','Mila appuie sur « Envoyer ». Le dossier part.']],
-[['m','Plus d’enquête, plus de prélèvements. Juste la route.'],['a','Et nous deux. Comme la première fois.']]];
+[['m','Le dossier est parti. Paris l’a reçu, Clara aussi. Maintenant, on attend.'],['a','Et en attendant, on roule. Ça te changera les idées, ma chérie.']],
+[['m','Plus d’enquête, plus de prélèvements. Juste la route.'],['a','Et nous deux. Comme la première fois.']],
+[]];
 CHAP.forEach((ch,i)=>{for(const l of INV[i])ch.L.push(l)});
 // --- finale
 var fn=null;let fnT0=0;
@@ -2441,7 +2460,9 @@ const CEND=[[['m','Premier jour d’étude : douze tortues observées. Trois sor
 [['a','Je n’oublierai jamais ce gyrophare dans le rétroviseur…'],['m','Sans ta vidéo, ils avaient mes échantillons. Et peut-être pire.'],['a','Tout est encore là, grâce à la cachette sous le siège. Les relevés de Lisa aussi.'],['n','Le téléphone vibre. Numéro masqué. Un seul message : « Dernier avertissement. »']],
 [['m','Je compare toutes mes données : partout où le N-12 est épandu, les animaux changent. Ailleurs, rien.'],['a','C’est une preuve scientifique, ça ?'],['m','Presque. Il me manque un groupe témoin… en Sardaigne, où le N-12 est interdit.'],['n','Cette nuit-là, quelqu’un s’approche du Cherokee avec une pince coupante…']],
 [['m','En Sardaigne, sans N-12, les faucons et les tortues vivent normalement. Le groupe témoin confirme tout !'],['a','Tu as ta preuve, mon amour.'],['n','Le téléphone sonne. Lucia : « L’Inspection générale accepte d’ouvrir une enquête. Mais revenez vite, et discrètement. »']],
+[['m','Le dossier est parti. À Paris, et chez Clara.'],['a','T’as tout donné, ma chérie. Maintenant, c’est à eux.'],['n','Dans la nuit, la forêt craque. Le chien dresse les oreilles… puis se rendort.']],
 [['m','Marchetti arrêté, l’usine sous scellés… Je n’arrive pas encore à y croire.'],['a','Tu l’as fait. Toi, tes tortues et tes parasites.'],['n','Mila referme son carnet d’enquête. Le chien pose sa tête sur ses genoux.'],['n','Andrea, lui, vérifie pour la dixième fois la petite boîte dans la boîte à gants.']],
+[['m','On a fait le tour de l’île. Demain, Fautea.'],['a','Demain, Fautea.'],['n','Andrea ne dort pas. Il répète une phrase tout bas, face à la mer.']],
 [['m','Fautea. On est revenus au début…'],['a','Et c’est le moment idéal pour la suite.']]];
 function finishTick(){if(!started||night||es||chEnd||fn||(SV.finDone&&chIdx()===CHAP.length-1))return;if(c.x>=MAP_L-520&&(!stopReq||!stopReq.fin)){stopReq={x:MAP_L-90,fin:1,cb:()=>{chEnd=1;v.x=v.y=0;w=0;st.gas=0;st.hb=1;const ii=chIdx();fadeTo(()=>burOr(ii))}}}if(c.x>=MAP_L-40){chEnd=1;v.x=v.y=0;w=0;st.gas=0;st.hb=1;const ii=chIdx();fadeTo(()=>burOr(ii))}}
 function openEnd(i){es={i,t:0,li:-1,lt:0,end:0};esT0=0;paused=true;document.body.classList.add('cine');gid('esx').style.display='none';snd('chime')}
@@ -2473,7 +2494,8 @@ const MUT=[
 {sp:'cistude',ch:5,o:'Beaucoup moins de pontes, tortues léthargiques.',c:[[5,'L’eau de l’étang est chargée en N-12.'],[8,'Le N-12 dérègle leurs hormones : les pontes diminuent.']]},
 {sp:'lezard',ch:6,o:'Couleurs plus pâles, queues qui repoussent mal.',c:[[6,'Les insectes qu’ils mangent sont contaminés par l’épandage.']]},
 {sp:'eleonore',ch:7,o:'Groupe témoin en Sardaigne : aucune anomalie observée.',c:[[7,'Preuve par comparaison : sans N-12, pas de changement.']]},
-{sp:'sittelle',ch:8,o:'Chants plus courts, nids abandonnés près des pins traités.',c:[[8,'Les insectes ont disparu des pins traités : les oisillons manquent de nourriture.']]}];
+{sp:'sittelle',ch:8,o:'Chants plus courts, nids abandonnés près des pins traités.',c:[[8,'Les insectes ont disparu des pins traités : les oisillons manquent de nourriture.']]},
+{sp:'cheval',ch:9,o:'Poil terne chez les chevaux qui boivent aux pozzines du bas.',c:[[9,'L’eau des pozzines du bas est chargée en N-12 : quelqu’un en déverse encore, la nuit.']]}];
 const DOCS=[
 {id:'mail',ic:'📧',k:'Courriel de l’Institut',t:'Mission : la mystérieuse maladie de Corse',w:()=>started&&chIdx()>=0,b:'<b>De :</b> Institut de protection des animaux<br><b>À :</b> Mila<br><br>Depuis quelques mois, nos correspondants en Corse signalent des animaux au comportement anormal : tortues actives en pleine chaleur, oiseaux désorientés, cerfs aux bois déformés.<br><br>Votre mission : observer, photographier, prélever des échantillons sans toucher les animaux, et trouver la cause.<br><br>Bon courage. Les animaux comptent sur vous.'},
 {id:'carte',ic:'🗺️',k:'Carte annotée',t:'Carte des signalements',w:()=>level>=2,b:'Les signalements se multiplient de Fautea jusqu’au Fium’orbu.<br><br>✖ Fautea (près du chantier Bellavista) · ✖ Roccapina · ✖ Vallée du Fium’orbu · ✖ Plateau du Coscione<br><br><i>Note de Mila : le premier cas est tout près du chantier Bellavista. Coïncidence ?</i>'},
@@ -2492,7 +2514,7 @@ const DOCS=[
 {id:'stats',ic:'📊',k:'Analyse de Mila',t:'Comparaison des zones',w:()=>level>=8,b:'<b>Zones traitées au N-12 :</b> anomalies chez 9 espèces sur 9.<br><b>Zones non traitées :</b> aucune anomalie.<br><br>Il manque un groupe témoin indépendant pour que la preuve soit solide : direction la Sardaigne, où le N-12 est interdit.'},
 {id:'temoin',ic:'🇮🇹',k:'Résultats',t:'Le groupe témoin sarde',w:()=>level>=9,b:'Sans N-12, les faucons, les tortues et les oiseaux marins vont bien.<br><br><b>Conclusion :</b> le N-12 est la cause des changements observés en Corse.<br><br><i>Mila : « J’ai ma preuve. »</i>'},
 {id:'ctrl',ic:'🚨',k:'Contrôle routier',t:'« Simple vérification »',w:()=>!!(SV.ev&&SV.ev.chase),b:'Contrôle par l’adjudant-chef Marchetti. Motif : « vérification ».<br>Objets recherchés : le carnet et les échantillons de Mila.<br><br>Rien n’a été trouvé : tout était caché sous le siège.<br><br><i>Mot de Lucia : « Ce contrôle n’apparaîtra dans aucun registre. Faites attention. »</i>'},
-{id:'rapport',ic:'📘',k:'Rapport final',t:'Rapport de Mila à l’Institut',w:()=>level>=10,b:'Dix espèces étudiées · des centaines d’observations · tous les échantillons analysés.<br><br><b>Recommandation :</b> interdiction immédiate du N-12 et fermeture du site Noxacorp.<br><br>Envoyé au ministère à Paris, à l’Inspection générale de la gendarmerie… et une copie à Clara, journaliste à La Gazette de l’Île.'},
+{id:'rapport',ic:'📘',k:'Rapport final',t:'Rapport de Mila à l’Institut',w:()=>level>=10,b:'Neuf espèces étudiées · des centaines d’observations · tous les échantillons analysés.<br><br><b>Recommandation :</b> interdiction immédiate du N-12 et fermeture du site Noxacorp.<br><br>Envoyé au ministère à Paris, à l’Inspection générale de la gendarmerie… et une copie à Clara, journaliste à La Gazette de l’Île.'},
 {id:'ferme',ic:'🏁',k:'Communiqué officiel',t:'Fermeture de l’usine Noxacorp',w:()=>!!SV.outroDone,b:'Suite au rapport scientifique de l’Institut de protection des animaux, l’usine Noxacorp est fermée et le N-12 est interdit en Corse.<br><br>L’adjudant-chef Marchetti est en prison. Le Conseiller est mis en examen pour corruption.<br><br>Les populations animales devraient se rétablir dans les prochaines années.'}];
 var docQ=[],docOpenF=false;
 function docShow(d,fromNb){if(!d)return;docOpenF=true;gid('dck').textContent=d.k||'Document';gid('dct').textContent=d.t;gid('dcb').innerHTML=d.b;gid('docv').style.display='flex';gid('dcx').textContent=fromNb?'Fermer':'📓 Ranger dans le carnet';if(!fromNb){paused=true;snd('chime')}gid('docv').dataset.nb=fromNb?1:0}
@@ -2658,7 +2680,7 @@ g.fillStyle=dusk?'#2a3a2a':'#3f6b3a';for(const px of[Wd*.05,Wd*.17]){g.fillRect(
 function startOutro(){fn=null;ot={ph:'prop',t:0,beat:0,said:-1,cr:0};otT0=0;paused=true;document.body.classList.add('cine');gid('bzs').style.display='none';gid('bzx').style.display='none'}
 function otNext(){if(!ot)return;gid('bzx').style.display='none';if(ot.ph==='prop'){fadeTo(()=>{ot.ph='cred';ot.t=0})}else if(ot.ph==='cred'){fadeTo(()=>{ot.ph='tbc';ot.t=0})}else{ot=null;document.body.classList.remove('cine');gid('bzx').style.display='none';paused=false;last=performance.now();SV.outroDone=1;saveTrip();note('📓 Pour revivre un chapitre : Journal ✍️ dans le carnet de Mila',4)}}
 function credLines(){const nOb=Object.keys(OBALL).length,ph=(SV.ph||[]).length,sm=Object.keys(SV.smp||{}).length,sk=Object.keys(SV.sick||{}).length,dc=(SV.docs||[]).length;
-return[['t','Voyage en amoureux'],['s','une histoire de Mila & Andrea'],['',''],['h','Avec'],['','Mila · la scientifique'],['','Andrea · le pilote et le mécano'],['','le chien · copilote officiel'],['','le Cherokee XJ'],['','Rafale & Petit Tonnerre, en Bretagne'],['',''],['h','Et aussi'],['','Lucia Pieri · la gendarme intègre'],['','Clara · La Gazette de l’Île'],['','Ange, Petru, Maria, Ghjulia, Dumè'],['','Lisa, Mme Santoni, Giovanna, Antoine'],['','Marcel · les meilleures pizzas de l’île'],['','Marchetti · en prison'],['','le Conseiller · mis en examen'],['',''],['h','Le carnet de Mila'],['','📷 '+ph+' / '+nOb+' espèces photographiées'],['','🧪 '+sm+' échantillons analysés'],['','🩺 '+sk+' animaux malades repérés'],['','💚 '+(SV.help||0)+' animaux aidés'],['','📄 '+dc+' documents réunis'],['','❤ '+SV.hearts+' cœurs'],['','🗺️ 10 chapitres · de Fautea à Fautea'],['',''],['h','Merci d’avoir joué'],['s','Fautea, Corse · Bretagne']]}
+return[['t','Voyage en amoureux'],['s','une histoire de Mila & Andrea'],['',''],['h','Avec'],['','Mila · la scientifique'],['','Andrea · le pilote et le mécano'],['','le chien · copilote officiel'],['','le Cherokee XJ'],['','Rafale & Petit Tonnerre, en Bretagne'],['',''],['h','Et aussi'],['','Lucia Pieri · la gendarme intègre'],['','Clara · La Gazette de l’Île'],['','Ange, Petru, Maria, Ghjulia, Dumè'],['','Lisa, Mme Santoni, Giovanna, Antoine'],['','Marcel · les meilleures pizzas de l’île'],['','Marchetti · en prison'],['','le Conseiller · mis en examen'],['',''],['h','Le carnet de Mila'],['','📷 '+ph+' / '+nOb+' espèces photographiées'],['','🧪 '+sm+' échantillons analysés'],['','🩺 '+sk+' animaux malades repérés'],['','💚 '+(SV.help||0)+' animaux aidés'],['','📄 '+dc+' documents réunis'],['','❤ '+SV.hearts+' cœurs'],['','🗺️ 12 chapitres · de Fautea à Fautea'],['',''],['h','Merci d’avoir joué'],['s','Fautea, Corse · Bretagne']]}
 function otTick(t){const dt=otT0?Math.min(.05,(t-otT0)/1000):0;otT0=t;if(!ot)return;ot.t+=dt;const T2=ot.t,tm=t/1000,k=HH/420,Wd=W/k,gy=330;g.setTransform(DPR*k,0,0,DPR*k,0,0);
 if(ot.ph==='prop'){const sk=g.createLinearGradient(0,0,0,300);sk.addColorStop(0,'#3a2f63');sk.addColorStop(.5,'#e07a68');sk.addColorStop(1,'#ffc98a');g.fillStyle=sk;g.fillRect(0,0,Wd,420);
 g.fillStyle='#ffd88a';g.beginPath();g.arc(Wd*.7,246,40,0,7);g.fill();g.fillStyle='#4a6a96';g.fillRect(0,250,Wd,34);g.fillStyle='rgba(255,220,150,.5)';for(let i=0;i<8;i++)g.fillRect(Wd*.62+Math.sin(tm+i)*20,264+i*2.4,Wd*.16-i*6,1.5);
@@ -3074,7 +3096,7 @@ const G=new Array(36).fill(-1);V.forEach((v,i)=>{for(let j=0;j<v.l;j++){const r=
 V.forEach((v,i)=>{for(const d of[-1,1]){let p=P[i];while(true){const np=p+d;if(np<0||np+v.l>6)break;const r=v.h?v.r:(d>0?np+v.l-1:np),c=v.h?(d>0?np+v.l-1:np):v.c;if(G[r*6+c]!==-1)break;p=np;const N2=P.slice();N2[i]=p;const k=key(N2);if(!seen.has(k)){seen.set(k,{pk:key(P),mv:[i,p]});Q.push(N2)}}}})}return null}
 function rhGen(R,nv){const V=[{h:1,r:2,c:R()<.5?0:1,l:2,me:1}];const G=new Array(36).fill(0);const mark=v=>{for(let j=0;j<v.l;j++)G[v.h?v.r*6+v.c+j:(v.r+j)*6+v.c]=1};mark(V[0]);let tries=0;
 while(V.length<nv&&tries++<400){const h=R()<.5,l=R()<.3?3:2,r=Math.floor(R()*(h?6:7-l)),c=Math.floor(R()*(h?7-l:6));if(h&&r===2)continue;const v={h,r,c,l};let ok=true;for(let j=0;j<l;j++){if(G[h?r*6+c+j:(r+j)*6+c]){ok=false;break}}if(ok){V.push(v);mark(v)}}return V}
-function rhStart(){const i=chIdx(),S=RHS[(i+TS())%RHS.length],R=mb32(5000+level*91+TS()*7919+(SV.rhTry||0)),tgt=Math.max(3,5+i+DF().tb*2);let best=null,bl=0,t0=performance.now();
+function rhStart(){const i=chIdx(),S=RHS[(i+TS())%RHS.length],R=mb32(5000+level*91+TS()*7919+(SV.rhTry||0)),tgt=Math.max(3,5+Math.min(9,i)+DF().tb*2);let best=null,bl=0,t0=performance.now();
 while(performance.now()-t0<650){const V=rhGen(R,9+Math.floor(R()*4)+Math.min(3,i>>1));const sol=rhSolve(V);if(!sol||sol.length<2)continue;if(sol.length>bl&&sol.length<=tgt+3){best=V;bl=sol.length}if(bl>=tgt)break}
 if(!best){best=[{h:1,r:2,c:0,l:2,me:1},{h:0,r:1,c:3,l:2},{h:0,r:2,c:5,l:3},{h:1,r:4,c:3,l:3}];bl=rhSolve(best).length}
 const V=best.map((v,j)=>Object.assign({},v,{p:v.h?v.c:v.r,o:0,sk:j===0?null:(v.l===3?S.L3:S.L2)[j%(v.l===3?S.L3:S.L2).length]}));
@@ -3179,7 +3201,7 @@ const FERRY={0:{t:'Porto-Vecchio → Pointe de la Chiappa',s:'Le bac du golfe ·
 4:{t:'Porto → Girolata',s:'Girolata ne se rejoint que par la mer · quarante minutes',L:[[1,'a','Girolata, le village sans route. Il faut y aller en bateau.'],[5,'m','Les falaises rouges dans la lumière… c’est magique.'],[9,'a','Magique comme toi, mon ange.']]},
 6:{t:'Saint-Florent → Plage du Loto',s:'Navette des Agriate · une demi-heure',L:[[1,'m','Le désert des Agriate, enfin !'],[5,'a','Pas de route goudronnée là-bas : le Cherokee va adorer.'],[9,'m','Et moi, j’adore quand tu souris comme ça.']]},
 8:null&&{t:'Traversée du lac de l’Ospedale',s:'Le bac des pêcheurs · un quart d’heure',L:[[1,'a','Un bac sur un lac de montagne, je n’y croyais pas.'],[5,'m','Ça sent le pin, l’eau est toute calme…'],[9,'a','On reviendra ici, tous les deux.']]},
-9:{t:'Fautea → Pinarellu',s:'Navette du littoral · vingt minutes',L:[[1,'m','Dernière traversée de la saison…'],[5,'a','Regarde la tour génoise sur son rocher.'],[9,'m','Je ne veux pas que ce voyage se termine.']]}};
+90:{t:'Fautea → Pinarellu',s:'Navette du littoral · vingt minutes',L:[[1,'m','Dernière traversée de la saison…'],[5,'a','Regarde la tour génoise sur son rocher.'],[9,'m','Je ne veux pas que ce voyage se termine.']]}};
 function ferryCoast(x,hz,tm){const hill=(sx,f,col,h)=>{x.fillStyle=col;x.beginPath();x.moveTo(sx,hz+4);x.quadraticCurveTo(sx+f*W*.06,hz-HH*h,sx+f*W*.14,hz-HH*h*.7);x.quadraticCurveTo(sx+f*W*.2,hz-HH*h*1.1,sx+f*W*.3,hz+4);x.fill()};
 hill(0,1,'#6f9a5a',.13);hill(0,1,'#5a8a4a',.08);hill(W,-1,'#6f9a5a',.12);hill(W,-1,'#5a8a4a',.07);
 x.fillStyle='#8a7a62';x.fillRect(W*.02,hz-6,W*.08,8);x.fillRect(W*.9,hz-6,W*.08,8);
@@ -3590,7 +3612,7 @@ x.strokeStyle='rgba(255,255,255,.55)';x.lineWidth=1.5;for(const d of[-5,0,5]){x.
 function levPick2(xp){const G=levGeo(Zn.lev);const k=Math.max(0,Math.min(3,Math.round((xp-G.x0)/G.step)));setGear(k)}
 
 // ===== v72 : le parasitisme, l'œil de Mila =====
-var PARR=['coproscopie par flottaison : quelques œufs d’oxyures (Tachygonetria), normaux chez la tortue d’Hermann','tiques Ixodes uriae et nématodes Contracaecum en quantité habituelle','méthode de Baermann : très peu de larves d’Elaphostrongylus cervi','FAMACHA rose pâle, McMaster : Haemonchus contortus et Teladorsagia en charge modérée','trématodes et poux mallophages dans la norme','frottis sanguin : hémogrégarines (Haemogregarina stepanowi) au taux habituel','coproscopie : quelques coccidies (Isospora), acariens rares','écouvillon négatif pour Trichomonas gallinae, frottis sans Haemoproteus','frottis : Plasmodium relictum rare, pas de Syngamus trachea','Contracaecum et trématodes, charge un peu plus élevée en zone traitée'];
+var PARR=['coproscopie par flottaison : quelques œufs d’oxyures (Tachygonetria), normaux chez la tortue d’Hermann','tiques Ixodes uriae et nématodes Contracaecum en quantité habituelle','méthode de Baermann : très peu de larves d’Elaphostrongylus cervi','FAMACHA rose pâle, McMaster : Haemonchus contortus et Teladorsagia en charge modérée','trématodes et poux mallophages dans la norme','frottis sanguin : hémogrégarines (Haemogregarina stepanowi) au taux habituel','coproscopie : quelques coccidies (Isospora), acariens rares','écouvillon négatif pour Trichomonas gallinae, frottis sans Haemoproteus','frottis : Plasmodium relictum rare, pas de Syngamus trachea','coproscopie : petits strongles (cyathostomes) en charge habituelle, pas de Parascaris','Contracaecum et trématodes, charge un peu plus élevée en zone traitée'];
 var PARH={tortue:'Parasites ? Une forte charge d’oxyures (Tachygonetria) ferait maigrir les tortues. Coproscopie : charge normale. Écarté.',puffin:'Parasites ? La tique des colonies (Ixodes uriae) ou des Contracaecum dans l’estomac ? Quantités habituelles. Écarté.',cerf:'Parasites ? Elaphostrongylus cervi, ver des méninges, pourrait expliquer les détours. Baermann : presque rien. Écarté.',mouflon:'Parasites ? Haemonchus contortus (ver hématophage → anémie, pelage terne). FAMACHA + McMaster : charge modérée, insuffisante. Écarté comme cause principale.',balbuzard:'Parasites ? Trématodes transmis par les poissons, poux mallophages… Rien d’anormal. Écarté.',cistude:'Parasites ? Sangsues (Placobdella costata) et Haemogregarina stepanowi dans le sang. Frottis : taux habituels. Écarté.',lezard:'Parasites ? Acariens sous les écailles, coccidies (Isospora). Coproscopie normale. Écarté.',eleonore:'Parasites ? Trichomonas gallinae, Haemoproteus… Écouvillon et frottis négatifs.',sittelle:'Parasites ? Paludisme aviaire (Plasmodium relictum), Syngamus trachea. Frottis dans la norme. Écarté.'};
 try{for(const m of MUT){if(PARH[m.sp])m.c.unshift([m.ch,PARH[m.sp]])}}catch(e){}
 var PARA=[
@@ -3603,6 +3625,7 @@ var PARA=[
 {t:'les parasites, signal d’alarme',L:[['m','Les lézards peuvent porter des acariens sous les écailles, et des coccidies dans l’intestin, comme Isospora.'],['a','Tu les connais tous, ces noms ?'],['m','Pas tous, mais beaucoup ! Les parasites, c’est ma passion, tu le sais.'],['m','Et tu sais ce qui est fascinant ? Un animal en bonne santé vit très bien avec ses parasites. C’est quand quelque chose l’affaiblit qu’ils prennent le dessus.']]},
 {t:'le groupe témoin',L:[['m','Chez les rapaces, je cherche Trichomonas gallinae : ça fait des plaques dans la gorge, ils l’attrapent en mangeant des pigeons.'],['m','Et dans le sang, Haemoproteus ou Plasmodium : le paludisme des oiseaux, transmis par des insectes piqueurs.'],['a','Et alors ?'],['m','Ici, en Sardaigne, sans N-12, tout est normal. Même les parasites sont à leur niveau habituel. C’est la comparaison qu’il me fallait.']]},
 {t:'immunité et parasites',L:[['m','J’ai comparé toutes mes analyses de parasites depuis le début.'],['a','Et ?'],['m','Dans les zones traitées, les charges parasitaires sont un peu plus fortes. Le N-12 affaiblit leur immunité, et les parasites en profitent.'],['m','Ce n’étaient pas les parasites, la cause… mais ils étaient un signal d’alarme.'],['a','Tu avais raison de les surveiller depuis le début.']]},
+{t:'les strongles du cheval',L:[['m','Chez les chevaux, je cherche les petits strongles : des vers de l’intestin. Tous les chevaux en ont un peu.'],['a','Même ceux qui vivent libres, là-haut ?'],['m','Surtout eux. Mais ici, la charge est normale. Ce n’est pas ça qui les rend ternes.'],['a','Donc c’est encore l’eau.'],['m','Encore l’eau. Tout le dossier le dit.']]},
 {t:'de simples locataires',L:[['m','Dernier prélèvement… Chez les goélands, je trouve des Contracaecum et des trématodes, comme chez les puffins.'],['m','Sans le N-12, leur immunité va se rétablir, et les parasites redeviendront de simples locataires discrets.'],['a','Des locataires… tu as toujours les mots justes.']]}];
 function paraWorld(dt){const ci=chIdx(),P=PARA[ci];if(!P||!started||night||paused||cardOpen||introT>0)return;SV.para=SV.para||{};if(SV.para[ci])return;if(chP()<.22||stopReq||sayT>0||hl||pz)return;SV.para[ci]=1;SV.docs=SV.docs||[];if(!SV.docs.includes('para'+ci))SV.docs.push('para'+ci);cardQ.push({t:'🔬 Mila explique · '+P.t,L:P.L.concat([['n','🦠 Analyse parasitologique notée dans le carnet (Documents).']])});nbNew();saveTrip()}
 try{for(let i=0;i<PARA.length;i++)DOCS.push({id:'para'+i,ic:'🦠',k:'Parasitologie · chapitre '+(i+1),t:'Analyses parasitologiques · '+(CHAP[i]?CHAP[i].totem[0]:''),w:(i=>()=>!!(SV.para&&SV.para[i]))(i),b:'<b>Espèce suivie :</b> '+(CHAP[i]?(ENC[CHAP[i].totem[0]]?ENC[CHAP[i].totem[0]][0]:CHAP[i].totem[0]):'')+'<br><br><b>Hypothèse de Mila :</b> '+PARA[i].t+'.<br><br><b>Résultat :</b> '+PARR[i]+'.<br><br><i>'+(i<8?'Le parasitisme n’explique pas, à lui seul, les changements observés.':'Charges parasitaires plus élevées en zone traitée : signe d’une immunité affaiblie par le N-12.')+'</i>'})}catch(e){}
@@ -3833,14 +3856,14 @@ function smpAddX(){cardQ.push({t:'📧 Mail du labo · bidon et poisson',L:[['n'
 function csTick(t){const dt=csT0?Math.min(.05,(t-csT0)/1000):0;csT0=t;if(!cs)return;cs.t+=dt;const k=HH/420,Wd=W/k,gy=285,tm=t/1000;g.setTransform(DPR*k,0,0,DPR*k,0,0);try{CS[cs.k].draw(Wd,gy,cs.t,tm)}catch(e){}
 const vg=g.createRadialGradient(Wd/2,210,140,Wd/2,210,Wd*.75);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.35)');g.fillStyle=vg;g.fillRect(0,0,Wd,420);if(cs.t<1.4){g.fillStyle='rgba(0,0,0,'+(1-cs.t/1.4)+')';g.fillRect(0,0,Wd,420)}
 csBox(cs.t,cs.L,Wd);if(cs.t>cs.end&&!cs.done){const b=gid('csx');if(b&&b.style.display!=='block')b.style.display='block'}g.setTransform(DPR,0,0,DPR,0,0)}
-const CSW=[{k:'bella',ci:0,f:.42},{k:'pech',ci:4,f:.52},{k:'lucia',ci:6,f:.5},{k:'spray',ci:8,f:.3},{k:'plk',ci:9,f:.36}];
+const CSW=[{k:'bella',ci:0,f:.42},{k:'pech',ci:4,f:.52},{k:'lucia',ci:6,f:.5},{k:'spray',ci:9,f:.3},{k:'plk',ci:11,f:.36}];
 function cineWorld(dt){if(cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd)return;SV.csd=SV.csd||{};const ci=chIdx(),f=chP();for(const q of CSW){if(q.k==='ours'||(q.k==='plk'&&chP()<.88)||q.ci!==ci||SV.csd[q.k]||SV['csq_'+q.k]===level)continue;if(f>=q.f&&f<.95){SV['csq_'+q.k]=level;const intro={bella:'Arrête-toi là-haut, on voit tout le chantier de Bellavista !',pech:'Regarde, un pêcheur dans la crique… il nous fait signe.',lucia:'C’est ici, le port. Lucia doit nous attendre.',spray:'Chut… tu entends ce bruit au-dessus des pins ?',plk:'Arrêtons-nous ici pour la nuit… la plage est magnifique.',ours:'Il commence à faire sombre… la piste s’enfonce dans la forêt.'}[q.k];say(intro,3.4,q.k==='plk'?0:1);stopReq={x:c.x+320,cb:()=>setTimeout(()=>fadeTo(()=>openCine(q.k)),400)};return}}}
 Object.assign(ALBK,{cs_bella:['🏗️','Le chantier de Bellavista','#e8b923','#8fcdee'],cs_pech:['🎣','Le pêcheur de Piana','#c8502a','#2fa8c8'],cs_lucia:['🌙','Rendez-vous au port','#1a2448','#ffd0a0'],cs_spray:['🚁','L’hélicoptère d’épandage','#f2b880','#2f5a3a'],cs_plk:['✨','Le plancton lumineux','#050a1e','#50dcff']});
 // --- conséquences des choix + rattrapage
 function chxConseq(dt){if(!started||paused||night||introT>0||cardOpen||hl||pz||cs||sayT>0||stopReq)return;const ci=chIdx(),f=chP();SV.cq=SV.cq||{};
 if(ci===4&&CHX('prelev')===1&&!SV.cq.ctl&&f>.2){SV.cq.ctl=1;cardQ.push({t:'🚓 Contrôle routier',L:[['n','Une voiture banalisée fait signe au Cherokee de se ranger. Un homme en civil s’approche.'],['v','<b>L’homme :</b> « Simple contrôle. Vous faites du tourisme ? On vous a vus près de la rivière, l’autre jour… »'],['a','On se promène. C’est interdit ?'],['v','<b>L’homme :</b> « Pas encore. Bonne route. »'],['m','Il n’était pas gendarme… Quelqu’un s’inquiète de nos prélèvements. On est sur la bonne piste.']]});saveTrip();return}
 if(ci===6&&CHX('presse')===0&&!SV.cq.thr&&f>.25&&f<.45){SV.cq.thr=1;cardQ.push({t:'✉️ Un mot sous l’essuie-glace',L:[['n','Un papier plié, glissé sous l’essuie-glace pendant la pause.'],['v','« Arrêtez de fouiner. Rentrez chez vous. »'],['a','L’article les a fait sortir du bois.'],['m','S’ils ont peur, c’est qu’on approche. On continue, ensemble.']]});saveTrip();return}
-if(ci===9&&!SV.cq.epi&&f>.12){SV.cq.epi=1;const L=[['m','Tu te rends compte de tout le chemin qu’on a fait depuis Fautea ?']];L.push(CHX('analyse')===0?['a','Ta toxicologie a trouvé le N-12 dès le début. Tu avais le bon instinct.']:['a','Tu as écarté chaque parasite, un par un. Personne ne peut contester ton travail.']);if(CHX('prelev')===1)L.push(['m','Et mes prélèvements en amont ont montré d’où venait la pollution.']);if(SV.spy)L.push(['a','Même le faux dépanneur n’a rien pu y faire.']);else if(SV.bdL&&Object.keys(SV.bdL).length)L.push(['a','Et on a même dépanné quelqu’un en chemin. On est une bonne équipe.']);L.push(CHX('presse')===0?['m','Clara va publier la suite de son article, avec toutes nos preuves cette fois.']:['m','Clara va pouvoir tout publier d’un coup, preuves à l’appui. Ils ne s’y attendent pas.']);L.push(['a','Rentrons à Fautea, mon amour.']);for(const l of L)talkQ.push(l);saveTrip()}}
+if(ci===10&&!SV.cq.epi&&f>.12){SV.cq.epi=1;const L=[['m','Tu te rends compte de tout le chemin qu’on a fait depuis Fautea ?']];L.push(CHX('analyse')===0?['a','Ta toxicologie a trouvé le N-12 dès le début. Tu avais le bon instinct.']:['a','Tu as écarté chaque parasite, un par un. Personne ne peut contester ton travail.']);if(CHX('prelev')===1)L.push(['m','Et mes prélèvements en amont ont montré d’où venait la pollution.']);if(SV.spy)L.push(['a','Même le faux dépanneur n’a rien pu y faire.']);else if(SV.bdL&&Object.keys(SV.bdL).length)L.push(['a','Et on a même dépanné quelqu’un en chemin. On est une bonne équipe.']);L.push(CHX('presse')===0?['m','Clara va publier la suite de son article, avec toutes nos preuves cette fois.']:['m','Clara va pouvoir tout publier d’un coup, preuves à l’appui. Ils ne s’y attendent pas.']);L.push(['a','Rentrons à Fautea, mon amour.']);for(const l of L)talkQ.push(l);saveTrip()}}
 storyCatchUp=(function(o){return function(){o();try{const ci=(level-1)%CHAP.length;SV.chx=SV.chx||{};SV.csd=SV.csd||{};if(ci>1&&SV.chx.analyse===undefined)SV.chx.analyse=1;if(ci>3&&SV.chx.prelev===undefined)SV.chx.prelev=0;if(ci>5&&SV.chx.presse===undefined)SV.chx.presse=1;for(const q of CSW)if(ci>q.ci)SV.csd[q.k]=1;SV.cq=SV.cq||{};if(ci>4)SV.cq.ctl=1;if(ci>6)SV.cq.thr=1;SV.bdL=SV.bdL||{};for(let L=1;L<level;L++)SV.bdL[L]=1}catch(e){}}})(storyCatchUp);
 
 // ===== v82 : le scénario se rejoue à chaque passage dans un chapitre =====
@@ -3850,7 +3873,7 @@ SV.npc=SV.npc||{};for(const k of Object.keys(SV.npc))if(k.indexOf(lv+':')===0)de
 if(ci===HEL_CH)SV.helS=0;if(ci===BUR_CH){SV.burS=0;SV.burT=0}
 SV.csd=SV.csd||{};for(const q of CSW)if(q.ci===ci){delete SV.csd[q.k];delete SV['csq_'+q.k]}
 SV.chx=SV.chx||{};const CK={1:'analyse',3:'prelev',5:'presse'};if(CK[ci])delete SV.chx[CK[ci]];
-if(SV.bdL)delete SV.bdL[lv];if(SV.para)delete SV.para[ci];SV.cq=SV.cq||{};if(ci===4)delete SV.cq.ctl;if(ci===6)delete SV.cq.thr;if(ci===9)delete SV.cq.epi;
+if(SV.bdL)delete SV.bdL[lv];if(SV.para)delete SV.para[ci];SV.cq=SV.cq||{};if(ci===4)delete SV.cq.ctl;if(ci===6)delete SV.cq.thr;if(ci===10)delete SV.cq.epi;
 spLv=-1;try{chs=null;bd=null}catch(e){}saveTrip()}catch(e){}}
 goChapter2=(function(o){return function(i){o(i);chapReset()}})(goChapter2);
 
@@ -4865,7 +4888,7 @@ const nb=9+Math.round(ci*1.5);for(let i=0;i<nb;i++)bump.push(500+R()*(L-1000));
 const h0=x=>{const e=Math.min(1,Math.max(0,(x-250)/400))*Math.min(1,Math.max(0,(L-200-x)/400));let y=-(Math.sin(x/240+p1)*A1+Math.sin(x/95+p2)*A2)*e;y-=(x/L)*A3*Math.sin(x/700+p3)*e;return 330+y};
 const H=x=>{let y=h0(x);for(const f of ford){if(x>f[0]&&x<f[1]){const u=(x-f[0])/(f[1]-f[0]);y+=16*Math.sin(Math.PI*u)}}for(const b of bump){const dx=x-b;if(Math.abs(dx)<20)y-=(13+10*d)*(1-Math.abs(dx)/20)}return y};
 return{L,H,mud,ford,bump,d}}
-function trlOpen(after){const ci=chIdx(),th=TRL_TH[ci%TRL_TH.length],tries=(SV.trlTry&&SV.trlTry[level])||0,easy=tries>=3;const G0=trlGen(ci,easy);
+function trlOpen(after){const ci=chIdx(),th=TRL_TH[ci%TRL_TH.length],tries=(SV.trlTry&&SV.trlTry[level])||0,easy=tries>=3;const G0=trlGen(Math.min(9,ci),easy);
 const live=th.k==='moutons'||th.k==='vaches',N=live?(th.k==='vaches'?3:5):Math.min(th.k==='eau'?7:6,4+Math.floor(ci/3)),allow=live?0:(easy?2:1);
 const mu=th.k==='eau'?.42:.7,sz=th.k==='eau'?20:28,LIP=easy?18:th.k==='eau'?9:11,BL=170;
 const M={k:'trl',G:G0,th,live,N,allow,mu,sz,LIP,BL,x:120,vx:0,y:0,vy:0,air:0,ang:0,rot:0,gas:0,brk:0,t:0,res:null,cam:0,items:[],lost:0,comfort:1,A:{x:0,y:0},pv:null,pp:null,fall:[],splash:[],msg:'',msgT:0,
@@ -4979,7 +5002,7 @@ const M=K.map(r=>Array.from(r)),b=Array.from(F);for(let i=0;i<N;i++){let p=i;for
 const u=new Array(N).fill(0);for(let i=N-1;i>=0;i--){let sum=b[i];for(let cc=i+1;cc<N;cc++)sum-=M[i][cc]*u[cc];u[i]=sum/(M[i][i]||1e-12)}
 const U=i=>map[i]>=0?[u[map[i]],u[map[i]+1]]:[0,0];let maxU=0;for(let i=0;i<n;i++){const q=U(i);maxU=Math.max(maxU,Math.hypot(q[0],q[1]))}
 const f=beams.map(bm=>{const A=nodes[bm.a],B=nodes[bm.b],dx=B.x-A.x,dy=B.y-A.y,L=Math.hypot(dx,dy),ua=U(bm.a),ub=U(bm.b);return EA/L*(((ub[0]-ua[0])*dx+(ub[1]-ua[1])*dy)/L)});return{U,f,maxU}}
-function brOpen(after){const ci=chIdx(),n=4+Math.floor(ci/2),S=50,Y=250,XL=400-n*S/2,XR=400+n*S/2,CAP=262,MAXL=S*2.3,budget=4*n+1-DF().tb*2;
+function brOpen(after){const ci=Math.min(9,chIdx()),n=4+Math.floor(ci/2),S=50,Y=250,XL=400-n*S/2,XR=400+n*S/2,CAP=262,MAXL=S*2.3,budget=4*n+1-DF().tb*2;
 const B={k:'bridge',n,S,Y,XL,XR,nodes:[],beams:[],hist:[],sel:-1,downP:null,mode:'edit',t:0,car:0,res:null,fails:(SV.brFail&&SV.brFail[level])||0,msg:'',msgT:0,stress:null,brk:-1,fallT:0,
 start(){for(let j=0;j<=2;j++){B.nodes.push({x:XL,y:Y+j*S,fix:1});B.nodes.push({x:XR,y:Y+j*S,fix:1})}B.ui()},
 ui(){let h='<div style="position:absolute;left:2%;top:2.5%;right:2%;display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><span class="tr" style="font-weight:800">🌉 Le pont de bois est cassé : reconstruis-le !<br><span style="font-weight:600">'+(B.mode==='edit'?'Touche un point d’ancrage ⚓ puis un point de la grille pour poser une poutre (ou fais glisser). Touche une poutre pour l’enlever. Les triangles rendent le pont solide !':'Test en cours…')+'</span></span>';
@@ -5649,7 +5672,7 @@ try{Object.assign(ALBK,{cs_nox1:['🐴','Le Coscione','#9cbc6a','#7a4220'],cs_no
 musScene=(function(o){return function(){try{if(cs&&cs.k==='nox1')return cs.t<14?'mystery':cs.t<31?'tense':'epic';if(MGX&&MGX.k==='horse')return 'epic';if(cs&&cs.k==='nox2')return cs.t<20?'epic':'win';if(cs&&cs.k==='nox3')return 'tense'}catch(e){}return o()}})(musScene);
 // --- déclenchement : un berger fait signe au bord de la route (chapitre de l'Ospedale, avant la forêt)
 var noxWX=null;
-function noxWorld(){try{if(chIdx()!==8||SV.noxL===level||SV.noxAsk===level)return;if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd||tow)return;const f=chP();if(f<.14||f>.4)return;if(typeof dogGone==='function'&&dogGone())return;
+function noxWorld(){try{if(chIdx()!==9||SV.noxL===level||SV.noxAsk===level)return;if(MGX||cs||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||stopReq||sayT>0||work||flatW>=0||chEnd||tow)return;const f=chP();if(f<.14||f>.4)return;if(typeof dogGone==='function'&&dogGone())return;
 SV.noxAsk=level;noxWX=c.x+560;say('Ralentis, ce berger nous fait de grands signes.',3.4,0);stopReq={x:c.x+420,cb:()=>setTimeout(()=>{cardQ.unshift({now:1,t:'Un berger nous arrête',L:[['v','<b>Le berger :</b> « Regardez ! Regardez, là-haut, sur le plateau ! Ils attrapent les bêtes ! »'],['m','Sur le plateau du Coscione ? On y va !']],cb:()=>setTimeout(()=>fadeTo(()=>openCine('nox1')),300)})},300)}}catch(e){}}
 mgTick=(function(o){return function(dt){o(dt);noxWorld()}})(mgTick);
 npcDraw=(function(o){return function(tm){o(tm);try{if(noxWX!=null&&SV.noxAsk===level&&SV.noxL!==level&&Math.abs(noxWX-c.x)<1500){npcFig(noxWX,T(noxWX),['#7a6a4a','#3a3a3a',3,'#c8c8c8',1,2,0],1,tm);if(c.x<noxWX-60){const y=T(noxWX)-82;g.fillStyle='rgba(255,255,255,.95)';rr(g,noxWX-70,y-18,140,24,10);g.fill();g.fillStyle='#2a1d0e';g.font='800 12px Arial';g.textAlign='center';g.textBaseline='middle';g.fillText('Regardez ! Regardez !',noxWX,y-6)}}}catch(e){}}})(npcDraw);
@@ -5678,7 +5701,7 @@ const BAK={
    if(pre==='VA2:'){const ds=new Blob([u8]).stream().pipeThrough(new DecompressionStream('gzip'));txt=await new Response(ds).text()}else if(pre==='VA1:')txt=new TextDecoder().decode(u8);else throw 0}
   const o=JSON.parse(txt);if(!o||o.app!=='voyage-en-amoureux'||!o.trip)throw 0;JSON.parse(o.trip);return o},
  restore(o){localStorage.setItem(SKEY,o.trip);if(o.set)localStorage.setItem(PKEY,o.set);if(o.best)localStorage.setItem('best4x4',o.best);try{inGame=false}catch(e){}setTimeout(()=>location.reload(),900)},
- summary(o){try{const t=JSON.parse(o.trip);return 'Chapitre '+(((t.lvl||1)-1)%10+1)+' · '+(t.hearts||0)+' ❤ · enregistrée le '+new Date(o.date).toLocaleDateString('fr-FR')}catch(e){return ''}}
+ summary(o){try{const t=JSON.parse(o.trip);return 'Chapitre '+(((t.lvl||1)-1)%CHAP.length+1)+' · '+(t.hearts||0)+' ❤ · enregistrée le '+new Date(o.date).toLocaleDateString('fr-FR')}catch(e){return ''}}
 };
 (function(){const st=document.createElement('style');st.textContent=`#bak{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(10,6,4,.72);padding:10px;box-sizing:border-box}
 #bak .bw{width:min(560px,96vw);max-height:calc(100vh - 20px);overflow:auto;background:#2b2018;border:1px solid rgba(255,255,255,.12);color:var(--cream,#f6ead6);border-radius:18px;padding:14px 18px;box-sizing:border-box;box-shadow:0 10px 40px rgba(0,0,0,.5)}
@@ -5723,7 +5746,7 @@ const SOUV=[
  {id:'dog',ok:()=>SV.csd&&SV.csd.dogf&&SV.dogFoundL!==level,L:[['m','Quand j’ai vu son collier dans la boue… j’ai eu tellement peur de ne jamais le revoir.'],['a','Regarde-le, à l’arrière. Il a déjà tout oublié, lui.']]},
  {id:'ours2',ok:()=>SV.csd&&SV.csd.ours&&chIdx()>8,L:[['m','Je n’arrive toujours pas à y croire. Un ours, dans nos phares, en Corse…'],['a','Ni moi. Et le hayon non plus, il n’y croit toujours pas.']]},
  {id:'cheval',ok:()=>SV.noxWin===1&&SV.noxL!=null&&SV.noxL!==level,L:[['a','Toi, au galop sur le plateau du Coscione… Je n’oublierai jamais cette image.'],['m','Et toi, planté à côté du Cherokee qui fumait contre son rocher !']]},
- {id:'cheval0',ok:()=>SV.noxWin===0&&chIdx()>8,L:[['m','Cette camionnette… elle m’a filé entre les doigts, au Coscione.'],['a','Mais tu as relevé la plaque. Avec ça, Lucia finira par les coincer.']]}
+ {id:'cheval0',ok:()=>SV.noxWin===0&&chIdx()>9,L:[['m','Cette camionnette… elle m’a filé entre les doigts, au Coscione.'],['a','Mais tu as relevé la plaque. Avec ça, Lucia finira par les coincer.']]}
 ];
 try{for(const S of SOUV)for(const l of S.L)JOKE_SET.add(l[1])}catch(e){}
 var souvT=0;
@@ -5752,7 +5775,7 @@ function occAt(x,r,skip){try{
 }catch(e){}return false}
 trlWorld=(function(o){return function(){try{if(SV.trlL!==level&&SV.trlAsk!==level&&occAt(c.x+500,560,'trl'))return}catch(e){}return o()}})(trlWorld);
 try{tourWorld=(function(o){return function(){try{if(SV.tourL!==level&&occAt(c.x+500,520,'tour'))return}catch(e){}return o()}})(tourWorld)}catch(e){}
-try{noxWorld=(function(o){return function(){try{if(SV.noxAsk!==level&&SV.noxL!==level&&chIdx()===8&&occAt(c.x+500,520,'nox'))return}catch(e){}return o()}})(noxWorld)}catch(e){}
+try{noxWorld=(function(o){return function(){try{if(SV.noxAsk!==level&&SV.noxL!==level&&chIdx()===9&&occAt(c.x+500,520,'nox'))return}catch(e){}return o()}})(noxWorld)}catch(e){}
 
 // ===== 2.43 : les oiseaux s'envolent sans leur branche =====
 artA=(function(o){return function(x,id,t){if(typeof hl!=='undefined'&&hl&&hl.end&&hl.H&&hl.H.end==='fly'&&hl.H.art===id&&x===hlX){try{const e2=hl.et,dx=e2*e2*120,dy=-(e2*e2*90+Math.sin(e2*12)*6);perchM=new DOMMatrix().translate(-dx*DPR,-dy*DPR).multiply(x.getTransform())}catch(e){perchM=null}try{return o(x,id,t)}finally{perchM=null}}return o(x,id,t)}})(artA);
@@ -5917,11 +5940,13 @@ const LAY={
  6:[[0,'r'],[.1,'d'],[.3,'k'],[.4,'d'],[.47,'r'],[.62,'d'],[.85,'k'],[.92,'r']],
  7:[[0,'r'],[.15,'d'],[.4,'k'],[.55,'d'],[.8,'r']],
  8:[[0,'r'],[.08,'d'],[.25,'k'],[.45,'d'],[.6,'k'],[.8,'d'],[.93,'r']],
- 9:[[0,'r'],[.15,'d'],[.35,'k'],[.45,'d'],[.65,'r'],[.8,'d'],[.92,'r']]};
-const LAYON=new Set([0,1,2,3,4,5,6,7,8,9]);// chapitres déjà passés au nouveau découpage
+ 9:[[0,'r'],[.08,'d'],[.3,'k'],[.42,'d'],[.6,'k'],[.72,'d'],[.92,'r']],
+ 10:[[0,'r'],[.15,'d'],[.35,'k'],[.45,'d'],[.65,'r'],[.8,'d'],[.92,'r']],
+ 11:[[0,'r'],[.25,'d'],[.6,'r']]};
+const LAYON=new Set([0,1,2,3,4,5,6,7,8,9,10,11]);// chapitres déjà passés au nouveau découpage
 function layOn(){try{return LAYON.has(chIdx())}catch(e){return false}}
-function LAYK(){return layOn()?1.6:1}
-function laySync(){LAYlv=level;const on=layOn(),L=on?88000:55000;LAYcur=on?LAY[chIdx()]:null;if(L!==MAP_L){MAP_L=L;try{slipC={};deepC={}}catch(e){}for(const C of ['farmXc','portXc','jamXc','stfXc','plantXc'])try{const o2=window[C]||eval(C);for(const k in o2)delete o2[k]}catch(e){}try{npcLv=-1;spLv=-1}catch(e){}try{ferG={lv:-99,on:0}}catch(e){}try{for(const k in hardOKc)delete hardOKc[k]}catch(e){}try{fordOKc={}}catch(e){}try{for(const k in tunOKc)delete tunOKc[k]}catch(e){}try{ztC={}}catch(e){}}}
+function LAYK(){return layOn()?va66Len()/55000:1}
+function laySync(){LAYlv=level;const on=layOn(),L=on?va66Len():55000;LAYcur=on?LAY[chIdx()]:null;if(L!==MAP_L){MAP_L=L;try{slipC={};deepC={}}catch(e){}for(const C of ['farmXc','portXc','jamXc','stfXc','plantXc'])try{const o2=window[C]||eval(C);for(const k in o2)delete o2[k]}catch(e){}try{npcLv=-1;spLv=-1}catch(e){}try{ferG={lv:-99,on:0}}catch(e){}try{for(const k in hardOKc)delete hardOKc[k]}catch(e){}try{fordOKc={}}catch(e){}try{for(const k in tunOKc)delete tunOKc[k]}catch(e){}try{ztC={}}catch(e){}}}
 var ztC={};
 function zt(x){if(!LAYcur)return 'd';const f=x/MAP_L;let t=LAYcur[0][1];for(const q of LAYcur){if(f>=q[0])t=q[1];else break}return t}
 function zw(x){if(!LAYcur)return null;const B=600;const k=Math.round(x/50);if(ztC[k])return ztC[k];const W2={r:0,d:0,k:0};for(const d of[-B,-B/2,0,B/2,B])W2[zt(x+d)]+=.2;if(Object.keys(ztC).length>6000)ztC={};ztC[k]=W2;return W2}
@@ -5966,7 +5991,7 @@ var layLast='';
 mgTick=(function(o){return function(dt){o(dt);try{if(!LAYcur||!started||dt<=0)return;const t=zt(c.x);if(t!==layLast){const prev=layLast;layLast=t;if(prev&&sayT<=0&&!talkQ.length&&Math.random()<.6){const L={r:[['a','Du goudron ! Le Cherokee respire.'],['m','Retour sur la route. Repasse en 2H, mon cœur.']],d:[['a','Fin du goudron, on passe en 4H.'],['m','Chemin de terre… gare aux flaques.']],k:[['m','Ça devient rocailleux. Mets la 4L !'],['a','Attention aux cailloux, on pourrait crever.']]}[t];const q=L[Math.floor(Math.random()*L.length)];say(q[1],3,q[0]==='m'?1:0)}}}catch(e){}}})(mgTick);
 // durée de chapitre proportionnelle, sauvegardes en cours adaptées
 goChapter2=(function(o){return function(i){const r=o(i);try{laySync();lvlDur*=LAYK()}catch(e){}return r}})(goChapter2);
-var _loadTrip0=loadTrip;loadTrip=(function(o){return function(){try{SV.layV=SV.layV||{};const ci=((SV.lvl||1)-1)%10;if(LAYON.has(ci)&&SV.layV[SV.lvl]!==2){if(SV.px!=null)SV.px=Math.round(SV.px*1.6);if(SV.resp!=null)SV.resp=Math.round(SV.resp*1.6);SV.cmp=null}if(LAYON.has(ci))SV.layV[SV.lvl]=2}catch(e){}const r=o();try{laySync();lvlDur*=LAYK()}catch(e){}return r}})(loadTrip);
+var _loadTrip0=loadTrip;loadTrip=(function(o){return function(){try{SV.layV=SV.layV||{};const ci=((SV.lvl||1)-1)%CHAP.length;if(LAYON.has(ci)&&SV.layV[SV.lvl]!==2){if(SV.px!=null)SV.px=Math.round(SV.px*1.6);if(SV.resp!=null)SV.resp=Math.round(SV.resp*1.6);SV.cmp=null}if(LAYON.has(ci))SV.layV[SV.lvl]=2}catch(e){}const r=o();try{laySync();lvlDur*=LAYK()}catch(e){}return r}})(loadTrip);
 newMap=(function(o){return function(){try{laySync();SV.layV=SV.layV||{};if(layOn())SV.layV[level]=2}catch(e){}return o()}})(newMap);
 // au moins 40 s de route tranquille entre deux interruptions (chapitres au nouveau découpage)
 setInterval(()=>{try{if(paused||cs||MGX||cardOpen||stopReq||hl||pz)calmT=0}catch(e){}},250);
@@ -5978,7 +6003,7 @@ popOK=(function(o){return function(){return o()&&(calmOK()||(typeof popCD!=='und
 ferPick=(function(o){return function(){const r=o();try{const ok2=(a,b)=>{for(let y=a;y<=b;y+=200)if(zt(y)==='k')return false;return true};if(r<0||!LAYcur||ok2(r-600,r+FER_D+2000))return r;let best=-1;for(let x=Math.round(MAP_L*.25/100)*100;x<MAP_L-FER_D-5200;x+=100){if(!ok2(x-700,x+FER_D+2100))continue;let ok=true;for(let xx=x-800;xx<=x+FER_D+2200;xx+=50)if(tunAt(xx)>=0){ok=false;break}if(ok&&(best<0||Math.abs(x-r)<Math.abs(best-r)))best=x}if(best>0)return best}catch(e){}return r}})(ferPick);
 LAYlv=-1;
 // voyage déjà commencé au chargement : on adapte la position à la nouvelle longueur
-try{if(SV.has){SV.layV=SV.layV||{};const ci=((SV.lvl||1)-1)%10;if(LAYON.has(ci)&&SV.layV[SV.lvl]!==2){SV.layV[SV.lvl]=2;if(SV.px!=null)SV.px=Math.round(SV.px*1.6);if(SV.resp!=null)SV.resp=Math.round(SV.resp*1.6);SV.cmp=null;laySync();try{_loadTrip0()}catch(e){}}else laySync();lvlDur*=LAYK()}}catch(e){}
+try{if(SV.has){SV.layV=SV.layV||{};const ci=((SV.lvl||1)-1)%CHAP.length;if(LAYON.has(ci)&&SV.layV[SV.lvl]!==2){SV.layV[SV.lvl]=2;if(SV.px!=null)SV.px=Math.round(SV.px*1.6);if(SV.resp!=null)SV.resp=Math.round(SV.resp*1.6);SV.cmp=null;laySync();try{_loadTrip0()}catch(e){}}else laySync();lvlDur*=LAYK()}}catch(e){}
 npcList=(function(o){let lv=-1,F=null;return function(){const L=o();if(!layOn())return L;if(lv===level&&F&&F.src===L)return F;lv=level;F=L.filter(n=>n.sto||hs(n.i*13+TS()*7+level)<.67);F.src=L;return F}})(npcList);
 
 // ===== 2.47 : la pièce du sabotage est bien vendue à la station, en surbrillance =====
@@ -6158,8 +6183,8 @@ try{lampPts=(function(o){return function(a,b){const L=o(a,b);try{return L.filter
 
 brkS=(function(o){return function(){try{SV.brS=SV.brS||{};const v0=SV.brS[level];if(v0!==undefined&&v0>=0&&cvIn(v0,700)){delete SV.brS[level]}if(SV.brS[level]!==undefined)return SV.brS[level];if(!started||!c)return-1;let pick=-1;eachBridge0(MAP_L*.4,MAP_L*.88,s=>{if(pick<0&&s>c.x+800&&!cvIn(s,700))pick=s});SV.brS[level]=pick;return pick}catch(e){return o()}}})(brkS);
 // ===== 2.60 : le plateau du Coscione existe aussi au chapitre de l'Ospedale, autour de l'événement Noxacorp =====
-PLT=(function(o){return function(){if(o())return true;try{if(chIdx()!==8)return false;const f=chP();return f>=.12&&f<.46}catch(e){return false}}})(PLT);
-noxWorld=(function(o){return function(){try{if(chIdx()===8&&!PLT())return;if(chIdx()===8&&chP()<.2)return}catch(e){}return o()}})(noxWorld);
+/* 3.66 : le plateau du ch9 est passé au ch10 (va66PR) */
+noxWorld=(function(o){return function(){try{if(chIdx()===9&&!PLT())return;if(chIdx()===9&&chP()<.2)return}catch(e){}return o()}})(noxWorld);
 // ===== 2.62 : plateau du Coscione propre, de jour comme de nuit (pas de ville, de bouchon, de marché, de lampadaires) =====
 jamX=(function(o){return function(){try{if(PLT())return -1}catch(e){}return o.apply(this,arguments)}})(jamX);
 marketDraw=(function(o){return function(){try{if(PLT())return}catch(e){}return o.apply(this,arguments)}})(marketDraw);
@@ -6508,7 +6533,9 @@ const JRN_T=[
 [['m','Quand j’ai vu le gyrophare dans le rétroviseur, j’ai cru qu’on allait tout perdre.'],['a','Moi, de l’étang, je retiens surtout le « plouf ».'],['m','Et ce que tu m’as chuchoté juste avant…']],
 [['a','Ils ont vraiment essayé de t’acheter.'],['m','Et j’ai dit non. Le lézard tyrrhénien était d’accord avec moi.']],
 [['m','En Sardaigne, sans N-12, tout allait bien. C’est ma preuve.'],['a','Les falaises de granit rose… et toi au milieu. Je ne suis pas près d’oublier.']],
-[['m','Le dossier est parti. On l’a fait.'],['a','Oui… on l’a fait.'],['m','Et toi, tu as l’air nerveux depuis hier soir.'],['a','Moi ? Pas du tout.']]];
+[['m','Le dossier est parti. On l’a fait.'],['a','Oui… on l’a fait.'],['m','Et toi, tu as l’air nerveux depuis hier soir.'],['a','Moi ? Pas du tout.']],
+[['m','Marchetti arrêté, l’usine fermée… J’arrive toujours pas à y croire.'],['a','Moi si. T’as jamais lâché.']],
+[['a','C’était beau, Bonifacio.'],['m','Oui. Mais toi, t’as pas regardé une seule falaise.'],['a','Si, si. Un peu.']]];
 journalPopup=function(i){if(JRN_T[i]){SV.jrnP=i;saveTrip()}};
 mgTick=(function(o){return function(dt){o(dt);try{if(SV.jrnP==null||!started||night||crashed||paused||introT>0||cardOpen||hl||pz||cs||dt<=0)return;
 if(chIdx()!==SV.jrnP+1){if(chIdx()>SV.jrnP+1)SV.jrnP=null;return}
@@ -6593,7 +6620,7 @@ gid('menu').addEventListener('click',e=>{const b=e.target.closest('button');if(!
 var lastHrI=0,stopT2=0,tendT=120,tendH=[],rbT=0,wasRain=0,gustT=50,gustD=0,leafP=[],seasSaid=-1,noonSaid=-1,lastHr=0,picC={},panC={},phBusy=0,poseT=0;
 function busyNow(){return !started||night||crashed||paused||cs||MGX||hl||pz||cardOpen||stopReq||introT>0||(typeof fv!=='undefined'&&fv)}
 // ---------- saisons ----------
-function season(){const i=chIdx();return i<=2?'spring':i<=5?'summer':'autumn'}
+function season(){return 'spring'}
 // ---------- emplacements (pique-nique, panorama) ----------
 function spotFind(f0,avoid){let x=Math.round(MAP_L*f0/60)*60;for(let n=0;n<400;n++,x+=90){try{if(x>MAP_L-3000)return -1;let ok=Z(x)[3]==='dry'&&Math.abs(T(x+170)-T(x-170))<22&&!sceneAt(x)&&!sceneAt(x+200)&&!sceneAt(x-200)&&bridgeAt(x)<0&&bridgeAt(x+250)<0&&bridgeAt(x-250)<0&&bridgeAt(x+500)<0&&bridgeAt(x-500)<0&&tunAt(x)<0&&tunAt(x+300)<0&&tunAt(x-300)<0&&!ferIn(x-500)&&!ferIn(x+500)&&!cvIn(x,500)&&!occAt(x,520)&&!obs.some(o=>Math.abs(o.x-x)<500)&&!(avoid||[]).some(q=>Math.abs(q-x)<1800);if(ok&&typeof LAYcur!=='undefined'&&LAYcur)ok=zt(x)!=='k';if(ok&&PLT())ok=false;if(ok)return x}catch(e){}}return -1}
 function picSpots(){if(picC.lv===level)return picC.L;picC={lv:level,L:[]};const a=spotFind(.3,[]),b=spotFind(.72,[a]);picC.L=[a,b].filter(x=>x>0);return picC.L}
@@ -6866,7 +6893,7 @@ const CO_OUT=[[9.405,43.01],[9.47,42.98],[9.48,42.92],[9.47,42.84],[9.46,42.76],
 const CO_MT=[[8.90,42.39,1,1],[9.00,42.30,.85,0],[9.05,42.22,1,1],[9.10,42.13,.95,1],[9.15,42.03,.9,1],[9.10,41.95,.7,0],[9.20,41.86,.9,1],[9.23,41.79,.75,0],[9.18,41.68,.5,0],[9.32,42.44,.6,0],[8.84,42.20,.6,0],[9.04,41.72,.5,0],[9.39,42.86,.42,0],[8.95,42.52,.45,0],[8.98,42.08,.65,0],[9.02,41.86,.55,0]];
 const CO_FOR=[[8.83,42.22,.07],[9.13,42.12,.06],[9.22,41.80,.05],[9.23,41.66,.05],[9.38,42.40,.08],[8.96,42.29,.05],[9.10,41.78,.05]];
 const CO_TOWN=[['Bastia',9.45,42.70],['Ajaccio',8.74,41.92],['Calvi',8.76,42.57],['Corte',9.15,42.31],['Porto-Vecchio',9.28,41.59],['Bonifacio',9.16,41.39]];
-const CO_P={fautea:[9.40,41.71],favone:[9.40,41.77],solenz:[9.40,41.85],sari:[9.37,41.83],pv:[9.28,41.59],figari:[9.10,41.49],rocca:[8.93,41.50],coas:[8.96,41.53],sartene:[8.97,41.62],arriv:[9.05,41.70],zonza:[9.17,41.75],bav:[9.22,41.80],zicavo:[9.13,41.90],ajac:[8.74,41.92],sagone:[8.70,42.11],piana:[8.64,42.24],porto:[8.70,42.27],evisa:[8.80,42.25],corte:[9.15,42.31],ponte:[9.21,42.46],foce:[9.45,42.60],bastia:[9.45,42.70],teghime:[9.39,42.69],stf:[9.30,42.68],vizza:[9.13,42.12],bonif:[9.16,41.39],sard:[9.21,41.16],osp:[9.20,41.66],pina:[9.38,41.67]};
+const CO_P={fautea:[9.40,41.71],favone:[9.40,41.77],solenz:[9.40,41.85],sari:[9.37,41.83],pv:[9.28,41.59],figari:[9.10,41.49],rocca:[8.93,41.50],coas:[8.96,41.53],sartene:[8.97,41.62],arriv:[9.05,41.70],zonza:[9.17,41.75],bav:[9.22,41.80],zicavo:[9.13,41.90],ajac:[8.74,41.92],sagone:[8.70,42.11],piana:[8.64,42.24],porto:[8.70,42.27],evisa:[8.80,42.25],corte:[9.15,42.31],ponte:[9.21,42.46],foce:[9.45,42.60],bastia:[9.45,42.70],teghime:[9.39,42.69],stf:[9.30,42.68],vizza:[9.13,42.12],bonif:[9.16,41.39],sard:[9.21,41.16],osp:[9.20,41.66],pina:[9.38,41.67],cosc:[9.13,41.84]};
 const CO_R=[['Plage de Fautea','Village de Sari',['fautea','favone','solenz','sari']],
  ['Village de Sari','Castellu di Coasina',['sari','solenz','pv','figari','rocca','coas']],
  ['Castellu di Coasina','Arrivadu',['coas','sartene','arriv']],
@@ -6876,7 +6903,9 @@ const CO_R=[['Plage de Fautea','Village de Sari',['fautea','favone','solenz','sa
  ['Étang de Foce','Saint-Florent',['foce','bastia','teghime','stf']],
  ['Saint-Florent','Sardaigne (par Bonifacio)',['stf','ponte','corte','vizza','zicavo','zonza','pv','bonif','sard']],
  ['Sardaigne','Lac de l’Ospedale',['sard','bonif','pv','osp']],
- ['Lac de l’Ospedale','Plage de Fautea',['osp','pv','pina','fautea']]];
+ ['Lac de l’Ospedale','Plateau du Coscione',['osp','zonza','cosc']],
+ ['Plateau du Coscione','Bonifacio',['cosc','zonza','pv','bonif']],
+ ['Bonifacio','Plage de Fautea',['bonif','pv','pina','fautea']]];
 var coSel=null,coAnim=0,coTmr=0;
 // ===== 3.06 : carte de la Corse en teintes d'altitude (paliers nets, sans fondu) =====
 // Altitudes des sommets et des plaines d'après les cartes topographiques (Cinto 2706 m, Rotondo 2622 m, Paglia Orba 2525 m, d'Oro 2389 m, Renoso 2352 m, Incudine 2134 m, San Petrone 1767 m, Stello 1307 m, plaine orientale < 100 m)
@@ -7039,7 +7068,7 @@ CS.sarA1.L=()=>[[1,'n','Bonifacio, perché sur sa falaise. Le bateau accoste et 
 sarCross=(function(o){return function(back){if(!back)return o(back);fadeTo(()=>{btAfter=()=>{blackNow();try{openCine('sarA1')}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},350)};openBoat(true);if(bt){bt.D=9;bt.L=[[.8,'m','Au revoir la Sardaigne… On a ce qu’il nous faut.'],[4,'a','Regarde, Bonifacio sur sa falaise. On rentre.'],[7,'m','Le chien a déjà reconnu l’odeur du maquis !']]}})}})(sarCross);
 // ===== 3.12 : un grand décor par chapitre au bord de la route, dans l'esprit du port de Saint-Florent =====
 // chaque chapitre a son tableau (baie, calanques, aiguilles, étang, lac, falaises…), posé sur un tronçon plat et libre
-const VA12_SITES={0:{f:.25,hw:700,k:'fautea'},1:{f:.3,hw:720,k:'lion'},2:{f:.32,hw:620,k:'gorge'},3:{f:.74,hw:700,k:'needles',flat:340},4:{f:.74,hw:720,k:'calanques'},5:{f:.74,hw:640,k:'etang'},7:{f:.74,hw:720,k:'granite'},8:{f:.72,hw:700,k:'lac',avoid:[.08,.5]},9:{f:.32,hw:720,k:'bonif'}};
+const VA12_SITES={0:{f:.25,hw:700,k:'fautea'},1:{f:.3,hw:720,k:'lion'},2:{f:.32,hw:620,k:'gorge'},3:{f:.74,hw:700,k:'needles',flat:340},4:{f:.74,hw:720,k:'calanques'},5:{f:.74,hw:640,k:'etang'},7:{f:.74,hw:720,k:'granite'},8:{f:.72,hw:700,k:'lac'},10:{f:.32,hw:720,k:'bonif'},11:{f:.45,hw:700,k:'fautea'}};
 var va12C={};
 var va12Busy=0;
 function va12X(){const ci=chIdx(),S=VA12_SITES[ci];if(!S)return -1;const l=level;if(va12C[l]!==undefined)return va12C[l];if(va12Busy)return -1;va12Busy=1;let best=-1,bs=1e9;
@@ -7248,8 +7277,8 @@ scenery=(function(o){return function(x0,x1,front,tm){if(!front)return o(x0,x1,fr
 // --- nouveau voyage : Cherokee rouge d'origine et propre
 wipeTrip=(function(o){return function(){o();try{mudL=0;mudHi=0}catch(e){}try{cusInit();cusApply()}catch(e){}try{applyUp()}catch(e){}}})(wipeTrip);
 // --- chapitre 10 : l'enquête est finie, plus de relevés ni de prélèvements
-paraWorld=(function(o){return function(dt){if(chIdx()===CHAP.length-1)return;return o(dt)}})(paraWorld);
-sampleTick=(function(o){return function(dt,run){if(chIdx()===CHAP.length-1)return;return o(dt,run)}})(sampleTick);
+paraWorld=(function(o){return function(dt){if(chIdx()>=10)return;return o(dt)}})(paraWorld);
+sampleTick=(function(o){return function(dt,run){if(chIdx()>=10)return;return o(dt,run)}})(sampleTick);
 endStory=(function(o){return function(){try{for(let i=cardQ.length-1;i>=0;i--){const t=cardQ[i].t||'';if(/Mila explique|Mail du labo|Résultats du labo|Échantillon/.test(t))cardQ.splice(i,1)}}catch(e){}return o()}})(endStory);
 // --- pop-ups : plus d'attente de 40 s de route calme pour les cartes (seuls les événements du monde attendent le calme)
 popOK=(function(o){return function(){try{return !onFerry()&&!winch&&!stopReq&&(sayT<=0||popCD<-6)}catch(e){return true}}})(popOK);
@@ -7517,14 +7546,14 @@ function va3BlkDraw(x,tm,go,wa){const y=Math.max(T(x-50),T(x+50))+1,an=Math.atan
   g.fillStyle='#0b0c10';g.beginPath();g.arc(wx,-12,16,Math.PI,0);g.lineTo(wx+16,-12);g.fill()}
  g.restore()}
 // --- Chapitre 9 : Lucia appelle au lac, Marchetti est arrêté
-function va3ArrTick(){try{if(chIdx()!==8||SV.arrL===level||SV.stL!==level||(SV.stI||0)<3||!inGame||cardOpen||cs||MGX||hl||pz||stopReq||work||winch||chEnd)return;SV.arrL=level;SV.froid=0;
- say('On s’arrête un moment au bord du lac ? Il est trop beau.',3.4,0);stopReq={x:c.x+320,cb:()=>setTimeout(()=>fadeTo(()=>openCine('lacCall')),400)};saveTrip()}catch(e){}}
+function va3ArrTick(){try{if(chIdx()!==9||SV.arrL===level||SV.stL!==level||(SV.stI||0)<CHP().stops.length||!inGame||cardOpen||cs||MGX||hl||pz||stopReq||work||winch||chEnd)return;SV.arrL=level;SV.froid=0;
+ say('On s’arrête un moment au bord de l’eau ? C’est trop beau.',3.4,0);stopReq={x:c.x+320,cb:()=>setTimeout(()=>fadeTo(()=>openCine('lacCall')),400)};saveTrip()}catch(e){}}
 // --- Chapitre 10 : une tortue d'Hermann en bonne santé au bord du chemin de Fautea
 let va3TX=null;
-function va3TortTick(){try{if(chIdx()!==9){va3TX=null;return}if(va3TX&&va3TX.lv===level){if(va3TX.x>0&&!va3TX.said&&c.x>va3TX.x-560&&c.x<va3TX.x+100){va3TX.said=1;talkQ.push(['m','Andrea, regarde, au bord du chemin ! Une tortue d’Hermann, à l’ombre du ciste.'],['a','Elle mange tranquillement… comme une tortue normale.'],['m','Comme une tortue qui va bien. Sans le N-12, les autres vont guérir aussi.'])}return}if(SV.stL!==level||(SV.stI||0)<2)return;
+function va3TortTick(){try{if(chIdx()!==CHAP.length-1){va3TX=null;return}if(va3TX&&va3TX.lv===level){if(va3TX.x>0&&!va3TX.said&&c.x>va3TX.x-560&&c.x<va3TX.x+100){va3TX.said=1;talkQ.push(['m','Andrea, regarde, au bord du chemin ! Une tortue d’Hermann, à l’ombre du ciste.'],['a','Elle mange tranquillement… comme une tortue normale.'],['m','Comme une tortue qui va bien. Sans le N-12, les autres vont guérir aussi.'])}return}if(SV.stL!==level||(SV.stI||0)<1)return;
  const ok=x=>{try{return x<MAP_L-1500&&staticFree(x,-80,80,0)&&!occAt(x,160)&&!sceneAt(x)&&bridgeAt(x)<0&&bridgeAt(x+120)<0&&bridgeAt(x-120)<0&&!tunNear(x)&&!wetAt(x)&&!obs.some(o=>!o.done&&Math.abs(o.x-x)<260)&&Math.abs(T(x+40)-T(x-40))<14}catch(e){return false}};
  let x=c.x+700,n=0;while(!ok(x)&&n++<70)x+=60;va3TX={x:n>70?-1:x,lv:level,said:0}}catch(e){}}
-function va3TortDraw(tm){try{if(!va3TX||va3TX.x<0||va3TX.lv!==level||chIdx()!==9||Math.abs(va3TX.x-c.x)>1600)return;const x=va3TX.x,y=T(x)+2;
+function va3TortDraw(tm){try{if(!va3TX||va3TX.x<0||va3TX.lv!==level||chIdx()!==CHAP.length-1||Math.abs(va3TX.x-c.x)>1600)return;const x=va3TX.x,y=T(x)+2;
  g.save();g.translate(x-34,y-2);g.fillStyle='#4f7a34';for(let k=0;k<5;k++){g.beginPath();g.ellipse(k*7-14,-6-hs(k+3)*6,9,5,(k-2)*.4,0,7);g.fill()}g.fillStyle='#e8e2f0';for(let k=0;k<3;k++){g.beginPath();g.arc(k*10-10,-14-k%2*3,2.4,0,7);g.fill()}g.restore();
  g.fillStyle='rgba(0,0,0,.18)';g.beginPath();g.ellipse(x,y-1,16,3,0,0,7);g.fill();
  g.save();g.translate(x,y-8+Math.sin(tm*1.4)*.3);g.scale(.5,.5);artA(g,'tortue',tm*.5);g.restore();
@@ -7623,7 +7652,7 @@ obIcons=(function(o){return function(x,tm){if(!obv||!obv.L)return o(x,tm);const 
 // --- aucun magasin (supérette « Utile » des missions…) au bord du bac : il sera replacé plus loin, après la traversée
 shp.push=(function(o){return function(...a){const keep=[];for(const m of a){try{const G=ferG&&ferG.lv===level?ferG:ferGeo();if(G&&G.on&&m.x+300>G.Q1-900&&m.x<G.Q2+900)continue;if(fv)continue}catch(e){}keep.push(m)}return keep.length?o.apply(this,keep):this.length}})(shp.push);
 // --- plateau du Coscione : plus aucun vendeur (ni Chez Marcel) sur le plateau
-function va13PltX(x){try{const ci=chIdx(),f=x/MAP_L;if(ci===3)return f>=.32&&f<.63;if(ci===8)return f>=.11&&f<.47}catch(e){}return false}
+function va13PltX(x){try{const R=va66PR(),f=x/MAP_L;return !!R&&f>=R[0]&&f<R[1]}catch(e){}return false}
 pzL.push=(function(o){return function(...a){const keep=a.filter(m=>!(m&&va13PltX(m.x)));return keep.length?o.apply(this,keep):this.length}})(pzL.push);
 mgTick=(function(o){return function(dt){o(dt);try{for(let i=pzL.length-1;i>=0;i--)if(va13PltX(pzL[i].x))pzL.splice(i,1)}catch(e){}}})(mgTick);
 // --- lancement déjà en paysage (raccourci iPhone) : la page prend exactement la taille de l'écran calculée,
@@ -7738,7 +7767,7 @@ tree=(function(o){return function(px,y,h,k,b){const H=80+h*60,i=chIdx();let n;
 if(b===0||k%3===0)n=(i===2||i===8)?'chataignier':(k%7===0&&(i<2||i>=6))?'palmier':'olivier';else n='pin';
 if(!va25Cv(n,0,0))return o(px,y,h,k,b);va25Sp(n,px,y+3,n==='palmier'?H*1.25:H*1.1,0,hs(k+9)>.5)}})(tree);
 // --- décors plus loin de la route (deux plans en parallaxe, brumeux)
-function va25Kind(){const i=chIdx();return[0,1,4,6,7,9].includes(i)?0:(i===3||i===8)?2:1}
+function va25Kind(){const i=chIdx();return[0,1,4,6,7,10,11].includes(i)?0:(i===3||i===8||i===9)?2:1}
 const VA25_L=[['olivier','buisson1','buisson2','rochers','palmier','maison1','buisson3','olivier','bergerie','maison3'],['chataignier','pin','buisson2','bergerie','chataignier','rochers','maison2','buisson3','pin','olivier'],['pin','pin','rochers','buisson1','pin','bergerie','buisson3','chataignier','pin','rochers']];
 const VA25_H={olivier:62,palmier:96,pin:104,chataignier:92,buisson1:30,buisson2:34,buisson3:26,rochers:42,maison1:66,maison2:66,maison3:66,bergerie:46,eglise:92,tour:150};
 function va25Far(){const L=VA25_L[va25Kind()],ci=chIdx();
@@ -7750,7 +7779,7 @@ if(n==='bergerie'&&hs(j+sd)<.6)return;let yb=by*HH/S;
 if(dn){const wx=cx-cam.x*p+cam.x*.3;yb=(HH*.62-(Math.sin(wx*.007)*34+Math.sin(wx*.007*2.3+1)*34*.4)*S*.6)/S+(p<.5?4:12)}/* 3.43 : posé sur la colline */
 va25Sp(n,cx,yb,VA25_H[n]*sc*(.9+hs(j+sd+2)*.25),hz,hs(j+sd+3)>.5)})}}
 // --- texture du sol (herbe / terre / herbe sèche) en lumière douce
-const VA25_TXN={0:'herbe',1:'sec',2:'herbe',3:'terre',4:'terre',5:'herbe',6:'sec',7:'terre',8:'sec',9:'sec'};
+const VA25_TXN={0:'herbe',1:'sec',2:'herbe',3:'terre',4:'terre',5:'herbe',6:'sec',7:'terre',8:'sec',9:'herbe',10:'sec',11:'herbe'};
 function va25Gr(x0,x1,yb){try{const n=VA25_TXN[chIdx()];let o=VA25.im['tx_'+n];if(o===undefined){VA25.im['tx_'+n]=null;const im=new Image();im.onload=()=>{VA25.im['tx_'+n]=im;VA25.im['tp_'+n]=g.createPattern(im,'repeat')};im.src=VA25_TX[n];return}
 const pt=VA25.im['tp_'+n];if(!pt)return;g.save();g.globalCompositeOperation='soft-light';g.globalAlpha=night?.25:.55;g.fillStyle=pt;
 g.beginPath();g.moveTo(x0,yb);for(let x=x0;x<=x1;x+=10)g.lineTo(x,T(x)+14);g.lineTo(x1,yb);g.fill();g.restore()}catch(e){}}
@@ -7835,7 +7864,7 @@ g.restore();try{if(va13TM<.03||night)return;g.save();g.translate(x,y);g.rotate(r
 station=(function(o){return function(m,tm){if(!va25Cv('s_station',0,0))return o(m,tm);const x=m.x,y=m.y;g.fillStyle='#8a867e';g.fillRect(x-24,y-2,344,7);va28Draw('s_station',x+172,y+2,285)}})(station);
 
 // ===== 3.30b : plateaux sans stations ni magasins, pas de décors lointains dans l'eau à Piana =====
-function va30Plt(x){const ci=chIdx(),e=ci===3?.63:ci===8?.47:0;return e&&va13PltX(x)?e*MAP_L:0}
+function va30Plt(x){const R=va66PR(),e=R?R[1]:0;return e&&va13PltX(x)?e*MAP_L:0}
 function va30Move(arr,m,ext){try{const e=va30Plt(m.x);if(!e)return;let x=e+400;while(arr.some(q=>Math.abs(q.x-x)<2500))x+=1800;m.x=x;m.a=x-60;m.b=x+ext;m.y=T(x+110)}catch(er){}}
 stns.push=(function(o){return function(...a){for(const m of a)va30Move(this,m,280);return o.apply(this,a)}})(stns.push);
 shp.push=(function(o){return function(...a){for(const m of a)va30Move(this,m,300);return o.apply(this,a)}})(shp.push);
@@ -7951,7 +7980,7 @@ return va25Sp(n,px,y+3,H,0,hs(k+9)>.5)}catch(e){return false}}
 // ombre douce sous les maisons et les arbres de la route
 village=(function(o){return function(px,y,k){try{const H=66+Math.floor(hs(k+4)*34);g.fillStyle='rgba(30,24,10,.16)';g.beginPath();g.ellipse(px,Math.max(T(px-H*.4),T(px+H*.4))+(y-T(px))+6,H*.5,3.4,0,0,7);g.fill()}catch(e){}return o(px,y,k)}})(village);
 // une même lumière par chapitre sur les décors peints (une seule fois, mise en cache)
-const VA43_T={1:'rgba(255,214,150,.07)',3:'rgba(255,190,150,.06)',4:'rgba(255,160,120,.07)',5:'rgba(210,225,160,.06)',6:'rgba(255,180,100,.10)',7:'rgba(255,170,120,.08)',8:'rgba(255,170,90,.12)',9:'rgba(255,200,140,.08)'};
+const VA43_T={1:'rgba(255,214,150,.07)',3:'rgba(255,190,150,.06)',4:'rgba(255,160,120,.07)',5:'rgba(210,225,160,.06)',6:'rgba(255,180,100,.10)',7:'rgba(255,170,120,.08)',8:'rgba(255,170,90,.12)',10:'rgba(255,200,140,.08)',11:'rgba(255,214,150,.07)'};
 va25Cv=(function(o){return function(n,b,hz){const c=o(n,b,hz);if(!c)return c;const t=VA43_T[chIdx()];if(!t||!/^(maison|eglise|bergerie|pin|olivier|chataignier|palmier|buisson|rochers|tour)/.test(n))return c;
 const key=n+b+'_'+hz+'_T'+chIdx();let q=VA25.cv[key];if(q)return q;q=document.createElement('canvas');q.width=c.width;q.height=c.height;const x=q.getContext('2d');x.drawImage(c,0,0);x.globalCompositeOperation='source-atop';x.fillStyle=t;x.fillRect(0,0,q.width,q.height);VA25.cv[key]=q;return q}})(va25Cv);
 // ===== 3.44 : profondeur du fond peint du chapitre 1 (étape B) : collines lointaines (lentes, dans la brume) et collines proches (plus rapides) =====
@@ -8195,7 +8224,7 @@ deepDraw=(function(o){return function(x0,x1){o(x0,x1);try{const s=deepS();if(s<0
 fordDraw=(function(o){return function(x0,x1){o(x0,x1);try{const tm=performance.now()/1000;for(let j=Math.floor((x0-5000)/3200);j<=Math.floor((x1-2000)/3200);j++){const s=fordP(j);if(s<0||s+320<x0||s-80>x1)continue;const lv=Math.max(T(s),T(s+300))+16;let xa=s,xb=s+300;while(xa<s+150&&T(xa)<=lv)xa+=3;while(xb>s+150&&T(xb)<=lv)xb-=3;va49Pool(xa,xb,lv,0,tm)}}catch(e){}}})(fordDraw);
 // --- 2. rallye chronométré facultatif (un par chapitre)
 var VA49_RL=3000;
-function va49RS(){try{if(chIdx()===7||chIdx()===9)return -1;const l='L'+level;if(va49Z[l]===undefined){const ds=deepS(),ss=slipS(),cand=[];const okx=(q)=>{if(bridgeAt(q)>=0||hardS(q)>=0||rockW(q)>0)return false;try{if(typeof tunAt==='function'&&tunAt(q)>=0)return false}catch(e){}const sq=sceneSeg(q);if(sq&&q<sq.s+sq.len+100&&q>sq.s-100)return false;return true};for(let q=Math.round(MAP_L*.22/100)*100;q<MAP_L*.84;q+=100){let ok=true;for(let z=q-100;z<=q+VA49_RL+100&&ok;z+=100)if(!okx(z))ok=false;if(!ok)continue;if(ds>=0&&q<ds+1900&&q+VA49_RL>ds-300)continue;if(ss>=0&&q<ss+1900&&q+VA49_RL>ss-300)continue;if(cand.length&&q-cand[cand.length-1]<VA49_RL+1500)continue;cand.push(q)}const pr=[.3,.46,.38,.54,.62][level%5];const x=cand.length?cand.reduce((a,q)=>Math.abs(q-MAP_L*pr)<Math.abs(a-MAP_L*pr)?q:a,cand[0]):-1;va49Z[l]=x}return va49Z[l]}catch(e){return -1}}
+function va49RS(){try{if(chIdx()===7||chIdx()===CHAP.length-1)return -1;const l='L'+level;if(va49Z[l]===undefined){const ds=deepS(),ss=slipS(),cand=[];const okx=(q)=>{if(bridgeAt(q)>=0||hardS(q)>=0||rockW(q)>0)return false;try{if(typeof tunAt==='function'&&tunAt(q)>=0)return false}catch(e){}const sq=sceneSeg(q);if(sq&&q<sq.s+sq.len+100&&q>sq.s-100)return false;return true};for(let q=Math.round(MAP_L*.22/100)*100;q<MAP_L*.84;q+=100){let ok=true;for(let z=q-100;z<=q+VA49_RL+100&&ok;z+=100)if(!okx(z))ok=false;if(!ok)continue;if(ds>=0&&q<ds+1900&&q+VA49_RL>ds-300)continue;if(ss>=0&&q<ss+1900&&q+VA49_RL>ss-300)continue;if(cand.length&&q-cand[cand.length-1]<VA49_RL+1500)continue;cand.push(q)}const pr=[.3,.46,.38,.54,.62][level%5];const x=cand.length?cand.reduce((a,q)=>Math.abs(q-MAP_L*pr)<Math.abs(a-MAP_L*pr)?q:a,cand[0]):-1;va49Z[l]=x}return va49Z[l]}catch(e){return -1}}
 function va49Fmt(t){const m=Math.floor(t/60),s=t-m*60;return m+' min '+(s<10?'0':'')+s.toFixed(1).replace('.',',')+' s'}
 function va49RallyTick(){try{const hud=gid('va49r'),s=va49RS();if(s<0||!inGame||va9P||dkP){hud.style.display='none';return}
  const k='L'+level;va49Run=va49Run&&va49Run.l===level?va49Run:null;SV.rallyD=SV.rallyD||{};
@@ -8494,7 +8523,7 @@ dustDraw=(function(o){return function(){o();try{if(paused||!inGame)return;const 
 var va56={C:{},bz:0,tr:[],p:[],wet:0,said:{},lx:0};
 const VA56_LEN={steps:340,ruts:520,whoops:620,logs:380,gravel:520,sand:900,snow:800,planks:220};
 const VA56_NM={steps:'Marches rocheuses',ruts:'Ornières',whoops:'Bosses',logs:'Branches au sol',gravel:'Lit de rivière à sec',sand:'Sable',snow:'Neige',planks:'Passerelle'};
-function va56Kinds(){const i=chIdx(),K=['steps','ruts','whoops','logs','gravel','planks'];if(i===0||i===1||i===7||i===9)K.push('sand','sand');if(i===3||i===8)K.push('snow','snow');if(i===3||i===4||i===8)K.push('steps');return K}
+function va56Kinds(){const i=chIdx(),K=['steps','ruts','whoops','logs','gravel','planks'];if(i===0||i===1||i===7||i===10||i===11)K.push('sand','sand');if(i===3||i===9)K.push('snow','snow');if(i===3||i===4||i===8||i===9)K.push('steps');return K}
 function va56L(){const key='L'+level+'_'+MAP_L;if(va56.C[key])return va56.C[key];if(va56.bz)return[];va56.bz=1;const R=[];try{const K=va56Kinds(),ds=deepS(),ss=slipS();let rs=-1;try{rs=va49RS()}catch(e){}
  const bad=(x,L)=>{if(!zoneFree(x-150,x+L+150))return true;for(let q=x-450;q<=x+L+450;q+=50){if(fordAt(q)||(typeof tunAt==='function'&&tunAt(q)>=0)||va12Near(q,100))return true}if(ds>=0&&x<ds+1100&&x+L>ds-900)return true;if(ss>=0&&x<ss+1900&&x+L>ss-600)return true;if(rs>=0&&x<rs+3200&&x+L>rs-300)return true;if(Math.abs(Tr(x)-Tr(x+L))>70)return true;for(const f of R)if(x<f.x+f.L+700&&x+L>f.x-700)return true;return false};
  const n=K.length;for(let i=0;i<n;i++){const k=K[(i+level*3)%n],L=VA56_LEN[k];let x0=Math.round(MAP_L*(.1+.78*(i+.5)/n)/100)*100,ok=-1;for(let d=0;d<5200&&ok<0;d+=100){for(const sg of[1,-1]){const x=x0+sg*d;if(x<2500||x>MAP_L-4000)continue;if(k==='snow'&&420-Tr(x)<200)continue;if(!bad(x,L)){ok=x;break}}}if(ok>=0)R.push({k,x:ok,L})}}catch(e){}va56.bz=0;R.sort((a,b)=>a.x-b.x);va56.C[key]=R;return R}
@@ -8611,7 +8640,7 @@ function va58Bad(m,x,ext,flat){
 function va58Fix(m,ext,flat){try{if(m.va58)return;const plt=va13PltX(m.x)||va13PltX(m.x+ext);
  if(!plt&&(!flat||!va58Bad(m,m.x,ext,flat))){m.va58=1;return}
  if(!flat&&!plt){m.va58=1;return}
- let x=m.x,n=0;if(plt){const e=chIdx()===3?.63:.47;x=Math.max(x,Math.round(e*MAP_L)+400)}
+ let x=m.x,n=0;if(plt){const e=(va66PR()||[0,.47])[1];x=Math.max(x,Math.round(e*MAP_L)+400)}
  const lim=MAP_L-2500;while(x<lim&&va58Bad(m,x,ext,flat)&&n++<300)x+=60;
  if(x>=lim||n>=300)return;const dx=x-m.x;m.x=x;if(m.a!=null)m.a+=dx;if(m.b!=null)m.b+=dx;if(m.y!=null)m.y=T(m.x+110);m.va58=1}catch(e){}}
 shp.push=(function(o){return function(...a){const r=o.apply(this,a);for(const m of a)va58Fix(m,300,true);return r}})(shp.push);
@@ -8658,7 +8687,7 @@ wheel=(function(o){return function(x,y,r){if(SV&&SV.cus&&SV.cus.trk){try{return 
 // ===== 3.63 : rallye de ~30 s sans aucune distraction ; la poursuite de la gendarmerie n'est plus coupée par le pont à reconstruire =====
 // --- rallye : tronçon de 11 000 (≈ 30 s à bonne allure ; 9 500 / 8 000 si rien ne rentre), loin des scènes de l'histoire
 VA49_RL=11000;
-va49RS=(function(o){return function(){try{if(chIdx()===7||chIdx()===9)return -1;const l='L'+level;
+va49RS=(function(o){return function(){try{if(chIdx()===7||chIdx()===CHAP.length-1)return -1;const l='L'+level;
  if(va49Z[l]===undefined||va49Z['v63'+l]!==1){va49Z['v63'+l]=1;let pick=-1,rl=0;const ds=deepS(),ss=slipS();let SPL=[];try{SPL=spList()}catch(e){}
   const okx=q=>{if(rockW(q)>0)return false;try{if(ferIn(q))return false}catch(e){}return true};
   for(const L of[11000,9500,8000,6500]){const cand=[];for(let q=Math.round(MAP_L*.18/100)*100;q+L<MAP_L*.9;q+=200){let ok=true;for(let z=q-200;z<=q+L+200&&ok;z+=100)if(!okx(z))ok=false;if(!ok)continue;
@@ -8737,8 +8766,25 @@ PARTS.prechauffage=['Bougie de préchauffage','une bougie de préchauffage',x=>{
 for(const k of VA64_P){const P=PARTS[k];if(!P)continue;const o=P[2];P[2]=function(x){const im=va64I[k];if(im&&im.complete&&im.naturalWidth){const bw=118,bh=82,s=Math.min(bw/im.naturalWidth,bh/im.naturalHeight);const w=im.naturalWidth*s,h=im.naturalHeight*s;x.save();x.imageSmoothingQuality='high';x.drawImage(im,-w/2,-h/2-2,w,h);x.restore();return}return o(x)}}
 ppOpen=(function(o){return function(){va64Load();return o.apply(this,arguments)}})(ppOpen);
 setTimeout(()=>{try{va64Load()}catch(e){}},8000);
+// ===== 3.66 : 12 chapitres (un lieu chacun), chapitres plus courts, sauvegardes converties, une seule saison =====
+// Longueur : chapitres 1 à 11 = 65 000, chapitre 12 (Fautea) = 25 000.
+function va66Len(){try{return chIdx()===CHAP.length-1?25000:65000}catch(e){return 65000}}
+// Plateau du Coscione : portion [début, fin] du chapitre (ch4 Bavella pour l'instant, ch10 Coscione)
+function va66PR(){const ci=chIdx();return ci===3?[.32,.63]:ci===9?[.15,.75]:null}
+// Fonds peints : ch10 = fond du plateau, ch11 Bonifacio = pas encore de fond, ch12 = Fautea (fond du ch1, soir de l'ancien ch10)
+try{VA23_IMG[11]=VA23_IMG[0];VA25_P[11]=Object.assign({},VA25_P[0]);VA23_IMG[9]=VA27.PL.src;VA25_P[9]={hz:VA27.PL.hz,F:VA27.PL.F||.5,fill:VA27.PL.fill,dune:0};delete VA23_IMG[10];delete VA25_P[10];
+ if(VA27.E[9]){VA27.E[11]=VA27.E[9];delete VA27.E[9]}if(VA27.N[0])VA27.N[11]=VA27.N[0]}catch(e){}
+// Sauvegardes d'avant la 3.66 (10 chapitres de 88 000) : converties une seule fois, avec une copie de secours
+function va66Mig(S){try{if(!S||S.v66)return false;const o=S.lvl||1,k=65000/88000;
+ if(S.has){try{localStorage.setItem(SKEY+'_v365',JSON.stringify(S))}catch(e){}
+  if(o>=10){S.lvl=11;if(S.pxL===o)S.pxL=11;if(S.stL===o)S.stL=11;if(S.cs>=10)S.cs=11;if(S.mapLvl===o)S.mapLvl=11}
+  for(const q of['px','resp'])if(S[q]!=null)S[q]=Math.max(0,Math.min(64000,Math.round(S[q]*k)));S.cmp=null;
+  if(S.arrL===9)S.arrL=10;if(S.noxL===9)S.noxL=10;if(S.noxAsk===9)S.noxAsk=10;
+  if(S.csd&&S.csd.plk&&o<12)delete S.csd.plk}
+ S.layV=S.layV||{};for(let i=1;i<=12;i++)S.layV[i]=2;S.v66=1;return true}catch(e){return false}}
+// (la conversion est appelée tout en haut du fichier, juste après la lecture de la sauvegarde)
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.65',GAME_DATE='11/11/2026 à 21h54';
+const GAME_VER='3.66',GAME_DATE='11/11/2026 à 22h54';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
