@@ -8727,7 +8727,9 @@ function va63Restore(){if(!va63Snap)return;const S0=JSON.parse(va63Snap);SV.cus=
  gid('va63k').addEventListener('click',e=>{e.stopPropagation();d.style.display='none'});
  setInterval(()=>{try{const vis=gid('cus').style.display&&gid('cus').style.display!=='none';if(vis&&!va63Snap)va63Snap=va63Take();if(!vis&&va63Snap&&d.style.display!=='flex')va63Snap=null;ub.style.display=(vis&&va63Snap&&va63Take()!==va63Snap)?'':'none'}catch(e){}},200)})();
 // ===== 3.64 : pièces du mini-jeu « trouve la pièce » en images (planches ChatGPT de l'utilisateur, img/pieces/) =====
-const VA64_P=['alternateur','amortisseur','ampoule','balai','bielle','bougie','cardan','collier','courroie2','croisillon','culasse','direction','disque','durite','embrayage','etrier','filtre','fusible','pignon','plaquettes','pompe','prechauffage','radiateur','relais','ressort','rotule','roulement','silent','sonde','thermostat'];
+const VA64_P=['alternateur','amortisseur','ampoule','balai','bielle','bougie','cardan','collier','courroie2','croisillon','culasse','direction','disque','durite','embrayage','etrier','filtre','fusible','pignon','plaquettes','pompe','prechauffage','radiateur','relais','ressort','rotule','roulement','silent','sonde','thermostat','batterie','demarreur','injecteur','bobine','filtreAir','filtreGas','pompeEss','abs','egr','papillon','capteurMap','sondeTemp','capteurCam','debitmetre','turbo'];
+// 3.65 : nouvelles pièces de la 3e planche (dessin de secours = petit boîtier gris)
+{const NP={abs:['Bloc ABS','le bloc ABS'],egr:['Vanne EGR','la vanne EGR'],papillon:['Boîtier papillon','le boîtier papillon'],capteurMap:['Capteur de pression','le capteur de pression'],sondeTemp:['Sonde de température','la sonde de température'],capteurCam:['Capteur d’arbre à cames','le capteur d’arbre à cames'],debitmetre:['Débitmètre d’air','le débitmètre'],turbo:['Turbo','le turbo']};for(const k in NP){PARTS[k]=[NP[k][0],NP[k][1],x=>{x.fillStyle='#9aa0a6';x.fillRect(-26,-20,52,40);x.fillStyle='#2a2d31';x.fillRect(14,-12,16,14)}];PUN[k]=NP[k][1].replace(/^l’/,'un ').replace(/^le /,'un ').replace(/^la /,'une ')}PUN.egr='une vanne EGR';PUN.abs='un bloc ABS'}
 var va64I={};
 function va64Load(){for(const k of VA64_P){if(va64I[k])continue;const im=new Image();im.decoding='async';im.src='img/pieces/'+k+'.webp';va64I[k]=im}}
 // nouvelle pièce de la 2e planche
@@ -8737,6 +8739,6 @@ ppOpen=(function(o){return function(){va64Load();return o.apply(this,arguments)}
 setTimeout(()=>{try{va64Load()}catch(e){}},8000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.64',GAME_DATE='11/11/2026 à 21h43';
+const GAME_VER='3.65',GAME_DATE='11/11/2026 à 21h54';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
