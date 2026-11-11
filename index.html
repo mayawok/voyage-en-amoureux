@@ -357,78 +357,76 @@ try{best=+localStorage.getItem('best4x4')||0}catch(e){}
 const hint=document.getElementById('hint');hint.style.display='none';setTimeout(()=>{const l=document.getElementById('logo');l&&l.remove()},5300);
 
 const MSG={
-flat:['Je crois qu’on a crevé, c’est toi qui changes la roue cette fois ?','Aïe, ça tape sous la caisse… on a crevé, non ?','Et zut, un pneu à plat ! Pile quand on était bien…','§Chéri, on penche… on a crevé !','Ça sent la crevaison, ça ! Allez, à toi l’honneur !'],
-camp:['Direction {n}, c’est parti ma chérie','On va dormir à {n} ce soir, ça te dit ma chérie ?','Cap sur {n} mon cœur, le camp nous attend !','§{n} ce soir ? Parfait, j’ai hâte !','J’ai repéré {n} sur la carte, on y file !'],
-park:['Gare-toi près de la pompe mon cœur !','Colle-toi bien à la pompe, voilà…','Doucement, doucement… arrête-toi devant la pompe !'],
-engFirst:['Coupe d’abord le moteur, mon cœur !','On coupe le contact avant de faire le plein, hein !','Clé sur off, sinon ça va pas le faire !'],
-full:['Le réservoir est déjà plein, on file !','Il est plein à craquer, on repart !','On vient de le remplir, bêta !'],
-refuelStart:['Je mets le frein à main et on fait le plein','Frein à main, contact coupé, et hop, on remplit !','Je serre le frein à main, je prends le pistolet !','§Je tiens la portière, fais le plein tranquille !'],
-empty:['Y a plus une goutte, faut aller à une station-service !','Réservoir à sec… une station, vite !','On n’a plus d’essence mon cœur, direction une station !'],
-dry:['Panne sèche ! Sors le treuil, on rejoint une station-service !','Plus d’essence ! Le treuil, vite, on se fait tirer jusqu’à une station !','On est à sec… allez, treuil et courage jusqu’à la station !'],
-stall:['Zut, ça cale ! Passe en 4L pour les grosses côtes !','Oups, le moteur cale… en 4L ça passera mieux !','Ça cale dans la montée ! La courte, mon cœur, la courte !'],
-tankDone:['Plein fait, on repart !','Voilà, le plein est fait, direction l’aventure !','Réservoir plein, on peut y aller !','§Ça y est, tout est plein, on file !'],
-hot:['Mince on surchauffe, je devrais avoir les pièces pour réparer','Ça chauffe, ça chauffe… je crois que c’est la pompe à eau !','Fumée sous le capot ! Gare-toi, je sors ma boîte à outils','§Ça sent le chaud, mon cœur, arrête-toi !'],
-pumpDone:['Ouf, pompe à eau changée !','Et voilà, une pompe neuve ! Merci le garage Andrea !','C’est réparé, moteur tout frais !'],
-wheelDone:['Roue changée, c’est reparti !','Voilà, roue de secours en place !','§Bravo, tu l’as changée vite fait, on y va !'],
-rockDone:['Voilà, l’éboulis est dégagé !','Ça y est, les cailloux sont poussés, route libre !','§Pfff, quel boulot… mais c’est dégagé !','Éboulis éliminé, on repart mon cœur !'],
-logDone:['Et hop, l’arbre est dégagé !','Le tronc est de côté, on peut y aller !','§Il était lourd celui-là ! Allez, en route !','Route libre, bien joué ma chérie !'],
-morning:['Allez mon cœur, on remet la clé et on repart !','Bonjour ma chérie ! Un tour de clé, et on repart !','§Bien dormi ? Allez, on démarre !','Un petit café plus tard… la clé, on y va !'],
-dusk:['La nuit va tomber, on devrait trouver un endroit pour dormir','Le soleil descend, il faudrait songer à planter la tente…','§Il commence à faire sombre, on s’arrête bientôt ?','Plus beaucoup de jour devant nous, mon cœur !'],
-closeEyes:['§Je vais fermer mes yeux pour le moment','§Je suis fatiguée… je ferme un peu les yeux','§Réveille-moi quand on arrive, je ferme les yeux'],
-night:['Bonne nuit ma chérie ❤️','Dors bien mon amour, à demain ❤️','Fais de beaux rêves ma chérie ❤️','§Bonne nuit mon cœur ❤️'],
-intro:['Bonjour ma chérie ! On démarre : la clé, puis GAZ. Il faut être au camp avant 20 h !','Prête pour l’aventure ? La clé, et GAZ ! Camp avant 20 h !','Allez c’est parti mon amour : clé, puis GAZ ! On vise le camp avant 20 h !'],
-love:['Tu sais que je t’aime ❤️','Je suis bien avec toi, tu sais ❤️','Quelle chance de t’avoir à côté de moi ❤️','Je crois que je t’aime encore plus qu’hier ❤️','§Tu me manques alors que t’es juste là ❤️','Avec toi, même les cailloux sont jolis ❤️','Tu es la meilleure copilote du monde ❤️','Je referais ce voyage mille fois avec toi ❤️'],
-reply:['§Moi aussi, mon amour ❤️','§Moi aussi, plus que tout ❤️','§Arrête, tu vas me faire rougir ❤️','§Je t’aime, mon cœur ❤️','§Idiot… moi aussi ❤️'],
-chat:['Tu vois la route, là-bas ? On dirait qu’elle monte encore…','Passe-moi la gourde, j’ai la gorge sèche !','§Tu penses qu’on trouvera une glace quelque part ?','Le Cherokee ronronne bien aujourd’hui, hein !','§Regarde le chien, il sort la langue au vent !','On devrait faire une photo au prochain beau point de vue !','§Tu as pensé à prendre le fromage ?','J’adore ce bruit de moteur, pas toi ?','§Ça te dit qu’on mette de la musique ?','Encore quelques bosses et on y est, courage !','§Tu conduis bien aujourd’hui, bravo !','Je crois qu’on n’a croisé personne depuis un moment…','§La Corse, c’est vraiment magnifique…','Attention aux cailloux, on y va doucement !'],
-bio_Plage:['§Oh, la mer ! On se baigne ce soir ?','Ça sent le sable chaud et la crème solaire !','§Regarde les parasols, on dirait une carte postale !','Si on avait le temps, je planterais bien une serviette ici !'],
-bio_Prairie:['§Que c’est vert par ici, c’est beau !','Les vaches nous regardent passer, tu as vu ?','§Ça sent le foin, j’adore !','Une petite balade à pied après, ça te dit ?'],
-bio_Désert:['§Il fait chaud ici, mets la clim !','Du sable partout, ça me rappelle nos vacances !','§Un cactus ! Tu vois, là, à droite ?','Heureusement qu’on a de l’eau avec nous !'],
-bio_Montagne:['§On est haut, j’ai les oreilles qui bouchent !','Quelle vue ! On voit toute la vallée !','§Il fait plus frais, tu as pris ta veste ?','Les virages, ça me fait toujours un petit pincement au cœur…'],
-bio_Neige:['§Brrr, il neige presque ! Où est mon bonnet ?','Fais attention, ça glisse par ici !','§Regarde comme c’est blanc, c’est magique !','On fera un bonhomme de neige au camp ?'],
-shp:['§Un mouton rose ! Je l’adore !','Encore un mouton coloré, tu les vois tous !','§Bravo, un de plus dans la collection !','Ces moutons sont vraiment bizarres…'],
-pizza:['Oh, Chez Marcel ! On s’arrête manger une pizza ?','Ça sent la pizza, mon cœur… Chez Marcel, tu vois ?','Chez Marcel ! Je te la paie, ta pizza !'],
-pizzaR:['§Bonne idée ! Je me gare devant le camion et je coupe le contact.','§Marcel fait les meilleures pizzas de l’île, on s’arrête !','§J’ai faim aussi ! Arrêtons-nous juste devant.'],
-hb:['Oups, j’ai oublié de desserrer le frein à main !','Le frein à main est encore serré, mon cœur !','Ça tire… c’est le frein à main, non ?','§Chéri, tu as oublié le frein à main !'],
-engOff:['Le moteur est coupé, tourne la clé mon cœur !','On est en panne ? Non, juste la clé à tourner !','§Le contact est coupé, tourne la clé !','La clé, la clé ! Le moteur est à l’arrêt !'],
-fuelAhead:['On s’arrête faire le plein mon cœur ?','Une station-service devant, on fait le plein ?','§Le réservoir baisse, on s’arrête à la station ?','Tiens, une station ! Un petit plein avant de repartir ?'],
-lowFuel:['Y a presque plus d’essence, on cherche une station !','L’aiguille est dans le rouge, mon cœur !','§Il reste plus grand-chose dans le réservoir…','Il faut vraiment trouver une station-service, là !'],
-hotC:['Ça fume ! Arrête-toi, je change la pompe à eau…','Le moteur chauffe, on s’immobilise, je répare !','§Ça sent le brûlé, on s’arrête vite !'],
-flatC:['On a crevé ! Arrête-toi, on change la roue !','Un pneu à plat, on s’arrête tout de suite !','§Ça bringuebale… arrête-toi, c’est crevé !'],
-rockZone:['Les cailloux, vas-y mollo sinon on crève !','Doucement sur les cailloux, mon cœur !','§Les pneus vont souffrir, ralentis !','Ça caillasse devant, on y va tranquille !'],
-ob_log:['Un arbre en travers ! Allez, on le dégage ensemble !','Un tronc sur la route ! Viens, on le pousse !','§Il est gros celui-là… allez, au boulot !'],
-ob_rock:['Un éboulis ! Viens, on déblaie ça !','Des cailloux en pagaille, on dégage tout ça !','§Aïe, des rochers sur la piste… on s’y met !'],
-ob_sheep:['Moutmout !! Klaxonne !','Des moutmouts ! Vite, klaxonne !','§Moutmout en vue ! Un petit coup de klaxon, mon cœur !']};
+flat:['Mince, on a crevé, je crois. Ça tape sous la caisse.','Ah bah zut, un pneu à plat. Pile quand on était bien.','Ça sent la crevaison, ça. Tu changes la roue ou c’est moi ?','Bon, on a crevé. Je sors la roue de secours.','Tu sens que ça penche ? On a crevé, ma chérie.'],
+camp:['Direction {n}, ma chérie. On y sera bien.','On dort à {n} ce soir, ça te va ?','J’ai repéré {n} sur la carte. On y file ?','{n} ce soir, ça te dit ?','Cap sur {n}, le camp nous attend.'],
+park:['Gare-toi près de la pompe, ma chérie.','Colle-toi bien à la pompe, voilà.','Doucement… arrête-toi devant la pompe.'],
+engFirst:['Coupe d’abord le moteur, ma chérie.','Le contact d’abord, sinon on fait pas le plein.','Clé sur off, sinon ça va pas le faire.'],
+full:['Il est déjà plein, on repart.','Il est plein à craquer, ma chérie. On y va.','On vient de le remplir, hein.'],
+refuelStart:['Frein à main, contact coupé, et je fais le plein.','Je serre le frein à main et je prends le pistolet.','Bon, je m’occupe du plein.','Je fais le plein, tu veux un café pendant ce temps ?'],
+empty:['Y a plus une goutte. Faut trouver une station.','On est à sec, ma chérie. Il faut une station.','Plus d’essence. Une station, vite.'],
+dry:['Ok, on est en panne de carburant. On arrive encore à rouler un peu, il doit rester du gasoil dans le filtre.','Plus d’essence. Sors le treuil, on se fait tirer jusqu’à la station.','On est à sec. Allez, doucement jusqu’à la station.'],
+stall:['Ça cale ! Passe en 4L, ça passera mieux.','Le moteur cale dans la montée. Mets la courte, ma chérie.','Ça cale… en 4L ça passera, tu verras.'],
+tankDone:['Plein fait, on repart.','Voilà, c’est plein. On y va ?','Réservoir plein, on peut y aller.','Ça y est, tout est plein. On file.'],
+hot:['Mince, ça surchauffe. Je devrais avoir les pièces pour réparer.','Ça chauffe, ça chauffe… je crois que c’est la pompe à eau.','De la fumée sous le capot. Gare-toi, je sors ma boîte à outils.','Ça sent le chaud, ma chérie. Arrête-toi.'],
+pumpDone:['Ouf, pompe à eau changée.','Et voilà, une pompe neuve. Merci le garage Andrea.','C’est réparé, ça devrait tenir.'],
+wheelDone:['Roue changée, c’est reparti.','Voilà, la roue de secours est en place.','Bravo, tu l’as changée vite fait. On y va ?'],
+rockDone:['Voilà, l’éboulis est dégagé.','Ça y est, route libre.','Pfff, quel boulot. Mais c’est dégagé.','Éboulis éliminé, on repart.'],
+logDone:['Et hop, l’arbre est dégagé.','Le tronc est de côté, on peut y aller.','Il était lourd, celui-là. Allez, en route.','Route libre, bien joué ma chérie.'],
+morning:['Allez, on remet la clé et on repart.','Bonjour ma chérie. Bien dormi ? Un tour de clé et on y va.','Un petit café plus tard… la clé, et on y va.','Bien dormi ? Allez, on démarre.'],
+dusk:['Il se fait tard. Un camping ou un hôtel, quelque part ?','Le soleil descend, on cherche un endroit pour dormir ?','Il commence à faire sombre. On s’arrête bientôt ?','Plus beaucoup de jour devant nous, ma chérie.'],
+closeEyes:['§Je ferme un peu les yeux, je suis crevée.','§Réveille-moi quand on arrive, d’accord ?','Il est tard, ma chérie, on devrait dormir.'],
+night:['Bonne nuit, ma chérie ❤️','Dors bien, à demain ❤️','Fais de beaux rêves, ma chérie ❤️','§Bonne nuit, mon cœur ❤️'],
+intro:['Bonjour ma chérie. On démarre : la clé, puis GAZ. Faut être au camp avant 20 h.','Prête ? La clé, et GAZ. Camp avant 20 h.','Allez, c’est parti : clé, puis GAZ. On vise le camp avant 20 h.'],
+love:['Tu sais que je t’aime ❤️','Je suis bien, là. Avec toi ❤️','J’ai de la chance de t’avoir à côté de moi ❤️','Viens là, ma chérie ❤️','§Tu me manques, alors que t’es juste là ❤️','T’es la meilleure copilote, tu sais ❤️','Je referais ce voyage avec toi, sans hésiter ❤️'],
+reply:['§Moi aussi ❤️','§C’est bête, mais je suis bien, là ❤️','§Arrête, tu vas me faire rougir ❤️','§Je t’aime ❤️','§Idiot… moi aussi ❤️'],
+chat:['Tu vois la route, là-bas ? On dirait qu’elle monte encore.','Passe-moi la gourde, j’ai la gorge sèche.','Tu crois qu’on va trouver une glace quelque part ?','Le Cherokee ronronne bien aujourd’hui, hein.','Regarde le chien, il sort la langue au vent.','On devrait faire une photo au prochain beau point de vue.','Tu as pensé à prendre le fromage ?','J’adore ce bruit de moteur, pas toi ?','Tu veux qu’on mette de la musique ?','Encore quelques bosses et on y est.','Tu conduis bien aujourd’hui, bravo.','Je crois qu’on a croisé personne depuis un moment.','Elle est belle, la Corse, quand même.','Attention aux cailloux, on y va doucement.'],
+bio_Plage:['Oh, la mer. On se baigne ce soir ?','Ça sent le sable chaud, hein.','Regarde les parasols, on dirait une carte postale.','Si on avait le temps, je poserais bien une serviette ici.'],
+bio_Prairie:['Que c’est vert par ici.','Les vaches nous regardent passer, tu as vu ?','Ça sent le foin, j’adore.','Une petite balade à pied après, ça te dit ?'],
+bio_Désert:['Il fait chaud ici. Mets la clim.','Du sable partout, ça me rappelle nos vacances.','Un cactus ! Tu vois, là, à droite ?','Heureusement qu’on a de l’eau avec nous.'],
+bio_Montagne:['On est haut, j’ai les oreilles qui bouchent.','Quelle vue. On voit toute la vallée.','Il fait plus frais, t’as pris ta veste ?','Les virages, ça me fait toujours un petit pincement au cœur.'],
+bio_Neige:['Brr, il neige presque. T’as pris ton bonnet ?','Fais attention, ça glisse par ici.','Regarde comme c’est blanc.','On fera un bonhomme de neige au camp ?'],
+shp:['Un mouton rose ! Il est trop bien.','Encore un mouton coloré, tu les vois tous.','Bravo, un de plus dans la collection.','Ces moutons sont vraiment bizarres.'],
+pizza:['Oh, Chez Marcel. On s’arrête manger une pizza ?','Ça sent la pizza, ma chérie. Chez Marcel, tu vois ?','Chez Marcel. Je te la paie, ta pizza.'],
+pizzaR:['Ok, je me gare devant le camion et je coupe le contact.','Marcel fait les meilleures pizzas de l’île, on s’arrête.','Moi aussi j’ai faim. On s’arrête juste devant.'],
+hb:['Oups, j’ai oublié de desserrer le frein à main.','Le frein à main est encore serré, ma chérie.','Ça tire… c’est le frein à main, non ?','Tu as oublié le frein à main, hein.'],
+engOff:['Le moteur est coupé, tourne la clé, ma chérie.','On est en panne ? Non, juste la clé à tourner.','Le contact est coupé. Tourne la clé.','La clé, la clé. Le moteur est à l’arrêt.'],
+fuelAhead:['On s’arrête faire le plein, ma chérie ?','Une station-service devant. On fait le plein ?','Le réservoir baisse. On s’arrête à la station ?','Tiens, une station. Un petit plein avant de repartir ?'],
+lowFuel:['Ah mince, c’est pas normal pour l’essence. Il nous reste pas beaucoup de kilomètres.','L’aiguille est dans le rouge, ma chérie.','Il reste plus grand-chose dans le réservoir.','Il faut vraiment trouver une station, là.'],
+hotC:['Ça fume ! Arrête-toi, je change la pompe à eau.','Le moteur chauffe, on s’immobilise, je répare.','Ça sent le brûlé. On s’arrête vite.'],
+flatC:['On a crevé ! Arrête-toi, on change la roue.','Un pneu à plat, on s’arrête tout de suite.','Ça bringuebale… arrête-toi, c’est crevé.'],
+rockZone:['Les cailloux, vas-y mollo, sinon on crève.','Doucement sur les cailloux, ma chérie.','Les pneus vont souffrir, ralentis.','Ça caillasse devant, on y va tranquille.'],
+ob_log:['Un arbre en travers. Allez, on le dégage ensemble.','Un tronc sur la route. Viens, on le pousse.','Il est gros, celui-là. Allez, au boulot.'],
+ob_rock:['Un éboulis. Viens, on déblaie ça.','Des cailloux en pagaille. On dégage tout ça.','Aïe, des rochers sur la piste. On s’y met.'],
+ob_sheep:['Moutmout ! Klaxonne !','Des moutmouts. Vite, klaxonne.','Oh, encore des moutons. Il n’y a vraiment qu’en Corse qu’on voit ça. Klaxonne.']};
 Object.assign(MSG,{
-wx_rain:['Il se met à pleuvoir… mets les essuie-glaces, mon cœur !','§La pluie ! Ça glisse plus, fais attention !','Ça tombe des cordes, ralentis un peu !','§Tout est mouillé, la piste va être grasse !'],
-wx_snow:['§Oh, il neige ! C’est magnifique !','La neige tombe, la route va glisser, doucement !','§Des flocons ! Je me sens comme une gamine !'],
-wx_fog:['On n’y voit pas à dix mètres, allume les phares !','§Quel brouillard ! On avance à l’aveugle…','Le brouillard est épais, vas-y mollo mon cœur !'],
-wx_storm:['L’orage arrive ! Accroche-toi, mon cœur !','§Les éclairs ! J’ai un peu peur, tu sais…','Ça gronde là-haut… on ne traîne pas !'],
-pass:['Salut les voisins !','§Un petit coup de klaxon, ils nous ont salués !','Tiens, ça fait plaisir de croiser quelqu’un par ici !','§Coucou ! Bonne route à eux !'],
-towCall:['Allô la dépanneuse ? Elle arrive, mon cœur !','§J’ai appelé le dépannage, ils débarquent !','La dépanneuse est en route, quinze cœurs pour eux !'],
-towDone:['Et voilà, comme neuf ! Merci le dépanneur !','§Ça repart ! Ils sont super efficaces !','Tout est réparé, on peut y aller mon amour !'],
-towNo:['§Il nous faut quinze cœurs pour la dépanneuse…','Pas assez de cœurs pour payer le dépannage, mon amour…','§Quinze cœurs, on n’a pas ça en poche !']});
+wx_rain:['Il se met à pleuvoir. Mets les essuie-glaces.','Ça va glisser avec la pluie. Mets le 4 roues motrices, ma chérie.','Ça tombe des cordes, ralentis un peu.','Tout est mouillé, la piste va être grasse.'],
+wx_snow:['Oh, il neige. Regarde ça.','La neige tombe, la route va glisser. Doucement.','Des flocons ! T’as vu ?'],
+wx_fog:['On n’y voit pas à dix mètres. Allume les phares.','Quel brouillard. On avance à l’aveugle.','Le brouillard est épais, vas-y mollo.'],
+wx_storm:['L’orage arrive. Accroche-toi.','Les éclairs. Ça fait un peu peur, non ?','Ça gronde là-haut. On traîne pas.'],
+pass:['Salut les voisins !','Un petit coup de klaxon, ils nous ont salués.','Tiens, ça fait plaisir de croiser quelqu’un par ici.','Coucou ! Bonne route à eux.'],
+towCall:['Allô, la dépanneuse ? Elle arrive.','J’ai appelé le dépannage, ils débarquent.','La dépanneuse est en route. Quinze cœurs pour eux.'],
+towDone:['Et voilà, comme neuf. Merci le dépanneur.','Ça repart. Ils sont efficaces.','Tout est réparé, on peut y aller.'],
+towNo:['Il nous faut quinze cœurs pour la dépanneuse.','Pas assez de cœurs pour payer le dépannage, ma chérie.','Quinze cœurs, on n’a pas ça en poche.']});
 Object.assign(MSG,{
-lampHint:['Allume les phares mon cœur, on n’y voit plus rien !','§Les phares ! Je ne vois plus la route !','On devrait allumer les phares, non ?'],
-wipHint:['Mets les essuie-glaces, on ne voit rien !','§Les essuie-glaces, vite !','Ça floute… les essuie-glaces, mon cœur !'],
-garAhead:['Regarde, un garage Jeep ! On s’arrête voir les pièces ?','§Un garage Jeep ! J’ai quelques cœurs à dépenser !','Garage en vue, mon cœur, on s’arrête ?'],
-tunnel:['Un tunnel ! Allume les phares !','§Oh, un tunnel dans la montagne !','Tunnel droit devant, on y va !'],
-surf:['§Ta planche de surf sur le toit, on se baigne ce soir ?','On est parés pour une session de surf, mon cœur !','§Les vagues nous attendent, regarde !'],
-shopBuy:['Voilà, c’est monté !','§Elle te va bien cette amélioration !','Les mécanos du garage font du bon boulot !']});
+lampHint:['Allume les phares, ma chérie, on n’y voit plus rien.','Les phares. Je ne vois plus la route.','On devrait allumer les phares, non ?'],
+wipHint:['Mets les essuie-glaces, on ne voit rien.','Les essuie-glaces, vite.','Ça floute… les essuie-glaces, ma chérie.'],
+garAhead:['Ah super, un garage. On va voir si le mec peut nous installer les pièces que je voulais mettre.','Regarde, un garage Jeep. On s’arrête voir les pièces ?','Garage en vue. On s’arrête ?'],
+tunnel:['Un tunnel. Allume les phares.','Oh, un tunnel dans la montagne.','Tunnel droit devant, on y va.'],
+surf:['Ta planche de surf sur le toit. On se baigne ce soir ?','On est parés pour une session de surf.','Les vagues nous attendent, regarde.'],
+shopBuy:['Voilà, c’est monté.','Elle te va bien, cette amélioration.','Les mécanos du garage font du bon boulot.']});
 Object.assign(MSG,{
-dusk:['Il se fait tard… un camping ou un hôtel, quelque part ?','Le soleil descend, on cherche un endroit pour dormir ?','§Il commence à faire sombre, on s’arrête bientôt ?','Plus beaucoup de jour devant nous, mon cœur !'],
-closeEyes:['§Je suis fatiguée… je ferme un peu les yeux','§Réveille-moi quand on s’arrête, je ferme les yeux','Il est tard, mon cœur, on devrait dormir…'],
-shopAhead:['Tiens, un magasin ! Frein à main pour s’arrêter voir ?','§Un petit magasin… on regarde ce qu’il y a ?','Regarde, on peut s’arrêter là, mon cœur !'],
-tired:['Je suis crevée, on devrait dormir quelque part…','§Je tombe de sommeil… un hôtel, vite !','On roule de nuit, c’est fatigant, mon cœur…','§Mes yeux se ferment tout seuls…'],
-campAhead:['Un camping au bord de la route, on pourra dormir là !','§Regarde, un camping ! Pratique si la nuit tombe.','Un coin pour planter la tente, mon cœur !'],
-hotelAhead:['Un hôtel, mon cœur ! Un vrai lit pour ce soir ?','§Un hôtel là-bas ! Peut-être de la place.','Un petit hôtel ! Parfait s’il pleut.'],
-dawn:['Le jour se lève enfin, mon cœur !','§Quelle nuit ! Heureusement le soleil revient.','Voilà l’aube… on a roulé toute la nuit !']});
+shopAhead:['Bah si tu veux, on peut s’arrêter. J’ai vu un magasin un peu plus loin.','Un petit magasin. On regarde ce qu’il y a ?','Regarde, on peut s’arrêter là, ma chérie.'],
+tired:['Je suis crevé, on devrait dormir quelque part.','Je tombe de sommeil. Un hôtel, vite.','On roule de nuit, c’est fatigant, ma chérie.','J’ai les yeux qui se ferment tout seuls.'],
+campAhead:['Un camping au bord de la route. On pourra dormir là.','Regarde, un camping. Pratique si la nuit tombe.','Un coin pour planter la tente, ma chérie.'],
+hotelAhead:['Un hôtel, ma chérie. Un vrai lit pour ce soir ?','Un hôtel là-bas. Peut-être de la place.','Un petit hôtel. Parfait s’il pleut.'],
+dawn:['Le jour se lève enfin.','Quelle nuit. Heureusement, le soleil revient.','Voilà l’aube. On a roulé toute la nuit.']});
 const DK={},LK={};
 function pickW(k){if(!MSG[k])k='chat';let d=DK[k];if(!d||!d.length){d=DK[k]=MSG[k].slice();for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]]}if(d.length>1&&d[d.length-1]===LK[k]){[d[0],d[d.length-1]]=[d[d.length-1],d[0]]}}
 const t=d.pop();LK[k]=t;return t.charAt(0)==='§'?[t.slice(1),1]:[t,0]}
 function sayK(k,d=3,arg){if(sayCool>0&&!SAYP.has(k)&&k.indexOf('wx')!==0)return;const[t,w]=pickW(k);say(arg?t.replace('{n}',arg):t,d,w)}
 let sayCool=0;const SAYP=new Set(['flat','stall','dry','towCall','morning','dawn','pumpDone','wheelDone','rockDone','logDone','reply','pizzaR','mis']);
-const PETA=['ma chérie','mon cœur','mon ange','ma copine','mon amour'],PETM=['mon cœur','mon ange','mon amour','mon copain','mon chéri'];
-function addPet(m,who){if((typeof call!=='undefined'&&call)||/Mercedes|Parisiens|pas changé|Tonio|[Mm]aman|[Mm]amie|Allô/.test(m)||m.length>140||Math.random()>.56||/chérie|cœur|coeur|ange|copain|copine|amour|chéri/i.test(m))return m;const r=/\s*([!?.…]+)\s*$/.exec(m);if(!r)return m;const L=who?PETM:PETA,p=L[Math.floor(Math.random()*L.length)],base=m.slice(0,r.index),pc=r[1];return base+', '+p+((pc[0]==='!'||pc[0]==='?')?' ':'')+pc}
+const PETA=['ma chérie','ma chérie','mon cœur','ma belle'],PETM=['mon cœur','mon chéri'];
+function addPet(m,who){if((typeof call!=='undefined'&&call)||/Mercedes|Parisiens|pas changé|Tonio|[Mm]aman|[Mm]amie|Allô/.test(m)||m.length>140||Math.random()>.3||/chérie|cœur|coeur|ange|copain|copine|amour|chéri/i.test(m))return m;const r=/\s*([!?.…]+)\s*$/.exec(m);if(!r)return m;const L=who?PETM:PETA,p=L[Math.floor(Math.random()*L.length)],base=m.slice(0,r.index),pc=r[1];return base+', '+p+((pc[0]==='!'||pc[0]==='?')?' ':'')+pc}
 function say(m,d=2.8,who=0){m=addPet(m,who);d=Math.max(d*1.4,3+m.length*.085);sayM=m;sayT=d;sayD=d;sayWho=who;sayCool=d+24;snd('talk',who)}
 function toast(m){say(m,3)}
 const H0=7,H1=20,limitT=()=>(lvlDur+40)*(SET.mode?1.5:1),bsOf=h=>h<=20?-1.3+(h-7)*.2462:1.9+(h-20)*(3.08/11),DAYT=()=>lvlDur+40,NIGHTT=()=>(lvlDur+40)*.55,warmH=h=>Math.max(cl((8.8-h)/1.8),cl((h-16.8)/2.2));
@@ -1495,7 +1493,7 @@ stops:[{f:.3,n:'Bonifacio',e:'🏰',L:[['m','La citadelle au bord de la falaise�
 {f:.8,n:'Plage de Fautea',e:'🌅',L:[['m','Fautea… la tour génoise, la plage… On est revenus au début.']]}]}];
 const CHP=()=>CHAP[(level-1)%CHAP.length];
 const FACTS=['Le balbuzard pêcheur plonge les serres en avant pour attraper sa proie. C’est l’un des rares rapaces à pêcher !','Le mouflon de Corse vit dans les rochers en altitude. C’est le plus petit mouflon sauvage d’Europe.','La tortue d’Hermann peut vivre plus de cinquante ans et hiberne dès l’automne.','L’euprocte de Corse est un petit triton qu’on ne trouve que sur l’île, dans les ruisseaux frais.','La sittelle corse est un oiseau qui ne vit qu’en Corse, dans les forêts de pins laricio.','Le cerf de Corse avait disparu de l’île. Des scientifiques l’ont ramené, et il s’y plaît à nouveau.','Dans la réserve de Scandola, le mérou brun est protégé : il y est devenu bien plus gros qu’ailleurs.','Un hérisson peut marcher deux kilomètres par nuit pour trouver à manger.','Les oisillons quittent le nid avant de savoir voler : leurs parents continuent de les nourrir au sol.','Le gypaète barbu laisse tomber les os de très haut pour les casser. Il se nourrit surtout de leur moelle.'];
-const LOVE=[[['m','Tu sais que je n’ai jamais été aussi heureuse que dans ce Cherokee ?'],['a','Moi non plus. Même avec le bruit du moteur.']],[['a','Tu notes tout dans ton carnet… même ce que je dis ?'],['m','Surtout ce que tu dis. Page douze : « Andrea chante faux ».']],[['m','Quand je regarde un animal, j’oublie de respirer. Et toi ?'],['a','Moi, j’oublie de respirer depuis qu’on s’est rencontrés.']],[['a','Et si on s’arrêtait ici toute la vie ?'],['m','On manquerait le reste du voyage. Et le chien serait furieux.']],[['m','Tu me promets qu’on fera ça tous les ans ?'],['a','Je te promets bien plus que ça.']],[['a','Je garde un secret depuis le départ.'],['m','Je sais. Tu touches ta poche toutes les cinq minutes !']],[['m','Merci d’avoir attendu pendant que je regardais les oiseaux une heure entière.'],['a','Je t’aurais attendue deux.']],[['a','Regarde comme la lumière te va bien.'],['m','Tu dis ça tous les soirs.'],['a','Et je le pense tous les soirs.']]];
+const LOVE=[[['m','Je suis bien, là.'],['a','Moi aussi, ma chérie. Même avec le bruit du moteur.']],[['a','Tu notes tout dans ton carnet, même ce que je dis ?'],['m','Surtout ce que tu dis. Page douze : « Andrea chante faux ».']],[['m','T’as vu ? J’ai oublié de respirer devant le dernier animal.'],['a','Moi aussi, je t’ai regardée.']],[['a','Et si on restait ici ?'],['m','Et le chien ? Il serait furieux.']],[['m','On le refera tous les ans, hein ?'],['a','Ça marche. Et plus encore.']],[['a','J’ai un secret depuis le départ.'],['m','Je sais. Tu touches ta poche toutes les cinq minutes.']],[['m','Merci d’avoir attendu pour les oiseaux. Une heure.'],['a','Je t’aurais attendue deux.']],[['a','La lumière te va bien.'],['m','Tu dis ça tous les soirs.'],['a','Je le pense tous les soirs.']]];
 let cardOpen=false,loveI=0,factI=0,inj=null;const cardQ=[];
 function openCard(cd){curCd=cd;cardOpen=true;paused=true;st.gas=0;st.brake=0;try{ptr.clear()}catch(e){}gid('cdT').textContent=cd.t||'';gid('cdB').innerHTML=cd.L.map(l=>{const w=WHO[l[0]];return'<p class="'+l[0]+'">'+(w[0]?'<b style="color:'+w[1]+'">'+w[0]+'</b>':'')+l[1]+'</p>'}).join('');gid('card').style.display='flex';snd('chime')}
 function closeCard(){popCD=1.2;{const f=curCd&&curCd.cb;curCd=null;if(f)setTimeout(f,350)}gid('card').style.display='none';cardOpen=false;paused=false;last=performance.now();saveTrip();if(SV.finPend&&!cardQ.length){SV.finPend=0;setTimeout(openFinale,700)}if(pendIntro){pendIntro=false;startIntro()}if(pendBan&&!cardQ.length){const pb=pendBan;pendBan=null;setTimeout(()=>placeBanner(pb[0],pb[1],1),2200)}}
@@ -2758,7 +2756,7 @@ if((SV.help||0)>=5&&!SV.rl.h){SV.rl.h=1;return['a','Cinq animaux sauvés… tu e
 if(Object.keys(SV.sick||{}).length>=3&&!SV.rl.s){SV.rl.s=1;return['m','Trois animaux malades photographiés… le dossier devient solide.']}
 if(mudL>.7&&!SV.rl.m){SV.rl.m=1;return['a','Le Cherokee est couvert de boue… c’est comme ça qu’il est le plus beau.']}
 return null}
-const WINCH_OK=['Bien joué, mon cœur ! Le treuil, c’est magique.','Hop, on est passés ! Quel pilote.','Ça c’est du franchissement !'];
+const WINCH_OK=['Bien joué, ma chérie ! Le treuil, c’est magique.','Hop, on est passés. Quelle pilote.','Ça, c’est du franchissement.'];
 // --- écran d'accueil animé
 let mbgC=null,mbgOn=false;
 function menuBg(){const m=gid('menu');if(!m)return;if(!mbgC){mbgC=document.createElement('canvas');mbgC.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:0';m.insertBefore(mbgC,m.firstChild);const cd=m.querySelector('.card');if(cd){cd.style.position='relative';cd.style.zIndex='1'}m.style.background='rgba(20,14,8,.25)'}
@@ -2791,7 +2789,7 @@ function fordDraw(x0,x1){const tm=performance.now()/1000;for(let j=Math.floor((x
 const lv=Math.max(T(s),T(s+300))+16;let xa=s,xb=s+300;while(xa<s+150&&T(xa)<=lv)xa+=3;while(xb>s+150&&T(xb)<=lv)xb-=3;g.fillStyle='rgba(60,128,180,.72)';g.beginPath();g.moveTo(xa,lv);for(let x=xa;x<=xb;x+=6)g.lineTo(x,lv+Math.sin(tm*2+x*.05)*1);for(let x=xb;x>=xa;x-=6)g.lineTo(x,Math.max(lv,T(x)+14));g.closePath();g.fill();g.fillStyle='rgba(120,100,70,.5)';for(let x=xa;x<=xb;x+=14){g.beginPath();g.arc(x,T(x)+12,3,0,7);g.fill()}
 g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=1.2;for(let i=0;i<5;i++){const xx=xa+10+((i*47+tm*18)%Math.max(20,xb-xa-30));g.beginPath();g.moveTo(xx,lv+1.5);g.lineTo(xx+14,lv+1.5);g.stroke()}
 const sx=s-50,sy=T(sx);g.fillStyle='#6b4a2a';g.fillRect(sx-2,sy-46,4,46);g.fillStyle='#2f6fa8';g.strokeStyle='#fff';g.lineWidth=2;g.beginPath();g.roundRect(sx-26,sy-68,52,24,5);g.fill();g.stroke();g.fillStyle='#fff';g.font='800 12px Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('🌊 GUÉ',sx,sy-56);g.textBaseline='alphabetic'}}
-const FORD_BAD=['Aïe ! On a pris l’eau dans la voiture… j’ai les pieds trempés !','Doucement dans les gués, mon cœur ! Il y a de l’eau sur le tapis…','Mon carnet ! Il a failli être mouillé ! Roule au pas dans l’eau !'];
+const FORD_BAD=['Aïe, on a pris l’eau ! J’ai les pieds trempés.','Doucement dans les gués, ma chérie. Y a de l’eau sur le tapis.','Mon carnet ! Roule au pas dans l’eau.'];
 function fordTick(dt){if(!started||paused||night||crashed||dt<=0)return;const sp=Math.hypot(v.x,v.y),s=fordS(c.x),dp=gid('dogp');
 if(fordAt(c.x)){v.x*=1-dt*.45;if(!fordS0.in){fordS0.in=1;if(sp>150){snd('splash');for(let i=0;i<26;i++)drops.push({x:c.x+Math.random()*80-40,y:T(c.x)-6,vx:(Math.random()-.5)*260,vy:-160-Math.random()*200,t:0});hapt(80);if(sp>230&&Math.random()<.35&&(SV.fordSay||0)<level*2){SV.fordSay=(SV.fordSay||0)+1;setTimeout(()=>say(FORD_BAD[Math.floor(Math.random()*FORD_BAD.length)],4,1),400)}}}
 if(sp>40&&Math.random()<dt*12)drops.push({x:c.x+(Math.random()-.5)*90,y:T(c.x)-2,vx:(Math.random()-.5)*90,vy:-60-Math.random()*70,t:0})}else fordS0.in=0;
@@ -4610,14 +4608,14 @@ const busy=sayT>0||Math.hypot(v.x,v.y)>2||(typeof wipOn!=='undefined'&&wipOn)||w
 
 // ===== 2.02 : humour — Andrea (humour noir), Mila (humour bienveillant) =====
 const JOKE={
-mud:[[['m','La boue, c’est excellent pour la peau. Le Cherokee va être magnifique.'],['a','Lui, oui. Moi, je vais devoir le laver.']]],
-rain:[[['a','Si on finit dans le ravin, au moins on n’aura plus à chercher où dormir ce soir.'],['m','Andrea ! Regarde la route, pas le ravin.']]],
-sheep:[[['m','Elles ont la priorité. Ce sont les vraies propriétaires de la Corse.'],['a','Et elles ne mettent jamais leur clignotant.']]],
-late:[[['a','Rouler de nuit en montagne… Si un fantôme fait du stop, on ne le prend pas.'],['m','Même s’il a l’air gentil ? Il a peut-être froid.']]],
-any:[[['a','Le Cherokee a plus de pièces changées que de pièces d’origine. C’est encore le même Cherokee, tu crois ?'],['m','Bien sûr. C’est l’âme qui compte. Et la sienne sent un peu l’huile.']],
-[['a','Le jour où ce moteur me lâche, je l’enterre avec les honneurs. Avec un discours et tout.'],['m','Et moi, j’apporterai des fleurs. Il les mérite.']],
-[['a','Le GPS dit « faites demi-tour dès que possible ». Même lui veut qu’on rentre.'],['m','Il n’a jamais vu une tortue de sa vie. Il ne peut pas comprendre.']],
-[['m','Tu sais que certains parasites changent le comportement de leur hôte ?'],['a','Ça expliquerait pourquoi je te suis partout en Corse.'],['m','Non, ça, c’est autre chose. Je crois.']]]};
+mud:[[['a','La boue, c’est bon pour la peau, non ?'],['m','Le Cherokee va être magnifique.'],['a','Et c’est moi qui le lave.']]],
+rain:[[['a','Si on finit dans le ravin, on aura plus à chercher où dormir.'],['m','Andrea ! Regarde la route.']]],
+sheep:[[['m','Elles ont la priorité.'],['a','Et elles mettent jamais leur clignotant.']]],
+late:[[['a','Si un fantôme fait du stop, on le prend pas, hein.'],['m','Même s’il a froid ?']]],
+any:[[['a','Y a plus de pièces neuves que d’origine dans le Cherokee. C’est le même, tu crois ?'],['m','C’est l’âme qui compte. Et la sienne sent l’huile.']],
+[['a','Le jour où le moteur lâche, je lui fais un discours.'],['m','Et moi j’apporte des fleurs.']],
+[['a','Le GPS dit « faites demi-tour ». Même lui veut rentrer.'],['m','Il a jamais vu de tortue de sa vie.']],
+[['m','Y a des parasites qui changent le comportement de leur hôte, tu sais.'],['a','Ça explique pourquoi je te suis partout.'],['m','Non, ça, c’est autre chose. Je crois.']]]};
 const GAG={par:[[['m','Ce ver ne s’attaque pas aux humains. Enfin… presque jamais.'],['a','C’est le « presque » qui m’empêche de dormir.']],
 [['m','Bonne nouvelle : la douve du foie préfère les moutons.'],['a','Et la mauvaise nouvelle ?'],['m','Il y a beaucoup de moutons en Corse.']],
 [['a','Si un de tes parasites me dévore, tu donneras mon nom à l’espèce ?'],['m','Promis. Andreaus cherokeensis. Il vivra dans un moteur.']],
@@ -6653,13 +6651,13 @@ wxDraw=(function(o){return function(tm){o(tm);try{if(!leafP.length)return;g.setT
 // ---------- moments à deux : cœurs ----------
 mudDraw=(function(o){return function(){o();try{for(const h of tendH){g.globalAlpha=Math.max(0,1-h.t/3);g.fillStyle='#ff6b8a';g.save();g.translate(h.x,h.y);g.scale(h.s,h.s);g.beginPath();g.moveTo(0,2);g.bezierCurveTo(-5,-2,-3,-6,0,-3);g.bezierCurveTo(3,-6,5,-2,0,2);g.fill();g.restore()}g.globalAlpha=1;
  if(poseT>0){const px=c.x-110,py=T(px);person(px,py,0,{a1:-.2,a2:2.6});person(px+16,T(px+16),1,{a1:2.4,a2:.2});try{dogDraw(px-22,T(px-22),1,'sit',performance.now()/1000)}catch(e){}}}catch(e){}}})(mudDraw);
-const TENDER=[[['m','Tu sais ce que je préfère dans ce voyage ? Toi, à côté de moi.'],['a','Et moi, ton rire quand on passe dans une flaque.']],
-[['a','Viens là… juste une minute, sans rien faire.'],['m','Juste nous deux et le bruit du vent. J’adore.']],
-[['m','Tu as de la poussière sur le nez.'],['a','Laisse-la, c’est un souvenir de Corse.']],
-[['a','Regarde cette lumière… elle te va bien.'],['m','Arrête, tu vas me faire rougir.']],
-[['m','Je me sens tellement bien avec toi, ici.'],['a','Moi aussi. Comme à la maison, mais avec la mer en plus.']],
-[['a','On repart quand tu veux… ou jamais, c’est toi qui vois.'],['m','Encore deux minutes. Pose ta main là.']],
-[['m','Tu crois qu’on sera encore comme ça dans trente ans ?'],['a','Avec un Cherokee encore plus vieux, oui.']],
+const TENDER=[[['m','Je préfère quoi dans ce voyage ? Toi, à côté de moi.'],['a','Moi, ton rire dans les flaques.']],
+[['a','Viens là. Juste une minute.'],['m','Juste nous deux et le vent. J’adore.']],
+[['m','T’as de la poussière sur le nez.'],['a','Laisse, c’est un souvenir de Corse.']],
+[['a','Regarde cette lumière. Elle te va bien.'],['m','Arrête, tu vas me faire rougir.']],
+[['m','Je suis bien avec toi, ici.'],['a','Moi aussi. Comme à la maison, avec la mer en plus.']],
+[['a','On repart quand tu veux. Ou jamais.'],['m','Encore deux minutes. Pose ta main là.']],
+[['m','On sera encore comme ça dans trente ans ?'],['a','Avec un Cherokee encore plus vieux, oui.']],
 [['a','Tu me fais un bisou ou je klaxonne ?'],['m','Ne klaxonne pas, tu vas réveiller le chien.']]];
 // ---------- garage d'Andrea : nouvelles pièces ----------
 function upFix(){SV.cus=SV.cus||{};const C=SV.cus;C.own=C.own||{};for(const k of['pdiff','pbull','psnk','pskid'])if(C[k]==null)C[k]=0}
@@ -7332,7 +7330,7 @@ function va5Unlbl(){try{gid('cusx').textContent='Repartir ▶';gid('engx').textC
 function va5Hdr(){try{gid('va5h').textContent='Tes cœurs : '+SV.hearts+' ❤';const nx=CHAP[(level-1)%CHAP.length];gid('va5k').textContent='Chapitre '+(va5G.i+1)+' terminé';gid('va5n').textContent='Prochaine étape : '+nx.p.split(' · ')[0]+'. Profitez-en pour préparer le Cherokee.';gid('va5gs').textContent='Chapitre '+(chIdx()+1)+' / '+CHAP.length}catch(e){}}
 function va5Open(i){va5G={i,t0:performance.now()};paused=true;st.gas=0;st.brake=0;try{ptr.clear()}catch(e){}try{cusInit()}catch(e){}const cvs=gid('va5c');cvs.width=Math.round(W*DPR);cvs.height=Math.round(HH*DPR);va5Hdr();gid('va5').style.display='block';va5Lbl();va5Draw(performance.now());SV.va5=level;saveTrip()}
 function va5Close(){va5G=null;gid('va5').style.display='none';va5Unlbl();paused=false;last=performance.now();try{applyUp();settleCar()}catch(e){}saveTrip()}
-const VA5_TALK=[['a','Je resserre deux ou trois boulons, et on est repartis.'],['m','Je note tout : les kilomètres, les animaux… et toi qui chantes faux.'],['a','Si tu veux changer quelque chose sur le Cherokee, c’est le moment.'],['m','Le magasin d’à côté a reçu de nouvelles couleurs. Je dis ça, je dis rien.'],['a','Un peu de graisse sur les rotules, et il grimpera n’importe où.'],['m','Le chien surveille le Cherokee depuis la fenêtre. Personne n’y touchera.']];
+const VA5_TALK=[['a','Je serre deux boulons et on repart.'],['m','Je note tout : les kilomètres, les animaux, et toi qui chantes faux.'],['a','Si tu veux changer un truc sur le Cherokee, c’est maintenant.'],['m','Le magasin d’à côté a de nouvelles couleurs. Je dis ça, je dis rien.'],['a','Un peu de graisse sur les rotules et il grimpe partout.'],['m','Le chien surveille la voiture. Personne y touche.']];
 function va5Draw(t){if(!va5G)return;const x=gid('va5c').getContext('2d'),tm=t/1000,k=HH/420,Wd=W/k,gy=318;
  onCtx(x,()=>{g.setTransform(DPR*k,0,0,DPR*k,0,0);
   // ciel d'après-midi
@@ -8630,6 +8628,6 @@ openCard=(function(o){return function(cd){o(cd);try{va58Lock(1600)}catch(e){}}})
 (function(){const el=gid('card');const blk=e=>{try{if(performance.now()<va58L.u&&e.target.closest&&e.target.closest('#cdGo')){e.preventDefault();e.stopImmediatePropagation()}}catch(er){}};el.addEventListener('pointerdown',blk,true);el.addEventListener('click',blk,true)})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.58',GAME_DATE='11/11/2026 à 17h54';
+const GAME_VER='3.59',GAME_DATE='11/11/2026 à 18h24';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
