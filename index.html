@@ -8194,7 +8194,7 @@ function va49Pool(xa,xb,lv,mud,tm){for(let x=xa;x<xb;x+=6){const dd=Math.max(0,M
 deepDraw=(function(o){return function(x0,x1){o(x0,x1);try{const s=deepS();if(s<0||s>x1+100||s+500<x0)return;const tm=performance.now()/1000,lv=Math.max(T(s),T(s+480))+18;let xa=s,xb=s+480;while(xa<s+240&&T(xa)<=lv)xa+=3;while(xb>s+240&&T(xb)<=lv)xb-=3;va49Pool(xa,xb,lv,1,tm)}catch(e){}}})(deepDraw);
 fordDraw=(function(o){return function(x0,x1){o(x0,x1);try{const tm=performance.now()/1000;for(let j=Math.floor((x0-5000)/3200);j<=Math.floor((x1-2000)/3200);j++){const s=fordP(j);if(s<0||s+320<x0||s-80>x1)continue;const lv=Math.max(T(s),T(s+300))+16;let xa=s,xb=s+300;while(xa<s+150&&T(xa)<=lv)xa+=3;while(xb>s+150&&T(xb)<=lv)xb-=3;va49Pool(xa,xb,lv,0,tm)}}catch(e){}}})(fordDraw);
 // --- 2. rallye chronométré facultatif (un par chapitre)
-const VA49_RL=3000;
+var VA49_RL=3000;
 function va49RS(){try{if(chIdx()===7||chIdx()===9)return -1;const l='L'+level;if(va49Z[l]===undefined){const ds=deepS(),ss=slipS(),cand=[];const okx=(q)=>{if(bridgeAt(q)>=0||hardS(q)>=0||rockW(q)>0)return false;try{if(typeof tunAt==='function'&&tunAt(q)>=0)return false}catch(e){}const sq=sceneSeg(q);if(sq&&q<sq.s+sq.len+100&&q>sq.s-100)return false;return true};for(let q=Math.round(MAP_L*.22/100)*100;q<MAP_L*.84;q+=100){let ok=true;for(let z=q-100;z<=q+VA49_RL+100&&ok;z+=100)if(!okx(z))ok=false;if(!ok)continue;if(ds>=0&&q<ds+1900&&q+VA49_RL>ds-300)continue;if(ss>=0&&q<ss+1900&&q+VA49_RL>ss-300)continue;if(cand.length&&q-cand[cand.length-1]<VA49_RL+1500)continue;cand.push(q)}const pr=[.3,.46,.38,.54,.62][level%5];const x=cand.length?cand.reduce((a,q)=>Math.abs(q-MAP_L*pr)<Math.abs(a-MAP_L*pr)?q:a,cand[0]):-1;va49Z[l]=x}return va49Z[l]}catch(e){return -1}}
 function va49Fmt(t){const m=Math.floor(t/60),s=t-m*60;return m+' min '+(s<10?'0':'')+s.toFixed(1).replace('.',',')+' s'}
 function va49RallyTick(){try{const hud=gid('va49r'),s=va49RS();if(s<0||!inGame||va9P||dkP){hud.style.display='none';return}
@@ -8204,7 +8204,7 @@ function va49RallyTick(){try{const hud=gid('va49r'),s=va49RS();if(s<0||!inGame||
  const R=va49Run;if(!paused)R.t+=.1;
  if(night||c.x<s-120||crashed){va49Run=null;hud.style.display='none';return}
  hud.textContent=va49Fmt(R.t)+' · '+Math.max(0,Math.round((s+VA49_RL-c.x)/30))+' m';hud.style.display='block';
- if(c.x>=s+VA49_RL){const t=R.t;va49Run=null;hud.style.display='none';va49Z['d'+k]=1;const ch=chIdx();SV.rally=SV.rally||{};const L=(SV.rally[ch]||[]).concat([+t.toFixed(1)]).sort((a,b)=>a-b).slice(0,3);const rank=L.indexOf(+t.toFixed(1))+1;SV.rally[ch]=L;
+ if(c.x>=s+VA49_RL){const t=R.t;va49Run=null;hud.style.display='none';va49Z['d'+k]=1;const ch=chIdx();SV.rally=SV.rally2=SV.rally2||{};const L=(SV.rally[ch]||[]).concat([+t.toFixed(1)]).sort((a,b)=>a-b).slice(0,3);const rank=L.indexOf(+t.toFixed(1))+1;SV.rally[ch]=L;
   const first=!SV.rallyD[ch];if(first){SV.rallyD[ch]=1;SV.hearts+=3}const nm=['1er','2e','3e'];
   cardQ.push({now:1,t:'Rallye · chapitre '+(ch+1),L:[['n','Temps : '+va49Fmt(t)+(rank===1&&L.length>1?' · nouveau record !':'')+(first?' · +3 cœurs':'')],['n','Meilleurs temps : '+L.map((q,i)=>nm[i]+' '+va49Fmt(q)).join(' · ')],['a',rank===1?'Quel pilote ! Même le chien a fermé les yeux.':'Pas mal du tout. On peut faire mieux, non ?']]});snd('done');try{saveTrip()}catch(e){}}}catch(e){}}
 slipDraw=(function(o){return function(x0,x1){o(x0,x1);try{const s=va49RS();if(s<0)return;const tm=performance.now()/1000;for(const [px,lab,fin] of [[s,'RALLYE · DÉPART',0],[s+VA49_RL,'ARRIVÉE',1]]){if(px<x0-80||px>x1+80)continue;const py=T(px);g.fillStyle='#3a2a1e';g.fillRect(px-70,py-92,4,92);g.fillRect(px+66,py-92,4,92);g.fillStyle='#fff';g.fillRect(px-70,py-96,140,24);g.fillStyle='#222';for(let i=0;i<14;i++)for(let j=0;j<2;j++)if((i+j)%2===0)g.fillRect(px-70+i*10,py-96+j*12,10,12);g.fillStyle='rgba(168,40,42,.95)';g.fillRect(px-52,py-84,104,14);g.fillStyle='#fff';g.font='800 9px Arial';g.textAlign='center';g.textBaseline='middle';g.fillText(lab,px,py-77);g.textBaseline='alphabetic'}
@@ -8655,8 +8655,79 @@ function va23Track(x,y,r){const Rr=R,rr=Rr*.3,b=.7*Rr,hw=1.02*Rr;
 // pas de crevaison avec les chenilles
 breakOne=(function(o){return function(){if(SV&&SV.cus&&SV.cus.trk){dmg=0;return}return o()}})(breakOne);
 wheel=(function(o){return function(x,y,r){if(SV&&SV.cus&&SV.cus.trk){try{return va23Track(x,y,r)}catch(e){}}return o(x,y,r)}})(wheel);
+// ===== 3.63 : rallye de ~30 s sans aucune distraction ; la poursuite de la gendarmerie n'est plus coupée par le pont à reconstruire =====
+// --- rallye : tronçon de 11 000 (≈ 30 s à bonne allure ; 9 500 / 8 000 si rien ne rentre), loin des scènes de l'histoire
+VA49_RL=11000;
+va49RS=(function(o){return function(){try{if(chIdx()===7||chIdx()===9)return -1;const l='L'+level;
+ if(va49Z[l]===undefined||va49Z['v63'+l]!==1){va49Z['v63'+l]=1;let pick=-1,rl=0;const ds=deepS(),ss=slipS();let SPL=[];try{SPL=spList()}catch(e){}
+  const okx=q=>{if(rockW(q)>0)return false;try{if(ferIn(q))return false}catch(e){}return true};
+  for(const L of[11000,9500,8000,6500]){const cand=[];for(let q=Math.round(MAP_L*.18/100)*100;q+L<MAP_L*.9;q+=200){let ok=true;for(let z=q-200;z<=q+L+200&&ok;z+=100)if(!okx(z))ok=false;if(!ok)continue;
+    if(ds>=0&&q<ds+1900&&q+L>ds-300)continue;
+    if(SPL.some(e=>e.x>q-1500&&e.x<q+L+1500))continue;try{const b=brkS();if(b>=0&&b>q-1500&&b<q+L+1500)continue}catch(e){}cand.push(q)}
+   if(cand.length){const pr=[.3,.46,.38,.54,.62][level%5];pick=cand.reduce((a,q)=>Math.abs(q+L/2-MAP_L*pr)<Math.abs(a+L/2-MAP_L*pr)?q:a,cand[0]);rl=L;break}}
+  va49Z[l]=pick;va49Z['rl'+l]=rl||8000}
+ VA49_RL=va49Z['rl'+l]||VA49_RL;return va49Z[l]}catch(e){return -1}}})(va49RS);
+function va63In(x,m){try{const s=va49RS();if(s<0)return false;m=m||0;return x>s-900-m&&x<s+VA49_RL+300+m}catch(e){return false}}
+function va63On(){try{return !!va49Run||va63In(c.x,0)}catch(e){return false}}
+// rien ne se place dans le tronçon (obstacles, troupeaux, magasins, vendeurs, passages, événements) ; on attend la fin pour les cartes et les bulles
+spNear=(function(o){return function(x){return o(x)||va63In(x,0)}})(spNear);
+popOK=(function(o){return function(){if(va63On())return false;return o()}})(popOK);
+var va63Say=0;
+say=(function(o){return function(t,d,w){if(va63On()&&!va63Say&&!/[Cc]hrono|rallye|Rallye/.test(String(t||'')))return;return o.apply(this,arguments)}})(say);
+mgTick=(function(o){return function(dt){o(dt);try{if(!va63On())return;calmT=0;const s=va49RS(),a1=s-900,b1=s+VA49_RL+300;
+  for(let i=obs.length-1;i>=0;i--){const q=obs[i];if(q&&q.x>a1&&q.x<b1&&!q.done&&q.x>c.x+300)q.done=1}
+  if(typeof traf!=='undefined')for(let i=traf.length-1;i>=0;i--){const q=traf[i];if(q&&q.x>a1&&q.x<b1)traf.splice(i,1)}
+  for(const A of[shp,pzL])for(let i=A.length-1;i>=0;i--){const q=A[i];if(q&&q.x>a1&&q.x<b1&&q.x>c.x+500)A.splice(i,1)}
+  if(typeof talkQ!=='undefined')talkQ.length=0}catch(e){}}})(mgTick);
+// --- poursuite de la gendarmerie : si le pont cassé est dans les 9 000 devant, il passe au pont suivant (ou il n'y en a pas dans ce chapitre)
+mgTick=(function(o){return function(dt){o(dt);try{if(!chs||chs.ph>=4||(SV.brOK&&SV.brOK[level]))return;const b=brkS();if(!(b>=0)||b<c.x-150||b>c.x+9000)return;
+  let pick=-1;eachBridge0(c.x+9000,MAP_L*.95,q=>{if(pick<0&&!cvIn(q,700))pick=q});SV.brS=SV.brS||{};if(pick>=0)SV.brS[level]=pick;else{SV.brOK=SV.brOK||{};SV.brOK[level]=1}}catch(e){}}})(mgTick);
+// --- chenilles : le châssis prend la couleur des jantes (jaune si jantes d'origine argent)
+function va63Dk(h,f){try{h=String(h);if(h[0]!=='#')return h;if(h.length===4)h='#'+h[1]+h[1]+h[2]+h[2]+h[3]+h[3];const n=parseInt(h.slice(1),16);const r=Math.round(((n>>16)&255)*f),g2=Math.round(((n>>8)&255)*f),b=Math.round((n&255)*f);return 'rgb('+r+','+g2+','+b+')'}catch(e){return h}}
+function va63TC(){const r=SV&&SV.cus&&SV.cus.rimC;return (!r||r==='#c9ccd2')?'#e0a91c':r}
+va23Track=(function(o){return function(x,y,r){const tc=va63TC();if(tc==='#e0a91c')return o(x,y,r);const fs=Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype,'fillStyle'),ss=Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype,'strokeStyle');
+ const map={'#e0a91c':tc,'#c48f12':va63Dk(tc,.82),'#9a6f0c':va63Dk(tc,.6)};
+ Object.defineProperty(g,'fillStyle',{configurable:true,get(){return fs.get.call(this)},set(v){fs.set.call(this,map[v]||v)}});Object.defineProperty(g,'strokeStyle',{configurable:true,get(){return ss.get.call(this)},set(v){ss.set.call(this,map[v]||v)}});
+ try{return o(x,y,r)}finally{delete g.fillStyle;delete g.strokeStyle}}})(va23Track);
+// --- rampe LED vue presque de profil : boîtier fin, optiques en lamelles
+va30Led=function(){const on=!!lampOn,col=ledLens(),x0=-14,y0=-42.6,L=23,Hh=3.2;g.save();
+ g.fillStyle='#0d0e10';g.fillRect(x0+3,y0+Hh,1.6,1.8);g.fillRect(x0+L-5,y0+Hh,1.6,1.8);
+ const bg=g.createLinearGradient(0,y0,0,y0+Hh);bg.addColorStop(0,'#555a62');bg.addColorStop(.3,'#2a2d32');bg.addColorStop(1,'#0b0c0e');g.fillStyle=bg;g.beginPath();g.roundRect(x0,y0,L,Hh,1.1);g.fill();
+ g.strokeStyle='rgba(255,255,255,.25)';g.lineWidth=.3;g.beginPath();g.moveTo(x0+1,y0+.35);g.lineTo(x0+L-1,y0+.35);g.stroke();
+ // ailettes de refroidissement
+ g.strokeStyle='rgba(0,0,0,.55)';g.lineWidth=.25;for(let i=1;i<14;i++){const xx=x0+i*L/14;g.beginPath();g.moveTo(xx,y0+.6);g.lineTo(xx,y0+Hh-.4);g.stroke()}
+ // face avant (côté capot) : optiques vues de biais
+ const fx=x0+L;g.fillStyle='#16181b';g.beginPath();g.roundRect(fx-1.6,y0-.2,2.4,Hh+.4,.8);g.fill();
+ for(let q=0;q<3;q++){const cy=y0+.7+q*.95;g.fillStyle=on?'#fffdf0':'#b9bec6';g.beginPath();g.ellipse(fx,cy,.32,.42,0,0,7);g.fill()}
+ if(on){const gl=g.createRadialGradient(fx+.5,y0+Hh/2,.2,fx+.5,y0+Hh/2,7);gl.addColorStop(0,'rgba(255,255,255,.85)');gl.addColorStop(.3,'rgba(255,248,210,.45)');gl.addColorStop(1,'rgba(255,240,200,0)');g.fillStyle=gl;g.fillRect(fx-6,y0-6,14,Hh+12)}
+ g.restore()};
+// --- plus d'eau ajoutée par les grands décors : seul le fond peint reste (les aiguilles de Bavella sont gardées)
+va12Draw=(function(o){return function(x0,x1){try{const S=VA12_SITES[chIdx()];if(S&&S.k!=='needles'){const im=va23Get(chIdx());if(im&&im.naturalWidth)return}}catch(e){}return o(x0,x1)}})(va12Draw);
+// --- animaux dans l'eau du fond peint : hérons et aigrettes (étang de Foce, lac de l'Ospedale), à la place de l'ancien décor
+const VA63_AN={5:[[.08,.615,1],[.47,.6,0],[.83,.625,1]],8:[[.22,.615,0],[.71,.6,1]]};
+va23Bg=(function(o){return function(ta,dayF,tm,sx,sy){const a=o(ta,dayF,tm,sx,sy);try{const k=chIdx(),P=VA63_AN[k];if(!(a>.6)||!P||PLT())return a;
+ g.save();g.setTransform(DPR,0,0,DPR,0,0);g.globalAlpha=a;const span=W*1.6,H=Math.max(18,HH*.075);
+ for(let i=0;i<P.length;i++){const p=P[i];let x=((p[0]*span-cam.x*.06*S)%span+span)%span-W*.3;if(x<-60||x>W+60)continue;const y=HH*p[1];
+  const hp=Math.floor((tm*.25+i*1.7)%4)<3?0:1;
+  g.fillStyle='rgba(255,255,255,.18)';g.beginPath();g.ellipse(x,y+1,H*.35,H*.06,0,0,7);g.fill();
+  if(!va25Sp('an_heron_'+hp,x,y,hp?H*.75:H,0,!!p[2])){g.strokeStyle='#5a6470';g.lineWidth=1.4;g.beginPath();g.moveTo(x,y);g.lineTo(x,y-H*.5);g.stroke()}}
+ g.restore()}catch(e){}return a}})(va23Bg);
+// --- atelier : aperçu des modifications, puis confirmation en partant (ou « Annuler les modifications »)
+var va63Snap=null,va63Ok=0;
+function va63Take(){return JSON.stringify({cus:SV.cus,up:SV.up,one:SV.one,h:SV.hearts,eng:SV.eng})}
+function va63Restore(){if(!va63Snap)return;const S0=JSON.parse(va63Snap);SV.cus=S0.cus;SV.up=S0.up;SV.one=S0.one;SV.hearts=S0.h;if(S0.eng!==undefined)SV.eng=S0.eng;try{cusApply()}catch(e){}try{applyUp()}catch(e){}try{cusRender()}catch(e){}}
+(function(){const st=document.createElement('style');st.textContent=`#va63c{position:fixed;inset:0;z-index:260;display:none;align-items:center;justify-content:center;background:rgba(10,8,6,.6)}#va63c .w{width:min(440px,92vw);background:#f6ecd8;color:#2b241b;border-radius:18px;border:4px solid #6a3a1e;padding:14px 16px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.5)}#va63c h3{margin:0 0 6px;font:900 19px Arial;color:#a8282a}#va63c p{margin:0 0 12px;font:600 14px Arial}#va63c .r{display:flex;flex-direction:column;gap:8px}#va63c button{border:0;border-radius:12px;padding:10px 14px;font:800 15px Arial;cursor:pointer}#va63c .y{background:#3aa85a;color:#fff}#va63c .n{background:#b5332a;color:#fff}#va63c .k{background:#e8e2d4;color:#222}#va63u{margin-left:8px;background:#e8e2d4!important;color:#7a2a1e!important;box-shadow:0 3px 0 #a99!important}`;document.head.appendChild(st);
+ const d=document.createElement('div');d.id='va63c';d.innerHTML='<div class="w"><h3>Garder ces modifications ?</h3><p id="va63t"></p><div class="r"><button class="y" id="va63y">Valider</button><button class="n" id="va63n">Annuler les modifications</button><button class="k" id="va63k">Continuer à modifier</button></div></div>';document.body.appendChild(d);
+ const cx=gid('cusx');const ub=document.createElement('button');ub.className='bt';ub.id='va63u';ub.textContent='Annuler les modifications';ub.style.display='none';cx.parentNode.insertBefore(ub,cx.nextSibling);
+ ub.addEventListener('click',e=>{e.stopPropagation();va63Restore();try{snd('click')}catch(er){}});
+ gid('cus').addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#cusx');if(!b||va63Ok||!va63Snap)return;if(va63Take()===va63Snap)return;e.preventDefault();e.stopImmediatePropagation();const sp=JSON.parse(va63Snap).h-SV.hearts;gid('va63t').textContent=sp>0?'Ces changements coûtent '+sp+' ❤ au total. Tu pourras les refaire plus tard.':'Les changements choisis seront gardés sur le Cherokee.';gid('va63y').textContent=sp>0?'Valider (−'+sp+' ❤)':'Valider';d.style.display='flex'},true);
+ const go=()=>{d.style.display='none';va63Ok=1;try{cx.click()}finally{va63Ok=0}};
+ gid('va63y').addEventListener('click',e=>{e.stopPropagation();go()});
+ gid('va63n').addEventListener('click',e=>{e.stopPropagation();va63Restore();go()});
+ gid('va63k').addEventListener('click',e=>{e.stopPropagation();d.style.display='none'});
+ setInterval(()=>{try{const vis=gid('cus').style.display&&gid('cus').style.display!=='none';if(vis&&!va63Snap)va63Snap=va63Take();if(!vis&&va63Snap&&d.style.display!=='flex')va63Snap=null;ub.style.display=(vis&&va63Snap&&va63Take()!==va63Snap)?'':'none'}catch(e){}},200)})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.62',GAME_DATE='11/11/2026 à 21h16';
+const GAME_VER='3.63',GAME_DATE='11/11/2026 à 21h34';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
