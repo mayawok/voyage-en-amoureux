@@ -842,7 +842,7 @@ const nx=sl/ln,ny=-1/ln,tx=1/ln,ty=sl/ln;
 const wvx=v.x-w*ry,wvy=v.y+w*rx,vn=wvx*nx+wvy*ny,vt=wvx*tx+wvy*ty;
 const DMP=((SV.cus&&SV.cus.damp)||0),Fn=Math.max(0,(SUS.k*(1+.14*DMP)*xC+SUS.c*(1+.12*(SV.up.susp||0))*(1+.38*DMP)*xv)/ln+(d>SC?(260*(d-SC)/ln-26*vn):0));tyL[i]=Fn;
 const z=Z(px);if(z[3]==='rock')inRock=true;
-const gf=.5*Math.min(z[0],z[1])+.25*(z[0]+z[1]),mu=1.15*gf*(gf>.5?1-.15*wI:1)*(1+.04*SV.up.wheel)*(BF.grip>0?1.1:1)*(SV.cus&&SV.cus.psi?1.08:1);
+const gf=.5*Math.min(z[0],z[1])+.25*(z[0]+z[1]),mu=1.15*gf*(gf>.5?1-.15*wI:1)*(1+.04*SV.up.wheel)*(BF.grip>0?1.1:1)*(SV.cus&&SV.cus.psi?1.08:1)*(SV.cus&&SV.cus.trk?1.15:1);
 const share=i?(awd?.5:0):(awd?.5:1),Fd=ENGP(low)*(SV.sabo?.55:1)*(low?1000:520)*(boostT>0?1.8:1)*(flatW>=0?.45:1)*(st.hb?.2:1)*va57M(),vmax=ENGV()*(low?190:480)*(boostT>0?1.25:1)*(flatW>=0?.5:1)*(SV.cus&&SV.cus.psi?.94:1);
 let Ft=-.06*vt;
 if(gasOn&&!neu)Ft+=share*Fd*Math.min(1.5,Math.max(0,va7F(vt,vmax)));
@@ -8624,8 +8624,37 @@ var va58L={u:0};
 function va58Lock(ms){va58L.u=performance.now()+ms;try{const b=gid('cdGo');b.style.opacity='.45';clearTimeout(va58L.t);va58L.t=setTimeout(()=>{b.style.opacity=''},ms)}catch(e){}}
 openCard=(function(o){return function(cd){o(cd);try{va58Lock(1600)}catch(e){}}})(openCard);
 (function(){const el=gid('card');const blk=e=>{try{if(performance.now()<va58L.u&&e.target.closest&&e.target.closest('#cdGo')){e.preventDefault();e.stopImmediatePropagation()}}catch(er){}};el.addEventListener('pointerdown',blk,true);el.addEventListener('click',blk,true)})();
+// ===== 3.23 : chenilles triangulaires (atelier Corse 4x4, après les pneus 35″) =====
+// Même suspension et même hauteur que les 35″ ; chaque chenille pivote autour du moyeu et suit la pente du sol.
+const VA23_TRK=70;
+cusRows=(function(o){return function(){const r=o(),C=SV.cus;try{const row=r.find(q=>/Taille des pneus/.test(q[0]));if(row){row[1]='plus d’adhérence et de garde au sol · chenilles : passent partout';if(C.trk)row[2].forEach(q=>q[4]=false);row[2].push(['trk',1,'Chenilles',C.trkOwn?0:((C.wMax||0)>=2?VA23_TRK:-1),!!C.trk])}}catch(e){}return r}})(cusRows);
+cusPick=(function(o){return function(k,v){const C=SV.cus;if(k==='trk'){cusMsg='';if(!C.trkOwn){if((C.wMax||0)<2){cusMsg='Prends d’abord les pneus 35″';cusRender();return}if(!cusPay(VA23_TRK)){cusRender();return}C.trkOwn=1}C.trk=1;SV.up.wheel=2;snd('click');try{applyUp();cusRender()}catch(e){}saveTrip();return}if(k==='tire')C.trk=0;return o(k,v)}})(cusPick);
+var va23Ph=0;
+function va23Track(x,y,r){const Rr=R,rr=Rr*.3,b=.7*Rr,hw=1.02*Rr;
+ // inclinaison du sol sous la chenille, ramenée dans le repère du Cherokee
+ let rel=0;try{const wx=c.x+Math.cos(a)*x-Math.sin(a)*y,wy=c.y+Math.sin(a)*x+Math.cos(a)*y;if(Math.abs(T(wx)-(wy+Rr))<Rr*2.5){const s=Math.atan2(T(wx+18)-T(wx-18),36);rel=s-a}}catch(e){}
+ rel=Math.max(-.5,Math.min(.5,rel));const P=[[0,0],[hw,b],[-hw,b]];
+ g.save();g.translate(x,y);g.rotate(rel);
+ // bande de caoutchouc
+ g.lineJoin='round';g.strokeStyle='#1b1b1d';g.lineWidth=rr*2;g.beginPath();g.moveTo(P[0][0],P[0][1]);g.lineTo(P[1][0],P[1][1]);g.lineTo(P[2][0],P[2][1]);g.closePath();g.stroke();g.fillStyle='#1b1b1d';g.fill();
+ // crampons qui défilent sur les trois côtés
+ const ph=((r*Rr)%6+6)%6;g.fillStyle='#2c2c30';
+ for(let e=0;e<3;e++){const A=P[e],B=P[(e+1)%3],dx=B[0]-A[0],dy=B[1]-A[1],L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,nx=uy,ny=-ux;for(let d=ph;d<L;d+=6){const px=A[0]+ux*d+nx*rr*.98,py=A[1]+uy*d+ny*rr*.98;g.save();g.translate(px,py);g.rotate(Math.atan2(uy,ux));g.fillRect(-1.3,-1.6,2.6,3.2);g.restore()}}
+ // châssis triangulaire jaune
+ g.fillStyle='#e0a91c';g.strokeStyle='#9a6f0c';g.lineWidth=.9;g.beginPath();g.moveTo(0,-rr*.2);g.lineTo(hw*.82,b+rr*.15);g.lineTo(-hw*.82,b+rr*.15);g.closePath();g.fill();g.stroke();
+ g.fillStyle='#c48f12';g.beginPath();g.moveTo(0,rr*.9);g.lineTo(hw*.42,b-rr*.15);g.lineTo(-hw*.42,b-rr*.15);g.closePath();g.fill();
+ // galets du bas
+ g.fillStyle='#3a3a3e';for(const k of[-.5,0,.5]){g.beginPath();g.arc(k*hw,b+rr*.35,rr*.42,0,7);g.fill()}
+ // roues de renvoi aux coins
+ for(const q of[P[1],P[2]]){g.fillStyle='#4a4a50';g.beginPath();g.arc(q[0],q[1],rr*.78,0,7);g.fill();g.fillStyle='#e0a91c';g.beginPath();g.arc(q[0],q[1],rr*.35,0,7);g.fill()}
+ g.restore();
+ // barbotin au moyeu (tourne avec le moteur)
+ g.save();g.translate(x,y);g.rotate(r);g.fillStyle='#2a2a2e';g.beginPath();for(let i=0;i<10;i++){const an=i/10*Math.PI*2,rad=i%2?rr*1.02:rr*.8;g.lineTo(Math.cos(an)*rad,Math.sin(an)*rad)}g.closePath();g.fill();g.fillStyle='#e0a91c';g.beginPath();g.arc(0,0,rr*.48,0,7);g.fill();g.fillStyle='#555';for(let i=0;i<5;i++){const an=i/5*Math.PI*2;g.beginPath();g.arc(Math.cos(an)*rr*.3,Math.sin(an)*rr*.3,.8,0,7);g.fill()}g.restore()}
+// pas de crevaison avec les chenilles
+breakOne=(function(o){return function(){if(SV&&SV.cus&&SV.cus.trk){dmg=0;return}return o()}})(breakOne);
+wheel=(function(o){return function(x,y,r){if(SV&&SV.cus&&SV.cus.trk){try{return va23Track(x,y,r)}catch(e){}}return o(x,y,r)}})(wheel);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.60',GAME_DATE='11/11/2026 à 18h33';
+const GAME_VER='3.61',GAME_DATE='11/11/2026 à 21h03';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
