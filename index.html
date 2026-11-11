@@ -2542,7 +2542,7 @@ if(boostT>0){bbEl.textContent='Surpuissance '+Math.ceil(boostT)+' s';bbEl.classN
 cEl.textContent=curCamp&&!night?'Camp dans '+Math.max(0,Math.round((curCamp.x-c.x)/30))+' m':'';
 const rem=Math.ceil(wReadyAt-playT);
 if(winch){wbEl.textContent='Treuil en action…';wbEl.className='b on'}else if(!started||rem>0){wbEl.textContent='Treuil '+(started?rem+' s':'(20 s)');wbEl.className='b wait'}else{wbEl.textContent='Treuil prêt !';wbEl.className='b rdy'}
-{const lo=st.gear===3,nu=st.gear===2,sp2=Math.hypot(v.x,v.y),vm=(lo?190:480)*(boostT>0?1.25:1)*(flatW>=0?.5:1),fr5=Math.min(.999,sp2/vm)*5,gi=Math.floor(fr5);let gn;if(nu)gn='N';else if(st.brake&&v.x<-8)gn='R';else gn=''+(gi+1);
+{const lo=st.gear===3,nu=st.gear===2,sp2=Math.hypot(v.x,v.y),vm=(lo?190:480)*(boostT>0?1.25:1)*(flatW>=0?.5:1),fr5=Math.min(.999,sp2/vm)*3,gi=Math.floor(fr5);let gn;if(nu)gn='N';else if(st.brake&&v.x<-8)gn='R';else gn=''+(gi+1);
 const gasF=st.gas&&ign&&startT<.6&&fuel>0&&!stalled;
 let rt=0;if(ign){if(startT>.85)rt=260;else if(startT>.6)rt=1700;else if(nu)rt=850+(st.gas&&fuel>0?3600:0);else rt=1050+(fr5-gi)*2600+(gasF?700:0)}
 dv.rpm+=(rt-dv.rpm)*Math.min(1,dt*(rt>dv.rpm?7:4));
@@ -8572,7 +8572,7 @@ va26Play=(function(o){return function(f,k,loop){const r=o(f,k,loop);try{if(!loop
 snd=(function(o){return function(k,a){if(k==='talk'||k==='blip')return o(k,a);const p=va57.sc;va57.sc=.75*(VA57_X[k]||1);try{return o(k,a)}finally{va57.sc=p}}})(snd);
 // -- vitesses : on accélère, la vitesse passe (courte coupure), on réaccélère
 function va57M(){const s=va57;if(!s.on)return 1;if(s.cut>0)return .08;return 1.08-.2*s.p}
-mgTick=(function(o){return function(dt){o(dt);try{const nu=st.gear===2,lo=st.gear===3,sp2=Math.hypot(v.x,v.y),vm=(lo?190:480)*(boostT>0?1.25:1)*(flatW>=0?.5:1),fr5=Math.min(.999,sp2/vm)*5,gi=Math.floor(fr5),gasF=st.gas&&ign&&startT<.6&&fuel>0&&!stalled&&!nu&&v.x>0;
+mgTick=(function(o){return function(dt){o(dt);try{const nu=st.gear===2,lo=st.gear===3,sp2=Math.hypot(v.x,v.y),vm=(lo?190:480)*(boostT>0?1.25:1)*(flatW>=0?.5:1),fr5=Math.min(.999,sp2/vm)*3,gi=Math.floor(fr5),gasF=st.gas&&ign&&startT<.6&&fuel>0&&!stalled&&!nu&&v.x>0;
  va57.on=!!(gasF&&!paused&&!winch&&!crashed);va57.p=fr5-gi;
  if(!va57.on){va57.cut=0;va57.gi=gi}else{if(gi>va57.gi&&sp2>25&&sp2<vm*.97){va57.cut=.24;va57.gi=gi}else if(gi<va57.gi-1)va57.gi=gi;if(va57.cut>0)va57.cut-=dt}}catch(e){}}})(mgTick);
 audioTick=(function(o){return function(dt){o(dt);try{if(va57.cut>0)ENG.load=0}catch(e){}}})(audioTick);
@@ -8604,10 +8604,32 @@ function va57Step(cd,n){const t=gid('va57t'),P=[].slice.call(gid('cdB').children
  if(n<cd.L.length-1){go.textContent='Suite ▶';go.classList.remove('nx')}else{go.textContent=s.lab;go.classList.toggle('nx',s.nx)}
  const bx=gid('card').querySelector('.cd');try{bx.scrollTop=bx.scrollHeight}catch(e){}}
 openCard=(function(o){return function(cd){o(cd);try{va57Show(cd)}catch(e){}}})(openCard);
-(function(){let tt=0;const el=gid('card');el.addEventListener('pointerdown',e=>{try{const b=e.target.closest&&e.target.closest('#cdGo');const cd=curCd;if(!b||!cd||!cd.va57||cd.va57.n>=cd.L.length-1)return;e.preventDefault();e.stopImmediatePropagation();tt=performance.now();va57Step(cd,cd.va57.n+1);snd('click')}catch(er){}},true);
+(function(){let tt=0;const el=gid('card');el.addEventListener('pointerdown',e=>{try{const b=e.target.closest&&e.target.closest('#cdGo');const cd=curCd;if(!b||!cd||!cd.va57||cd.va57.n>=cd.L.length-1)return;if(performance.now()<va58L.u)return;e.preventDefault();e.stopImmediatePropagation();tt=performance.now();va57Step(cd,cd.va57.n+1);va58Lock(Math.min(3000,800+String(cd.L[cd.va57.n][1]).length*16));snd('click')}catch(er){}},true);
  el.addEventListener('click',e=>{try{const b=e.target.closest&&e.target.closest('#cdGo');const cd=curCd;if(!b)return;if(performance.now()-tt<800||(cd&&cd.va57&&cd.va57.n<cd.L.length-1)){e.preventDefault();e.stopImmediatePropagation()}}catch(er){}},true)})();
+// ===== 3.58 : 3 rapports au lieu de 5, magasins sur terrain plat et jamais sur le plateau, boutons des cartes verrouillés un court instant =====
+function va58Flat(x,len){let mn=1e9,mx=-1e9;for(let d=-30;d<=len+30;d+=15){const t=T(x+d);if(t<mn)mn=t;if(t>mx)mx=t}if(mx-mn>10)return false;try{if(typeof va56At==='function')for(let d=-60;d<=len+60;d+=60)if(va56At(x+d))return false}catch(e){}return true}
+function va58Bad(m,x,ext,flat){
+ for(let d=-120;d<=ext+40;d+=40){const q=x+d;if(va13PltX(q)||rockW(q)>0||spNear(q)||wetAt(q)||bridgeAt(q)>=0||tunNear(q)||sceneAt(q)||pzNear(q)||hardS(q)>=0||fordS(q)>=0||camps.some(s=>Math.abs(s.x+100-q)<460)||stns.some(s=>s!==m&&Math.abs(s.x+110-q)<460)||gars.some(s=>s!==m&&Math.abs(s.x+100-q)<460)||shp.some(s=>s!==m&&Math.abs(s.x+100-q)<500)||obs.some(o=>Math.abs(o.x+30-q)<220))return 1}
+ try{if(ferIn(x-400)||ferIn(x+ext+400))return 1}catch(e){}
+ return (flat&&!va58Flat(x,ext))?1:0}
+function va58Fix(m,ext,flat){try{if(m.va58)return;const plt=va13PltX(m.x)||va13PltX(m.x+ext);
+ if(!plt&&(!flat||!va58Bad(m,m.x,ext,flat))){m.va58=1;return}
+ if(!flat&&!plt){m.va58=1;return}
+ let x=m.x,n=0;if(plt){const e=chIdx()===3?.63:.47;x=Math.max(x,Math.round(e*MAP_L)+400)}
+ const lim=MAP_L-2500;while(x<lim&&va58Bad(m,x,ext,flat)&&n++<300)x+=60;
+ if(x>=lim||n>=300)return;const dx=x-m.x;m.x=x;if(m.a!=null)m.a+=dx;if(m.b!=null)m.b+=dx;if(m.y!=null)m.y=T(m.x+110);m.va58=1}catch(e){}}
+shp.push=(function(o){return function(...a){const r=o.apply(this,a);for(const m of a)va58Fix(m,300,true);return r}})(shp.push);
+stns.push=(function(o){return function(...a){const r=o.apply(this,a);for(const m of a)va58Fix(m,220,false);return r}})(stns.push);
+gars.push=(function(o){return function(...a){const r=o.apply(this,a);for(const m of a)va58Fix(m,200,false);return r}})(gars.push);
+var va58T=0;
+mgTick=(function(o){return function(dt){o(dt);try{va58T-=dt;if(va58T>0)return;va58T=2;for(const m of shp){if(m.x-c.x>1500&&m.x-c.x<9000)m.va58=0;va58Fix(m,300,true);if(m.y!=null&&Math.abs(m.y-T(m.x+110))>1&&m.x-c.x>900)m.y=T(m.x+110)}for(const m of stns)va58Fix(m,220,false);for(const m of gars)va58Fix(m,200,false)}catch(e){}}})(mgTick);
+// -- cartes : le bouton ne réagit pas pendant un court instant (pas de saut par erreur)
+var va58L={u:0};
+function va58Lock(ms){va58L.u=performance.now()+ms;try{const b=gid('cdGo');b.style.opacity='.45';clearTimeout(va58L.t);va58L.t=setTimeout(()=>{b.style.opacity=''},ms)}catch(e){}}
+openCard=(function(o){return function(cd){o(cd);try{va58Lock(1600)}catch(e){}}})(openCard);
+(function(){const el=gid('card');const blk=e=>{try{if(performance.now()<va58L.u&&e.target.closest&&e.target.closest('#cdGo')){e.preventDefault();e.stopImmediatePropagation()}}catch(er){}};el.addEventListener('pointerdown',blk,true);el.addEventListener('click',blk,true)})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.57',GAME_DATE='11/11/2026 à 17h36';
+const GAME_VER='3.58',GAME_DATE='11/11/2026 à 17h54';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
