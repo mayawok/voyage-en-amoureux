@@ -1872,7 +1872,7 @@ const NPCD=[
 [{f:.1,n:'Un randonneur du GR20',lk:['#d6452f','#3a3a40',1,'#6a4a2a',1,2,0],t:'Le Coscione au printemps, c’est le paradis. Regardez où vous mettez les roues : les pozzines, ça ne repousse pas !'},
  {f:.4,sto:1,n:'Saveriu, berger',lk:['#7a5a3a','#3d3a33',2,'#cfcfcf',1,2,0],L:[['v','<b>Saveriu, berger :</b> « Des camionnettes montent la nuit, tous feux éteints. Le matin, mes chevaux ne veulent plus boire aux pozzines du bas. »'],['m','La nuit, sans phares… Merci, Saveriu. On va ouvrir l’œil.']]},
  {f:.72,n:'Un berger à cheval',lk:['#8a6a3a','#2f2f35',2,'#3b2a1d',1,2,0],t:'Les chevaux sont libres sur le plateau. Roulez doucement, ils traversent sans prévenir !'}],
-[{f:.1,n:'Clara, journaliste',lk:['#b53a3a','#2f2f35',0,'#1a1410',0,3,1],t:'Mila ! Votre dossier fait la une demain matin. Cette fois, personne ne pourra l’étouffer.'},
+[{f:.1,n:'Clara, journaliste',lk:['#b53a3a','#2f2f35',0,'#1a1410',0,3,1],t:'Mila ! L’édition spéciale sort aujourd’hui. Cette fois, personne ne pourra l’étouffer.'},
  {f:.4,sto:1,n:'Ange, garde du littoral',lk:['#4f6b3a','#3d3a33',1,'#3b2a1d',0,0,0],L:[['v','<b>Ange, garde du littoral :</b> « Vous revoilà ! On dit que votre rapport est arrivé jusqu’aux autorités. Toute la côte compte sur vous. »'],['m','On a fait tout ce qu’on pouvait. Maintenant, on attend.'],['a','Tu vois, mon amour ? Tout ce chemin, ça valait la peine.']]},
  {f:.74,n:'Un marin de Bonifacio',lk:['#2f4f7a','#f4f4f4',1,'#3b2a1d',1,0,0],t:'Ça souffle dans les Bouches aujourd’hui ! Tenez bien vos chapeaux sur la falaise.'}],
 [{f:.5,n:'Un pêcheur',lk:['#3d6f9e','#4a4a52',0,'#cfcfcf',1,1,0],t:'Vous revoilà ! La tour de Fautea vous attend, elle n’a pas bougé.'}]];
@@ -2427,7 +2427,7 @@ const INV=[[['m','L’Institut m’a confié une mission : comprendre la mystér
 CHAP.forEach((ch,i)=>{for(const l of INV[i])ch.L.push(l)});
 // --- finale
 var fn=null;let fnT0=0;
-function endStory(){SV.fin=1;cardQ.push({t:'Plage de Fautea · le lendemain matin',L:[['n','Le lendemain matin, Andrea revient du village avec La Gazette de l’Île sous le bras.'],['a','Mila… tu devrais lire la une.'],['m','Montre ! … Oh, Andrea…']],cb:()=>{docAfter=()=>fadeTo(openFinale);docShow(ARTICLE,0)}})}
+function endStory(){SV.fin=1;if(SV.gaz){cardQ.push({t:'Plage de Fautea · le lendemain matin',L:[['n','Le lendemain matin, la plage de Fautea est déserte. Au bout du sable, la tour génoise.'],['a','Mila… viens. Je veux te montrer quelque chose.'],['m','Maintenant ? … J’arrive.']],cb:()=>{fadeTo(openFinale)}});return}cardQ.push({t:'Plage de Fautea · le lendemain matin',L:[['n','Le lendemain matin, Andrea revient du village avec La Gazette de l’Île sous le bras.'],['a','Mila… tu devrais lire la une.'],['m','Montre ! … Oh, Andrea…']],cb:()=>{docAfter=()=>fadeTo(openFinale);docShow(ARTICLE,0)}})}
 function openFinale(){gid('intro').classList.remove('on');fn={t:0};fnT0=0;paused=true;document.body.classList.add('cine');gid('bzx').textContent='Fin ▶';gid('bzx').style.display='none';gid('bzs').style.display='none'}
 function closeFinale(){gid('bzx').style.display='none';gid('bzs').style.display='none';fadeTo(startOutro)}
 gid('bzx').addEventListener('pointerdown',e=>{if(fn){e.stopImmediatePropagation();closeFinale()}},true);gid('bzs').addEventListener('pointerdown',e=>{if(fn){e.stopImmediatePropagation();closeFinale()}},true);
@@ -2669,7 +2669,7 @@ function chaseNote(){}
 // ===== v63 : fin en plusieurs actes — article, prison, demande en mariage, générique, « To be continued » =====
 var ot=null,docAfter=null;let otT0=0;
 Object.assign(SNDS,{beat(){tone(62,.14,'sine',.55,38);tone(58,.14,'sine',.42,34,.2)}});
-const ARTICLE={k:'📰 La Gazette de l’Île · édition spéciale',t:'NOXACORP FERMÉE !',b:'<div style="font-family:Georgia,serif;border-top:3px double #2b241b;border-bottom:1px solid #2b241b;padding:8px 0;margin-bottom:8px"><b style="font-size:21px;line-height:1.2">L’usine chimique fermée grâce à l’enquête d’une scientifique</b><br><i style="font-size:14px">Par Clara, envoyée spéciale</i></div><div style="font-family:Georgia,serif;font-size:16px;line-height:1.45">Le dossier de Mila, scientifique de l’Institut de protection des animaux, ne laisse aucun doute : le N-12 épandu par <b>Noxacorp</b> rendait les animaux corses malades. Le préfet a ordonné la <b>fermeture immédiate</b> de l’usine et l’interdiction du N-12 sur toute l’île.<br><br><b>Corruption :</b> l’adjudant-chef <b>Marchetti</b> a été arrêté en début de semaine, au lac de l’Ospedale. Il dort désormais <b>en prison</b>. <b>Le Conseiller</b>, qui signait les autorisations d’épandage, est mis en examen.<br><br>« La loi du silence vient de prendre fin », confie la gendarme Lucia Pieri, qui a aidé l’enquête de l’intérieur.</div>'};
+const ARTICLE={k:'📰 La Gazette de l’Île · édition spéciale',t:'NOXACORP FERMÉE !',b:'<div style="font-family:Georgia,serif;border-top:3px double #2b241b;border-bottom:1px solid #2b241b;padding:8px 0;margin-bottom:8px"><b style="font-size:21px;line-height:1.2">L’usine chimique fermée grâce à l’enquête d’une scientifique</b><br><i style="font-size:14px">Par Clara, envoyée spéciale</i></div><div style="font-family:Georgia,serif;font-size:16px;line-height:1.45">Le dossier de Mila, scientifique de l’Institut de protection des animaux, ne laisse aucun doute : le N-12 épandu par <b>Noxacorp</b> rendait les animaux corses malades. Le préfet a ordonné la <b>fermeture immédiate</b> de l’usine et l’interdiction du N-12 sur toute l’île.<br><br><b>Corruption :</b> l’adjudant-chef <b>Marchetti</b> a été arrêté en début de semaine. Il dort désormais <b>en prison</b>. <b>Le Conseiller</b>, qui signait les autorisations d’épandage, est mis en examen.<br><br>« La loi du silence vient de prendre fin », confie la gendarme Lucia Pieri, qui a aidé l’enquête de l’intérieur.</div>'};
 function beachLeft(Wd,gy,dusk){const c1=dusk?'#2f4a32':'#4f7a45',c2=dusk?'#3c5a3b':'#5e8a50';
 g.fillStyle=dusk?'#55607a':'#9fb3a8';g.beginPath();g.moveTo(0,252);g.quadraticCurveTo(Wd*.06,210,Wd*.13,214);g.quadraticCurveTo(Wd*.2,220,Wd*.26,252);g.fill();
 const tx=Wd*.1,ty=214;g.fillStyle=dusk?'#8a7a68':'#d8c8a6';g.beginPath();g.moveTo(tx-9,ty+2);g.lineTo(tx-7.5,ty-30);g.lineTo(tx+7.5,ty-30);g.lineTo(tx+9,ty+2);g.fill();g.fillRect(tx-9,ty-34,18,4);for(let k2=0;k2<4;k2++)g.fillRect(tx-9+k2*5.5,ty-38,3,4);g.fillStyle='rgba(0,0,0,.35)';g.fillRect(tx-1.5,ty-20,3,5);
@@ -3438,9 +3438,9 @@ function storyCatchUp(){const ci=(level-1)%CHAP.length;if(ci<=0)return;SV.ev=SV.
 SV.bzDone=1;for(const q of STORY){if(q.unl)SV.unl[q.unl]=1}SV.sq=Math.max(SV.sq||0,STORY.length);
 for(let L=1;L<level;L++){const E=SP[L-1]||[];for(const e of E){SV.ev[e.k+L]=1;if(e.k==='haz'){SV.ev.haz=1;SV.ev.hazPh=1}if(e.k==='gend')SV.ev.gend=1;if(e.k==='barr'){SV.ev.barr=1;SV.ev.riv=1}if(e.k==='chase')SV.ev.chase=1;if(e.k==='love'){SV.ev.love9=1}}
 const N=NPCD[L-1]||[];N.forEach((n,i)=>{if(n.sto)SV.npc[L+':'+i]=1})}
-let k=Object.keys(SV.smp).length;for(let i=0;i<ci;i++){const sp=CHAP[i].totem[0];if(SV.smp[sp])continue;delete SV.smpP[sp];SV.smp[sp]=(k===0?'Molécule de synthèse inconnue détectée.':'Traces de N-12 détectées.')+' Comportement : '+CHG[k%CHG.length]+'.';k++}
-if(ci>BUR_CH&&(SV.burS||0)<3)SV.burS=3;try{SV.para=SV.para||{};for(let i=0;i<ci;i++){SV.para[i]=1;if(!SV.docs.includes('para'+i))SV.docs.push('para'+i)}}catch(e){}if(ci>HEL_CH){SV.helS=3;SV.inv=SV.inv||{};SV.inv.trousse=1}if(SV.mutC===undefined||SV.mutC<ci-1)SV.mutC=ci-1;
-if(!SV.docs.includes('mail'))SV.docs.push('mail');const lv0=level;level=lv0-1;try{for(const d of DOCS){try{if(!SV.docs.includes(d.id)&&d.w())SV.docs.push(d.id)}catch(e){}}}finally{level=lv0}}
+let k=Object.keys(SV.smp).length;for(let i=0;i<Math.min(ci,10);i++){const sp=CHAP[i].totem[0];if(SV.smp[sp])continue;delete SV.smpP[sp];SV.smp[sp]=(k===0?'Molécule de synthèse inconnue détectée.':'Traces de N-12 détectées.')+' Comportement : '+CHG[k%CHG.length]+'.';k++}
+if(ci>BUR_CH&&(SV.burS||0)<3)SV.burS=3;try{SV.para=SV.para||{};for(let i=0;i<Math.min(ci,10);i++){SV.para[i]=1;if(!SV.docs.includes('para'+i))SV.docs.push('para'+i)}}catch(e){}if(ci>HEL_CH){SV.helS=3;SV.inv=SV.inv||{};SV.inv.trousse=1}if(SV.mutC===undefined||SV.mutC<ci-1)SV.mutC=ci-1;
+if(ci>9&&!SV.arrL)SV.arrL=10;if(ci>10)SV.gaz=1;if(!SV.docs.includes('mail'))SV.docs.push('mail');const lv0=level;level=lv0-1;try{for(const d of DOCS){try{if(!SV.docs.includes(d.id)&&d.w())SV.docs.push(d.id)}catch(e){}}}finally{level=lv0}}
 
 // ===== v69 : panne dans la neige, Andrea blessé, le Puma de Mathis =====
 var hel=null,helT0=0,helXc={},helSnd=0;const HEL_CH=3;
@@ -3862,7 +3862,7 @@ Object.assign(ALBK,{cs_bella:['🏗️','Le chantier de Bellavista','#e8b923','#
 function chxConseq(dt){if(!started||paused||night||introT>0||cardOpen||hl||pz||cs||sayT>0||stopReq)return;const ci=chIdx(),f=chP();SV.cq=SV.cq||{};
 if(ci===4&&CHX('prelev')===1&&!SV.cq.ctl&&f>.2){SV.cq.ctl=1;cardQ.push({t:'🚓 Contrôle routier',L:[['n','Une voiture banalisée fait signe au Cherokee de se ranger. Un homme en civil s’approche.'],['v','<b>L’homme :</b> « Simple contrôle. Vous faites du tourisme ? On vous a vus près de la rivière, l’autre jour… »'],['a','On se promène. C’est interdit ?'],['v','<b>L’homme :</b> « Pas encore. Bonne route. »'],['m','Il n’était pas gendarme… Quelqu’un s’inquiète de nos prélèvements. On est sur la bonne piste.']]});saveTrip();return}
 if(ci===6&&CHX('presse')===0&&!SV.cq.thr&&f>.25&&f<.45){SV.cq.thr=1;cardQ.push({t:'✉️ Un mot sous l’essuie-glace',L:[['n','Un papier plié, glissé sous l’essuie-glace pendant la pause.'],['v','« Arrêtez de fouiner. Rentrez chez vous. »'],['a','L’article les a fait sortir du bois.'],['m','S’ils ont peur, c’est qu’on approche. On continue, ensemble.']]});saveTrip();return}
-if(ci===10&&!SV.cq.epi&&f>.12){SV.cq.epi=1;const L=[['m','Tu te rends compte de tout le chemin qu’on a fait depuis Fautea ?']];L.push(CHX('analyse')===0?['a','Ta toxicologie a trouvé le N-12 dès le début. Tu avais le bon instinct.']:['a','Tu as écarté chaque parasite, un par un. Personne ne peut contester ton travail.']);if(CHX('prelev')===1)L.push(['m','Et mes prélèvements en amont ont montré d’où venait la pollution.']);if(SV.spy)L.push(['a','Même le faux dépanneur n’a rien pu y faire.']);else if(SV.bdL&&Object.keys(SV.bdL).length)L.push(['a','Et on a même dépanné quelqu’un en chemin. On est une bonne équipe.']);L.push(CHX('presse')===0?['m','Clara va publier la suite de son article, avec toutes nos preuves cette fois.']:['m','Clara va pouvoir tout publier d’un coup, preuves à l’appui. Ils ne s’y attendent pas.']);L.push(['a','Rentrons à Fautea, mon amour.']);for(const l of L)talkQ.push(l);saveTrip()}}
+if(ci===10&&!SV.cq.epi&&f>.12){SV.cq.epi=1;const L=[['m','Tu te rends compte de tout le chemin qu’on a fait depuis Fautea ?']];L.push(CHX('analyse')===0?['a','Ta toxicologie a trouvé le N-12 dès le début. Tu avais le bon instinct.']:['a','Tu as écarté chaque parasite, un par un. Personne ne peut contester ton travail.']);if(CHX('prelev')===1)L.push(['m','Et mes prélèvements en amont ont montré d’où venait la pollution.']);if(SV.spy)L.push(['a','Même le faux dépanneur n’a rien pu y faire.']);else if(SV.bdL&&Object.keys(SV.bdL).length)L.push(['a','Et on a même dépanné quelqu’un en chemin. On est une bonne équipe.']);L.push(CHX('presse')===0?['m','Et Clara sort la suite de son article aujourd’hui. Avec toutes nos preuves, cette fois.']:['m','Et Clara publie tout d’un coup aujourd’hui, preuves à l’appui.']);L.push(['a','Rentrons à Fautea, mon amour.']);for(const l of L)talkQ.push(l);saveTrip()}}
 storyCatchUp=(function(o){return function(){o();try{const ci=(level-1)%CHAP.length;SV.chx=SV.chx||{};SV.csd=SV.csd||{};if(ci>1&&SV.chx.analyse===undefined)SV.chx.analyse=1;if(ci>3&&SV.chx.prelev===undefined)SV.chx.prelev=0;if(ci>5&&SV.chx.presse===undefined)SV.chx.presse=1;for(const q of CSW)if(ci>q.ci)SV.csd[q.k]=1;SV.cq=SV.cq||{};if(ci>4)SV.cq.ctl=1;if(ci>6)SV.cq.thr=1;SV.bdL=SV.bdL||{};for(let L=1;L<level;L++)SV.bdL[L]=1}catch(e){}}})(storyCatchUp);
 
 // ===== v82 : le scénario se rejoue à chaque passage dans un chapitre =====
@@ -7424,6 +7424,7 @@ closeEnd=(function(o){return function(){const i=es?es.i:-1;o();try{if(i>=0&&i<CH
 // ===== 3.04 : l'appel de Lucia au lac en cinématique =====
 // --- 3.04 : l'appel de Lucia au lac de l'Ospedale (cinématique), puis l'usine Noxacorp qui ferme et Marchetti en prison
 function va4LacScene(Wd,gy,T2,tm){
+ if(typeof va68PozBack==='function'&&!window.__va68lac)va68PozBack(Wd,gy,T2,tm);else{
  // ciel du soir
  const sk=g.createLinearGradient(0,0,0,250);sk.addColorStop(0,'#33406e');sk.addColorStop(.55,'#d98a6a');sk.addColorStop(1,'#ffd7a0');g.fillStyle=sk;g.fillRect(0,0,Wd,420);
  const sx=Wd*.7,sy=178;const sg=g.createRadialGradient(sx,sy,4,sx,sy,90);sg.addColorStop(0,'rgba(255,230,160,.9)');sg.addColorStop(1,'rgba(255,200,120,0)');g.fillStyle=sg;g.fillRect(sx-90,sy-90,180,180);g.fillStyle='#ffe2a0';g.beginPath();g.arc(sx,sy,20,0,7);g.fill();
@@ -7444,6 +7445,7 @@ function va4LacScene(Wd,gy,T2,tm){
  g.fillStyle='#4a6438';g.fillRect(0,gy+10,Wd,140);
  for(let i=0;i<16;i++){g.fillStyle=i%2?'#9a958c':'#b8b2a6';g.beginPath();g.ellipse((i*61)%Wd,gy+4+(i%3)*5,6+i%4,3,0,0,7);g.fill()}
  const rx=Wd*.56;g.fillStyle='#a8a296';g.beginPath();g.moveTo(rx-60,gy+2);g.quadraticCurveTo(rx-56,gy-30,rx-10,gy-34);g.quadraticCurveTo(rx+46,gy-30,rx+58,gy+2);g.closePath();g.fill();g.fillStyle='rgba(255,255,255,.15)';g.beginPath();g.ellipse(rx-14,gy-26,26,5,-.1,0,7);g.fill();
+ }
  // le Cherokee garé
  grp(Wd*.17,gy,1.25,()=>{cherokeeSide(Wd*.17,gy+4,0)});
  // le chien
@@ -7463,14 +7465,14 @@ function va4LacScene(Wd,gy,T2,tm){
  });
  if(T2>20){for(let i=0;i<7;i++){const u=((T2-20)*.35+i/7)%1;heart(Wd*.565+Math.sin(i*2.3+T2)*30,gy-150-u*80,6+i%3*2,(1-u)*.9)}}
  try{wxOver(g,Wd,420,tm)}catch(e){}}
-CS.lacCall={mus:'love',L:()=>[[1.2,'n','Au bord du lac de l’Ospedale. Le soleil descend derrière les pins laricio.'],[4,'n','Le téléphone de Mila sonne. Sur l’écran : « Lucia ».'],[7.6,'m','Lucia ? … Oui, on est au lac.'],[10.5,'l','« Mila… Vous êtes assis, tous les deux ? »'],[13,'n','Un long silence. Mila ne dit rien. Andrea la regarde sans oser respirer.'],[16.5,'l','« Marchetti a été arrêté ce matin. Le préfet fait fermer Noxacorp. C’est fini. »'],[20,'m','C’est fini… Andrea, c’est fini !'],[23,'a','Tu l’as fait. Toi, tes tortues et tes parasites.'],[26.4,'n','Le lendemain, les gendarmes de l’Inspection arrivent à l’usine Noxacorp.'],[35.4,'n','Et pour l’adjudant-chef Marchetti, la route s’arrête ici.']],end:41.5,
+CS.lacCall={mus:'love',L:()=>[[1.2,'n','Plateau du Coscione, au bord d’une pozzine. Le soleil descend derrière la crête.'],[4,'n','Le téléphone de Mila sonne. Sur l’écran : « Lucia ».'],[7.6,'m','Lucia ? … Oui, on est là-haut, sur le plateau.'],[10.5,'l','« Mila… Vous êtes assis, tous les deux ? »'],[13,'n','Un long silence. Mila ne dit rien. Andrea la regarde sans oser respirer.'],[16.5,'l','« Marchetti a été arrêté ce matin. Le préfet fait fermer Noxacorp. C’est fini. »'],[20,'m','C’est fini… Andrea, c’est fini !'],[23,'a','Tu l’as fait. Toi, tes tortues et tes parasites.'],[26.4,'n','Le lendemain, les gendarmes de l’Inspection arrivent à l’usine Noxacorp.'],[35.4,'n','Et pour l’adjudant-chef Marchetti, la route s’arrête ici.']],end:41.5,
  draw:(Wd,gy,T2,tm)=>{const fd=t0=>Math.max(0,1-Math.abs(T2-t0)/.45);
   if(T2<26)va4LacScene(Wd,gy,T2,tm);
   else if(T2<35){const old=fn;fn=fn||{};try{noxaScene(Wd,gy,T2-26,tm)}finally{fn=old}}
   else{prisonScene(Wd,gy,T2-35+9,tm)}
   const a2=Math.max(fd(26),fd(35));if(a2>0){g.fillStyle='rgba(0,0,0,'+a2+')';g.fillRect(0,0,Wd,420)}},
  onEnd:()=>{try{SV.froid=0;saveTrip()}catch(e){}}};
-try{ALBK.cs_lacCall=['📞','L’appel de Lucia au lac','#33406e','#ffd7a0']}catch(e){}
+try{ALBK.cs_lacCall=['📞','L’appel de Lucia au Coscione','#33406e','#ffd7a0']}catch(e){}
 // la fin à Fautea ne rejoue pas l'usine et la prison si on les a déjà vues au lac
 openFinale=(function(o){return function(){o();try{if(fn&&SV.arrL&&CS.lacCall){fn.t=15}}catch(e){}}})(openFinale);
 // ===== 3.02 : scénario retravaillé (4x4 noir récurrent, dispute et réconciliation, bague au contrôle, vol des échantillons, arrestation au lac, tortue guérie) =====
@@ -7918,7 +7920,7 @@ for(const nm of['cherokeeSide','noxVan']){const o=window[nm];if(typeof o==='func
 function va34Slice(cx,ty,sc,Wd){const im=VA34.cur;if(!im)return;const iw=im.naturalWidth,ih=im.naturalHeight,s=Math.max(Wd/iw,420/ih),w=iw*s,h=ih*s,x0=(Wd-w)/2,y0=-(h-420)*.8;const fx=.28,fy=.53,fw=.54,fh=.4;g.save();g.translate(cx,ty);g.scale(1/sc,1/sc);g.translate(-cx,-ty);g.drawImage(im,iw*fx,ih*fy,iw*fw,ih*fh,x0+w*fx,y0+h*fy,w*fw,h*fh);g.restore()}
 function va34Bg(r,im,Wd,fy,fl){const iw=im.naturalWidth,ih=im.naturalHeight,s=Math.max(Wd/iw,420/ih),w=iw*s,h=ih*s;if(fl){r.save();r.translate(Wd,0);r.scale(-1,1)}r.drawImage(im,(Wd-w)/2,-(h-420)*(fy==null?.8:fy),w,h);if(fl)r.restore()}
 function va34Hook(k,name,fy,fl){const D=CS[k];if(!D||!D.draw||D.__v34)return;D.__v34=1;const od=D.draw;D.draw=function(Wd,gy,T2,tm){const n=typeof name==='function'?name(T2):name,im=va34Img(n);if(!im)return od.apply(this,arguments);const real=g;va34Bg(real,im,Wd,fy,fl);const P0=VA34P[n];VA34.P=typeof P0==='function'?P0(T2):P0||null;VA34.Wd=Wd;VA34.gy=gy;VA34.dp=0;VA34.act=1;VA34.B=real.getTransform();VA34.u=real;VA34.cur=im;window.__v34on=1;g=va34Mk();try{return od.apply(this,arguments)}finally{VA34.u=null;window.__v34on=0;g=real;VA34.act=0;VA34.dp=0;VA34.P=null}}}
-for(const q of[['veto','veto'],['coas','coas'],['dogf','dogf'],['spy','spy'],['nox1','plat'],['nox2','piste'],['nox3','piste'],['love','pin'],['picnic',()=>season()==='autumn'?'picA':'picP'],['sarD0','bonif',.8,1],['sarA1','bonif'],['sarA0','teresa',.8,1],['sarD1','teresa'],['lacCall',t=>t<26?'lac':t<35?'usine':'prison']])try{va34Hook(q[0],q[1],q[2],q[3])}catch(e){}
+for(const q of[['veto','veto'],['coas','coas'],['dogf','dogf'],['spy','spy'],['nox1','plat'],['nox2','piste'],['nox3','piste'],['love','pin'],['picnic',()=>season()==='autumn'?'picA':'picP'],['sarD0','bonif',.8,1],['sarA1','bonif'],['sarA0','teresa',.8,1],['sarD1','teresa'],['lacCall',t=>t<26?'va68none':t<35?'usine':'prison']])try{va34Hook(q[0],q[1],q[2],q[3])}catch(e){}
 // ===== 3.36 : Mila et Andrea en images (planches ChatGPT, 15 poses chacun) =====
 Object.assign(VA25_SP,{"p_m_stand":{"src":"img/sprites/va25_sp_ae6144ca.webp","w":80,"h":270},"p_m_walk":{"src":"img/sprites/va25_sp_96749a5a.webp","w":117,"h":270},"p_m_walk2":{"src":"img/sprites/va25_sp_6abb1f1c.webp","w":137,"h":268},"p_m_talk":{"src":"img/sprites/va25_sp_22e87435.webp","w":127,"h":271},"p_m_point":{"src":"img/sprites/va25_sp_ed6a0eb5.webp","w":146,"h":271},"p_m_sit":{"src":"img/sprites/va25_sp_00f19a77.webp","w":109,"h":252},"p_m_phone":{"src":"img/sprites/va25_sp_843a91d2.webp","w":91,"h":278},"p_m_joy":{"src":"img/sprites/va25_sp_7f0f43f8.webp","w":135,"h":279},"p_m_crouch":{"src":"img/sprites/va25_sp_428e8267.webp","w":138,"h":200},"p_m_worried":{"src":"img/sprites/va25_sp_14c61b05.webp","w":80,"h":271},"p_m_sad":{"src":"img/sprites/va25_sp_36fec666.webp","w":90,"h":267},"p_m_surprise":{"src":"img/sprites/va25_sp_f5e37b72.webp","w":113,"h":280},"p_m_table":{"src":"img/sprites/va25_sp_9b1dffb7.webp","w":121,"h":252},"p_m_back":{"src":"img/sprites/va25_sp_5a8d0f43.webp","w":84,"h":277},"p_m_hug":{"src":"img/sprites/va25_sp_c465b9ae.webp","w":183,"h":277},"p_a_stand":{"src":"img/sprites/va25_sp_7dfe1eb1.webp","w":83,"h":279},"p_a_walk":{"src":"img/sprites/va25_sp_7af38767.webp","w":138,"h":278},"p_a_walk2":{"src":"img/sprites/va25_sp_5a3808d9.webp","w":142,"h":278},"p_a_talk":{"src":"img/sprites/va25_sp_d0510bff.webp","w":128,"h":278},"p_a_point":{"src":"img/sprites/va25_sp_2c9033b2.webp","w":160,"h":278},"p_a_sit":{"src":"img/sprites/va25_sp_797ff88d.webp","w":116,"h":256},"p_a_phone":{"src":"img/sprites/va25_sp_d0512512.webp","w":84,"h":282},"p_a_joy":{"src":"img/sprites/va25_sp_d7d64a9b.webp","w":147,"h":284},"p_a_crouch":{"src":"img/sprites/va25_sp_bfa464e7.webp","w":140,"h":196},"p_a_worried":{"src":"img/sprites/va25_sp_2df54c42.webp","w":72,"h":273},"p_a_sad":{"src":"img/sprites/va25_sp_50a937e6.webp","w":87,"h":268},"p_a_surprise":{"src":"img/sprites/va25_sp_a202cbe5.webp","w":97,"h":282},"p_a_table":{"src":"img/sprites/va25_sp_7f64cc4c.webp","w":128,"h":269},"p_a_back":{"src":"img/sprites/va25_sp_8c040abe.webp","w":77,"h":277},"p_a_kneel":{"src":"img/sprites/va25_sp_8ceaa042.webp","w":174,"h":238}});
 const VA36={st:{},F:{m:56/270,a:60/279},AX:{talk:.4,point:.36,sit:.46,crouch:.4,table:.42,kneel:.42,surprise:.55,phone:.52}};
@@ -8038,7 +8040,7 @@ hayD=(function(o){return function(x,y,tm,j){o(x,y);try{va46Hens(x,y,tm||0,j||0)}
 hutD=(function(o){return function(x,y,tm,j){o(x,y);try{if(ALT(x)>=80)va46Hens(x+38,y,tm||0,j||0)}catch(e){}}})(hutD);
 chapel=(function(o){return function(x,y){o(x,y);try{if(hs(Math.round(x)+77)>.45||ALT(x)>320)return;const tm=performance.now()/1000;va46An('cigogne_0',x-8,y-45+Math.sin(tm*.5+x)*.4,17,1)}catch(e){}}})(chapel);
 // ===== 3.47 : kit développeur (mot de passe 337.2) =====
-var DK_LBL={bella:'Bellavista : le chantier',pech:'Le pêcheur et le bidon',spray:'Le pulvérisateur',plk:'Les planches',ours:'L’ours',sub:'Le sous-marin',drums:'Les bidons',bats:'Les chauves-souris',coas:'Coasina',dogf:'Le chien trouve les bidons',lacCall:'Lac : l’appel de Lucia',love:'Les oisillons',nox1:'Noxacorp 1',nox2:'Noxacorp 2',nox3:'Noxacorp 3',picnic:'Le pique-nique',sarA0:'Sardaigne : départ (aller)',sarA1:'Sardaigne : arrivée (aller)',sarD0:'Sardaigne : départ (retour)',sarD1:'Sardaigne : arrivée (retour)',spy:'L’espion',lucia:'Lucia',veto:'La vétérinaire'};
+var DK_LBL={bella:'Bellavista : le chantier',pech:'Le pêcheur et le bidon',spray:'Le pulvérisateur',plk:'Les planches',ours:'L’ours',sub:'Le sous-marin',drums:'Les bidons',bats:'Les chauves-souris',coas:'Coasina',dogf:'Le chien trouve les bidons',lacCall:'Coscione : l’appel de Lucia',love:'Les oisillons',nox1:'Noxacorp 1',nox2:'Noxacorp 2',nox3:'Noxacorp 3',picnic:'Le pique-nique',sarA0:'Sardaigne : départ (aller)',sarA1:'Sardaigne : arrivée (aller)',sarD0:'Sardaigne : départ (retour)',sarD1:'Sardaigne : arrivée (retour)',spy:'L’espion',lucia:'Lucia',veto:'La vétérinaire'};
 var dkP=null,dkOK=false,dkFps=0;
 (function(){
  const s=document.createElement('style');s.textContent=`#dkpw,#dk{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(15,10,6,.78);padding:10px}
@@ -8786,8 +8788,54 @@ function va66Mig(S){try{if(!S||S.v66)return false;const o=S.lvl||1,k=65000/88000
 // Tunnels : un sur n gardé selon le lieu (0 = aucun). Fium'orbu un sur deux, Bavella un sur quatre, Ospedale un sur trois, aucun au Coscione ni sur les côtes.
 const VA67_TUN={0:0,1:0,2:2,3:4,4:3,5:0,6:3,7:0,8:3,9:0,10:0,11:0};
 tunStart=(function(o){return function(x){const s=o(x);if(s<0)return s;try{const n=VA67_TUN[chIdx()];if(n===0)return -1;if(n>1){const q=Math.round((s-1520)/2000),r=(q-2)/3;if(((r%n)+n)%n!==1%n)return -1}}catch(e){}return s}})(tunStart);
+// ===== 3.68 : scènes de l'histoire replacées (appel de Lucia au bord d'une pozzine du Coscione, Gazette de Clara à Bonifacio) =====
+// Décor de l'appel de Lucia : le plateau du Coscione au soleil couchant (remplace le lac ; les personnages restent ceux de va4LacScene)
+function va68PozBack(Wd,gy,T2,tm){
+ g.save();g.translate(-70,0);Wd+=140;
+ const sk=g.createLinearGradient(0,0,0,250);sk.addColorStop(0,'#33406e');sk.addColorStop(.5,'#c9806a');sk.addColorStop(1,'#ffd9a2');g.fillStyle=sk;g.fillRect(0,0,Wd,420);
+ const sx=Wd*.7,sy=176;const sg=g.createRadialGradient(sx,sy,4,sx,sy,110);sg.addColorStop(0,'rgba(255,232,165,.95)');sg.addColorStop(1,'rgba(255,200,120,0)');g.fillStyle=sg;g.fillRect(sx-110,sy-110,220,220);g.fillStyle='#ffe6a8';g.beginPath();g.arc(sx,sy,19,0,7);g.fill();
+ for(let i=0;i<5;i++){const cx=((tm*5+i*Wd/4.2)%(Wd+240))-120,cy=44+i*19;g.fillStyle='rgba(255,214,188,'+(.28+.06*(i%2))+')';g.beginPath();g.ellipse(cx,cy,64,8,0,0,7);g.ellipse(cx+44,cy-5,42,7,0,0,7);g.ellipse(cx-36,cy+3,30,5,0,0,7);g.fill()}
+ // crête de l'Incudine, avec ses névés de fin de printemps
+ const r1=x=>148+Math.sin(x*.007+1.3)*24+Math.sin(x*.019)*9+Math.sin(x*.05)*3;
+ g.fillStyle='#75668a';g.beginPath();g.moveTo(0,222);for(let x=0;x<=Wd;x+=12)g.lineTo(x,r1(x));g.lineTo(Wd,222);g.fill();
+ g.fillStyle='rgba(255,236,226,.8)';for(let i=0;i<9;i++){const x=(i*137+60)%Wd,y=r1(x);g.beginPath();g.moveTo(x-16,y+5);g.quadraticCurveTo(x-4,y+1,x+3,y+2);g.quadraticCurveTo(x+15,y+6,x+19,y+13);g.quadraticCurveTo(x+4,y+11,x-3,y+17);g.quadraticCurveTo(x-10,y+9,x-16,y+5);g.fill()}
+ const r2=x=>186+Math.sin(x*.011+2.2)*13+Math.sin(x*.037)*5;
+ g.fillStyle='#5b5a74';g.beginPath();g.moveTo(0,232);for(let x=0;x<=Wd;x+=12)g.lineTo(x,r2(x));g.lineTo(Wd,232);g.fill();
+ // boules de granit et aulnes nains au pied de la crête
+ for(let i=0;i<11;i++){const x=(i*89+33)%Wd,y=218+(i%3)*3;g.fillStyle=i%2?'#6b6577':'#7d7686';g.beginPath();g.ellipse(x,y,13+i%4*4,6+i%3*2,0,Math.PI,0);g.fill();g.fillStyle='#3c4a44';g.beginPath();g.ellipse(x+19,y-2,9,5,0,0,7);g.ellipse(x+26,y-5,6,4,0,0,7);g.fill()}
+ // la pelouse du plateau, en longues ondulations
+ const tf=g.createLinearGradient(0,214,0,gy+8);tf.addColorStop(0,'#a9a565');tf.addColorStop(.35,'#86975a');tf.addColorStop(1,'#5c7a48');g.fillStyle=tf;g.beginPath();g.moveTo(0,222);for(let x=0;x<=Wd;x+=20)g.lineTo(x,219+Math.sin(x*.012+.5)*3);g.lineTo(Wd,420);g.lineTo(0,420);g.fill();
+ for(let k=0;k<5;k++){const y=230+k*k*3.2+k*5;g.strokeStyle='rgba(60,80,50,'+(.1+k*.03)+')';g.lineWidth=1+k*.3;g.beginPath();for(let x=0;x<=Wd;x+=16){const yy=y+Math.sin(x*.01+k*1.7)*(2+k);x?g.lineTo(x,yy):g.moveTo(x,yy)}g.stroke()}
+ g.fillStyle='rgba(255,214,150,.13)';g.beginPath();g.ellipse(sx,236,Wd*.33,24,0,0,7);g.fill();
+ // chevaux en liberté, au loin
+ const horse=(x,y,s,c,gr,fl)=>{g.save();g.translate(x,y);g.scale(s*fl,s);g.fillStyle=c;g.beginPath();g.ellipse(0,-9,9,4.4,0,0,7);g.fill();g.fillRect(-7,-7,1.7,8);g.fillRect(-4.2,-7,1.7,8);g.fillRect(3.6,-7,1.7,8);g.fillRect(6.2,-7,1.7,8);
+  g.save();g.translate(8,-11);g.rotate(gr?1.05+Math.sin(tm*1.4+x)*.06:-.55);g.fillRect(-1.8,-1.8,9,3.6);g.beginPath();g.ellipse(9.5,0,3.3,2,0,0,7);g.fill();g.restore();
+  g.strokeStyle=c;g.lineWidth=1.4;g.beginPath();g.moveTo(-9,-10);g.quadraticCurveTo(-13,-6+Math.sin(tm*2+x)*1.5,-12,-1);g.stroke();g.fillStyle='rgba(0,0,0,.18)';g.beginPath();g.ellipse(0,1.3,10,1.6,0,0,7);g.fill();g.restore()};
+ horse(Wd*.3,236,.62,'#4a3526',1,1);horse(Wd*.345,239,.7,'#6b4a30',0,-1);horse(Wd*.86,241,.8,'#3d2c22',1,-1);horse(Wd*.905,238,.52,'#7a5a3c',1,1);
+ // les pozzines : petits miroirs d'eau dans la tourbe, reliés par un ruisseau
+ const PZ=[[.08,246,30,4],[.22,256,44,6],[.47,243,34,4],[.63,252,60,7.5],[.8,262,52,7],[.36,272,70,9.5],[.93,280,60,9],[.12,286,64,10]];
+ g.strokeStyle='rgba(190,205,225,.5)';g.lineWidth=2;g.beginPath();g.moveTo(Wd*.47,243);g.bezierCurveTo(Wd*.55,248,Wd*.56,250,Wd*.63,252);g.bezierCurveTo(Wd*.5,262,Wd*.45,266,Wd*.36,272);g.bezierCurveTo(Wd*.25,280,Wd*.2,282,Wd*.12,286);g.stroke();
+ for(const q of PZ){const x=q[0]*Wd,y=q[1],rx=q[2],ry=q[3];if(y+ry>gy-10)continue;
+  g.fillStyle='#3d4a33';g.beginPath();g.ellipse(x,y+1.2,rx+3,ry+2,0,0,7);g.fill();
+  const wg=g.createLinearGradient(0,y-ry,0,y+ry);wg.addColorStop(0,'#f2b98c');wg.addColorStop(.5,'#b78fa0');wg.addColorStop(1,'#5a6f98');g.fillStyle=wg;g.beginPath();g.ellipse(x,y,rx,ry,0,0,7);g.fill();
+  g.save();g.beginPath();g.ellipse(x,y,rx,ry,0,0,7);g.clip();g.fillStyle='rgba(255,236,180,.6)';for(let i=0;i<4;i++){const w2=rx*(.5-.1*i)+Math.sin(tm*2+i+x)*3;g.fillRect(x+(sx-x)*.12-w2/2+Math.sin(tm*1.2+i)*3,y-ry+2+i*ry*.45,w2,1.2)}
+  g.strokeStyle='rgba(255,255,255,.3)';g.lineWidth=.8;const u=(tm*.25+x*.01)%1;g.beginPath();g.ellipse(x-rx*.3,y+ry*.2,rx*.35*u,ry*.35*u,0,0,7);g.stroke();g.restore();
+  g.strokeStyle='#7f9a55';g.lineWidth=1.3;for(let i=0;i<Math.round(rx/5);i++){const a=Math.PI*(.08+.84*i/Math.round(rx/5)),bx=x+Math.cos(a)*(rx+1.5),by=y+Math.sin(a)*(ry+1.5),sw=Math.sin(tm*1.6+i+x)*1.2;g.beginPath();g.moveTo(bx,by);g.lineTo(bx+sw,by-4-(i%3));g.stroke()}}
+ // coussins de fleurs et touffes sur la pelouse
+ for(let i=0;i<26;i++){const x=(i*71+17)%Wd,y=250+(i*37)%Math.max(20,gy-262);g.fillStyle=i%5===0?'rgba(255,240,200,.85)':i%5===1?'rgba(236,170,200,.8)':'rgba(70,96,56,.5)';g.beginPath();g.ellipse(x,y,i%5<2?1.6:5,i%5<2?1.2:1.6,0,0,7);g.fill()}
+ // premier plan : rive, galets, gros bloc de granit
+ g.fillStyle='#56733f';g.beginPath();g.moveTo(0,gy-5);for(let x=0;x<=Wd;x+=24)g.lineTo(x,gy-7+Math.sin(x*.05)*3);g.lineTo(Wd,420);g.lineTo(0,420);g.fill();
+ g.fillStyle='#446034';g.fillRect(0,gy+10,Wd,140);
+ for(let i=0;i<16;i++){g.fillStyle=i%2?'#9a958c':'#b8b2a6';g.beginPath();g.ellipse((i*61)%Wd,gy+4+(i%3)*5,6+i%4,3,0,0,7);g.fill()}
+ const rx=Wd*.56;g.fillStyle='#a8a296';g.beginPath();g.moveTo(rx-60,gy+2);g.quadraticCurveTo(rx-56,gy-30,rx-10,gy-34);g.quadraticCurveTo(rx+46,gy-30,rx+58,gy+2);g.closePath();g.fill();g.fillStyle='rgba(255,226,170,.28)';g.beginPath();g.ellipse(rx+18,gy-25,26,5,.12,0,7);g.fill();
+ g.strokeStyle='#6f8f4a';g.lineWidth=1.5;for(let i=0;i<40;i++){const x=(i*53+9)%Wd,sw=Math.sin(tm*1.8+i)*1.6;g.beginPath();g.moveTo(x,gy+2);g.lineTo(x+sw,gy-6-(i%4)*2);g.stroke()}
+ g.restore()}
+// La Gazette de Clara : lue à Bonifacio (ch11), plus au matin de Fautea
+function va68GazTick(){try{if(chIdx()!==10||SV.gaz||!SV.cq||!SV.cq.epi||chP()<.45||chP()>.9||!inGame||cardOpen||cs||MGX||hl||pz||stopReq||work||winch||chEnd||talkQ.length||sayT>0)return;SV.gaz=1;
+ cardQ.push({t:'Bonifacio · le kiosque du port',L:[['n','Andrea revient du kiosque avec La Gazette de l’Île sous le bras.'],['a','Mila… tu devrais lire la une.'],['m','Montre ! … Oh, Andrea…']],cb:()=>{try{docShow(ARTICLE,0)}catch(e){}}});saveTrip()}catch(e){}}
+let va68T=0;loop=(function(o){return function(t){const r=o.apply(this,arguments);try{if(t-va68T>700){va68T=t;va68GazTick()}}catch(e){}return r}})(loop);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.67',GAME_DATE='12/11/2026 à 11h04';
+const GAME_VER='3.68',GAME_DATE='12/11/2026 à 11h09';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
