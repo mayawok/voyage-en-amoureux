@@ -9147,8 +9147,14 @@ stopTick=(function(o){return function(dt){try{const R=stopReq;if(R!==va80.r){va8
  if(R&&R.cb&&!R.fin&&!R.fer&&dt>0&&started&&!night&&!crashed&&!paused&&!hl&&!pp&&!cardOpen&&!MGX&&!pz&&!cs){va80.age+=dt;const sp=Math.hypot(v.x,v.y),d=R.x-c.x;
   if(sp<10)va80.st+=dt;else va80.st=0;
   if((va80.st>1.2&&d<2500)||(va80.age>20&&sp<60)){v.x=0;v.y=Math.min(v.y,0);st.hb=1;const cb=R.cb;stopReq=null;va80.r=null;cb();return}}}catch(e){}return o(dt)}})(stopTick);
+// ===== 3.81 : plus d'attente de « route calme » de plusieurs minutes avant une carte ou un mini-jeu =====
+// le compteur de calme avançait seulement en roulant (arrêté, il restait bloqué) : il avance aussi à l'arrêt ;
+// les cartes attendent au plus 8 s de calme ; une carte qui ouvre un mini-jeu (bouton d'action) s'ouvre tout de suite
+mgTick=(function(o){return function(dt){o(dt);try{if(dt>0&&!stopReq&&Math.hypot(v.x,v.y)<=15&&!cardOpen&&!MGX&&!hl&&!pz&&!cs)calmT+=dt}catch(e){}}})(mgTick);
+popOK=(function(o){return function(){if(o())return true;try{return !onFerry()&&!winch&&!stopReq&&calmT>=8}catch(e){return false}}})(popOK);
+cardQ.push=(function(o){return function(...a){try{for(const q of a)if(q&&q.btn&&q.cb)q.now=1}catch(e){}return o.apply(this,a)}})(cardQ.push);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.80',GAME_DATE='12/11/2026 à 19h50';
+const GAME_VER='3.81',GAME_DATE='12/11/2026 à 20h02';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
