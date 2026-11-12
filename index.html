@@ -276,14 +276,14 @@ const sm=t=>t*t*(3-2*t),cl=v=>Math.min(1,Math.max(0,v));
 // Passages de cailloux : 400 px tous les 2000 px
 let MAP_L=55000;const MAPS=[
 {alt:[[0,30],[.25,45],[.45,150],[.7,200],[1,260]],hm:.9,bg:{cal:0,snow:.25,vil:.8,flock:.6,gran:.25,cliff:0,lake:0,pine:.2}},
-{alt:[[0,30],[.3,60],[.5,200],[.8,340],[1,360]],hm:1,bg:{cal:0,snow:.35,vil:.4,flock:.5,gran:1,cliff:0,lake:0,pine:.4}},
+{alt:[[0,30],[.3,50],[.55,120],[.8,170],[1,150]],hm:.9,bg:{cal:0,snow:.2,vil:.4,flock:.5,gran:1,cliff:0,lake:0,pine:.3}},
 {alt:[[0,120],[.4,260],[.7,380],[1,420]],hm:1.1,bg:{cal:0,snow:.6,vil:1,flock:.4,gran:.3,cliff:0,lake:0,pine:.9}},
-{alt:[[0,30],[.18,70],[.33,560],[.62,690],[.8,560],[1,540]],hm:1.1,bg:{cal:0,snow:1,vil:.2,flock:.5,gran:.6,cliff:0,lake:0,pine:.6}},
-{alt:[[0,30],[.3,60],[.6,180],[.85,200],[1,170]],hm:1,bg:{cal:1,snow:.3,vil:.5,flock:.3,gran:.2,cliff:0,lake:0,pine:.3}},
-{alt:[[0,150],[.4,210],[.75,110],[1,60]],hm:.9,bg:{cal:0,snow:.3,vil:1,flock:.7,gran:.2,cliff:0,lake:1,pine:.2}},
+{alt:[[0,430],[.3,560],[.6,690],[.8,640],[1,600]],hm:1.1,bg:{cal:0,snow:1,vil:.2,flock:.5,gran:.6,cliff:0,lake:0,pine:.6}},
+{alt:[[0,60],[.3,90],[.6,180],[.85,200],[1,170]],hm:1,bg:{cal:1,snow:.3,vil:.5,flock:.3,gran:.2,cliff:0,lake:0,pine:.3}},
+{alt:[[0,90],[.4,120],[.75,60],[1,30]],hm:.8,bg:{cal:0,snow:.3,vil:1,flock:.7,gran:.2,cliff:0,lake:1,pine:.2}},
 {alt:[[0,180],[.3,240],[.65,150],[1,30]],hm:.9,bg:{cal:0,snow:.2,vil:.6,flock:.5,gran:.4,cliff:0,lake:0,pine:.1}},
 {alt:[[0,60],[.2,40],[1,50]],hm:.7,bg:{cal:0,snow:0,vil:.3,flock:.2,gran:1,cliff:1,lake:0,pine:0}},
-{alt:[[0,40],[.3,60],[.55,250],[.85,430],[1,440]],hm:1,bg:{cal:0,snow:.4,vil:.3,flock:.3,gran:.5,cliff:0,lake:1,pine:1}},
+{alt:[[0,220],[.3,330],[.6,420],[.85,450],[1,440]],hm:1,bg:{cal:0,snow:.4,vil:.3,flock:.3,gran:.5,cliff:0,lake:1,pine:1}},
 {alt:[[0,430],[.15,640],[.5,700],[.75,660],[1,520]],hm:.8,bg:{cal:0,snow:.8,vil:.1,flock:.6,gran:.5,cliff:0,lake:0,pine:.3}},
 {alt:[[0,60],[.4,50],[.7,40],[1,30]],hm:.8,bg:{cal:.3,snow:.1,vil:.4,flock:.3,gran:.4,cliff:1,lake:0,pine:.2}},
 {alt:[[0,60],[.5,45],[1,30]],hm:.7,bg:{cal:0,snow:.15,vil:.6,flock:.4,gran:.3,cliff:0,lake:0,pine:.2}}];
@@ -1453,7 +1453,7 @@ const CHAP=[
 {p:'Village de Sari · la tortue d’Hermann',fin:'Village de Sari',e:'🐢',totem:['tortue','🐢','Tortue d’Hermann',1,'ground'],
 L:[['n','Des années plus tard, Mila et Andrea reviennent en Corse… avec le même vieux Cherokee.'],['m','La plage de Fautea… la tour génoise est toujours là. Tu te souviens, mon cœur ?'],['a','Comment oublier ? On avait vingt ans et on dormait dans la voiture.'],['m','Cette fois, je veux revoir les tortues d’Hermann dans le maquis.'],['n','Dans la boîte à gants, Andrea cache une petite boîte. Il ne dit rien… pour l’instant.']],
 stops:[{f:.04,n:'Plage de Fautea',e:'🏖️',L:[['m','La tour génoise ! Elle surveille la mer depuis des siècles.'],['a','Rien n’a changé ici. C’est rassurant.']]},
-{f:.4,n:'Maquis de Fautea',e:'🌿',L:[['m','Ça sent l’immortelle et le ciste… l’odeur de la Corse.'],['a','Ouvre l’œil : c’est le pays des tortues d’Hermann.']]},
+{f:.4,n:'Maquis de Solenzara',e:'🌿',L:[['m','Ça sent l’immortelle et le ciste… l’odeur de la Corse.'],['a','Ouvre l’œil : c’est le pays des tortues d’Hermann.']]},
 {f:.78,n:'Village de Sari',e:'⛪',L:[['a','Sari ! L’église est toujours là.'],['m','Ce soir, on dort dans le Cherokee à côté de l’église. Comme avant.'],['a','Avec toi, le Cherokee est le plus bel hôtel du monde, mon amour.']]}]},
 {p:'Castellu di Coasina · le puffin de Scopoli',fin:'Castellu di Coasina',e:'🐦',totem:['puffin','🐦','Puffin de Scopoli',2,'fly'],
 L:[['m','Aujourd’hui, Roccapina et son lion de pierre !'],['a','Puis on monte vers les ruines du castellu.'],['m','Le soir, les puffins de Scopoli rentrent de la mer en criant. On dirait des pleurs de bébé.']],
@@ -1464,32 +1464,31 @@ L:[['m','Le cerf de Corse avait disparu de l’île. Des scientifiques l’ont r
 stops:[{f:.3,n:'Serra di Fium’orbu',e:'🌲',L:[['a','Serra di Fium’orbu… ces routes de montagne, je les reconnais.'],['m','Les forêts sont encore plus belles que dans mes souvenirs.']]},
 {f:.78,n:'Village abandonné d’Arrivadu',e:'🏚️',L:[['m','Arrivadu… Les maisons sont vides, mais on sent encore la vie.'],['a','Tu imagines vieillir dans une maison de pierre comme ça, toi et moi ?'],['m','Seulement si on garde le Cherokee devant la porte.']]}]},
 {p:'Aiguilles de Bavella · le mouflon de Corse',fin:'Aiguilles de Bavella',e:'🐏',totem:['mouflon','🐏','Mouflon de Corse',1,'rock'],
-L:[['m','Programme du jour : la plage de Capu Laurosu, le plateau du Coscione, puis les aiguilles de Bavella !'],['a','Le royaume des mouflons.'],['m','Si on en voit un, je crois que je vais pleurer. Prépare les mouchoirs, mon amour.']],
-stops:[{f:.1,n:'Plage de Capu Laurosu',e:'🏖️',L:[['a','Capu Laurosu… l’eau est toujours aussi claire.'],['m','Encore un dernier regard sur la mer avant la montagne.']]},
-{f:.33,n:'Plateau du Coscione',e:'🐎',L:[['m','Le plateau du Coscione ! Personne à des kilomètres. Juste des chevaux et des vaches en liberté.'],['a','Et les pozzines. Roule doucement, elles sont fragiles.']]},
+L:[['m','Aujourd’hui, on monte au col de Bavella. Les aiguilles !'],['a','Le royaume des mouflons.'],['m','Si on en voit un, je crois que je vais pleurer. Prépare les mouchoirs, mon amour.']],
+stops:[{f:.25,n:'Forêt de Bavella',e:'🌲',L:[['a','Les pins laricio. Y en a qui ont plus de cinq cents ans.'],['m','Et regarde là-haut : il reste de la neige.']]},
 {f:.78,n:'Aiguilles de Bavella',e:'⛰️',L:[['m','Les aiguilles… elles sont encore plus belles que dans mes souvenirs.'],['a','Toi aussi, tu es plus belle que dans mes souvenirs.'],['m','Arrête… cherche plutôt les mouflons !']]}]},
 {p:'Calanques de Piana · le balbuzard pêcheur',fin:'Calanques de Piana',e:'🦅',totem:['balbuzard','🦅','Balbuzard pêcheur',2,'fly'],
-L:[['a','Ajaccio, puis la route des calanques.'],['m','À Piana, je veux voir le balbuzard pêcheur plonger. Il avait presque disparu de Corse ; il est revenu grâce à la réserve de Scandola.']],
-stops:[{f:.25,n:'Ajaccio',e:'⚓',L:[['m','Ajaccio ! Le port, les palmiers, le marché…'],['a','On s’arrête prendre une glace, mon cœur ?']]},
+L:[['a','La route des calanques. Ça tourne sans arrêt, accroche-toi.'],['m','À Piana, je veux voir le balbuzard pêcheur plonger. Il avait presque disparu de Corse ; il est revenu grâce à la réserve de Scandola.']],
+stops:[{f:.25,n:'Golfe de Porto',e:'⚓',L:[['m','Le golfe de Porto… l’eau est d’un bleu !'],['a','Et la roche est rouge. On dirait un tableau.']]},
 {f:.78,n:'Calanques de Piana',e:'🪨',L:[['m','Les calanques… rouges comme un coucher de soleil, même en plein jour.'],['a','Oui.'],['m','Tu boudes encore ?'],['a','Je ne boude pas. J’ai peur pour toi. Ce n’est pas pareil.']]}]},
 {p:'Étang de Foce · la cistude d’Europe',fin:'Étang de Foce',e:'🐢',totem:['cistude','🐢','Cistude d’Europe',1,'ground'],
-L:[['m','Aujourd’hui, le village abandonné de Lumio, puis l’étang de Foce.'],['a','Encore un village fantôme ? Tu les adores.'],['m','J’aime imaginer les gens qui y vivaient. Et à l’étang vit la cistude, une petite tortue d’eau très discrète.']],
-stops:[{f:.3,n:'Village abandonné de Lumio',e:'🏚️',L:[['a','Le vieux village… les murs de pierre tiennent encore debout.'],['m','La nature reprend doucement sa place.']]},
+L:[['m','Aujourd’hui, l’étang de Foce et ses roseaux.'],['a','Encore des tortues ?'],['m','Des cistudes ! Une petite tortue d’eau, très discrète.']],
+stops:[{f:.3,n:'Roselière de Foce',e:'🌿',L:[['a','Des roseaux à perte de vue.'],['m','Chut, écoute… les grenouilles, les hérons. Ça vit, ici.']]},
 {f:.78,n:'Étang de Foce',e:'💧',L:[['m','Chut… les cistudes se chauffent au soleil sur les branches. Au moindre bruit, plouf !'],['a','Alors je chuchote : je t’aime.'],['m','Plouf.']]}]},
 {p:'Saint-Florent · le lézard tyrrhénien',fin:'Saint-Florent',e:'🦎',totem:['lezard','🦎','Lézard tyrrhénien',1,'rock'],
-L:[['a','Santo Pietro di Tenda, puis Saint-Florent. On remonte vers le nord.'],['m','Le lézard tyrrhénien ne vit qu’en Corse et en Sardaigne. Il se dore sur les pierres, comme toi sur la plage.'],['a','Hé ! Je ne ressemble pas à un lézard !'],['m','Si, un peu. Un lézard très mignon, mon cœur.']],
+L:[['a','Le Nebbio : Santo Pietro di Tenda, puis Saint-Florent.'],['m','Le lézard tyrrhénien ne vit qu’en Corse et en Sardaigne. Il se dore sur les pierres, comme toi sur la plage.'],['a','Hé ! Je ne ressemble pas à un lézard !'],['m','Si, un peu. Un lézard très mignon, mon cœur.']],
 stops:[{f:.3,n:'Santo Pietro di Tenda',e:'⛪',L:[['m','Santo Pietro di Tenda… un village perché au-dessus des vignes.'],['a','La vue sur le Nebbio est toujours aussi belle.']]},
 {f:.78,n:'Saint-Florent',e:'⛵',L:[['a','Saint-Florent ! Le port, les bateaux, le coucher de soleil sur le golfe.'],['m','Demain, on prend le bateau pour la Sardaigne !']]}]},
 {p:'Sardaigne · le faucon d’Éléonore',fin:'Sardaigne',e:'🦅',totem:['eleonore','🦅','Faucon d’Éléonore',2,'fly'],
-L:[['m','Direction Bonifacio, puis le bateau jusqu’à Santa Teresa Gallura !'],['a','La Sardaigne, juste en face de la Corse.'],['m','Le faucon d’Éléonore niche sur ses falaises. Il porte le nom d’une reine sarde !']],
-stops:[{f:.08,n:'Port de Bonifacio',e:'⛴️',fx:'boat',L:[['m','On embarque ! Le Cherokee monte dans le bateau.']]},
+L:[['m','On prend le bateau à Bonifacio, direction Santa Teresa Gallura !'],['a','La Sardaigne, juste en face de la Corse.'],['m','Le faucon d’Éléonore niche sur ses falaises. Il porte le nom d’une reine sarde !']],
+stops:[{f:.004,n:'Port de Bonifacio',e:'⛴️',fx:'boat',L:[['m','On embarque ! Le Cherokee monte dans le bateau.']]},
 {f:.2,n:'Santa Teresa Gallura',e:'🏝️',L:[['a','Benvenuti in Sardegna !'],['m','Ton accent italien est toujours aussi terrible, mon amour.']]},
 {f:.78,n:'Côte sarde',e:'🌊',L:[['m','Ces rochers de granit rose… on dirait des sculptures.'],['a','Et toi au milieu, avec le vent dans les cheveux.']]}]},
 {p:'Lac de l’Ospedale · la sittelle corse',fin:'Lac de l’Ospedale',e:'🐦',totem:['sittelle','🐦','Sittelle corse',2,'tree'],
-L:[['a','Retour en Corse ! Ventiseri, puis la forêt de l’Ospedale.'],['m','La sittelle corse ne vit nulle part ailleurs au monde. Elle niche dans les vieux pins laricio.'],['a','Un oiseau unique… comme toi.']],
-stops:[{f:.05,n:'Retour en Corse',e:'⛴️',fx:'boatBack',L:[['m','Au revoir la Sardaigne… On reviendra.']]},
-{f:.28,n:'Ventiseri',e:'🚁',L:[['a','Écoute ! Les hélicoptères Puma de la base militaire.'],['m','Le chien n’aime pas du tout ce bruit.']]},
-{f:.78,n:'Lac de l’Ospedale',e:'🌲',L:[['m','Le lac de l’Ospedale… les pins se reflètent dans l’eau.'],['a','Demain, Bonifacio.'],['m','Tu as l’air nerveux, mon ange. Tout va bien ?'],['a','Tout va très bien.']]}]},
+L:[['a','Retour en Corse ! Aujourd’hui, la forêt de l’Ospedale.'],['m','La sittelle corse ne vit nulle part ailleurs au monde. Elle niche dans les vieux pins laricio.'],['a','Un oiseau unique… comme toi.']],
+stops:[{f:.004,n:'Retour en Corse',e:'⛴️',fx:'boatBack',L:[['m','Au revoir la Sardaigne… On reviendra.']]},
+{f:.3,n:'Forêt de l’Ospedale',e:'🌲',L:[['a','Ça sent la résine. Ça fait du bien.'],['m','Les vieux pins laricio. C’est là que niche la sittelle.']]},
+{f:.78,n:'Lac de l’Ospedale',e:'🌲',L:[['m','Le lac de l’Ospedale… les pins se reflètent dans l’eau.'],['a','C’est beau.'],['m','Tu as l’air nerveux, mon ange. Tout va bien ?'],['a','Tout va très bien.']]}]},
 {p:'Plateau du Coscione · le cheval corse',fin:'Plateau du Coscione',e:'🐎',totem:['cheval','🐎','Cheval corse',2,'ground'],
 L:[['a','Le plateau du Coscione. Personne à des kilomètres.'],['m','Juste des chevaux en liberté, et les pozzines. On dirait un tapis vert avec des petits miroirs.'],['a','Je roule doucement, promis. C’est fragile, ces trucs-là.']],
 stops:[{f:.3,n:'Bergeries du Coscione',e:'🐎',L:[['m','Regarde, les chevaux ! Ils sont libres, ici.'],['a','Et pas une maison. Juste le vent.']]},
@@ -1850,12 +1849,12 @@ const NPCD=[
  {f:.72,n:'Un forestier',lk:['#3f6b3a','#4a3a2a',1,'#3b2a1d',1,2,0],t:'Ces châtaigniers ont plus de cent ans. Ils ont nourri des générations de villageois.'}],
 [{f:.1,n:'Un randonneur du GR20',lk:['#d6452f','#3a3a40',1,'#6a4a2a',1,2,0],t:'Je fais le GR20 ! Bavella, c’est l’étape dont tout le monde rêve.'},
  {f:.37,sto:1,n:'Ghjulia, bergère',lk:['#6a3a2a','#3d3a33',0,'#1a1410',0,2,1],L:[['v','<b>Ghjulia, bergère :</b> « Les mouflons descendent jusqu’à mes bergeries. Ça n’arrivait jamais. Au printemps, un hélicoptère a traité les pâturages. »'],['m','Vous avez vu un nom, un logo ?'],['v','<b>Ghjulia :</b> « Un logo vert sur la porte… je n’ai pas pu lire le nom. »'],['m','Un logo vert. Le même que sur le bidon… Il faut que je découvre à qui il appartient.']]},
- {f:.72,n:'Un berger à cheval',lk:['#8a6a3a','#2f2f35',2,'#3b2a1d',1,2,0],t:'Les chevaux sont libres sur le plateau. Roulez doucement, ils traversent sans prévenir !'}],
+ {f:.72,n:'Une grimpeuse',lk:['#e07a3f','#2f4f6f',3,'#7a4a24',0,2,1],t:'Les aiguilles, c’est du granit rose. Le soir, on dirait qu’elles s’allument !'}],
 [{f:.1,n:'Une marchande',lk:['#e8b04a','#6b3a5a',0,'#3b2a1d',0,4,1],t:'Bonne route vers Piana ! Les calanques au coucher du soleil, il ne faut pas rater ça.'},
  {f:.4,sto:1,n:'Dumè, pêcheur',lk:['#2f4f7a','#3d3a33',2,'#9a9a9a',1,1,0],L:[['v','<b>Dumè, pêcheur :</b> « Les balbuzards pêchent moins dans le golfe. Et l’eau, en aval de l’usine, a une drôle d’odeur. »'],['m','Je pourrais prélever un peu de cette eau ?'],['v','<b>Dumè :</b> « Je vous montre l’endroit. Je veux que mes petits-enfants voient encore des balbuzards. »'],['a','On va les aider, Dumè. Mila ne lâche jamais rien.']]},
  {f:.74,n:'Un photographe',lk:['#2f2f35','#5a5a62',1,'#6a4a2a',0,3,0],t:'Le granit rouge des calanques de Piana… j’y reviens chaque année.'},
  {f:.62,sto:1,n:'Lucia, en civil',lk:['#5a6a7a','#2f2f35',0,'#2a1a10',0,0,1],L:[['n','Près d’une chapelle isolée, une jeune femme en civil attend. Mila la reconnaît : la gendarme du couloir. « L. »'],['v','<b>Lucia :</b> « Lucia Pieri. Je n’ai pas le droit d’être ici. »'],['v','<b>Lucia :</b> « Le Conseiller signe des autorisations d’épandage pour une grosse société. Marchetti ferme les yeux, et on ferme les rivières quand il y a trop de témoins. »'],['m','Quelle société ?'],['v','<b>Lucia :</b> « Pas ici. On nous écoute partout. Quand je serai sûre, je vous retrouverai. »'],['m','Pourquoi vous nous aidez ?'],['v','<b>Lucia :</b> « Mon père était berger. Ses brebis sont mortes l’an dernier, près d’une zone traitée. Ici, ceux qui parlent le regrettent… mais je suis fatiguée de me taire. »'],['v','<b>Lucia :</b> « Tenez : la fiche technique du N-12. L’en-tête a été découpé, mais elle vient de leurs bureaux. Et méfiez-vous de Marchetti. »'],['a','Merci, Lucia. On ne vous oubliera pas.']]}],
-[{f:.1,n:'Un vigneron',lk:['#7a2a3a','#3d3a33',3,'#3b2a1d',1,4,0],t:'La Balagne, c’est le jardin de la Corse. Des oliviers, des vignes, et un village sur chaque colline.'},
+[{f:.1,n:'Un pêcheur d’anguilles',lk:['#7a2a3a','#3d3a33',3,'#3b2a1d',1,4,0],t:'L’étang, c’est toute ma vie. Mais cette année, les anguilles se font rares.'},
  {f:.4,sto:1,n:'Lisa, garde de l’étang',lk:['#4f6b3a','#3d3a33',1,'#b5793a',0,3,1],L:[['v','<b>Lisa, garde de l’étang :</b> « Les cistudes pondent beaucoup moins cette année. J’ai mes relevés depuis dix ans, si ça peut vous servir. »'],['m','Dix ans de relevés ? C’est exactement ce qu’il me faut !'],['v','<b>Lisa :</b> « Prenez-les. Et faites en sorte que ça change. »']]},
  {f:.24,n:'Petru, berger',lk:['#7a5a3a','#3d3a33',2,'#cfcfcf',1,2,0],t:'Je vous ai reconnus ! Tout le village parle de votre enquête… mais à voix basse.'},
  {f:.74,n:'Un ornithologue',lk:['#6b7a3a','#4a4a3a',3,'#9a9a9a',1,3,0],t:'Chut… les hérons sont timides par ici. Coupez le moteur si vous vous arrêtez !'}],
@@ -1866,7 +1865,7 @@ const NPCD=[
 [{f:.15,n:'Un marin de Bonifacio',lk:['#2f4f7a','#f4f4f4',1,'#3b2a1d',1,0,0],t:'Les falaises de calcaire vues de la mer… vous allez adorer la traversée !'},
  {f:.45,sto:1,n:'Giovanna, ornithologue sarde',lk:['#4f8a5a','#3d3a33',3,'#1a1410',0,3,1],L:[['v','<b>Giovanna, ornithologue sarde :</b> « Benvenuti ! Ici, le N-12 est interdit depuis des années. Nos faucons d’Éléonore se portent très bien. »'],['m','Alors vous êtes mon groupe témoin ! Je peux comparer avec vos données ?'],['v','<b>Giovanna :</b> « Bien sûr. La nature n’a pas de frontière. »']]},
  {f:.75,n:'Un marchand de glaces',lk:['#f4f4f4','#5a5a62',0,'#1a1410',1,0,0],t:'Benvenuti in Sardegna ! Le granit rose de la Gallura, c’est notre fierté.'}],
-[{f:.1,n:'Un mécanicien de la base',lk:['#5a6a3a','#5a6a3a',1,'#3b2a1d',0,0,0],t:'Les hélicoptères Puma de la base de Ventiseri, ça décoiffe, hein ?'},
+[{f:.1,n:'Un bûcheron',lk:['#5a6a3a','#5a6a3a',1,'#3b2a1d',0,0,0],t:'Les pins laricio de l’Ospedale ! Les plus vieux ont plusieurs siècles.'},
  {f:.4,sto:1,n:'Antoine, forestier',lk:['#3f6b3a','#4a3a2a',1,'#6a4a2a',1,2,0],L:[['v','<b>Antoine, forestier :</b> « Les pins qu’ils ont traités n’ont plus d’insectes. Les sittelles abandonnent leurs nids. »'],['m','Je le note. Avec la Sardaigne, mon dossier est presque complet.'],['v','<b>Antoine :</b> « Et vous, jeune homme, vous aviez une question ? »'],['a','Euh… plus tard ! Plus tard.'],['m','Une question sur quoi ?'],['a','Rien, rien. Les pins. On y va ?']]},
  {f:.2,n:'Maria, apicultrice',lk:['#f2e3b0','#6b5a3a',3,'#5a3a20',0,4,1],t:'Mes abeilles reprennent des forces… Je croise les doigts pour votre dossier !'},
  {f:.74,n:'Une randonneuse',lk:['#3a8fb5','#3a3a40',1,'#b5793a',0,2,1],t:'Le lac de l’Ospedale au milieu des pins laricio… c’est mon coin préféré.'}],
@@ -1922,10 +1921,10 @@ towFlip:['On aurait dû prendre le Mercedes… Bon, j’appelle la dépanneuse.'
 ch0:['La tour de Fautea, toujours debout face à la mer.','Ce chantier Bellavista, là-haut. Tu crois vraiment que c’est lui, ma chérie ?','Les tortues d’Hermann sortent pas en plein midi, c’est ça ? Y a un truc qui cloche.','Ça sent le ciste et l’immortelle. Ça m’avait manqué.','Tu notes tout, hein ? L’heure, le lieu… ton carnet va être plein.','Si l’Institut t’a appelée, c’est que c’est sérieux.'],
 ch1:['Regarde le rocher, là-bas. On dirait un lion couché.','Le N-12, ça arrive pas tout seul dans une tortue, ça.','Dis, les puffins rentrent la nuit, normalement ?','Tu me dis où tu veux t’arrêter pour tes prélèvements ?','Il te faut des échantillons de plusieurs espèces, c’est ça ?','L’eau est turquoise par ici. On se croirait au bout du monde.'],
 ch2:['Si c’est pas Bellavista, alors qui ? Et pourquoi se cacher ?','Garde l’appareil photo à portée de main, on sait jamais.','Le cerf de Corse avait disparu, non ? Et il est revenu.','La rivière est glacée, même en été. Le Cherokee va adorer les gués.','Si Bellavista est innocent, il vient d’où, le N-12 ?','Des bergeries partout dans la vallée. On se croirait hors du temps.','Tu veux être sûre avant d’accuser quelqu’un, hein.','Ces châtaigniers doivent avoir des siècles.'],
-ch3:['T’as vu comme les gendarmes ont salué la voiture du Conseiller ?','Ici, tout le monde sait. Personne parle.','Le 4x4 noir… il est encore derrière nous ?','Une coopérative, un fabricant, une société de démoustication… il te faut des preuves, j’ai compris.','Le plateau du Coscione… pas une maison, juste le vent.','Les aiguilles de Bavella ! On dirait des dents de granit.','Les mouflons descendent trop bas, tu disais ? Ils fuient quelque chose.','Je roule doucement, promis. Les pozzines sont fragiles.'],
+ch3:['T’as vu comme les gendarmes ont salué la voiture du Conseiller ?','Ici, tout le monde sait. Personne parle.','Le 4x4 noir… il est encore derrière nous ?','Une coopérative, un fabricant, une société de démoustication… il te faut des preuves, j’ai compris.','Les pins laricio, droits comme des mâts de bateau.','Les aiguilles de Bavella ! On dirait des dents de granit.','Les mouflons descendent trop bas, tu disais ? Ils fuient quelque chose.','Y a encore de la neige au bord de la route.'],
 ch4:['Qui a touché au Cherokee ? Ça peut pas être un hasard.','S’ils s’en prennent à la voiture, c’est qu’on les dérange. On est sur la bonne piste.','Les calanques de Piana. Le granit est presque de la couleur du Cherokee.','Les balbuzards ont des coquilles plus fines, tu m’as dit. Comme avec le DDT.','On reste ensemble, quoi qu’il arrive, ma chérie.','La route de Piana tourne sans arrêt. Accroche-toi.'],
-ch5:['Je regarde le rétroviseur toutes les deux minutes. Marchetti peut surgir n’importe quand.','Lucia risque sa carrière pour nous. On n’a pas le droit d’échouer.','La Balagne. Des villages perchés sur chaque colline.','La cistude, c’est la petite tortue d’eau douce ? Il lui faut un étang propre.','La fiche du N-12 le dit : toxique pour la faune aquatique.','Ils savaient, et ils ont continué. Ça me met en colère.','Tes analyses tiennent la route. Il faut juste qu’elles soient incontestables.'],
-ch6:['Une « proposition amicale »… ils pensaient vraiment pouvoir nous acheter ?','Le lézard tyrrhénien, il vit qu’ici et en Sardaigne, non ? On le laissera pas disparaître.','Le désert des Agriates, pas un mètre de goudron. Le Cherokee est dans son élément.','Il te manque un groupe témoin, c’est ça ? Une région sans N-12.','On voit déjà le golfe de Saint-Florent, au bout de la piste.'],
+ch5:['Je regarde le rétroviseur toutes les deux minutes. Marchetti peut surgir n’importe quand.','Lucia risque sa carrière pour nous. On n’a pas le droit d’échouer.','Des roseaux, de l’eau partout. Ça change du maquis.','La cistude, c’est la petite tortue d’eau douce ? Il lui faut un étang propre.','La fiche du N-12 le dit : toxique pour la faune aquatique.','Ils savaient, et ils ont continué. Ça me met en colère.','Tes analyses tiennent la route. Il faut juste qu’elles soient incontestables.'],
+ch6:['Une « proposition amicale »… ils pensaient vraiment pouvoir nous acheter ?','Le lézard tyrrhénien, il vit qu’ici et en Sardaigne, non ? On le laissera pas disparaître.','Des vignes partout. Le Nebbio, c’est le pays du muscat.','Il te manque un groupe témoin, c’est ça ? Une région sans N-12.','On voit déjà le golfe de Saint-Florent, au bout de la piste.'],
 ch7:['En Sardaigne, le N-12 est interdit. Si les animaux vont bien là-bas, t’as ta preuve.','Les falaises de Bonifacio vues de la mer. J’oublierai jamais ça.','Le faucon d’Éléonore niche sur les falaises, tu m’as dit ?','La Gallura, du granit rose partout. On dirait un autre monde.','Ici, les animaux vont bien. C’est exactement ce que tu voulais voir.'],
 ch8:['La sittelle corse, y en a nulle part ailleurs au monde. Tu m’as expliqué, hein.','Ça va, ma chérie ? T’as l’air ailleurs.','Tu m’en voudras pas, mais je te sens pensive.','Tu envoies bientôt ton dossier ? T’as le trac ?','La forêt de l’Ospedale sent la résine. Ça fait du bien.'],
 ch9:['Le Coscione. Pas une maison, juste le vent.','Je roule doucement, promis. Les pozzines sont fragiles.','T’as vu les chevaux ? Ils nous regardent passer.','Y a encore de la neige là-haut, sur l’Incudine.','Ça va, ma chérie ? Le dossier est parti, tu peux souffler.'],
@@ -1946,7 +1945,7 @@ if(st2.fx==='boat')setTimeout(()=>sarCross(false),1800);else if(st2.fx==='boatBa
 helpTick(dt);mechTick(dt);if(talkQ.length&&sayT<=0&&!sbCtx&&!bt&&!obv&&!hl){const l=talkQ.shift();say(l[1],Math.max(3.8,Math.min(8,l[1].length/20)),l[0]==='m'?1:0);replyT=0}
 {const zt=Z(c.x)[3],sp3=Math.hypot(v.x,v.y);if(ign&&st.gas&&sp3<22&&!stalled&&!work&&(zt==='rock'||zt==='mud'||rockW(c.x)>.02))stuckT+=dt;else stuckT=Math.max(0,stuckT-dt*2);if(merCD>0)merCD-=dt;if(stuckT>7&&merCD<=0&&sayT<=0){merCD=120;stuckT=0;say('On aurait dû prendre le Mercedes…',3.8,0)}}
 if(heliOn()&&dt>0&&((performance.now()/1000*55)%((W+320)*2))<=W+320){heliT-=dt;if(heliT<=0){heliT=.12;snd('heli')}}}
-let heliT=0,stuckT=0,merCD=0;function heliOn(){if(night||chIdx()!==8)return false;const f=chP();return f>=.2&&f<.55}
+let heliT=0,stuckT=0,merCD=0;function heliOn(){return false}
 function heliDraw(tm){if(!heliOn())return;g.setTransform(DPR,0,0,DPR,0,0);for(let i=0;i<1;i++){const cyc=(tm*55)%((W+320)*2);if(cyc>W+320)continue;const x=W+160-cyc,y=HH*(.14+.07*i)+Math.sin(tm*1.3+i)*6,s2=Math.max(.6,S*1.1);g.save();g.translate(x,y);g.scale(s2,s2);
 g.fillStyle='#4d5a3a';g.beginPath();g.ellipse(0,0,20,7,0,0,7);g.fill();g.fillRect(14,-3,30,4);g.beginPath();g.moveTo(42,-3);g.lineTo(48,-12);g.lineTo(50,-12);g.lineTo(47,1);g.fill();
 g.fillStyle='#9fc4d8';g.beginPath();g.ellipse(-12,-2,6,4,0,0,7);g.fill();g.fillStyle='#2b2f25';g.fillRect(-2,-11,4,5);g.fillRect(-8,6,3,4);g.fillRect(8,6,3,4);
@@ -3195,11 +3194,11 @@ if(T2>29){const b=gid('burx');if(b&&b.style.display!=='block')b.style.display='b
 g.setTransform(DPR,0,0,DPR,0,0)}
 
 function needBlink(z,tm){const x=dg,cx=z.x+z.w/2,cy=z.y+z.h/2,r=z.w/2,p=(Math.sin(tm*7)+1)/2;x.save();x.shadowColor='rgba(255,210,60,.95)';x.shadowBlur=10+12*p;x.strokeStyle='rgba(255,215,70,'+(.45+.55*p)+')';x.lineWidth=3+2*p;x.beginPath();x.arc(cx,cy,r+3+4*p,0,7);x.stroke();x.restore();x.fillStyle='rgba(255,215,70,'+(.18*p)+')';x.beginPath();x.arc(cx,cy,r+2,0,7);x.fill()}
-const FERRY={0:{t:'Porto-Vecchio → Pointe de la Chiappa',s:'Le bac du golfe · une vingtaine de minutes',L:[[1,'m','Coupe le moteur, mon cœur : aujourd’hui c’est le bateau qui conduit !'],[5,'a','Regarde l’eau, on voit le fond tellement elle est claire.'],[9,'m','On reste comme ça jusqu’à l’autre rive ?']]},
-1:{t:'Embouchure du Tavignano',s:'Un petit bac à câble · dix minutes',L:[[1,'a','Un bac à câble ! Le passeur tire le bateau d’une rive à l’autre.'],[5,'m','Il y a des hérons dans les roseaux, regarde !'],[9,'a','Tu vois tout, toi. C’est pour ça que je t’aime.']]},
+const FERRY={100:{t:'Porto-Vecchio → Pointe de la Chiappa',s:'Le bac du golfe · une vingtaine de minutes',L:[[1,'m','Coupe le moteur, mon cœur : aujourd’hui c’est le bateau qui conduit !'],[5,'a','Regarde l’eau, on voit le fond tellement elle est claire.'],[9,'m','On reste comme ça jusqu’à l’autre rive ?']]},
+101:{t:'Embouchure du Tavignano',s:'Un petit bac à câble · dix minutes',L:[[1,'a','Un bac à câble ! Le passeur tire le bateau d’une rive à l’autre.'],[5,'m','Il y a des hérons dans les roseaux, regarde !'],[9,'a','Tu vois tout, toi. C’est pour ça que je t’aime.']]},
 3:null&&{t:'Solenzara → Favone',s:'Navette côtière · une demi-heure',L:[[1,'m','La côte est encore plus belle vue de la mer.'],[5,'a','Là-bas, des dauphins ! Ils nous accompagnent.'],[9,'m','C’est notre petite croisière à nous.']]},
 4:{t:'Porto → Girolata',s:'Girolata ne se rejoint que par la mer · quarante minutes',L:[[1,'a','Girolata, le village sans route. Il faut y aller en bateau.'],[5,'m','Les falaises rouges dans la lumière… c’est magique.'],[9,'a','Magique comme toi, mon ange.']]},
-6:{t:'Saint-Florent → Plage du Loto',s:'Navette des Agriate · une demi-heure',L:[[1,'m','Le désert des Agriate, enfin !'],[5,'a','Pas de route goudronnée là-bas : le Cherokee va adorer.'],[9,'m','Et moi, j’adore quand tu souris comme ça.']]},
+106:{t:'Saint-Florent → Plage du Loto',s:'Navette des Agriate · une demi-heure',L:[[1,'m','Le désert des Agriate, enfin !'],[5,'a','Pas de route goudronnée là-bas : le Cherokee va adorer.'],[9,'m','Et moi, j’adore quand tu souris comme ça.']]},
 8:null&&{t:'Traversée du lac de l’Ospedale',s:'Le bac des pêcheurs · un quart d’heure',L:[[1,'a','Un bac sur un lac de montagne, je n’y croyais pas.'],[5,'m','Ça sent le pin, l’eau est toute calme…'],[9,'a','On reviendra ici, tous les deux.']]},
 90:{t:'Fautea → Pinarellu',s:'Navette du littoral · vingt minutes',L:[[1,'m','Dernière traversée de la saison…'],[5,'a','Regarde la tour génoise sur son rocher.'],[9,'m','Je ne veux pas que ce voyage se termine.']]}};
 function ferryCoast(x,hz,tm){const hill=(sx,f,col,h)=>{x.fillStyle=col;x.beginPath();x.moveTo(sx,hz+4);x.quadraticCurveTo(sx+f*W*.06,hz-HH*h,sx+f*W*.14,hz-HH*h*.7);x.quadraticCurveTo(sx+f*W*.2,hz-HH*h*1.1,sx+f*W*.3,hz+4);x.fill()};
@@ -7068,7 +7067,7 @@ CS.sarA1.L=()=>[[1,'n','Bonifacio, perché sur sa falaise. Le bateau accoste et 
 sarCross=(function(o){return function(back){if(!back)return o(back);fadeTo(()=>{btAfter=()=>{blackNow();try{openCine('sarA1')}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},350)};openBoat(true);if(bt){bt.D=9;bt.L=[[.8,'m','Au revoir la Sardaigne… On a ce qu’il nous faut.'],[4,'a','Regarde, Bonifacio sur sa falaise. On rentre.'],[7,'m','Le chien a déjà reconnu l’odeur du maquis !']]}})}})(sarCross);
 // ===== 3.12 : un grand décor par chapitre au bord de la route, dans l'esprit du port de Saint-Florent =====
 // chaque chapitre a son tableau (baie, calanques, aiguilles, étang, lac, falaises…), posé sur un tronçon plat et libre
-const VA12_SITES={0:{f:.25,hw:700,k:'fautea'},1:{f:.3,hw:720,k:'lion'},2:{f:.32,hw:620,k:'gorge'},3:{f:.74,hw:700,k:'needles',flat:340},4:{f:.74,hw:720,k:'calanques'},5:{f:.74,hw:640,k:'etang'},7:{f:.74,hw:720,k:'granite'},8:{f:.72,hw:700,k:'lac'},10:{f:.32,hw:720,k:'bonif'},11:{f:.45,hw:700,k:'fautea'}};
+const VA12_SITES={0:{f:.08,hw:700,k:'fautea'},1:{f:.3,hw:720,k:'lion'},2:{f:.32,hw:620,k:'gorge'},3:{f:.74,hw:700,k:'needles',flat:340},4:{f:.74,hw:720,k:'calanques'},5:{f:.74,hw:640,k:'etang'},7:{f:.74,hw:720,k:'granite'},8:{f:.72,hw:700,k:'lac'},10:{f:.32,hw:720,k:'bonif'},11:{f:.45,hw:700,k:'fautea'}};
 var va12C={};
 var va12Busy=0;
 function va12X(){const ci=chIdx(),S=VA12_SITES[ci];if(!S)return -1;const l=level;if(va12C[l]!==undefined)return va12C[l];if(va12Busy)return -1;va12Busy=1;let best=-1,bs=1e9;
@@ -8769,8 +8768,8 @@ setTimeout(()=>{try{va64Load()}catch(e){}},8000);
 // ===== 3.66 : 12 chapitres (un lieu chacun), chapitres plus courts, sauvegardes converties, une seule saison =====
 // Longueur : chapitres 1 à 11 = 65 000, chapitre 12 (Fautea) = 25 000.
 function va66Len(){try{return chIdx()===CHAP.length-1?25000:65000}catch(e){return 65000}}
-// Plateau du Coscione : portion [début, fin] du chapitre (ch4 Bavella pour l'instant, ch10 Coscione)
-function va66PR(){const ci=chIdx();return ci===3?[.32,.63]:ci===9?[.15,.75]:null}
+// Plateau du Coscione : portion [début, fin] du chapitre 10 (3.67 : plus de plateau à Bavella)
+function va66PR(){return chIdx()===9?[.15,.75]:null}
 // Fonds peints : ch10 = fond du plateau, ch11 Bonifacio = pas encore de fond, ch12 = Fautea (fond du ch1, soir de l'ancien ch10)
 try{VA23_IMG[11]=VA23_IMG[0];VA25_P[11]=Object.assign({},VA25_P[0]);VA23_IMG[9]=VA27.PL.src;VA25_P[9]={hz:VA27.PL.hz,F:VA27.PL.F||.5,fill:VA27.PL.fill,dune:0};delete VA23_IMG[10];delete VA25_P[10];
  if(VA27.E[9]){VA27.E[11]=VA27.E[9];delete VA27.E[9]}if(VA27.N[0])VA27.N[11]=VA27.N[0]}catch(e){}
@@ -8783,8 +8782,12 @@ function va66Mig(S){try{if(!S||S.v66)return false;const o=S.lvl||1,k=65000/88000
   if(S.csd&&S.csd.plk&&o<12)delete S.csd.plk}
  S.layV=S.layV||{};for(let i=1;i<=12;i++)S.layV[i]=2;S.v66=1;return true}catch(e){return false}}
 // (la conversion est appelée tout en haut du fichier, juste après la lecture de la sauvegarde)
+// ===== 3.67 : un seul lieu par chapitre (relief, plus de plateau à Bavella, bacs retirés, tunnels selon le lieu) =====
+// Tunnels : un sur n gardé selon le lieu (0 = aucun). Fium'orbu un sur deux, Bavella un sur quatre, Ospedale un sur trois, aucun au Coscione ni sur les côtes.
+const VA67_TUN={0:0,1:0,2:2,3:4,4:3,5:0,6:3,7:0,8:3,9:0,10:0,11:0};
+tunStart=(function(o){return function(x){const s=o(x);if(s<0)return s;try{const n=VA67_TUN[chIdx()];if(n===0)return -1;if(n>1){const q=Math.round((s-1520)/2000),r=(q-2)/3;if(((r%n)+n)%n!==1%n)return -1}}catch(e){}return s}})(tunStart);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.66',GAME_DATE='11/11/2026 à 22h54';
+const GAME_VER='3.67',GAME_DATE='12/11/2026 à 11h04';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
