@@ -1451,7 +1451,7 @@ const MISS=[
 const WHO={m:['MILA','#7b3fa0'],a:['ANDREA','#b5532a'],n:['','#555'],v:['','#2b5d3a']};
 const CHAP=[
 {p:'Maquis de Sari-Solenzara · la tortue d’Hermann',fin:'Village de Sari',e:'🐢',totem:['tortue','🐢','Tortue d’Hermann',1,'ground'],
-L:[['n','Mila et Andrea débarquent en Corse… avec le même vieux Cherokee.'],['m','Fautea… La tour est toujours là. Tu te souviens, mon cœur ?'],['a','Bah oui. On avait vingt ans, on dormait dans la voiture.'],['m','Cette fois, je veux revoir les tortues d’Hermann.'],['n','Dans la boîte à gants, Andrea cache une petite boîte. Il ne dit rien… pour l’instant.']],
+L:[['n','Mila et Andrea débarquent en Corse… avec le même vieux Cherokee.'],['m','Fautea… La tour est toujours là. Tu te souviens, mon cœur ?'],['a','Bah oui. On avait vingt ans, on dormait dans la voiture.'],['m','Cette fois, je veux revoir les tortues d’Hermann.'],['n','Dans sa poche, Andrea serre une petite boîte. Il ne dit rien… pour l’instant.']],
 stops:[{f:.04,n:'Plage de Fautea',e:'🏖️',L:[['m','La tour ! Elle a pas bougé.'],['a','Ça a pas changé, ici. Ça fait du bien.']]},
 {f:.4,n:'Maquis de Solenzara',e:'🌿',L:[['m','Ça sent l’immortelle. Ça y est, on est en Corse.'],['a','Ouvre l’œil, ma chérie. C’est le pays des tortues.']]},
 {f:.78,n:'Village de Sari',e:'⛪',L:[['a','Sari ! L’église est toujours là.'],['m','Ce soir, on dort dans le Cherokee à côté de l’église. Comme avant.'],['a','Le meilleur hôtel de l’île, ma chérie.']]}]},
@@ -3790,7 +3790,7 @@ if(ci===5&&CHX('presse')===undefined&&SV.ev&&SV.ev[evK('chase')]&&sayT<=0&&!stop
 
 // ===== v81 : cinématiques du scénario =====
 var cs=null,csT0=0,csParts=[];
-function csBox(T2,L,Wd){let cur=null;for(const q of L)if(T2>=q[0])cur=q;if(!cur)return;const a2=Math.min(1,(T2-cur[0])/.5),WH={m:'MILA',a:'ANDREA',x:'MATHIS',l:'LUCIA',p:'LE PÊCHEUR',c:'LA CAPITAINE',v:'LA VÉTÉRINAIRE',d:'L’AUTOMOBILISTE',f:'L’AGRICULTEUR',n:''},CO={m:'#e7b8f0',a:'#a8d0ff',l:'#ffd0a0',p:'#c8e09a',x:'#c8e09a',c:'#ffb27a',v:'#b8e6d2',d:'#f0d080'};const wh=WH[cur[1]]||'',col=CO[cur[1]]||'#fff';const maxW=Math.min(600,Wd-80);g.font=(cur[1]==='n'?'italic 600 ':'700 ')+'16px Georgia,serif';const words=cur[2].split(' '),lines=[];let ln='';for(const w2 of words){const tt=ln?ln+' '+w2:w2;if(g.measureText(tt).width>maxW&&ln){lines.push(ln);ln=w2}else ln=tt}lines.push(ln);
+function csBox(T2,L,Wd){let cur=null;for(const q of L)if(T2>=q[0])cur=q;if(!cur)return;const a2=Math.min(1,(T2-cur[0])/.5),WH={m:'MILA',a:'ANDREA',x:'MATHIS',l:'LUCIA',p:'LE PÊCHEUR',c:'LA CAPITAINE',v:'LA VÉTÉRINAIRE',d:'L’AUTOMOBILISTE',f:'L’AGRICULTEUR',k:'MARCHETTI',q:'UNE VOIX AU TÉLÉPHONE',h:'LE CONDUCTEUR',n:''},CO={k:'#9fb4e8',q:'#d9d9d9',h:'#c9c9c9',m:'#e7b8f0',a:'#a8d0ff',l:'#ffd0a0',p:'#c8e09a',x:'#c8e09a',c:'#ffb27a',v:'#b8e6d2',d:'#f0d080'};const wh=WH[cur[1]]||'',col=CO[cur[1]]||'#fff';const maxW=Math.min(600,Wd-80);g.font=(cur[1]==='n'?'italic 600 ':'700 ')+'16px Georgia,serif';const words=cur[2].split(' '),lines=[];let ln='';for(const w2 of words){const tt=ln?ln+' '+w2:w2;if(g.measureText(tt).width>maxW&&ln){lines.push(ln);ln=w2}else ln=tt}lines.push(ln);
 const bh=22+lines.length*21+(wh?15:0),by=420-bh-10;g.globalAlpha=a2;g.fillStyle='rgba(10,12,16,.68)';rr(g,Wd/2-maxW/2-18,by,maxW+36,bh,14);g.fill();g.textAlign='center';g.textBaseline='top';let yy=by+11;if(wh){g.font='800 11px Arial';g.fillStyle=col;g.fillText(wh,Wd/2,yy);yy+=15}g.font=(cur[1]==='n'?'italic 600 ':'700 ')+'16px Georgia,serif';g.fillStyle='#fff';for(const l of lines){g.fillText(l,Wd/2,yy);yy+=21}g.globalAlpha=1}
 function grp(ox,gy,SC,fn){g.save();g.translate(ox,gy);g.scale(SC,SC);g.translate(-ox,-gy);try{fn()}catch(e){}g.restore()}
 const CS={
@@ -3817,7 +3817,7 @@ grp(Wd*.45,gy,1.6,()=>{try{npcFig(Wd*.33,gy,['#3d6f9e','#4a4a52',1,'#e8e8e8',1,0
 for(const dx of[-26,-14]){g.fillStyle='#f4f4f0';g.fillRect(Wd*.33+dx-5,gy-12,10,12);g.fillStyle='#dcdcd4';g.fillRect(Wd*.33+dx-5,gy-12,10,2)}
 g.fillStyle='#9aa4aa';g.beginPath();g.ellipse(Wd*.4,gy-1,6,2.4,0,0,7);g.fill();g.fillStyle='#6a4a3a';g.beginPath();g.arc(Wd*.4-2,gy-1.5,.8,0,7);g.fill();
 try{person(Wd*.44,gy,1,{f:-1,a1:T2>19&&T2<29?1.2:.2,bob:0});person(Wd*.5,gy,0,{f:-1,a1:.3})}catch(e){}if(T2>19)kitD2(Wd*.42,gy-6);try{cherokeeSide(Wd*.66,gy,0)}catch(e){}})}},
-lucia:{mus:'tense',L:()=>{const L=[[1.5,'n','Saint-Florent, tard dans la nuit. Le port est désert. Sous un réverbère, une silhouette attend.'],[5.5,'l','« Vous êtes venus. Je n’ai pas beaucoup de temps. »'],[9,'m','Vous avez dit que vous aviez un nom.'],[11.5,'l','« Noxacorp. Ils fabriquent le N-12 sur le continent. La coopérative l’épand, et le Conseiller signe les autorisations, zone après zone. »'],[18,'a','Noxacorp… le logo vert. Celui qu’ils arrachaient partout.']];let t=21;
+lucia:{mus:'tense',L:()=>{const L=[[1.5,'n','Saint-Florent, tard dans la nuit. Le port est désert. Sous un réverbère, une silhouette attend.'],[5.5,'l','« Vous êtes venus. »'],[8,'l','« Ce que je vais faire… c’est trahir les miens. Mon uniforme. Mon adjudant. »'],[13.5,'l','« J’ai failli ne pas venir. Trois fois, j’ai fait demi-tour. »'],[18,'m','Lucia… si vous voulez repartir, on comprendra.'],[21.5,'l','« Non. Mon père a perdu ses brebis. Si je me tais encore, je ne vaux pas mieux qu’eux. Alors je vous dis tout. »'],[28,'l','« Noxacorp. Ils fabriquent le N-12 sur le continent. La coopérative l’épand, et le Conseiller signe les autorisations, zone après zone. »'],[34.5,'a','Noxacorp… le logo vert. Celui qu’ils arrachaient partout.']];let t=37.5;
 if(SV.spy){L.push([t,'l','« Et l’homme en panne, sur la route… c’était un homme de Marchetti. Il cherchait vos échantillons. »']);L.push([t+4.5,'m','Je le savais. Une bougie débranchée exprès…']);t+=8}
 if(CHX('presse')===0){L.push([t,'l','« Votre article les a affolés. Ils détruisent des documents. Il faut faire vite. »']);t+=5}else if(CHX('presse')===1){L.push([t,'l','« Vous avez bien fait d’attendre. Ils ne se doutent de rien… pas encore. Tenez, une copie de leurs bons de livraison. »']);t+=5.5}
 if(CHX('prelev')===1){L.push([t,'m','Mes prélèvements en amont le prouvent : l’eau devient toxique en traversant la zone interdite.']);t+=4.5}
@@ -8950,8 +8950,73 @@ CS.ouv={mus:'title',L:()=>{try{va23Get(chIdx())}catch(e){}return []},end:2.6,
 try{DK_LBL.ouv='Ouverture du lieu (chapitre en cours)'}catch(e){}
 cardTick=(function(o){return function(){let pre=false;try{pre=SV.cs<level;if(pre&&SV.ouvL!==level&&chP()<.06&&inGame&&!cardOpen&&!paused&&!night&&!(introT>0)&&!bt&&!bz&&!hl&&!fn&&!es&&!cs&&gid('menu').style.display==='none'&&!(typeof va9P!=='undefined'&&va9P)){SV.ouvL=level;openCine('ouv');return}}catch(e){}
  const r=o.apply(this,arguments);try{if(pre&&SV.ouvL===level)pendBan=null}catch(e){}return r}})(cardTick);
+// ===== 3.74 : le camp d'en face (3 courtes scènes), la bague en fil rouge, Lucia qui hésite =====
+function va74Night(Wd,gy,tm,c0,c1){const sk=g.createLinearGradient(0,0,0,gy);sk.addColorStop(0,c0);sk.addColorStop(1,c1);g.fillStyle=sk;g.fillRect(-70,0,Wd+140,420);
+ for(let i=0;i<80;i++){const tw=.35+.65*Math.abs(Math.sin(tm*.8+i*1.9));g.fillStyle='rgba(255,255,255,'+(tw*(.3+.5*((i*37)%10)/10))+')';g.fillRect(((i*131)%1000)/1000*(Wd+100)-50,((i*71)%1000)/1000*190,1.5,1.5)}}
+function va74Pines(Wd,y,n,c,h0){for(let i=0;i<n;i++){const x=-40+i*((Wd+80)/(n-1))+Math.sin(i*5.3)*14,h=h0+Math.abs(Math.sin(i*2.7))*h0*.7;g.fillStyle=c;g.fillRect(x-2,y-h*.35,4,h*.35);for(let k=0;k<4;k++){const yy=y-h*.3-k*h*.17,w=h*(.3-k*.055);g.beginPath();g.moveTo(x-w,yy);g.lineTo(x,yy-h*.26);g.lineTo(x+w,yy);g.fill()}}}
+function va74Phone(x,y,tm){g.fillStyle='rgba(150,200,255,.22)';g.beginPath();g.arc(x,y,13+Math.sin(tm*3)*1.5,0,7);g.fill();g.fillStyle='#bfe0ff';g.fillRect(x-1.6,y-3,3.2,6)}
+function va74Mc(x,gy,pose,fl){let ok=false;grp(x,gy,1.9,()=>{try{ok=va38Fig(pose,x,gy+4,fl)}catch(e){}});return ok}
+// ch3 : Marchetti au téléphone, derrière la gendarmerie
+CS.camp1={mus:'tense',L:()=>[[1.5,'n','Le soir même, derrière la gendarmerie. Une seule fenêtre est encore allumée.'],[6.5,'k','C’est moi. La scientifique et son mécano… Ils posent trop de questions.'],[12,'k','Non, j’ai rien pris. Ni la photo, ni la plainte.'],[16.5,'q','« Surveille-les. Et qu’ils restent loin de la rivière. »'],[21.5,'k','Compris.']],end:25,
+ draw:(Wd,gy,T2,tm)=>{va74Night(Wd,gy,tm,'#0a1028','#1d2a52');g.fillStyle='#f1eed8';g.beginPath();g.arc(Wd*.84,62,17,0,7);g.fill();g.fillStyle='#0a1028';g.beginPath();g.arc(Wd*.84+7,58,15,0,7);g.fill();
+  va74Pines(Wd,232,13,'#121a2e',58);
+  // la brigade : façade crépie, volets, plaque, fenêtre allumée
+  const bx=Wd*.34,bw=Wd*.5,by=gy-128;g.fillStyle='#3a3f55';g.fillRect(bx,by,bw,132);g.fillStyle='#2a2e42';g.beginPath();g.moveTo(bx-12,by);g.lineTo(bx+bw*.5,by-34);g.lineTo(bx+bw+12,by);g.fill();g.fillStyle='rgba(255,255,255,.05)';for(let i=0;i<8;i++)g.fillRect(bx,by+10+i*16,bw,1);
+  for(let i=0;i<4;i++){const wx=bx+26+i*(bw-52)/3.6,lit=i===2;g.fillStyle=lit?'#ffd98a':'#151a2c';g.fillRect(wx,by+26,30,40);if(lit){const gl=g.createRadialGradient(wx+15,by+46,4,wx+15,by+46,90);gl.addColorStop(0,'rgba(255,217,138,.35)');gl.addColorStop(1,'rgba(255,217,138,0)');g.fillStyle=gl;g.fillRect(wx-80,by-40,190,180);g.fillStyle='rgba(40,30,20,.55)';g.fillRect(wx+13,by+26,2,40);g.fillRect(wx,by+44,30,2)}else{g.fillStyle='#232941';g.fillRect(wx-9,by+26,8,40);g.fillRect(wx+31,by+26,8,40)}}
+  g.fillStyle='#16306e';rr(g,bx+bw*.5-58,by+84,116,18,3);g.fill();g.fillStyle='#fff';g.font='800 11px Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('GENDARMERIE',bx+bw*.5,by+93.5);g.textBaseline='alphabetic';g.textAlign='left';
+  g.fillStyle='#22263a';g.fillRect(-70,gy-2,Wd+140,160);g.fillStyle='rgba(255,217,138,.08)';g.beginPath();g.ellipse(bx+bw*.62,gy+14,150,18,0,0,7);g.fill();
+  // lampadaire et papillons de nuit
+  const lx=Wd*.2;g.fillStyle='#1a1e30';g.fillRect(lx-2,gy-120,4,122);g.fillRect(lx-2,gy-122,26,4);const lg=g.createRadialGradient(lx+22,gy-114,2,lx+22,gy-114,120);lg.addColorStop(0,'rgba(255,236,180,.55)');lg.addColorStop(1,'rgba(255,236,180,0)');g.fillStyle=lg;g.fillRect(lx-100,gy-234,244,244);g.fillStyle='#fff3c8';g.beginPath();g.arc(lx+22,gy-116,4,0,7);g.fill();
+  for(let i=0;i<5;i++){g.fillStyle='rgba(255,255,255,.7)';g.fillRect(lx+22+Math.cos(tm*3+i*1.7)*(10+i*3),gy-114+Math.sin(tm*4.1+i)*(8+i*2),1.6,1.6)}
+  g.save();g.translate(Wd*.74,gy+4);g.scale(1.25,1.25);try{va28Draw('v_gend',0,3,118)}catch(e){}g.restore();
+  const mx=Wd*.5+Math.sin(Math.max(0,T2-12)*.8)*10;va74Mc(mx,gy,T2>16&&T2<21.5?'mc_nerv':'mc_stand',T2>12&&Math.cos(Math.max(0,T2-12)*.8)<0?-1:1);if(T2>5)va74Phone(mx+9,gy-86,tm);
+  try{wxOver(g,Wd,420,tm)}catch(e){}}};
+// ch6 : après le contrôle raté, Marchetti rage au bord de l'étang
+CS.camp2={mus:'tense',L:()=>[[1.5,'n','Au bord de l’étang, la voiture de gendarmerie n’a pas bougé.'],[6,'k','Une vidéo. Ce gamin me filmait depuis le début !'],[10.5,'n','Il frappe le toit de la voiture du plat de la main. Un héron s’envole.'],[15,'k','Allô. Non. Je les ai pas. Ils sont repartis avec tout.'],[20,'q','« Tu deviens un problème, Marchetti. »'],[24.5,'n','La ligne coupe. Marchetti reste seul, le téléphone à la main.']],end:28.5,
+ draw:(Wd,gy,T2,tm)=>{const sk=g.createLinearGradient(0,0,0,gy);sk.addColorStop(0,'#3b3f78');sk.addColorStop(.6,'#c7786a');sk.addColorStop(1,'#ffc88a');g.fillStyle=sk;g.fillRect(-70,0,Wd+140,420);
+  const sx=Wd*.26,sy=206;const sg=g.createRadialGradient(sx,sy,3,sx,sy,120);sg.addColorStop(0,'rgba(255,226,160,.9)');sg.addColorStop(1,'rgba(255,190,120,0)');g.fillStyle=sg;g.fillRect(sx-120,sy-120,240,240);g.fillStyle='#ffdf9a';g.beginPath();g.arc(sx,sy,16,0,7);g.fill();
+  g.fillStyle='#5b4a6e';g.beginPath();g.moveTo(-70,222);for(let x=-70;x<=Wd+70;x+=18)g.lineTo(x,204+Math.sin(x*.01+2)*10+Math.sin(x*.03)*4);g.lineTo(Wd+70,222);g.fill();
+  // l'étang, ses reflets, la roselière
+  const wt=g.createLinearGradient(0,220,0,gy);wt.addColorStop(0,'#e9a67c');wt.addColorStop(.5,'#9a7a9a');wt.addColorStop(1,'#4a5a86');g.fillStyle=wt;g.fillRect(-70,220,Wd+140,gy-220);
+  g.fillStyle='rgba(255,226,160,.5)';for(let i=0;i<9;i++){const w2=10+Math.abs(Math.sin(i*2.3))*22+Math.sin(tm*2+i)*4;g.fillRect(sx-w2/2+Math.sin(tm*1.2+i*1.9)*7,224+i*6,w2,1.3)}
+  for(let i=0;i<5;i++){const x=(i*211+60)%Wd,y=238+(i*17)%34;g.fillStyle='rgba(70,110,70,.75)';g.beginPath();g.ellipse(x,y,12,3.4,0,0,7);g.ellipse(x+15,y+3,8,2.6,0,0,7);g.fill()}
+  for(let i=0;i<70;i++){const x=-40+i*((Wd+80)/69),h=26+((i*37)%19),sw=Math.sin(tm*1.4+i*.6)*2.2;g.strokeStyle=i%3?'#4d5a3a':'#6a6a3c';g.lineWidth=1.6;g.beginPath();g.moveTo(x,gy-2);g.quadraticCurveTo(x+sw*.5,gy-h*.6,x+sw,gy-h);g.stroke();if(i%4===0){g.fillStyle='#5a4030';g.beginPath();g.ellipse(x+sw,gy-h-4,2,6,0,0,7);g.fill()}}
+  g.fillStyle='#4a4038';g.fillRect(-70,gy-3,Wd+140,160);g.fillStyle='#5a4e42';g.fillRect(-70,gy-3,Wd+140,7);
+  // le héron qui s'envole
+  if(T2>11.4&&T2<17){const u=(T2-11.4)/5.6,hx=Wd*.7+u*Wd*.36,hy=236-u*150,fl=Math.sin(T2*9)*9;g.strokeStyle='#e9e4ee';g.lineWidth=2.4;g.beginPath();g.moveTo(hx-14,hy-fl);g.quadraticCurveTo(hx-5,hy-3,hx,hy);g.quadraticCurveTo(hx+5,hy-3,hx+14,hy-fl);g.stroke();g.beginPath();g.moveTo(hx,hy);g.lineTo(hx+10,hy+3);g.moveTo(hx,hy);g.lineTo(hx-9,hy+5);g.stroke()}
+  else if(T2<=11.4){const hx=Wd*.7;g.strokeStyle='#e9e4ee';g.lineWidth=2.2;g.beginPath();g.moveTo(hx,246);g.lineTo(hx,232);g.quadraticCurveTo(hx+1,224,hx+6,222);g.stroke();g.fillStyle='#e9e4ee';g.beginPath();g.ellipse(hx-3,237,7,4,-.3,0,7);g.fill()}
+  const hit=T2>10.5&&T2<12?Math.abs(Math.sin((T2-10.5)*10))*3:0;
+  g.save();g.translate(Wd*.56,gy+4+hit*.4);g.scale(1.25,1.25);try{va28Draw('v_gend',0,3,118)}catch(e){}g.restore();
+  const mx=Wd*.4+(T2>6&&T2<10.5?Math.sin(T2*2.2)*14:0);va74Mc(mx,gy,T2<6?'mc_arms':T2<14.5?'mc_nerv':T2<24.5?'mc_stand':'mc_hands',1);if(T2>14.5)va74Phone(mx+9,gy-86,tm);
+  try{wxOver(g,Wd,420,tm)}catch(e){}}};
+// ch9 : le conducteur du 4x4 noir rend compte à quelqu'un qu'on ne voit pas
+CS.camp3={mus:'tense',L:()=>[[1.5,'n','La nuit, sur une piste de l’Ospedale. Le 4x4 noir est garé, tous feux éteints.'],[6.5,'q','« Alors ? »'],[9,'h','Ils sont rentrés de Sardaigne. Elle a tout : les analyses, les photos, les bidons.'],[15,'h','Et elle vient d’envoyer un gros dossier. À Paris.'],[19.5,'q','« … Alors il est trop tard pour leur faire peur. Nettoyez le plateau. Cette nuit. »'],[26,'n','Le moteur démarre. Le 4x4 noir disparaît entre les pins.']],end:30.5,
+ draw:(Wd,gy,T2,tm)=>{va74Night(Wd,gy,tm,'#060b1c','#15213c');g.fillStyle='#e9ecf4';g.beginPath();g.arc(Wd*.18,74,15,0,7);g.fill();const mg=g.createRadialGradient(Wd*.18,74,10,Wd*.18,74,90);mg.addColorStop(0,'rgba(200,215,255,.25)');mg.addColorStop(1,'rgba(200,215,255,0)');g.fillStyle=mg;g.fillRect(Wd*.18-90,-16,180,180);
+  g.fillStyle='#0f1830';g.beginPath();g.moveTo(-70,236);for(let x=-70;x<=Wd+70;x+=20)g.lineTo(x,196+Math.sin(x*.009+1)*16);g.lineTo(Wd+70,236);g.fill();
+  va74Pines(Wd,246,17,'#0c1426',70);va74Pines(Wd,gy+2,9,'#070c18',120);
+  for(let i=0;i<3;i++){const x=((tm*5+i*Wd/2.4)%(Wd+400))-200;g.fillStyle='rgba(180,200,235,.07)';g.beginPath();g.ellipse(x,gy-30+i*10,220,12,0,0,7);g.fill()}
+  g.fillStyle='#141a22';g.fillRect(-70,gy-2,Wd+140,160);g.fillStyle='#1c232c';for(let i=0;i<30;i++){g.beginPath();g.ellipse((i*67+11)%(Wd+60)-30,gy+10+(i*13)%40,5+i%4,2,0,0,7);g.fill()}
+  const go=Math.max(0,T2-27),cx=Wd*.52+go*go*40;
+  if(go>0){const hl2=g.createLinearGradient(cx+70,0,cx+420,0);hl2.addColorStop(0,'rgba(255,244,200,.5)');hl2.addColorStop(1,'rgba(255,244,200,0)');g.fillStyle=hl2;g.beginPath();g.moveTo(cx+74,gy-34);g.lineTo(cx+430,gy-70);g.lineTo(cx+430,gy+6);g.lineTo(cx+74,gy-22);g.fill()}
+  g.save();g.translate(cx,gy+4);g.scale(1.3,1.3);let ok=false;try{ok=va28Draw('v_noir',0,3,126)}catch(e){}if(!ok){g.fillStyle='#0b0c10';rr(g,-64,-48,130,38,8);g.fill();rr(g,-40,-70,76,26,8);g.fill();g.fillStyle='#0a0a0a';g.beginPath();g.arc(-40,-11,13,0,7);g.arc(42,-11,13,0,7);g.fill()}g.restore();
+  if(T2>5.5&&go<=0)va74Phone(cx+18,gy-70,tm);
+  if(go>0)for(let i=0;i<6;i++){const u=((T2*1.3+i/6)%1);g.fillStyle='rgba(200,200,210,'+(.25*(1-u))+')';g.beginPath();g.arc(cx-90-u*60,gy-10-u*18,6+u*12,0,7);g.fill()}
+  try{wxOver(g,Wd,420,tm)}catch(e){}}};
+try{DK_LBL.camp1='Le camp d’en face : Marchetti au téléphone';DK_LBL.camp2='Le camp d’en face : Marchetti à l’étang';DK_LBL.camp3='Le camp d’en face : le 4x4 noir'}catch(e){}
+let va74T=0,va74B=0;
+function va74Free(){return inGame&&!cardOpen&&!cs&&!MGX&&!hl&&!pz&&!stopReq&&!work&&!winch&&!chEnd&&!night&&!crashed&&!paused&&!talkQ.length&&sayT<=0&&!cardQ.length&&!(typeof chs!=='undefined'&&chs)&&!(typeof va9P!=='undefined'&&va9P)&&performance.now()>va74B}
+function va74Tick(){try{const ci=chIdx(),f=chP();SV.csd=SV.csd||{};SV.ev=SV.ev||{};if(!va74Free())return;try{if(onFerry()||ferIn(c.x)||cvIn(c.x,400))return}catch(e){}
+ let k=null;
+ if(ci===2&&SV.ev.gend&&!SV.csd.camp1&&f>.9&&f<.985)k='camp1';
+ else if(ci===5&&SV.ev.chase&&!SV.csd.camp2&&f>.7&&f<.985)k='camp2';
+ else if(ci===8&&!SV.csd.camp3&&((SV.blkL===level&&!va3B&&f>.66)||f>.82)&&f<.985)k='camp3';
+ if(k){if(typeof calmOK==='function'&&!calmOK())return;SV.csd[k]=1;va74B=performance.now()+4000;fadeTo(()=>openCine(k));return}
+ // la bague, fil rouge : l'écrin passe de la poche à la boîte à gants (ch2), Mila manque de l'ouvrir (ch8)
+ if(ci===1&&!SV.bag1&&f>.36&&f<.9){SV.bag1=1;cardQ.push({t:'La boîte à gants',L:[['n','Mila descend photographier le lion de Roccapina. Andrea reste seul dans le Cherokee.'],['n','Il sort un petit écrin de sa poche, le regarde longtemps… puis le glisse au fond de la boîte à gants, sous les cartes routières.'],['a','(tout bas) Pas encore. Pas ici.'],['n','Le chien l’observe, la tête penchée.'],['a','Toi, tu dis rien.']]});saveTrip();return}
+ if(ci===7&&!SV.bag2&&f>.36&&f<.9&&!cvIn(c.x,900)){SV.bag2=1;cardQ.push({t:'La carte de Sardaigne',L:[['m','Elle est où, la carte de Sardaigne ? Dans la boîte à gants ?'],['n','Mila tend la main vers la boîte à gants.'],['a','NON ! … Enfin, non. Elle est dans la portière. De ton côté.'],['m','… T’as crié.'],['a','J’ai pas crié.'],['m','Si. T’as crié. Y a quoi, dans cette boîte à gants ?'],['a','Des fusibles. Très fragiles.'],['n','Mila le regarde longtemps. Puis elle sourit, et déplie sa carte.']]});saveTrip()}}catch(e){}}
+loop=(function(o){return function(t){const r=o.apply(this,arguments);try{if(t-va74T>600){va74T=t;va74Tick()}}catch(e){}return r}})(loop);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.73',GAME_DATE='12/11/2026 à 12h33';
+const GAME_VER='3.74',GAME_DATE='12/11/2026 à 16h33';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
