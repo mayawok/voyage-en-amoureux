@@ -9153,8 +9153,10 @@ stopTick=(function(o){return function(dt){try{const R=stopReq;if(R!==va80.r){va8
 mgTick=(function(o){return function(dt){o(dt);try{if(dt>0&&!stopReq&&Math.hypot(v.x,v.y)<=15&&!cardOpen&&!MGX&&!hl&&!pz&&!cs)calmT+=dt}catch(e){}}})(mgTick);
 popOK=(function(o){return function(){if(o())return true;try{return !onFerry()&&!winch&&!stopReq&&calmT>=8}catch(e){return false}}})(popOK);
 cardQ.push=(function(o){return function(...a){try{for(const q of a)if(q&&q.btn&&q.cb)q.now=1}catch(e){}return o.apply(this,a)}})(cardQ.push);
+// ===== 3.82 : plus aucune attente de « calme » avant l'ouverture d'une carte ou d'un document =====
+popOK=(function(o){return function(){try{return !onFerry()&&!winch&&!stopReq}catch(e){return o()}}})(popOK);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.81',GAME_DATE='12/11/2026 à 20h02';
+const GAME_VER='3.82',GAME_DATE='12/11/2026 à 20h24';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
