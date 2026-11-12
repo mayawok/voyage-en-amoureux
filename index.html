@@ -6034,6 +6034,7 @@ const AIDE=[
  ['En haut de l’écran',[
   ['⚙️','Le menu','Reprendre, son, plein écran, difficulté, sauvegarde de secours et cette aide.'],
   ['📓','Le carnet de Mila','Trois onglets : Le voyage (la carte et « Jouer ce chapitre »), L’enquête (le tableau où Mila épingle ses indices) et Souvenirs (album, photos, animaux). Un point rouge = quelque chose de nouveau.'],
+  ['🐎','Les pozzines du Coscione','Au chapitre 10, un panneau annonce les pozzines : traverse-les au pas (moins de 28 km/h). Si la tourbière reste intacte : +3 cœurs.'],
   ['❤','Les cœurs','La monnaie du voyage : magasins, atelier, dépanneuse. On en gagne en aidant et en réussissant les missions.'],
   ['🍞','La faim','La barre à côté des cœurs. Mange chez les commerçants avant qu’elle soit vide.'],
   ['🗺️','La carte du chapitre','Le relief de la route, ta position (point orange) et la progression en dessous.'],
@@ -9105,6 +9106,7 @@ nbRender=(function(o){return function(){const C=gid('nbc');try{if(!['jr','enq','
 // Mila parle du tableau en bulles quand un indice s'ajoute
 let va76T=0;const VA76_SAY=['Hop, au tableau : ','Je l’épingle dans le carnet : ','Encore un indice pour le tableau : '];
 function va76Tick(){try{if(!inGame||cs||cardOpen||paused||MGX||hl||pz||talkQ.length||sayT>0)return;const V=va76Vis();if(!SV.va76n){SV.va76n={};for(const k in V)if(V[k])SV.va76n[k]=1;return}
+ {const nw=VA76_N.filter(n=>V[n[0]]&&!SV.va76n[n[0]]);if(nw.length>2){for(const n of VA76_N){if(V[n[0]])SV.va76n[n[0]]=1;try{if(V[n[0]]&&n[6]&&n[6]())SV.va76n[n[0]+'_x']=1}catch(e){}}talkQ.push(['m','J’ai remis le tableau d’enquête à jour.']);try{nbNew()}catch(e){}return}}
  for(const n of VA76_N){if(V[n[0]]&&!SV.va76n[n[0]]){SV.va76n[n[0]]=1;talkQ.push(['m',n[0]==='nox'?'Noxacorp. Je l’écris en gros, au milieu du tableau.':n[0]==='arr'?'Marchetti arrêté… Le dernier fil rouge du tableau.':VA76_SAY[Object.keys(SV.va76n).length%3]+'« '+n[3]+' ».']);try{nbNew()}catch(e){}return}
   let bar=false;try{bar=!!(n[6]&&n[6]())}catch(e){}if(bar&&V[n[0]]&&!SV.va76n[n[0]+'_x']){SV.va76n[n[0]+'_x']=1;talkQ.push(['m',n[0]==='golf'?'Bellavista, c’était pas eux. Je barre.':'Fausse piste. Je barre sur le tableau.']);return}}}catch(e){}}
 loop=(function(o){return function(t){const r=o.apply(this,arguments);try{if(t-va76T>1500){va76T=t;va76Tick()}}catch(e){}return r}})(loop);
@@ -9141,6 +9143,6 @@ function va78Tick(dt){try{const z=va78Z();if(!z||SV.va78===level||!inGame||pause
 loop=(function(o){return function(t){const r=o.apply(this,arguments);try{const dt=Math.min(.1,(t-va78T)/1000);va78T=t;if(dt>0)va78Tick(dt)}catch(e){}return r}})(loop);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.78',GAME_DATE='12/11/2026 à 16h43';
+const GAME_VER='3.79',GAME_DATE='12/11/2026 à 16h50';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
