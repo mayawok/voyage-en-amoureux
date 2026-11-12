@@ -8908,8 +8908,12 @@ let va69T=0;loop=(function(o){return function(t){const r=o.apply(this,arguments)
 try{SOUV.push({id:'pardon',ok:()=>chIdx()>4&&!!(SV.csd&&SV.csd.pardon),L:[['a','On tient nos règles, hein. Ce soir, on prévient Lucia.'],['m','Promis. Comme à Piana.']]})}catch(e){}
 // Sécurité : si la fin du chapitre arrive sans la scène, le froid ne déborde pas sur le ch6
 openEnd=(function(o){return function(i){try{if(i===4)SV.froid=0}catch(e){}return o.apply(this,arguments)}})(openEnd);
+// ===== 3.70 : dialogues : la narration s'affiche avec la première réplique, attente de lecture plus courte =====
+va62Read=function(t){t=String(t||'').replace(/<[^>]*>/g,'');return Math.max(1200,Math.min(4000,600+t.length*35))};
+va57Step=(function(o){return function(cd,n){o(cd,n);try{while(cd&&cd.L&&cd.L[n]&&cd.L[n][0]==='n'&&n+1<cd.L.length&&cd.L[n+1][0]!=='n'){n++;o(cd,n)}}catch(e){}}})(va57Step);
+openCard=(function(o){return function(cd){o(cd);try{if(cd&&cd.va57&&cd.L){const l=cd.L[cd.va57.n];va58Lock(va62Read(l?l[1]:''))}}catch(e){}}})(openCard);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.69',GAME_DATE='12/11/2026 à 11h26';
+const GAME_VER='3.70',GAME_DATE='12/11/2026 à 12h09';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
