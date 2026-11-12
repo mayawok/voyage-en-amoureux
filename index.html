@@ -6033,7 +6033,7 @@ const AIDE=[
   ['⛽','Essence','La jauge à côté du levier. Quand elle devient rouge, trouve une station.']]],
  ['En haut de l’écran',[
   ['⚙️','Le menu','Reprendre, son, plein écran, difficulté, sauvegarde de secours et cette aide.'],
-  ['📓','Le carnet de Mila','Animaux, preuves, lettres, souvenirs. Un point rouge = quelque chose de nouveau.'],
+  ['📓','Le carnet de Mila','Trois onglets : Le voyage (la carte et « Jouer ce chapitre »), L’enquête (le tableau où Mila épingle ses indices) et Souvenirs (album, photos, animaux). Un point rouge = quelque chose de nouveau.'],
   ['❤','Les cœurs','La monnaie du voyage : magasins, atelier, dépanneuse. On en gagne en aidant et en réussissant les missions.'],
   ['🍞','La faim','La barre à côté des cœurs. Mange chez les commerçants avant qu’elle soit vide.'],
   ['🗺️','La carte du chapitre','Le relief de la route, ta position (point orange) et la progression en dessous.'],
@@ -6989,7 +6989,7 @@ function coAnimate(cv,i){clearTimeout(coTmr);const t0=performance.now();const st
 nbRender=(function(o){return function(){o();try{if(nbTab!=='jr')return;const C=gid('nbc'),reached=Math.min(CHAP.length,level),cur=chIdx();if(coSel==null)coSel=cur;
  const btn=i=>'<button class="cmb'+(i<cur?' d':i===cur?' c':'')+(i>=reached?' lk':'')+(i===coSel?' on':'')+'" data-i="'+i+'"><i>'+(i+1)+'</i><span>'+CHAP[i].fin+'</span></button>';
  gid('nbtt').textContent='Le voyage en Corse';
- C.innerHTML='<div class="cmap"><div class="cml">'+[0,1,2,3,4].map(btn).join('')+'<div id="coinfo" style="flex:1;display:flex;min-height:0">'+coInfo(coSel)+'</div></div><div class="cmc"><canvas id="cmapc"></canvas></div><div class="cml">'+[5,6,7,8,9].map(btn).join('')+'<div id="coinfo2" style="flex:1;display:flex;min-height:0">'+coInfo2(coSel)+'</div></div></div>';
+ C.innerHTML='<div class="cmap"><div class="cml">'+[0,1,2,3,4,5].map(btn).join('')+'<div id="coinfo" style="flex:1;display:flex;min-height:0">'+coInfo(coSel)+'</div></div><div class="cmc"><canvas id="cmapc"></canvas></div><div class="cml">'+[6,7,8,9,10,11].map(btn).join('')+'<div id="coinfo2" style="flex:1;display:flex;min-height:0">'+coInfo2(coSel)+'</div></div></div>';
  const cv=gid('cmapc');const bind=()=>{C.querySelectorAll('.nbgo').forEach(el=>el.onclick=e=>{e.stopPropagation();goChapter(+el.dataset.ch)})};bind();
  C.querySelectorAll('.cmb').forEach(b=>b.onclick=()=>{coSel=+b.dataset.i;C.querySelectorAll('.cmb').forEach(q=>q.classList.toggle('on',q===b));gid('coinfo').innerHTML=coInfo(coSel);gid('coinfo2').innerHTML=coInfo2(coSel);bind();try{snd('click')}catch(e){}coAnimate(cv,coSel)});
  setTimeout(()=>coAnimate(cv,coSel),30)}catch(e){}}})(nbRender);
@@ -9036,8 +9036,80 @@ function va75Tick(){try{const ci=chIdx(),f=chP();if(!inGame||cs||cardOpen||pause
  if(ci===6&&f>.76&&!SV.va75[K('pe')]&&SV.npc&&SV.npc[level+':'+(NPCD[6].length-1)]&&free()){SV.va75[K('pe')]=1;talkQ.push(['m','Le labo a répondu pour la vigne de Petru. Rien. Pas une trace de N-12.']);talkQ.push(['a','Une fausse piste de moins.'])}
 }catch(e){}}
 loop=(function(o){return function(t){const r=o.apply(this,arguments);try{if(t-va75T>700){va75T=t;va75Tick()}}catch(e){}return r}})(loop);
+// ===== 3.76 : tableau d'enquête et carnet simplifié (3 onglets : Le voyage, L'enquête, Souvenirs) =====
+function va76P(){try{return level-1+Math.max(0,Math.min(.999,chP()))}catch(e){return 0}}
+function va76Npc(ci,nm){try{const i=NPCD[ci].findIndex(n=>n.n.indexOf(nm)===0);return !!(SV.npc&&SV.npc[(ci+1)+':'+i])}catch(e){return false}}
+// [id, colonne, ligne, texte (une phrase), visible ?, liens, fausse piste barrée ?, animal dessiné, phrase de Mila]
+const VA76_N=[
+ ['tort',0,0,'Tortues dehors en plein midi',()=>va76P()>.3,[],0,'tortue'],
+ ['golf',1,0,'Le golf de Bellavista ?',()=>va76P()>.6,['tort'],()=>va76P()>=1.6],
+ ['n12',2,0,'Le labo : « N-12 »',()=>va76P()>=1.45,['tort']],
+ ['bid',3,0,'Bidons au logo arraché',()=>va76P()>=2,['n12']],
+ ['combi',4,0,'L’homme en combinaison',()=>va76P()>=2.56,['bid']],
+ ['march',5,0,'Marchetti refuse la plainte',()=>va76P()>=2.84,['combi']],
+ ['noir',0,1,'Un 4x4 noir nous suit',()=>va76P()>=1.65,[]],
+ ['faon',1,1,'Le faon d’Arrivadu',()=>va76P()>=3,['n12'],0,'cerf'],
+ ['abe',2,1,'Les abeilles boivent à la rivière',()=>va76Npc(2,'Ghjuvanni'),['riv']],
+ ['riv',3,1,'Rivière interdite, voiture du Conseiller',()=>va76P()>=3.62,['march']],
+ ['luc',4,1,'« L. », c’est Lucia',()=>va76Npc(4,'Lucia')||!!(SV.csd&&SV.csd.lucia),['march']],
+ ['ctrl',5,1,'Contrôle à l’étang : la vidéo d’Andrea',()=>va76P()>=5.66||!!(SV.csd&&SV.csd.camp2),['march']],
+ ['sabo',0,2,'Moteur saboté à Bavella',()=>va76P()>=4,['noir']],
+ ['petru',1,2,'La vigne de Petru ?',()=>va76Npc(6,'Petru'),[],()=>{try{return !!(SV.va75&&Object.keys(SV.va75).some(k=>/pe$/.test(k)))||va76P()>=7}catch(e){return false}}],
+ ['nox',2.5,2,'NOXACORP',()=>!!(SV.csd&&SV.csd.lucia),['n12','bid','riv','noir']],
+ ['vol',4,2,'La glacière volée',()=>va76P()>=7||!!SV.vol,['noir']],
+ ['sard',5,2,'Sardaigne : sans N-12, tout va bien',()=>va76P()>=7.8,['nox'],0,'eleonore'],
+ ['maud',0,3,'Bidons lestés au fond d’une crique',()=>va76Npc(10,'Maud'),['bid']],
+ ['doss',1.5,3,'Dossier envoyé à Paris',()=>va76P()>=8.05,['nox']],
+ ['cosc',3.5,3,'Pris sur le fait au Coscione',()=>!!SV.noxL||va76P()>=10,['nox'],0,'cheval'],
+ ['arr',5,3,'Marchetti arrêté',()=>!!SV.arrL,['march','nox']]];
+function va76Vis(){const o={};for(const n of VA76_N){let v=false;try{v=!!n[4]()}catch(e){}if(n[0]==='nox'&&!(SV.csd&&SV.csd.lucia))v=false;o[n[0]]=v}return o}
+function va76Pos(n){return [84+n[1]*166.4,74+n[2]*138]}
+function va76Wrap(x,t,w){const W=t.split(' '),L=[];let l='';for(const q of W){const tt=l?l+' '+q:q;if(x.measureText(tt).width>w&&l){L.push(l);l=q}else l=tt}L.push(l);return L}
+function va76Draw(cv){const x=cv.getContext('2d'),W=cv.width,H=cv.height,V=va76Vis();
+ // panneau de liège et cadre de bois
+ const cg=x.createLinearGradient(0,0,W,H);cg.addColorStop(0,'#c99a62');cg.addColorStop(1,'#b5824c');x.fillStyle=cg;x.fillRect(0,0,W,H);
+ for(let i=0;i<900;i++){const px=(i*197.3)%W,py=(i*83.7+((i*i)%13)*29)%H;x.fillStyle=i%3?'rgba(90,55,25,.16)':'rgba(255,225,170,.16)';x.fillRect(px,py,2+i%3,1.5+i%2)}
+ x.strokeStyle='#6b4423';x.lineWidth=14;x.strokeRect(7,7,W-14,H-14);x.strokeStyle='rgba(255,220,170,.35)';x.lineWidth=2;x.strokeRect(15,15,W-30,H-30);
+ const P={};for(const n of VA76_N)P[n[0]]=va76Pos(n);
+ // fils rouges
+ for(const n of VA76_N){if(!V[n[0]])continue;for(const k of n[5]||[]){if(!V[k])continue;const a=P[n[0]],b=P[k],mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2+16;x.strokeStyle='rgba(60,10,10,.25)';x.lineWidth=5;x.beginPath();x.moveTo(a[0],a[1]-42);x.quadraticCurveTo(mx,my-38,b[0],b[1]-42);x.stroke();x.strokeStyle='#c62828';x.lineWidth=2.6;x.beginPath();x.moveTo(a[0],a[1]-44);x.quadraticCurveTo(mx,my-42,b[0],b[1]-44);x.stroke()}}
+ let nb=0;
+ for(let i=0;i<VA76_N.length;i++){const n=VA76_N[i],p=P[n[0]];if(!V[n[0]])continue;nb++;let bar=false;try{bar=!!(n[6]&&n[6]())}catch(e){}
+  const big=n[0]==='nox',w=big?250:150,h=big?96:104,rot=(((i*37)%7)-3)*.012;x.save();x.translate(p[0],p[1]);x.rotate(rot);
+  x.fillStyle='rgba(40,20,5,.3)';x.fillRect(-w/2+4,-h/2+6,w,h);
+  if(big){x.fillStyle='#1d1d22';x.fillRect(-w/2,-h/2,w,h);x.fillStyle='#7ed957';x.font='900 34px Arial,sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('NOXACORP',0,-8);x.fillStyle='#fff';x.font='700 15px Arial,sans-serif';x.fillText('fabrique le N-12',0,26)}
+  else if(n[7]){x.fillStyle='#fbf7ee';x.fillRect(-w/2,-h/2,w,h);const pg=x.createLinearGradient(0,-h/2,0,10);pg.addColorStop(0,'#cfe6f2');pg.addColorStop(1,'#bcd7a0');x.fillStyle=pg;x.fillRect(-w/2+7,-h/2+7,w-14,56);x.save();x.beginPath();x.rect(-w/2+7,-h/2+7,w-14,56);x.clip();x.translate(0,-h/2+44);x.scale(.5,.5);try{artA(x,n[7],.4)}catch(e){}x.restore();
+   x.fillStyle='#3a2a1a';x.font='700 14px Arial,sans-serif';x.textAlign='center';x.textBaseline='middle';const L=va76Wrap(x,n[3],w-12);L.slice(0,2).forEach((l,j)=>x.fillText(l,0,h/2-30+j*16+(L.length<2?8:0)))}
+  else{x.fillStyle=bar?'#e3ded2':['#fff2a8','#ffe0b8','#e3f1ff','#e9f7d8'][i%4];x.fillRect(-w/2,-h/2,w,h);x.fillStyle='rgba(0,0,0,.06)';x.fillRect(-w/2,h/2-14,w,14);
+   x.fillStyle=bar?'#8a857c':'#3a2a1a';x.font='700 17px Arial,sans-serif';x.textAlign='center';x.textBaseline='middle';const L=va76Wrap(x,n[3],w-16);L.slice(0,4).forEach((l,j)=>x.fillText(l,0,(j-(Math.min(4,L.length)-1)/2)*20))}
+  if(bar){x.strokeStyle='#c62828';x.lineWidth=5;x.lineCap='round';x.beginPath();x.moveTo(-w/2+12,-h/2+12);x.lineTo(w/2-12,h/2-12);x.moveTo(w/2-12,-h/2+12);x.lineTo(-w/2+12,h/2-12);x.stroke()}
+  x.fillStyle='rgba(0,0,0,.3)';x.beginPath();x.arc(1.5,-h/2+9.5,6.5,0,7);x.fill();x.fillStyle=bar?'#8a8a8a':'#d32f2f';x.beginPath();x.arc(0,-h/2+8,6.5,0,7);x.fill();x.fillStyle='rgba(255,255,255,.6)';x.beginPath();x.arc(-2,-h/2+6,2,0,7);x.fill();
+  x.restore()}
+ if(!nb){x.fillStyle='rgba(60,35,15,.7)';x.font='italic 700 24px Georgia,serif';x.textAlign='center';x.textBaseline='middle';x.fillText('Le tableau est encore vide. Roule, observe, et Mila épinglera ses indices.',W/2,H/2)}
+ return nb}
+function va76Enq(C){gid('nbtt').textContent='Le tableau d’enquête';const D2=(SV.docs||[]).map(id=>DOCS.find(d=>d.id===id)).filter(Boolean);
+ C.innerHTML='<canvas id="va76c" width="1000" height="580" style="width:100%;border-radius:10px;display:block"></canvas>'+(D2.length?'<h4 style="margin:12px 0 6px;font:800 15px Arial;color:#7b3fa0">Documents ('+D2.length+')</h4><div style="display:flex;flex-wrap:wrap;gap:8px">'+D2.map(d=>'<button class="b nbdoc" data-doc="'+d.id+'" style="min-height:46px;padding:8px 14px;flex:1 1 44%;text-align:left;font-size:14px">'+d.ic+' '+d.t+'</button>').join('')+'</div>':'');
+ try{va76Draw(gid('va76c'))}catch(e){}C.scrollTop=0;C.querySelectorAll('.nbdoc').forEach(el=>el.onclick=()=>docShow(DOCS.find(d=>d.id===el.dataset.doc),1))}
+try{NBT.length=0;NBT.push(['jr','🗺️','Le voyage','#cfe0f6'],['enq','🔎','L’enquête','#f3d9c8'],['alb','📸','Souvenirs','#fde2c8'])}catch(e){}
+nbRender=(function(o){return function(){const C=gid('nbc');try{if(!['jr','enq','alb'].includes(nbTab))nbTab='jr'}catch(e){}
+ if(nbTab==='jr'){o();return}
+ if(nbTab==='enq'){o();try{va76Enq(C)}catch(e){}return}
+ // Souvenirs : petite bande de bilan, puis album, photos d'animaux, animaux aidés, animaux croisés (les anciens onglets, à la suite)
+ const box=document.createElement('div');let ok=true;
+ try{for(const q of[['alb','Album du voyage'],['ph','Photos d’animaux'],['hl','Animaux aidés'],['rd','Croisés sur la route']]){nbTab=q[0];o();const s=document.createElement('div');s.innerHTML='<h4 style="margin:16px 0 4px;font:800 16px Arial;color:#7b3fa0">'+q[1]+'</h4>';while(C.firstChild)s.appendChild(C.firstChild);box.appendChild(s)}}catch(e){ok=false}
+ nbTab='alb';if(!ok){o();return}
+ let band='';try{const ph=SV.ph||[],hlp=SV.hlp||{},nH=Object.values(hlp).reduce((a2,b2)=>a2+b2,0),sq=(v2,l)=>'<div style="flex:1;background:#fff8ea;border-radius:12px;padding:8px 6px;text-align:center"><b style="display:block;font:800 20px Arial;color:#7b3fa0">'+v2+'</b><span style="font:600 12px Arial;color:#6a5a4a">'+l+'</span></div>';
+  band='<div style="display:flex;gap:8px;margin:2px 0 4px">'+sq(nH,'animaux aidés')+sq(ph.length+' / '+Object.keys(OBALL).length,'espèces en photo')+sq(SV.hearts+' ❤','cœurs')+sq((dist()/1000).toFixed(0)+' km','en Cherokee')+'</div>'}catch(e){}
+ C.innerHTML=band;C.appendChild(box);C.scrollTop=0;gid('nbtt').textContent='Souvenirs';
+ try{gid('nbtabs').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.t==='alb'))}catch(e){}}})(nbRender);
+// Mila parle du tableau en bulles quand un indice s'ajoute
+let va76T=0;const VA76_SAY=['Hop, au tableau : ','Je l’épingle dans le carnet : ','Encore un indice pour le tableau : '];
+function va76Tick(){try{if(!inGame||cs||cardOpen||paused||MGX||hl||pz||talkQ.length||sayT>0)return;const V=va76Vis();if(!SV.va76n){SV.va76n={};for(const k in V)if(V[k])SV.va76n[k]=1;return}
+ for(const n of VA76_N){if(V[n[0]]&&!SV.va76n[n[0]]){SV.va76n[n[0]]=1;talkQ.push(['m',n[0]==='nox'?'Noxacorp. Je l’écris en gros, au milieu du tableau.':n[0]==='arr'?'Marchetti arrêté… Le dernier fil rouge du tableau.':VA76_SAY[Object.keys(SV.va76n).length%3]+'« '+n[3]+' ».']);try{nbNew()}catch(e){}return}
+  let bar=false;try{bar=!!(n[6]&&n[6]())}catch(e){}if(bar&&V[n[0]]&&!SV.va76n[n[0]+'_x']){SV.va76n[n[0]+'_x']=1;talkQ.push(['m',n[0]==='golf'?'Bellavista, c’était pas eux. Je barre.':'Fausse piste. Je barre sur le tableau.']);return}}}catch(e){}}
+loop=(function(o){return function(t){const r=o.apply(this,arguments);try{if(t-va76T>1500){va76T=t;va76Tick()}}catch(e){}return r}})(loop);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.75',GAME_DATE='12/11/2026 à 16h36';
+const GAME_VER='3.76',GAME_DATE='12/11/2026 à 16h39';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
