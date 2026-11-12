@@ -8913,8 +8913,45 @@ va62Read=function(t){t=String(t||'').replace(/<[^>]*>/g,'');return Math.max(1200
 // 3.71 : tout le dialogue s'affiche d'un coup (plus de « Suite ») ; bouton caché le temps de lire l'ensemble
 va57Step=(function(o){return function(cd,n){try{o(cd,Math.max(0,cd.L.length-1))}catch(e){o(cd,n)}}})(va57Step);
 openCard=(function(o){return function(cd){o(cd);try{if(cd&&cd.va57&&cd.L){va58Lock(Math.min(5000,va62Read(cd.L.map(l=>Array.isArray(l)?l[1]:l).join(' '))+0))}}catch(e){}}})(openCard);
+// ===== 3.73 : ouverture de chaque lieu (plan large au lever du jour, nom du lieu et animal du chapitre) =====
+function va73Cliffs(Wd,tm){ // Bonifacio n'a pas encore de fond peint : falaises blanches dessinées
+ const sk=g.createLinearGradient(0,0,0,300);sk.addColorStop(0,'#6f9fd6');sk.addColorStop(.6,'#f3c9a0');sk.addColorStop(1,'#ffe3b8');g.fillStyle=sk;g.fillRect(-60,0,Wd+120,420);
+ const se=g.createLinearGradient(0,250,0,420);se.addColorStop(0,'#7fc3d8');se.addColorStop(1,'#1f6f9a');g.fillStyle=se;g.fillRect(-60,250,Wd+120,170);
+ for(let i=0;i<26;i++){const x=((i*83+tm*9)%(Wd+160))-80,y=262+(i*37)%150;g.fillStyle='rgba(255,255,255,'+(.12+.1*(i%3))+')';g.fillRect(x,y,26+(i%4)*10,1.6)}
+ g.fillStyle='#8fa7c4';g.beginPath();g.moveTo(-60,250);for(let x=-60;x<=Wd*.5;x+=20)g.lineTo(x,236-Math.sin(x*.012+1)*8);g.lineTo(Wd*.5,250);g.fill();
+ const top=x=>150+Math.sin(x*.006+.6)*14+Math.sin(x*.021)*5;
+ g.fillStyle='#f4efe2';g.beginPath();g.moveTo(Wd*.3,330);g.lineTo(Wd*.34,top(Wd*.34)+30);for(let x=Wd*.34;x<=Wd+60;x+=14)g.lineTo(x,top(x));g.lineTo(Wd+60,345);g.quadraticCurveTo(Wd*.7,322,Wd*.3,330);g.fill();
+ g.strokeStyle='rgba(150,140,120,.45)';g.lineWidth=1.2;for(let k=0;k<9;k++){g.beginPath();for(let x=Wd*.34;x<=Wd+60;x+=18){const y=top(x)+16+k*17+Math.sin(x*.03+k)*2.5;x===Wd*.34?g.moveTo(x,y):g.lineTo(x,y)}g.stroke()}
+ g.fillStyle='rgba(120,110,100,.22)';g.beginPath();g.moveTo(Wd*.34,top(Wd*.34)+30);g.lineTo(Wd*.3,330);g.lineTo(Wd*.44,326);g.lineTo(Wd*.4,top(Wd*.4)+8);g.fill();
+ for(let i=0;i<22;i++){const x=Wd*.42+i*((Wd*.6)/22),y=top(x),h=14+((i*7)%4)*5,w=(Wd*.6)/22-2;g.fillStyle=['#f1dcc0','#e9c9a4','#f6e7cf','#dfb990'][i%4];g.fillRect(x,y-h,w,h+2);g.fillStyle='#b5654a';g.fillRect(x-1,y-h-3,w+2,3);g.fillStyle='rgba(60,50,60,.55)';for(let k=0;k<2;k++)g.fillRect(x+4+k*(w/2-2),y-h+5,3,4)}
+ g.fillStyle='#e9d9bd';g.fillRect(Wd*.62,top(Wd*.62)-44,9,30);g.fillStyle='#b5654a';g.beginPath();g.moveTo(Wd*.62-2,top(Wd*.62)-44);g.lineTo(Wd*.62+4.5,top(Wd*.62)-54);g.lineTo(Wd*.62+11,top(Wd*.62)-44);g.fill()}
+CS.ouv={mus:'title',L:()=>{try{va23Get(chIdx())}catch(e){}return []},end:2.6,
+ draw:(Wd,gy,T2,tm)=>{const ci=chIdx(),ch=CHP();let im=null;try{im=va23Get(ci)}catch(e){}
+  if(im&&im.naturalWidth){const sc=Math.max(420/im.naturalHeight,(Wd+40)/im.naturalWidth)*1.04,w=im.naturalWidth*sc,h=im.naturalHeight*sc,pan=Math.min(1,T2/8),ox=-(w-Wd)*(.15+.5*pan);g.drawImage(im,ox,-(h-420)*.5-4+pan*4,w,h)}
+  else va73Cliffs(Wd,tm);
+  // lumière du lever du jour, brume, soleil bas
+  const dw=g.createLinearGradient(0,0,0,420);dw.addColorStop(0,'rgba(255,170,120,.30)');dw.addColorStop(.5,'rgba(255,214,170,.16)');dw.addColorStop(1,'rgba(60,40,80,.30)');g.fillStyle=dw;g.fillRect(-60,0,Wd+120,420);
+  const sx=Wd*.78,sy=120-Math.min(1,T2/8)*16;const sg=g.createRadialGradient(sx,sy,3,sx,sy,170);sg.addColorStop(0,'rgba(255,244,200,.85)');sg.addColorStop(.25,'rgba(255,220,150,.35)');sg.addColorStop(1,'rgba(255,200,120,0)');g.fillStyle=sg;g.fillRect(sx-170,sy-170,340,340);
+  for(let i=0;i<4;i++){const x=((tm*7+i*Wd/3)%(Wd+420))-210;g.fillStyle='rgba(255,255,255,'+(.10+.03*i)+')';g.beginPath();g.ellipse(x,236+i*16,210,9+i*2,0,0,7);g.fill()}
+  for(let i=0;i<7;i++){const x=((tm*22+i*46)%(Wd+300))-150+i*8,y=78+Math.sin(tm*.7+i)*10+(i%3)*12,fl=Math.sin(tm*6+i*1.7)*4;g.strokeStyle='rgba(50,40,60,.6)';g.lineWidth=1.3;g.beginPath();g.moveTo(x-6,y-fl);g.quadraticCurveTo(x-2,y-2,x,y);g.quadraticCurveTo(x+2,y-2,x+6,y-fl);g.stroke()}
+  // bandeau du bas : chapitre, lieu, animal
+  const a=Math.max(0,Math.min(1,(T2-.7)/1.1)),sl=(1-a)*18;const bd=g.createLinearGradient(0,270,0,420);bd.addColorStop(0,'rgba(15,12,20,0)');bd.addColorStop(1,'rgba(15,12,20,.72)');g.fillStyle=bd;g.fillRect(-60,270,Wd+120,150);
+  g.save();g.globalAlpha=a;g.textAlign='left';g.textBaseline='alphabetic';g.shadowColor='rgba(0,0,0,.55)';g.shadowBlur=8;
+  g.fillStyle='#ffd98a';g.font='800 13px Arial,sans-serif';g.fillText(('Chapitre '+(ci+1)+' / '+CHAP.length).toUpperCase(),34+sl,330);
+  const nm=String(ch.p).split(' · ')[0];let fs=38;g.font='800 '+fs+'px Georgia,serif';while(g.measureText(nm).width>Wd-230&&fs>22){fs-=2;g.font='800 '+fs+'px Georgia,serif'}g.fillStyle='#fff';g.fillText(nm,32+sl,368);
+  g.fillStyle='#ffd98a';g.fillRect(34+sl,378,Math.min(g.measureText(nm).width,260)*Math.max(0,Math.min(1,(T2-1.2)/1.2)),2.5);
+  g.shadowBlur=0;g.restore();
+  const b2=Math.max(0,Math.min(1,(T2-1.9)/1));if(b2>0){g.save();g.globalAlpha=b2;const cx=Wd-216,cy=330;g.fillStyle='rgba(255,250,238,.93)';g.beginPath();g.arc(cx,cy,46,0,7);g.fill();g.strokeStyle='#ffd98a';g.lineWidth=3;g.stroke();
+   g.save();g.beginPath();g.arc(cx,cy,43,0,7);g.clip();g.translate(cx,cy+16);g.scale(.72,.72);try{artA(g,ch.totem[0],tm)}catch(e){}g.restore();
+   g.textAlign='center';g.font='italic 600 13px Georgia,serif';g.fillStyle='#fff';g.shadowColor='rgba(0,0,0,.6)';g.shadowBlur=6;g.fillText(ch.totem[2],cx,cy+64);g.restore()}
+  try{wxOver(g,Wd,420,tm)}catch(e){}
+  if(T2>7.2&&cs&&!cs.done){try{gid('csx').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))}catch(e){}}},
+ onEnd:()=>{try{SV.alb=(SV.alb||[]).filter(q=>q.k!=='cs_ouv');for(let i=albQ.length-1;i>=0;i--)if(albQ[i]==='cs_ouv')albQ.splice(i,1)}catch(e){}}};
+try{DK_LBL.ouv='Ouverture du lieu (chapitre en cours)'}catch(e){}
+cardTick=(function(o){return function(){let pre=false;try{pre=SV.cs<level;if(pre&&SV.ouvL!==level&&chP()<.06&&inGame&&!cardOpen&&!paused&&!night&&!(introT>0)&&!bt&&!bz&&!hl&&!fn&&!es&&!cs&&gid('menu').style.display==='none'&&!(typeof va9P!=='undefined'&&va9P)){SV.ouvL=level;openCine('ouv');return}}catch(e){}
+ const r=o.apply(this,arguments);try{if(pre&&SV.ouvL===level)pendBan=null}catch(e){}return r}})(cardTick);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.72',GAME_DATE='12/11/2026 à 12h29';
+const GAME_VER='3.73',GAME_DATE='12/11/2026 à 12h33';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
