@@ -9121,8 +9121,26 @@ function va77Tick(){try{if(!inGame||cs||cardOpen||paused||MGX||hl||pz||stopReq||
  if(ci===7&&!SV.va77.f8&&f>.3&&CHX('fam')!==undefined){SV.va77.f8=1;if(CHX('fam')===0){talkQ.push(['m','Maman a rappelé trois fois aujourd’hui. Elle veut qu’on fasse attention.']);talkQ.push(['a','Elle a raison.'])}else{talkQ.push(['m','Maman croit qu’on est en vacances. Ça me fait bizarre.']);talkQ.push(['a','Bientôt, on aura une belle histoire à lui raconter.'])}saveTrip();return}
  if(ci===11&&!SV.va77.f12&&f>.3&&f<.7&&CHX('fam')!==undefined){SV.va77.f12=1;if(CHX('fam')===0){talkQ.push(['m','Maman pleurait de joie au téléphone, pour l’arrestation.']);talkQ.push(['a','Elle a suivi toute l’enquête. Elle l’a bien mérité.'])}else{talkQ.push(['m','Ce soir, j’appelle maman. Et je lui raconte tout.']);talkQ.push(['a','Prévois deux heures.'])}saveTrip()}}catch(e){}}
 loop=(function(o){return function(t){const r=o.apply(this,arguments);try{if(t-va77T>900){va77T=t;va77Tick()}}catch(e){}return r}})(loop);
+// ===== 3.78 : défi du lieu au Coscione : traverser les pozzines au pas, sans abîmer la tourbière =====
+let va78C=null,va78S={in:0,fast:0,warn:0},va78T=0;
+function va78Z(){try{if(chIdx()!==9)return null;if(va78C&&va78C.lv===level)return va78C.x<0?null:va78C;let x=Math.round(MAP_L*.44),n=0;const bad=q=>!va13PltX(q)||!va13PltX(q+1700)||occAt(q+800,1000)||(typeof va63In==='function'&&(va63In(q,300)||va63In(q+1600,300)))||rockW(q)>0||rockW(q+800)>0||rockW(q+1600)>0||wetRange(q-100,q+1700)||bridgeAt(q)>=0||bridgeAt(q+800)>=0||bridgeAt(q+1600)>=0||tunNear(q)||tunNear(q+1600);
+ while(bad(x)&&n++<60)x+=350;va78C={lv:level,x:n>60?-1:x,len:1600};return va78C.x<0?null:va78C}catch(e){return null}}
+dustDraw=(function(o){return function(){o();try{const z=va78Z();if(!z)return;const x0=-scr.ox/S-80,x1=(W-scr.ox)/S+80;if(z.x>x1||z.x+z.len<x0)return;const tm=performance.now()/1000,x=g;
+ // panneau d'entrée
+ if(z.x-60>x0&&z.x-60<x1){const px=z.x-60,py=T(px);x.fillStyle='#6b4a2a';x.fillRect(px-2,py-44,4,46);x.fillStyle='#f4ecd8';rr(x,px-34,py-66,68,26,4);x.fill();x.strokeStyle='#2f7d4a';x.lineWidth=2;x.stroke();x.fillStyle='#2f7d4a';x.font='800 8px Arial,sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('POZZINES',px,py-58);x.fillStyle='#3a2a1a';x.font='700 6.5px Arial,sans-serif';x.fillText('roulez au pas',px,py-48);x.textAlign='left';x.textBaseline='alphabetic'}
+ for(let q=Math.max(z.x,Math.floor(x0/118)*118);q<Math.min(z.x+z.len,x1);q+=118){if(q<z.x)continue;const k=Math.round(q/118),y=T(q)+2,rx=30+(k*37)%22,an=Math.atan2(T(q+30)-T(q-30),60);x.save();x.translate(q,y);x.rotate(an);
+  x.fillStyle='#4f6a3c';x.beginPath();x.ellipse(0,2.5,rx+5,5.5,0,0,7);x.fill();const wg=x.createLinearGradient(0,-3,0,6);wg.addColorStop(0,'#bfe2f2');wg.addColorStop(1,'#5f93b8');x.fillStyle=wg;x.beginPath();x.ellipse(0,2,rx,3.6,0,0,7);x.fill();
+  x.fillStyle='rgba(255,255,255,.55)';x.fillRect(-rx*.5+Math.sin(tm*1.6+k)*4,1,rx*.5,.9);
+  x.strokeStyle='#7fa35a';x.lineWidth=1.2;for(let i=-3;i<=3;i++){const bx=i*(rx/3),sw=Math.sin(tm*1.8+i+k)*1.2;x.beginPath();x.moveTo(bx,-1);x.lineTo(bx+sw,-6-(Math.abs(i)%2)*2);x.stroke()}
+  if(k%2){x.fillStyle='#f6f0ff';for(let i=0;i<3;i++){x.beginPath();x.arc(rx+10+i*5,-2-(i%2)*2,1.3,0,7);x.fill()}}x.restore()}}catch(e){}}})(dustDraw);
+function va78Tick(dt){try{const z=va78Z();if(!z||SV.va78===level||!inGame||paused||cs||cardOpen)return;const s=va78S;
+ if(!s.in){if(c.x>z.x-500&&c.x<z.x&&!s.said){s.said=1;say('Les pozzines. Je passe au pas, promis.',3,0)}if(c.x>=z.x&&c.x<z.x+z.len){s.in=1;s.fast=0;s.warn=0}return}
+ if(c.x<z.x-200){s.in=0;s.said=0;return}
+ if(Math.abs(v.x)>150){s.fast+=dt;if(s.fast>.8){s.fast=-2.5;s.warn++;if(sayT<=0)say(s.warn===1?'Doucement ! Tu abîmes la tourbière.':'Andrea ! Au pas, s’il te plaît.',2.8,1)}}else if(s.fast>0)s.fast=Math.max(0,s.fast-dt);
+ if(c.x>=z.x+z.len){s.in=0;SV.va78=level;if(!s.warn){SV.hearts+=3;try{note('Tourbière intacte : +3 cœurs')}catch(e){}talkQ.push(['m','Pas une trace derrière nous. Merci, mon cœur.']);talkQ.push(['a','Les chevaux nous disent merci aussi.'])}else{talkQ.push(['m','On a laissé des ornières… Elles mettront des années à se refermer.']);talkQ.push(['a','Pardon. La prochaine fois, au pas.'])}saveTrip()}}catch(e){}}
+loop=(function(o){return function(t){const r=o.apply(this,arguments);try{const dt=Math.min(.1,(t-va78T)/1000);va78T=t;if(dt>0)va78Tick(dt)}catch(e){}return r}})(loop);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.77',GAME_DATE='12/11/2026 à 16h41';
+const GAME_VER='3.78',GAME_DATE='12/11/2026 à 16h43';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
