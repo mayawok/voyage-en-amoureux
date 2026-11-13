@@ -4661,7 +4661,7 @@ if(z[3]==='mud'&&Math.random()<.6)pool=JOKE.mud;else if(rainNow&&rainNow()&&Math
 let L;if(pool){L=pool[Math.floor(Math.random()*pool.length)]}else{const r=SV.jk.n%3;if(r===1){const i=(SV.jk.par||0)%GAG.par.length;SV.jk.par=(SV.jk.par||0)+1;L=GAG.par[i]}else if(r===2){const i=(SV.jk.jal||0)%GAG.jal.length;SV.jk.jal=(SV.jk.jal||0)+1;L=GAG.jal[i]}else L=JOKE.any[Math.floor(Math.random()*JOKE.any.length)]}
 for(const l of L)talkQ.push(l)}catch(e){}}
 mgTick=(function(o){return function(dt){o(dt);jokeTick(dt)}})(mgTick);
-try{CS.sub.L=(function(o){return function(){const L=o();L.push([33.5,'a','Si on coule, sur ma tombe, tu écriras : « Il avait vérifié la pression des pneus. »']);return L}})(CS.sub.L);CS.sub.end=38.5}catch(e){}
+try{CS.sub.L=(function(o){return function(){const L=o();return L}})(CS.sub.L);CS.sub.end=38.5}catch(e){}
 
 // ===== 2.03 : réglages et gameplay =====
 // bac : aucun magasin ni interaction pendant la traversée
@@ -9388,8 +9388,16 @@ function va406HugDraw(n,x,gy,sc,H){const im=va406Hug(n);if(!im)return false;grp(
 setTimeout(()=>{for(let n=1;n<=4;n++)va406Hug(n)},2500);
 try{const od=CS.pardon.draw;CS.pardon.draw=function(Wd,gy,T2,tm){window.__va406p=T2>=42.8&&!window.__va406off?1:0;window.__va406d=0;window.__va406W=Wd;try{return od.apply(this,arguments)}finally{window.__va406p=0}}}catch(e){}
 va69P=(function(o){return function(x,gy,k,f,pose,dy){if(window.__va406p&&va406Hug(3)){if(!window.__va406d){window.__va406d=1;va406HugDraw(3,window.__va406W*.492,gy,1.9,64)}return}return o(x,gy,k,f,pose,dy)}})(va69P);
+// ===== 4.08 : inséparables en images (planche de l'utilisateur, 8 poses) posés sur une vraie branche =====
+try{VA90M.inseparables=[8,271,199]}catch(e){}
+try{const od=CS.love.draw;CS.love.draw=function(Wd,gy,T2,tm){window.__va408=(T2<31&&!window.__va408off)?{Wd,gy,T2,tm,d:0}:null;try{return od.apply(this,arguments)}finally{window.__va408=null}}}catch(e){}
+function va408Branch(x0,x1,y,tm){g.save();g.lineCap='round';const gr=g.createLinearGradient(0,y-8,0,y+10);gr.addColorStop(0,'#8a6038');gr.addColorStop(1,'#4a2e18');g.strokeStyle=gr;g.lineWidth=22;g.beginPath();g.moveTo(x1,y+14);g.quadraticCurveTo((x0+x1)/2,y+2,(x0+x1)/2,y+3);g.stroke();g.lineWidth=13;g.beginPath();g.moveTo(x1,y+10);g.quadraticCurveTo((x0+x1)/2,y-4,x0,y+4);g.stroke();
+g.strokeStyle='rgba(255,230,190,.25)';g.lineWidth=3;g.beginPath();g.moveTo(x1,y+5);g.quadraticCurveTo((x0+x1)/2,y-9,x0,y);g.stroke();g.strokeStyle='#5a3a20';g.lineWidth=4;g.beginPath();g.moveTo(x0-40,y+1);g.lineTo(x0-10,y-20);g.stroke();
+for(let i=0;i<9;i++){const lx=x0+20+i*(x1-x0-40)/8,ly=y+6+Math.sin(i*1.7)*3,sw=Math.sin(tm*1.6+i)*.12;g.fillStyle=i%2?'#4f9a48':'#3f8a3e';g.beginPath();g.ellipse(lx,ly+6,9,4,.7+i*.4+sw,0,7);g.fill()}g.restore()}
+lbBird=(function(o){return function(x,y,sc,dir,tm,P){const q=window.__va408;if(!q||(P&&P.fly)||!va90Im('inseparables'))return o(x,y,sc,dir,tm,P);if(q.d)return;q.d=1;const T2=q.T2,Wd=q.Wd,cx=Wd*.5,feet=y+15*sc;
+const f=T2<2.5?0:T2<5?1:T2<8?2:T2<12?3:T2<17?4:T2<22?5:T2<29?6:7;va408Branch(cx+150,Wd*.015,feet+2,tm);const H=96,w=H*271/199,br=Math.sin(tm*2)*1.2;va90F(g,'inseparables',f,cx,feet+5+br*.2,w,0)}})(lbBird);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.07',GAME_DATE='13/11/2026 à 13h39';
+const GAME_VER='4.08',GAME_DATE='13/11/2026 à 13h42';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
