@@ -9342,8 +9342,18 @@ try{const VA99I={};function va99Im(n){let i=VA99I[n];if(!i){i=new Image();i.src=
  VA95T.src='img/scenes/va88/plage_s.jpg';
  va95Tour=function(Wd,gy){if(!VA95T.complete||!VA95T.naturalWidth||window.__va95off)return;const iw=VA95T.naturalWidth,ih=VA95T.naturalHeight,c=.62,tg=gy-4;let h=Math.max(Wd*ih/iw,420,tg/c);const w=h*iw/ih;let y=Math.min(0,Math.max(420-h,tg-c*h));g.drawImage(VA95T,(Wd-w)/2,y,w,h)};
 }catch(e){}
+// ===== 4.01 : plus de maison toute seule (une maison de village n'est dessinée que si une voisine l'est aussi) =====
+try{const va401Ok=k=>{const px=k*75+hs(k+900)*40;return sceneAt(px)===1&&Z(px)[3]==='dry'&&!nearCamp(px)};
+ village=(function(o){return function(px,y,k){try{if(k!=null&&!window.__va401off&&!va401Ok(k-1)&&!va401Ok(k+1))return}catch(e){}return o.apply(this,arguments)}})(village)}catch(e){}
+// les plans lointains semaient des maisons isolées sur les collines : remplacées par des arbres (les bergeries restent)
+try{VA25_L.forEach(L=>{for(let i=0;i<L.length;i++)if(/^maison/.test(L[i]))L[i]=i%2?'olivier':'chataignier'})}catch(e){}
+// cochons qui marchent et coq + poule qui se promènent (planches 8 poses)
+try{const va401F=(n,f,cx,by,w,fl)=>{if(!va90Im(n))return false;g.save();g.translate(cx,0);if(fl<0)g.scale(-1,1);const r=va90F(g,n,f,0,by,w);g.restore();return r};
+ va46Pigs=(function(o){return function(x,y,tm,j,n){if(window.__va90off||!va90Im('cochon_m')||VA25.dk>.2)return o(x,y,tm,j,n);for(let i=0;i<n;i++){const ph=((tm*.07+i*.31+j*.17)%1+1)%1,d=(i+j)%2?1:-1,px=x+(i%2?1:-1)*(22+i*12)+Math.sin(tm*.35+i*2+j)*14;
+  if(ph<.45&&!va401F('cochon_m',0,px,y+2,30,d))return o(x,y,tm,j,n);if(ph>=.45)va401F('cochon_m',Math.floor(tm*7+i*3),px,y+2,30,Math.cos(tm*.35+i*2+j)>=0?1:-1)}}})(va46Pigs);
+ va46Hens=(function(o){return function(x,y,tm,j){if(window.__va90off||!va90Im('poules_m')||VA25.dk>.2)return o(x,y,tm,j);const sw=Math.sin(tm*.3+j),d=Math.cos(tm*.3+j)>=0?1:-1;va401F('poules_m',Math.abs(Math.cos(tm*.3+j))>.15?Math.floor(tm*6+j):0,x-30+sw*16,y+2,34,d);try{va46An('poule_0',x+32+Math.sin(tm*.4+j)*4,y+1,9,1)}catch(e){}}})(va46Hens)}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.00',GAME_DATE='13/11/2026 à 13h15';
+const GAME_VER='4.01',GAME_DATE='13/11/2026 à 13h18';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
