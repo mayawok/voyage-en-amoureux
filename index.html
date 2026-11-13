@@ -9741,8 +9741,11 @@ function va421Layer(k,tm){const Mk=va421Mask();if(!Mk||!VA421D[k])return null;co
  if(VA421.ks.length>14)delete VA421.c[VA421.ks.shift()];VA421.c[key]=cv;VA421.ks.push(key);return cv}
 va29Body=(function(o){return function(tm){const k=SV.cus&&SV.cus.skin;if(!k||!VA421D[k]||!skinOK(k))return o(tm);let L=null;try{if(window.__va45px!==0)L=va421Layer(k,tm||0)}catch(e){L=null}if(!L)return o(tm);
  window.__va29on=0;const P=va29Get(CCv&&CCv.m);if(!P)return false;window.__va29on=1;g.drawImage(P.full,-62.5,-33,122,44.3);va30Rack();g.drawImage(L,-62.5,-33,122,44.3);g.drawImage(P.rest,-62.5,-33,122,44.3);return true}})(va29Body);
+// ===== 4.23 : plus de couleurs de carrosserie et de jantes =====
+CUS_BODY.push(['Rouge vif','#b3121c'],['Bleu Corse','#2a6fb0'],['Bleu ciel','#7fb2d8'],['Bleu pétrole','#1d4f5a'],['Turquoise','#1f9aa0'],['Vert jungle','#2e7a3a'],['Vert olive','#556b2f'],['Vert menthe','#8fc9a8'],['Gris anthracite','#3a3d42'],['Argent','#b8bcc2'],['Champagne','#cbb68a'],['Crème','#efe6cc'],['Chocolat','#4a2e1e'],['Cuivre','#b06a3a'],['Jaune moutarde','#c99a2e'],['Corail','#e86a50'],['Rose poudré','#d9a0a8'],['Prune','#5a2440']);
+CUS_RIMC.push(['Gris acier','#4a4e54'],['Chrome','#e4e8ee'],['Champagne','#cbb68a'],['Cuivre','#b06a3a'],['Bleu','#2a5fb0'],['Turquoise','#1f9aa0'],['Vert','#3a7a3a'],['Kaki','#6b6a3a'],['Jaune','#e8c22a'],['Orange','#e0701e'],['Rose','#e08aa0'],['Violet','#6a3a9a']);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.22',GAME_DATE='14/11/2026 à 00h47';
+const GAME_VER='4.23',GAME_DATE='14/11/2026 à 00h48';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
