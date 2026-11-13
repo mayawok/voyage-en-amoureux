@@ -9427,8 +9427,68 @@ if(T2>28.5){g.fillStyle='rgba(255,255,255,.75)';for(let i=0;i<8;i++){const u=((t
 grp(fore[0],fore[1],.62,()=>{try{cherokeeSide(fore[0],fore[1],0)}catch(e){}});
 grp(bx+L*.33,aft[1],1,()=>{if(T2<21){try{person(bx+L*.335,aft[1],1,{f:-1,a1:.4});person(bx+L*.36,aft[1],0,{f:-1,a1:.3})}catch(e){}}try{npcFig(bx+L*.3,aft[1]+4,['#e8622c','#1d3a5c',1,'#2a1d14',0,0,1],T2>5&&T2<20,tm)}catch(e){}});
 g.restore();try{wxOver(g,Wd,420,tm)}catch(e){}}}catch(e){}
+// ===== 4.10 : nouvelles cinématiques (arrivée en Corse, tortue, baignade, sabotage, marché, veille avant Fautea) + sous-marin au bidon =====
+const VA410I={};function va410Img(p){let i=VA410I[p];if(!i){i=new Image();i.src=p;VA410I[p]=i}return i.complete&&i.naturalWidth?i:null}
+const VA410S={baignade:6,veille:4,saboteur:6};
+function va410F(n,f,cx,by,h,fl){const im=va410Img('img/sprites/va410/'+n+'.webp');if(!im)return false;const N=VA410S[n],cw=im.naturalWidth/N,ch=im.naturalHeight,w=h*cw/ch;g.save();g.translate(cx,by);if(fl)g.scale(-1,1);g.drawImage(im,(f%N)*cw,0,cw,ch,-w/2,-h,w,h);g.restore();return true}
+function va410Fond(src,hz,Wd,gy,fill){const im=src&&va410Img(src);g.fillStyle=fill||'#8cc8ea';g.fillRect(0,0,Wd,420);if(!im)return false;const iw=im.naturalWidth,ih=im.naturalHeight,s=Math.max(Wd/iw,(gy-6)/(hz*ih)),w=iw*s;g.drawImage(im,(Wd-w)/2,gy-6-hz*ih*s,w,ih*s);return true}
+function va410Ground(Wd,gy,c1,c2){const gr=g.createLinearGradient(0,gy-8,0,420);gr.addColorStop(0,c1);gr.addColorStop(1,c2);g.fillStyle=gr;g.beginPath();g.moveTo(0,gy-4);for(let x=0;x<=Wd;x+=40)g.lineTo(x,gy-4+Math.sin(x*.03)*2);g.lineTo(Wd,gy-4);g.lineTo(Wd,420);g.lineTo(0,420);g.fill();g.fillStyle='rgba(0,0,0,.06)';for(let i=0;i<60;i++){g.fillRect(hh2(i+3)*Wd,gy+hh2(i+9)*120,3+hh2(i)*6,1.5)}}
+function va410Src(k){try{const v=VA23_IMG[k];return typeof v==='string'?v:(v&&v.src)}catch(e){return null}}
+function va410P(x,gy,k,f,pose){grp(x,gy,1.9,()=>{person(x,gy+2,k,{f:f,pose:pose})})}
+function va410Dog(x,gy,f,mode,tm){grp(x,gy,1.6,()=>{try{dogDraw(x,gy+2,f,mode||'sit',tm)}catch(e){}})}
+function va410Car(x,gy){grp(x,gy,1.25,()=>{try{cherokeeSide(x,gy+4,0)}catch(e){}})}
+// 1. arrivée en Corse
+CS.arrivee={mus:'joy',L:()=>[[1,'n','Au lever du soleil, le ferry accoste en Corse.'],[5,'a','Ça y est, ma chérie. On y est.'],[8.5,'m','Sens-moi cet air… le maquis, déjà.'],[12.5,'a','Allez, on descend. La Corse nous attend.']],end:17,
+draw:(Wd,gy,T2,tm)=>{const im=va34Img('bonif');if(im)va34Bg(g,im,Wd);else va410Fond(null,0,Wd,gy,'#9fd0ea');try{va34U()}catch(e){}
+const fe=va410Img('img/scenes/va88/ferry.webp');if(fe){const w=Wd*.62,h=w*fe.naturalHeight/fe.naturalWidth;g.save();g.beginPath();g.rect(0,0,Wd,gy+2);g.clip();g.drawImage(fe,Wd*.42,gy+14-h+Math.sin(tm*1.1)*1.5,w,h);g.restore()}
+g.fillStyle='rgba(255,220,170,'+(.25*(1-cl(T2/8)))+')';g.fillRect(0,0,Wd,420);
+const u=sm(cl((T2-2)/9)),cx=Wd*.78-u*Wd*.42;va410Car(cx,gy);try{wxOver(g,Wd,420,tm)}catch(e){}}};
+// 2. la tortue malade (ch1)
+CS.tortue={mus:'sad',L:()=>[[1,'n','Au bord de la piste, le chien s’arrête net et gémit.'],[4.5,'m','Une tortue d’Hermann… Elle bouge à peine. Et en plein midi, dehors ?'],[10,'a','Elle est malade ?'],[12.5,'m','Les yeux gonflés, la carapace molle. Ça, c’est pas normal.'],[17,'m','Je note tout. Il se passe vraiment quelque chose ici.'],[21.5,'a','On la met à l’ombre. Et on continue l’enquête.']],end:26,
+draw:(Wd,gy,T2,tm)=>{va410Fond(va410Src(0),.73,Wd,gy,'#9fd4ec');va410Ground(Wd,gy,'#c8a878','#9a7a50');
+va410Car(Wd*.16,gy);const tx=Wd*.56;g.save();g.translate(tx,gy+4);g.scale(1.3,1.3);try{artA(g,'tortue',tm*.2)}catch(e){}g.restore();
+va410P(Wd*.5,gy,1,1,T2>4?'crouch':'stand');va410P(Wd*.66,gy,0,-1,T2>17?'stand':T2>9?'worried':'stand');va410Dog(Wd*.62,gy,-1,'sit',tm);try{wxOver(g,Wd,420,tm)}catch(e){}}};
+// 3. la baignade à Roccapina (ch2)
+CS.bain={mus:'love',L:()=>[[1,'n','Une crique d’eau turquoise, sous le lion de Roccapina. Une pause, enfin.'],[5,'m','Elle est froide ! Viens là, toi !'],[9,'a','Hé ! Tu vas voir…'],[13,'n','Le chien aboie après les vagues depuis le sable.'],[17,'m','Je t’aime, tu sais.'],[20,'a','Moi aussi, ma chérie. Reste comme ça une seconde.']],end:25,
+draw:(Wd,gy,T2,tm)=>{va410Fond(va410Src(1),.852,Wd,gy-30,'#7cc8ea');
+const wl=gy+6;const sea=g.createLinearGradient(0,gy-36,0,420);sea.addColorStop(0,'rgba(60,190,210,.9)');sea.addColorStop(1,'rgba(10,110,150,.98)');g.fillStyle=sea;g.fillRect(0,gy-36,Wd,420);
+const f=T2<4?0:T2<8?1:T2<12?2:T2<16?3:T2<19.5?4:5;va410F('baignade',f,Wd*.58,wl+12+Math.sin(tm*1.5)*1.5,170);
+const fw=g.createLinearGradient(0,wl,0,420);fw.addColorStop(0,'rgba(40,170,200,.82)');fw.addColorStop(1,'rgba(10,100,140,.97)');g.fillStyle=fw;g.fillRect(0,wl,Wd,420);
+g.fillStyle='#efe4c8';g.beginPath();g.moveTo(0,gy+30);g.quadraticCurveTo(Wd*.14,gy+10,Wd*.26,gy+60);g.lineTo(Wd*.3,420);g.lineTo(0,420);g.fill();
+va410Dog(Wd*.12,gy+34,1,(Math.sin(tm*4)>0?'stand':'sit'),tm);
+g.strokeStyle='rgba(255,255,255,.6)';g.lineWidth=2;for(let i=0;i<14;i++){const xx=Wd*.3+((i*61+tm*18)%(Wd*.7));g.beginPath();g.moveTo(xx,wl+4+(i%3)*14);g.quadraticCurveTo(xx+10,wl+(i%3)*14,xx+20,wl+4+(i%3)*14);g.stroke()}
+try{wxOver(g,Wd,420,tm)}catch(e){}}};
+// 4. la nuit du sabotage (ch4)
+CS.sabot={mus:'tense',L:()=>[[1,'n','Cette nuit-là, à Bavella. L’orage gronde. Mila et Andrea dorment.'],[6,'n','Une silhouette s’approche du Cherokee, une lampe à la main.'],[12,'n','Le capot s’ouvre sans un bruit…'],[18,'n','Un éclair. Le chien aboie dans la voiture.'],[21.5,'n','La silhouette s’enfuit dans les pins.']],end:26,
+draw:(Wd,gy,T2,tm)=>{let n=null;try{n=VA27.N[3]}catch(e){}va410Fond(n&&n.src,n?n.hz:.6,Wd,gy,'#051232');va410Ground(Wd,gy,'#2a3040','#12161f');g.fillStyle='rgba(5,10,30,.35)';g.fillRect(0,0,Wd,420);
+try{va34U();va28Draw('v_noir',Wd*.9,gy+3,150)}catch(e){}va410Car(Wd*.42,gy);
+let x,f;if(T2<6){x=Wd*.05+T2/6*(Wd*.15);f=0}else if(T2<9){x=Wd*.2+(T2-6)/3*(Wd*.1);f=1}else if(T2<12){x=Wd*.3;f=2}else if(T2<18){x=Wd*.3;f=3}else if(T2<21){x=Wd*.3;f=4}else{x=Wd*.3-(T2-21)*Wd*.12;f=5}
+va410F('saboteur',f,x,gy+4,118,f===5);
+const fl=(T2>18&&T2<18.5)||(T2>18.8&&T2<19)||Math.sin(tm*.7)>.995;if(fl){g.fillStyle='rgba(220,230,255,.55)';g.fillRect(0,0,Wd,420)}
+g.strokeStyle='rgba(180,200,230,.45)';g.lineWidth=1;for(let i=0;i<70;i++){const rx=(hh2(i)*Wd+tm*60)%Wd,ry=(hh2(i+50)*420+tm*520)%420;g.beginPath();g.moveTo(rx,ry);g.lineTo(rx-4,ry+12);g.stroke()}}};
+// 5. le marché de Saint-Florent (ch7)
+CS.marche={mus:'day',L:()=>[[1,'n','Matin de marché sur le port de Saint-Florent.'],[4.5,'m','Du brocciu ! Et des figues… je prends tout.'],[8.5,'a','Moi, des tomates et des courgettes. Ce soir, je cuisine.'],[13,'n','Une femme s’approche, l’air de rien.'],[15.5,'l','Ne vous retournez pas. Vous êtes suivis depuis Foce.'],[20,'l','Je vous dirai tout. Mais pas ici.'],[24,'m','Andrea… c’était Lucia.']],end:28.5,
+draw:(Wd,gy,T2,tm)=>{va410Fond(va410Src(6),.87,Wd,gy,'#9fd0ea');va410Ground(Wd,gy,'#d8c8a8','#a8987a');
+try{va34U();va25Sp('s_etal',Wd*.3,gy+4,92,0);va25Sp('s_etal',Wd*.74,gy+4,92,0,1)}catch(e){}
+va410P(Wd*.42,gy,1,1,T2<8?'point':'talk');va410P(Wd*.5,gy,0,-1,T2>23?'worried':'talk');
+if(T2>13){const lx=T2<15.5?Wd+30-(T2-13)/2.5*(Wd*.4):Wd*.6;grp(lx,gy,1.9,()=>{try{npcFig(lx,gy+2,['#24407a','#1a2a4a',1,'#3a2a1a',0,0,1],T2>15.5&&T2<23,tm)}catch(e){}})}
+va410Dog(Wd*.36,gy,1,'sit',tm);try{wxOver(g,Wd,420,tm)}catch(e){}}};
+// 6. la veille avant Fautea (ch11)
+CS.veille={mus:'love',L:()=>[[1,'n','La dernière nuit avant Fautea. Le feu crépite.'],[5,'a','On a réussi, tu sais. Toi surtout.'],[9,'m','Nous deux. Toujours.'],[13,'n','Mila s’endort sur son épaule.'],[17,'n','Andrea sort doucement un petit écrin de sa poche… et sourit.'],[23,'a','Demain, ma chérie.']],end:27,
+draw:(Wd,gy,T2,tm)=>{const im=va34Img('va88biv');if(im)va34Bg(g,im,Wd);else va410Fond(null,0,Wd,gy,'#0a1430');try{va34U()}catch(e){}
+const f=T2<12?0:T2<16.5?1:T2<22?2:3;va410F('veille',f,Wd*.5,gy+14,150);
+const gl=g.createRadialGradient(Wd*.3,gy,10,Wd*.3,gy,260);gl.addColorStop(0,'rgba(255,170,80,'+(.16+Math.sin(tm*9)*.03)+')');gl.addColorStop(1,'rgba(255,170,80,0)');g.fillStyle=gl;g.fillRect(0,0,Wd,420)}};
+try{Object.assign(DK_LBL,{arrivee:'Arrivée en Corse',tortue:'La tortue malade',bain:'La baignade à Roccapina',sabot:'La nuit du sabotage',marche:'Le marché de Saint-Florent',veille:'La veille avant Fautea'})}catch(e){}
+try{for(const k of['arrivee','tortue','bain','sabot','marche','veille'])va54Gate&&0}catch(e){}
+// sous-marin : à la fin de la descente vers les bidons, le bras attrape un bidon
+try{const od=CS.drums.draw;CS.drums.draw=function(Wd,gy,T2,tm){window.__va410arm=T2>(CS.drums.end||30)-9;try{return od.apply(this,arguments)}finally{window.__va410arm=0}}}catch(e){}
+subD=(function(o){return function(x,y,s,tm,lit){if(window.__va410arm&&va409I('sousmarin')){va409Sub(x,y,118*s/1.5,3);return}return o(x,y,s,tm,lit)}})(subD);
+// déclenchement : une fois chacune, quand la route est libre
+const VA410_T=[['arrivee',0,0,.12,()=>SV.ouvL===level],['tortue',0,.15,.6],['bain',1,.33,.8],['sabot',3,.9,.99],['marche',6,.22,.6,()=>!(SV.csd&&SV.csd.lucia)],['veille',10,.8,.95]];
+mgTick=(function(o){return function(dt){o(dt);try{if(!started||window.__va410off||!va74Free())return;SV.va410=SV.va410||{};const ci=chIdx(),p=chP();for(const q of VA410_T){if(SV.va410[q[0]+level]||q[1]!==ci||p<q[2]||p>q[3])continue;if(q[4]&&!q[4]())continue;SV.va410[q[0]+level]=1;try{albAdd&&0}catch(e){}openCine(q[0]);saveTrip();break}}catch(e){}}})(mgTick);
+setTimeout(()=>{for(const n in VA410S)va410Img('img/sprites/va410/'+n+'.webp');try{[0,1,6].forEach(k=>va410Img(va410Src(k)));va410Img(VA27.N[3].src);va410Img('img/scenes/va88/ferry.webp')}catch(e){}},3000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.09',GAME_DATE='13/11/2026 à 14h46';
+const GAME_VER='4.10',GAME_DATE='13/11/2026 à 14h57';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
