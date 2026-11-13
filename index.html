@@ -9297,8 +9297,13 @@ try{tubeOpen=(function(o){return function(){const r=o.apply(this,arguments);va91
 const VA91_PZ={farm:'enclos',plant:'plantes',rh:'bouchon'};
 try{pzOpen=(function(o){return function(k){const r=o.apply(this,arguments);try{const v=gid('pzv'),n=VA91_PZ[k];if(v&&n&&!window.__va91off){va91Im(n);v.style.background="linear-gradient(rgba(10,8,4,.35),rgba(10,8,4,.45)),url('img/scenes/va91/"+n+".jpg') center/cover no-repeat"}}catch(e){}return r}})(pzOpen)}catch(e){}
 setTimeout(()=>{try{for(const n of['pont','enclos','plantes','bouchon','remorque','cheval','touristes','bateau','sousmarin','fioles'])va91Im(n)}catch(e){}},9000);
+// ===== 3.93 : cheval de la poursuite en images (quarter horse au galop, avec ou sans Mila) =====
+try{Object.assign(VA90M,{"mila_galop":[8,220,180],"qh_galop":[8,220,139]});
+ eqDraw=(function(o){return function(x,y,s,ph,col,rider,st){if(st||window.__va90off||!(rider||col==='#7a4220'||!col))return o.apply(this,arguments);const n=rider?'mila_galop':'qh_galop';if(!va90Im(n))return o.apply(this,arguments);
+  try{const f=Math.floor((((ph||0)%6.2832)+6.2832)%6.2832/6.2832*8);g.save();g.translate(x,y);g.scale(s,s);va90F(g,n,f,2,7,86);g.restore();return}catch(e){}return o.apply(this,arguments)}})(eqDraw);
+ setTimeout(()=>{try{va90Im('mila_galop');va90Im('qh_galop')}catch(e){}},7000)}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.92',GAME_DATE='13/11/2026 à 11h37';
+const GAME_VER='3.93',GAME_DATE='13/11/2026 à 12h09';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
