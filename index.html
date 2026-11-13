@@ -9155,8 +9155,14 @@ popOK=(function(o){return function(){if(o())return true;try{return !onFerry()&&!
 cardQ.push=(function(o){return function(...a){try{for(const q of a)if(q&&q.btn&&q.cb)q.now=1}catch(e){}return o.apply(this,a)}})(cardQ.push);
 // ===== 3.82 : plus aucune attente de « calme » avant l'ouverture d'une carte ou d'un document =====
 popOK=(function(o){return function(){try{return !onFerry()&&!winch&&!stopReq}catch(e){return o()}}})(popOK);
+// ===== 3.83 : nombre de villages selon le lieu =====
+// Part des emplacements de village gardés par chapitre (les autres deviennent de la route nue : ty 0, len 0).
+const VA83_V={0:.65,1:.4,2:.6,3:.35,4:.5,5:.5,6:.65,7:.4,8:.3,9:.1,10:.55,11:.5};
+sceneSeg=(function(o){return function(x){const q=o(x);if(!q)return q;try{const ci=chIdx(),k=VA83_V[ci];if(k===undefined||k>=1)return q;
+ const f=(q.s+q.len/2)/MAP_L;for(const s of(CHP().stops||[]))if(Math.abs(s.f-f)<.05)return q;
+ if(hs(q.j*7+ci*131+3)<k)return q;return {j:q.j,s:q.s,ty:0,len:0,mk:false}}catch(e){return q}}})(sceneSeg);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.82',GAME_DATE='12/11/2026 à 20h24';
+const GAME_VER='3.83',GAME_DATE='13/11/2026 à 08h32';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
