@@ -9786,8 +9786,26 @@ Object.assign(VA421D,{
   g.strokeStyle='rgba(120,160,200,.75)';g.lineWidth=.4;for(let i=0;i<16;i++){const x=-60+hs(i*3.7)*120,y=-20+hs(i*6.3)*12,r=1+hs(i)*1.4;for(let k=0;k<3;k++){const a=k*1.047;g.beginPath();g.moveTo(x-Math.cos(a)*r,y-Math.sin(a)*r);g.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);g.stroke()}}
   B.txt('EXPÉDITION POLAIRE',2,-2.6,3.6,'#1f3a5a',{ls:.5});g.fillStyle='#1f3a5a';g.beginPath();g.moveTo(-50,-11);g.lineTo(-45,-18);g.lineTo(-42,-14);g.lineTo(-39,-17);g.lineTo(-34,-11);g.closePath();g.fill();g.fillStyle='#fff';g.beginPath();g.moveTo(-45,-18);g.lineTo(-43.6,-16);g.lineTo(-46.4,-16);g.fill()}
 });
+// ===== 4.25 : tente de toit refaite (posée sur la galerie, échelle rangée sur le côté fermée, échelle jusqu'au sol ouverte) =====
+function va425Lad(x0,y0,x1,y1,w){const dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy),nx=-dy/L*w/2,ny=dx/L*w/2;g.strokeStyle='#9aa0a8';g.lineWidth=.9;g.lineCap='round';g.beginPath();g.moveTo(x0+nx,y0+ny);g.lineTo(x1+nx,y1+ny);g.moveTo(x0-nx,y0-ny);g.lineTo(x1-nx,y1-ny);g.stroke();
+ g.strokeStyle='#c4c9d0';g.lineWidth=.7;const n=Math.max(2,Math.round(L/5));g.beginPath();for(let k=1;k<n;k++){const t=k/n,x=x0+dx*t,y=y0+dy*t;g.moveTo(x+nx,y+ny);g.lineTo(x-nx,y-ny)}g.stroke();g.fillStyle='#2b2c30';g.fillRect(x1-w/2-.6,y1-.6,w+1.2,1.2)}
+function va425Tent(tm){const op=(typeof tentOpen==='function')&&tentOpen(),u=op?Math.max(0,Math.min(1,((night&&night.t)||0)-12.4)/1.2):0,yb=-39.9;
+ if(!op){const x0=-45.5,x1=7.5,h=7.2;g.fillStyle='rgba(0,0,0,.25)';g.fillRect(x0,yb-.6,x1-x0,.6);
+  const q=g.createLinearGradient(0,yb-h,0,yb);q.addColorStop(0,'#5a5a56');q.addColorStop(1,'#2e2e2c');g.fillStyle=q;rr(g,x0,yb-h,x1-x0,h,1.6);g.fill();
+  g.fillStyle='#8a8460';rr(g,x0+.8,yb-h+1.6,x1-x0-1.6,h-2.6,1);g.fill();g.fillStyle='#6d6a4c';g.fillRect(x0+.8,yb-h/2,x1-x0-1.6,.8);g.fillStyle='rgba(255,255,255,.18)';g.fillRect(x0+1,yb-h+.4,x1-x0-2,.6);
+  g.fillStyle='#1c1c1e';for(const x of[x0+6,x1-8]){g.fillRect(x,yb-h,1.4,h)}g.fillStyle='#c8b37a';g.fillRect(x0+3,yb-h+2.4,4,1.4);
+  va425Lad(x0+2,yb+1.2,x0+30,yb+1.2,2.2);return}
+ const L=46*u,xr=-45.5,xf=7.5,xb=xr-L;
+ g.fillStyle='#3a3a38';g.fillRect(xr,yb-1.8,xf-xr,1.8);g.fillStyle='#4a4a46';g.fillRect(xb,yb-1.8,L,1.6);
+ g.strokeStyle='#5a5e66';g.lineWidth=.8;g.beginPath();g.moveTo(xb+3,yb-.2);g.lineTo(xr-3,yb+6);g.stroke();
+ const top=yb-1.8-26*u,px=xr+2;g.fillStyle='#8a8460';g.beginPath();g.moveTo(xb,yb-1.8);g.lineTo(xb+3,top+6*u);g.quadraticCurveTo(px-8,top-1,px,top);g.quadraticCurveTo(xf-6,top+2,xf,yb-1.8);g.closePath();g.fill();
+ g.fillStyle='#6d6a4c';g.beginPath();g.moveTo(px,top);g.lineTo(px+1.2,yb-1.8);g.lineTo(px-1.2,yb-1.8);g.closePath();g.fill();
+ g.fillStyle='rgba(30,30,28,.35)';g.fillRect(xb+1,yb-2.4,xf-xb-2,.6);
+ if(u>.3){const a=(u-.3)/.7;g.fillStyle='rgba(255,214,140,'+(.6*a)+')';rr(g,xb+10,top+10*u,14,9*u,2);g.fill();g.strokeStyle='rgba(80,70,40,.6)';g.lineWidth=.4;g.beginPath();g.moveTo(xb+17,top+10*u);g.lineTo(xb+17,top+19*u);g.stroke()}
+ va425Lad(xb+5,yb-.4,xb+8+6*(1-u),10,3.2)}
+cusAcc=(function(o){return function(tm){const C=SV.cus||{};if(C.roof==='tent'){try{va425Tent(tm)}catch(e){}return}return o(tm)}})(cusAcc);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.24',GAME_DATE='14/11/2026 à 00h51';
+const GAME_VER='4.25',GAME_DATE='14/11/2026 à 00h52';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
