@@ -4955,7 +4955,7 @@ for(const it of M.items){if(!it.on)continue;const ux=it.u-30,uy=-14-it.z;if(th.k
 x.restore();x.fillStyle='#151311';x.beginPath();x.arc(T2.wx,T2.wy,11,0,7);x.fill();x.fillStyle='#8a8f96';x.beginPath();x.arc(T2.wx,T2.wy,5,0,7);x.fill();
 for(const f of M.fall){x.save();x.translate(f.x,f.y);x.rotate(f.r);if(th.k==='eau'){x.fillStyle='#3a7fd8';x.fillRect(-sz/2,-13,sz,26)}else{x.fillStyle='#e8c65a';x.fillRect(-sz/2,-10,sz,20)}x.restore()}
 // le Cherokee du jeu
-onCtx(x,()=>{const sv={c,a,v:{x:v.x,y:v.y},rot:rot.slice(),work,flatW};try{c={x:M.x+Math.sin(M.ang)*(WL[0][1]+R-2),y:M.y-Math.cos(M.ang)*(WL[0][1]+R-2)};a=M.ang;v.x=M.vx;v.y=0;rot[0]=rot[1]=M.rot;work=0;flatW=-1;truck()}catch(e){}finally{c=sv.c;a=sv.a;v.x=sv.v.x;v.y=sv.v.y;rot=sv.rot;work=sv.work;flatW=sv.flatW}});
+onCtx(x,()=>{const sv={c,a,v:{x:v.x,y:v.y},rot:rot.slice(),work,flatW},sv2={b:boostT,s:susS.slice(),q:(window.va50?va50.sq:0)};boostT=0;susS[0]=susS[1]=0;try{if(window.va50)va50.sq=0}catch(e){};try{c={x:M.x+Math.sin(M.ang)*(WL[0][1]+R-2),y:M.y-Math.cos(M.ang)*(WL[0][1]+R-2)};a=M.ang;v.x=M.vx;v.y=0;rot[0]=rot[1]=M.rot;work=0;flatW=-1;truck()}catch(e){}finally{c=sv.c;a=sv.a;v.x=sv.v.x;v.y=sv.v.y;rot=sv.rot;work=sv.work;flatW=sv.flatW;boostT=sv2.b;susS[0]=sv2.s[0];susS[1]=sv2.s[1];try{if(window.va50)va50.sq=sv2.q}catch(e){}}});
 x.fillStyle='rgba(180,220,245,.85)';for(const p of M.splash){x.beginPath();x.arc(p.x,p.y,3,0,7);x.fill()}
 x.restore();
 // barre de progression + état
@@ -7403,7 +7403,7 @@ function va5Draw(t){if(!va5G)return;const x=gid('va5c').getContext('2d'),tm=t/10
   g.textBaseline='alphabetic';
   // le Cherokee, tel qu'il est préparé
   const CX=Wd*.5,sc=1.75;g.save();g.translate(CX,gy+4);g.scale(sc,sc);g.translate(-CX,-(gy+4));
-  const sv={c,a,v:{x:v.x,y:v.y},rot:rot.slice(),work,flatW};try{c={x:CX,y:gy+4-(WL[0][1]+R-2)};a=0;v.x=0;v.y=0;rot[0]=rot[1]=0;work=1;flatW=-1;truck()}catch(e){}finally{c=sv.c;a=sv.a;v.x=sv.v.x;v.y=sv.v.y;rot=sv.rot;work=sv.work;flatW=sv.flatW}
+  const sv={c,a,v:{x:v.x,y:v.y},rot:rot.slice(),work,flatW},sv2={b:boostT,s:susS.slice(),q:(window.va50?va50.sq:0)};boostT=0;susS[0]=susS[1]=0;try{if(window.va50)va50.sq=0}catch(e){};try{c={x:CX,y:gy+4-(WL[0][1]+R-2)};a=0;v.x=0;v.y=0;rot[0]=rot[1]=0;work=1;flatW=-1;truck()}catch(e){}finally{c=sv.c;a=sv.a;v.x=sv.v.x;v.y=sv.v.y;rot=sv.rot;work=sv.work;flatW=sv.flatW;boostT=sv2.b;susS[0]=sv2.s[0];susS[1]=sv2.s[1];try{if(window.va50)va50.sq=sv2.q}catch(e){}}
   g.restore();
   // la caisse à outils ouverte
   const tbx=CX+Wd*.15,tby=gy+16;g.fillStyle='#c8382c';g.fillRect(tbx-16,tby-12,32,12);g.fillStyle='#a52a20';g.save();g.translate(tbx-16,tby-12);g.rotate(-.5);g.fillRect(0,-8,32,8);g.restore();g.fillStyle='#9aa0a6';g.fillRect(tbx-10,tby-16,3,6);g.fillRect(tbx-2,tby-17,3,7);g.fillRect(tbx+6,tby-15,3,5);
@@ -9329,6 +9329,6 @@ try{Object.assign(VA90M,{"vache_m":[8,211,128],"mouton_m":[8,213,125],"ane_m":[8
  setTimeout(()=>{try{for(const n in {"vache_m":[8,211,128],"mouton_m":[8,213,125],"ane_m":[8,211,144],"cochon_m":[8,212,101],"poules_m":[8,212,116],"chevre_m":[8,212,135],"mila_m":[8,206,300],"andrea_m":[8,197,300]})va90Im(n)}catch(e){}},8000)}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.96',GAME_DATE='13/11/2026 à 13h00';
+const GAME_VER='3.97',GAME_DATE='13/11/2026 à 13h04';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
