@@ -9554,8 +9554,32 @@ if(T2>9.6&&!S.r1){S.r1=1;try{snd('roar')}catch(e){}}if(T2>11.2&&!S.c){S.c=1;try{
 if(T2>47.5){g.fillStyle='rgba(255,200,150,'+Math.min(.35,(T2-47.5)*.12)+')';g.fillRect(0,0,Wd,420)}
 if(T2>46&&T2<48.5){g.fillStyle='rgba(0,0,0,'+Math.min(1,(T2-46)/1.2)*(1-cl((T2-47.8)/.7))+')';g.fillRect(0,0,Wd,420)}};CS.ours.va54=0}catch(e){}
 setTimeout(()=>{['img/sprites/va410/ours.webp','img/sprites/va410/pin_nuit.webp','img/scenes/va88/ours_nuit.jpg'].forEach(va410Img)},3300);
+// ===== 4.18 : l'ours était une hallucination due au N-12 (source empoisonnée, gourdes, traces de sanglier au réveil) =====
+function va418Bg(src,edge,Wd,gy){const im=va410Img(src);g.fillStyle='#203020';g.fillRect(0,0,Wd,420);if(!im)return;const iw=im.naturalWidth,ih=im.naturalHeight;let s=Math.max(Wd/iw,420/ih,(420-(gy+6))/((1-edge)*ih));const y0=gy+6-edge*ih*s;g.drawImage(im,(Wd-iw*s)/2,Math.min(0,y0),iw*s,ih*s)}
+CS.source={mus:'day',L:()=>[[1,'n','Fin d’après-midi dans la forêt de l’Ospedale. Une source coule d’un rocher.'],[5,'a','On refait le plein des gourdes ? L’eau de montagne, y a pas mieux.'],[9,'m','Tiens, le chien veut pas boire. Il recule.'],[12.5,'a','Il est difficile, ce chien. Allez, à la tienne, ma chérie.'],[16,'m','Elle a un drôle de goût, non ? Un peu… métallique.'],[19.5,'a','C’est le vieux tuyau. Allez, on y va avant la nuit.']],end:23,
+draw:(Wd,gy,T2,tm)=>{va418Bg('img/scenes/va88/source.jpg',.69,Wd,gy);const sx=Wd*.6;
+va410P(sx-30,gy,1,1,T2<15?'crouch':T2<19?'worried':'stand');va410P(sx-80,gy,0,1,T2<12?'talk':'stand');
+va410Dog(Wd*.32+(T2>8.5&&T2<12?-Math.min(1,(T2-8.5))*30:0),gy,T2>8.5&&T2<12?-1:1,T2>8.5&&T2<12?'stand':'sit',tm);
+const gv=(T2>4&&T2<15)?1:0;if(gv){g.fillStyle='#5a7a9a';g.fillRect(sx-12,gy-30,8,14)}try{wxOver(g,Wd,420,tm)}catch(e){}}};
+CS.traces={mus:'worry',L:()=>[[1,'n','Au petit matin. Mila et Andrea reviennent à l’endroit de la nuit.'],[5,'a','Regarde le sol, ma chérie. Il y a des traces partout.'],[9,'m','Des sabots fendus, deux petits ergots… C’est un sanglier. Pas un ours.'],[14,'a','Mais on l’a vu, tous les deux ! Il était énorme, il s’est dressé !'],[18.5,'m','Les gourdes. L’eau de la source avait un goût bizarre… et le chien a refusé d’en boire.'],[24,'m','Je teste avec mon kit… Du N-12. Dans notre eau.'],[28.5,'a','Alors ce truc… il fait voir des choses qui existent pas ?'],[32.5,'m','C’est pour ça que les animaux sont perdus depuis le début. Le N-12 leur brouille le cerveau.'],[38,'a','Et le chien, lui, a vu un vrai sanglier. Il a juste eu peur. On va le retrouver.']],end:43,
+onEnd:()=>{SV.va410=SV.va410||{};SV.va410.traces=1;try{albAdd('traces')}catch(e){}saveTrip()},
+draw:(Wd,gy,T2,tm)=>{va418Bg('img/scenes/va88/traces.jpg',.69,Wd,gy);va410P(Wd*.62,gy,1,-1,T2<9?'stand':T2<14?'crouch':T2<24?'worried':T2<28?'crouch':'talk');va410P(Wd*.72,gy,0,-1,T2<14?'point':T2<18?'surprise':'worried');try{wxOver(g,Wd,420,tm)}catch(e){}}};
+try{Object.assign(DK_LBL,{source:'La source de l’Ospedale',traces:'Les traces de sanglier'})}catch(e){}
+// la source : au ch9, avant l'ours (qui arrive vers 50 %)
+VA410_T.push(['source',8,.25,.47]);
+// l'ours : effets d'hallucination, nouvelles répliques, puis les traces au réveil
+try{const L0=CS.ours.L;CS.ours.L=function(){return L0().map(q=>q[0]===23.4?[23.4,'m','Il… il a disparu. D’un coup, dans la lumière.']:q[0]===26.6?[26.6,'m','Un ours ? En Corse ?! Y en a jamais eu… J’ai la tête qui tourne, Andrea.']:q)};
+const D0=CS.ours.draw;CS.ours.draw=function(Wd,gy,T2,tm){const hal=T2>4&&T2<26?Math.min(1,(T2-4)/2)*(T2>23?Math.max(0,(26-T2)/3):1):0;g.save();if(hal){const w=Math.sin(tm*1.7)*.012*hal;g.transform(1,Math.sin(tm*1.1)*.004*hal,w,1,-w*200,0)}
+const oF=va410F;if(T2>21.5)va410F=function(n,f,cx,by,h,fl){if(n!=='ours')return oF.apply(this,arguments);g.save();g.globalAlpha*=Math.max(0,1-(T2-21.5)/1.6)*(Math.sin(tm*40)>-.3?1:.3);const r=oF(n,3,cx,by,h,0);g.restore();return r};
+try{D0.apply(this,arguments)}finally{va410F=oF;g.restore()}
+if(hal){g.save();g.globalCompositeOperation='lighter';g.globalAlpha=.08*hal;g.translate(Math.sin(tm*2.3)*6,0);g.fillStyle='rgba(120,255,140,1)';g.fillRect(0,0,Wd,420);g.restore();
+const vg=g.createRadialGradient(Wd/2,210,120,Wd/2,210,Wd*.7);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(20,0,30,'+(.55*hal*(.8+.2*Math.sin(tm*3)))+')');g.fillStyle=vg;g.fillRect(0,0,Wd,420)}};CS.ours.va54=0;
+const E0=CS.ours.onEnd;CS.ours.onEnd=function(){E0&&E0.apply(this,arguments);try{if(!(SV.va410&&SV.va410.traces))openCine('traces')}catch(e){}}}catch(e){}
+// tableau d'enquête
+try{VA76_N.push(['hallu',2.5,3,'Le N-12 fait halluciner (l’« ours »)',()=>!!(SV.va410&&SV.va410.traces),['n12','doss']])}catch(e){}
+setTimeout(()=>{['img/scenes/va88/source.jpg','img/scenes/va88/traces.jpg'].forEach(va410Img)},3400);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.17',GAME_DATE='13/11/2026 à 16h48';
+const GAME_VER='4.18',GAME_DATE='13/11/2026 à 16h57';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
