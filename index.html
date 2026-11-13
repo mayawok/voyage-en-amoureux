@@ -9396,8 +9396,39 @@ g.strokeStyle='rgba(255,230,190,.25)';g.lineWidth=3;g.beginPath();g.moveTo(x1,y+
 for(let i=0;i<9;i++){const lx=x0+20+i*(x1-x0-40)/8,ly=y+6+Math.sin(i*1.7)*3,sw=Math.sin(tm*1.6+i)*.12;g.fillStyle=i%2?'#4f9a48':'#3f8a3e';g.beginPath();g.ellipse(lx,ly+6,9,4,.7+i*.4+sw,0,7);g.fill()}g.restore()}
 lbBird=(function(o){return function(x,y,sc,dir,tm,P){const q=window.__va408;if(!q||(P&&P.fly)||!va90Im('inseparables'))return o(x,y,sc,dir,tm,P);if(q.d)return;q.d=1;const T2=q.T2,Wd=q.Wd,cx=Wd*.5,feet=y+15*sc;
 const f=T2<2.5?0:T2<5?1:T2<8?2:T2<12?3:T2<17?4:T2<22?5:T2<29?6:7;va408Branch(cx+150,Wd*.015,feet+2,tm);const H=96,w=H*271/199,br=Math.sin(tm*2)*1.2;va90F(g,'inseparables',f,cx,feet+5+br*.2,w,0)}})(lbBird);
+// ===== 4.09 : navire scientifique L'Albatros et sous-marin en images (planches de l'utilisateur) =====
+const VA409={};function va409I(n){let i=VA409[n];if(!i){i=new Image();i.src='img/sprites/va409_'+n+'.webp';VA409[n]=i}return i.complete&&i.naturalWidth?i:null}
+setTimeout(()=>{va409I('navire');va409I('sousmarin')},2000);
+// f : 0 éteint, 1-2 phares (2 = bulles), 3 bras avec bidon ; ancre au centre du corps
+function va409Sub(x,y,w,f){const im=va409I('sousmarin');if(!im)return false;const cw=im.naturalWidth/4,ch=im.naturalHeight,k=w/cw;g.drawImage(im,f*cw,0,cw,ch,x-cw*.42*k,y-ch*.5*k,cw*k,ch*k);return true}
+subD=(function(o){return function(x,y,s,tm,lit){if(window.__va409off||!va409I('sousmarin'))return o(x,y,s,tm,lit);const f=lit?(Math.sin(tm*3)>0?1:2):0;va409Sub(x,y,118*s/1.5*1.0,f)}})(subD);
+try{const od=CS.sub.draw;CS.sub.draw=function(Wd,gy,T2,tm){const im=va409I('navire');if(window.__va409off||!im||!va409I('sousmarin'))return od.apply(this,arguments);
+const sk=g.createLinearGradient(0,0,0,gy);sk.addColorStop(0,'#7cc3ec');sk.addColorStop(1,'#eaf3f2');g.fillStyle=sk;g.fillRect(0,0,Wd,420);
+{const sg=g.createRadialGradient(Wd*.84,70,4,Wd*.84,70,70);sg.addColorStop(0,'rgba(255,248,210,1)');sg.addColorStop(.35,'rgba(255,236,170,.6)');sg.addColorStop(1,'rgba(255,236,170,0)');g.fillStyle=sg;g.fillRect(Wd*.84-70,0,140,140)}
+for(let i=0;i<4;i++){const cx=((i*300+tm*6)%(Wd+300))-150,cy=38+(i%2)*30;g.fillStyle='rgba(255,255,255,.85)';g.beginPath();g.ellipse(cx,cy,50,11,0,0,7);g.ellipse(cx+26,cy-7,28,10,0,0,7);g.fill()}
+g.fillStyle='#9fb7c8';g.beginPath();g.moveTo(Wd*.62,gy-40);g.quadraticCurveTo(Wd*.78,gy-78,Wd*.9,gy-62);g.quadraticCurveTo(Wd*.96,gy-82,Wd,gy-70);g.lineTo(Wd,gy-40);g.fill();
+const sea=g.createLinearGradient(0,gy-40,0,420);sea.addColorStop(0,'#2f9fc8');sea.addColorStop(1,'#0f4f78');g.fillStyle=sea;g.fillRect(0,gy-40,Wd,420);
+g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=1.5;for(let i=0;i<18;i++){const xx=((i*97+tm*14)%Wd);g.beginPath();g.moveTo(xx,gy-30+(i%5)*22);g.lineTo(xx+18,gy-30+(i%5)*22);g.stroke()}
+const L=Wd*.74,bx=Wd*.16,H=L*im.naturalHeight/im.naturalWidth,wl=gy-22,top=wl-H,bob=Math.sin(tm*1.2)*2,P=(fx,fy)=>[bx+fx*L,top+fy*H];
+const hk=P(.195,.645),beam=P(.195,.314),aft=P(0,.858),fore=P(.86,.72);
+// sous-marin : accroché sous le portique, puis sorti au-dessus de la poupe et descendu dans l'eau
+const sw=T2<23?0:sm(cl((T2-23)/2.5)),low=T2<25.5?0:sm(cl((T2-25.5)/3.5)),ax=hk[0]+(bx-46-hk[0])*sw,ay=beam[1];
+const hangY=hk[1]+26,subY=hangY+low*(gy+30-hangY)+(T2>29?(T2-29)*14:0);
+g.save();g.translate(0,bob);
+// la partie sous l'eau (sous-marin qui plonge) est dessinée avant le navire, découpée sous la surface
+g.save();g.beginPath();g.rect(0,gy-40,Wd,500);g.clip();if(subY>gy-60){g.globalAlpha=.85;va409Sub(ax,subY,104,T2>29?1:0);g.globalAlpha=1}g.restore();
+g.drawImage(im,bx,top,L,H);
+g.fillStyle='rgba(255,255,255,.55)';g.beginPath();g.ellipse(bx+L*.98,wl+2,22,4,0,0,7);g.fill();
+g.strokeStyle='#2a2a2a';g.lineWidth=1.6;g.beginPath();g.moveTo(ax,ay);g.lineTo(ax,Math.min(subY-30,gy-40));g.stroke();
+if(sw>0){g.lineCap='round';g.strokeStyle='#c9501f';g.lineWidth=7;g.beginPath();g.moveTo(beam[0],beam[1]);g.lineTo(ax,ay);g.stroke();g.strokeStyle='#f07a2c';g.lineWidth=4;g.stroke();g.fillStyle='#444';g.beginPath();g.arc(ax,ay,4,0,7);g.fill();g.lineCap='butt'}
+if(subY<=gy-40){va409Sub(ax,subY,104,0)}
+if(T2>28.5){g.fillStyle='rgba(255,255,255,.75)';for(let i=0;i<8;i++){const u=((tm*1.5+i/8)%1);g.beginPath();g.arc(ax-30+i*8,gy-38-u*18,2+u*2,0,7);g.fill()}}
+// Cherokee sur le pont avant, l'équipage sur le pont arrière
+grp(fore[0],fore[1],.62,()=>{try{cherokeeSide(fore[0],fore[1],0)}catch(e){}});
+grp(bx+L*.33,aft[1],1,()=>{if(T2<21){try{person(bx+L*.335,aft[1],1,{f:-1,a1:.4});person(bx+L*.36,aft[1],0,{f:-1,a1:.3})}catch(e){}}try{npcFig(bx+L*.3,aft[1]+4,['#e8622c','#1d3a5c',1,'#2a1d14',0,0,1],T2>5&&T2<20,tm)}catch(e){}});
+g.restore();try{wxOver(g,Wd,420,tm)}catch(e){}}}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.08',GAME_DATE='13/11/2026 à 13h42';
+const GAME_VER='4.09',GAME_DATE='13/11/2026 à 14h46';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
