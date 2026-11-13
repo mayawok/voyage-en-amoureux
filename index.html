@@ -4935,7 +4935,7 @@ bedW(u,z){const T2=M.T||M.trailer(),c2=Math.cos(T2.th),s2=Math.sin(T2.th),lx=u-3
 end(r){M.res=r;M.gas=0;M.brk=0;if(r==='win'){snd('chime');vib(40)}else snd('click');M.ui()},
 tick(dt){if(!(dt>0))return;M.t+=dt;const n=4;for(let i=0;i<n;i++){if(M.res==='win'){M.gas=0;M.brk=1}M.step(dt/n)}if(M.msgT>0)M.msgT-=dt;M.cam+=((M.x-440)-M.cam)*Math.min(1,dt*4);{const ty=Math.max(-60,M.y-285);if(M.camY==null)M.camY=ty;M.camY+=(ty-M.camY)*Math.min(1,dt*5)}},
 draw(x,tm){const G=M.G,cx=M.cam;const sk=x.createLinearGradient(0,0,0,450);sk.addColorStop(0,'#8fc6e8');sk.addColorStop(1,'#eef0dc');x.fillStyle=sk;x.fillRect(-400,-200,1600,900);
-x.fillStyle='#a9bca0';x.beginPath();x.moveTo(-400,450);for(let i=-400;i<=1200;i+=30)x.lineTo(i,240-30*Math.sin((i+cx*.2)*.008)-18*Math.sin((i+cx*.2)*.021));x.lineTo(1200,450);x.fill();
+if(!(typeof va91Im==='function'&&va91Im('remorque')&&!window.__va91off)){x.fillStyle='#a9bca0';x.beginPath();x.moveTo(-400,450);for(let i=-400;i<=1200;i+=30)x.lineTo(i,240-30*Math.sin((i+cx*.2)*.008)-18*Math.sin((i+cx*.2)*.021));x.lineTo(1200,450);x.fill();}
 const cy=M.camY||0;x.save();x.translate(-cx,-cy);
 const x0=cx-420,x1=cx+1220;x.fillStyle='#8a6a42';x.beginPath();x.moveTo(x0,cy+800);for(let X=x0;X<=x1;X+=8)x.lineTo(X,G.H(X));x.lineTo(x1,cy+800);x.fill();x.strokeStyle='#6f8f3a';x.lineWidth=4;x.beginPath();for(let X=x0;X<=x1;X+=8)X===x0?x.moveTo(X,G.H(X)):x.lineTo(X,G.H(X));x.stroke();
 for(const z of G.mud){if(z[1]<x0||z[0]>x1)continue;x.strokeStyle='#4a3420';x.lineWidth=9;x.beginPath();for(let X=z[0];X<=z[1];X+=8)X===z[0]?x.moveTo(X,G.H(X)+2):x.lineTo(X,G.H(X)+2);x.stroke();x.fillStyle='#3a2816';for(let X=z[0];X<z[1];X+=23)x.fillRect(X,G.H(X)-2,6,3)}
@@ -9262,7 +9262,7 @@ function va90Im(n){let i=VA90I[n];if(!i){i=new Image();i.src='img/sprites/va90/'
 function va90F(x,n,f,cx,by,w,mid){const M=VA90M[n],im=va90Im(n);if(!M||!im)return false;const cw=im.naturalWidth/M[0],ch=im.naturalHeight,h=w*ch/cw,i=((f%M[0])+M[0])%M[0];x.drawImage(im,i*cw,0,cw,ch,cx-w/2,mid?by-h/2:by-h,w,h);return true}
 // animaux : en mouvement ('w'), le cheval marche au pas, les bêtes sauvages courent
 const VA90A={cheval:['cheval_p',7,1.05],mouflon:['mouflon',11,1.15],cerf:['cerf',10,1.2],sanglier:['sanglier',12,1.1],renard:['renard',12,1.2],chevre:['chevre',11,1.1],lievre:['lievre',12,1.25]};
-try{va31Draw=(function(o){return function(x,id,t){try{const q=VA90A[id],T0=VA31T[id];if(q&&T0&&window.__anP==='w'&&!(VA25.dk>.2)&&!window.__va90off){const gal=id==='cheval'&&window.__anG,n=gal?'cheval_g':q[0],w=(T0.x1-T0.x0)*q[2];if(va90F(x,n,Math.floor((t||0)*(gal?13:q[1])+(window.__anS||0)*3),(T0.x0+T0.x1)/2,T0.b+2,w))return true}}catch(e){}return o(x,id,t)}})(va31Draw)}catch(e){}
+try{va31Draw=(function(o){return function(x,id,t){try{const q=VA90A[id],T0=VA31T[id];if(q&&T0&&window.__anP==='w'&&!(VA25.dk>.2)&&!window.__va90off){const gal=id==='cheval'&&(window.__anG||chIdx()===9),n=gal?'cheval_g':q[0],w=(T0.x1-T0.x0)*q[2];if(va90F(x,n,Math.floor((t||0)*(gal?13:q[1])+(window.__anS||0)*3),(T0.x0+T0.x1)/2,T0.b+2,w))return true}}catch(e){}return o(x,id,t)}})(va31Draw)}catch(e){}
 // oiseaux du ciel : goélands, hirondelles, aigle en vol battu
 try{BD.push(['h',71,.26,.52,.6,.28],['h',73,.28,.545,.55,.28],['h',70,.24,.56,.5,.28],['g',31,.21,.5,.9,.14]);
  bird=(function(o){return function(t,x,y,s,tm){if(window.__va90off)return o(t,x,y,s,tm);const n=t==='h'?'hirondelle':t==='a'?'aigle':'goeland',fps=t==='h'?14:t==='a'?2.2:6,w=(t==='h'?24:t==='a'?58:40)*s;
@@ -9299,6 +9299,6 @@ try{pzOpen=(function(o){return function(k){const r=o.apply(this,arguments);try{c
 setTimeout(()=>{try{for(const n of['pont','enclos','plantes','bouchon','remorque','cheval','touristes','bateau','sousmarin','fioles'])va91Im(n)}catch(e){}},9000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.91',GAME_DATE='13/11/2026 à 11h35';
+const GAME_VER='3.92',GAME_DATE='13/11/2026 à 11h37';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
