@@ -5436,7 +5436,7 @@ const VEND={marcel:{},
 casgiu:{n:'U CASGIU',sub:'FROMAGERIE',who:'Ghjulia, la fromagère',aw:['#f2e3b0','#7a5a2a'],lk:['#f4f4f0','#5a4a3a',0,'#7a4a2a',0,0,1],it:[['brocciu','🧀','Brocciu frais',3],['tomme','🧀','Tomme de brebis',4],['fiadone','🎂','Fiadone',5]],
 hi:['Une fromagerie ! Du brocciu frais, on s’arrête ?','Regarde, U Casgiu ! Je veux goûter la tomme de brebis.'],line:['Bonghjornu ! Le brocciu est du matin même.','Goûtez la tomme, elle a six mois de cave.','Le fiadone, c’est la recette de ma grand-mère.']},
 salumu:{n:'U SALUMU',sub:'CHARCUTERIE',who:'Petru, le charcutier',aw:['#8a2a24','#f4e9c8'],lk:['#f4f4f0','#3a2a24',1,'#2a1a10',1,0,0],it:[['figatellu','🌭','Figatellu grillé',3],['lonzu','🥓','Lonzu',4],['coppa','🥩','Coppa et pain',5]],
-hi:['Une charcuterie corse ! Pas pour toi, Andrea… mais moi, un figatellu grillé, je ne dis pas non.','U Salumu… ça sent le figatellu au feu de bois. Toi, mon végétarien, tu me regardes manger ?'],line:['Salute ! Le figatellu sort de la braise.','Le lonzu, c’est du cochon nourri aux châtaignes.','Coppa, pain de campagne : le repas du randonneur.']},
+hi:['Une charcuterie corse ! Pas pour toi, Andrea… mais moi, un figatellu grillé, je ne dis pas non.','U Salumu… ça sent le figatellu au feu de bois. Toi, tu me regardes manger, mon cœur ?'],line:['Salute ! Le figatellu sort de la braise.','Le lonzu, c’est du cochon nourri aux châtaignes.','Coppa, pain de campagne : le repas du randonneur.']},
 canistrelli:{n:'CANISTRELLI',sub:'BISCUITERIE',who:'Maria, la pâtissière',aw:['#f2a83a','#fff6e0'],lk:['#f6e2c8','#8a3a2a',0,'#3a2a1a',0,0,1],it:[['canistr','🍪','Canistrelli au citron',2],['beignet','🍩','Beignets au brocciu',3],['falculelle','🎂','Falculelle',4]],
 hi:['Des canistrelli ! Il faut absolument s’arrêter.','Une biscuiterie… je sens le citron d’ici !'],line:['Bonghjornu ! Canistrelli à l’anis ou au citron ?','Les beignets sont encore chauds.','La falculelle, on la cuit sur une feuille de châtaignier.']},
 castagna:{n:'A CASTAGNA',sub:'CHÂTAIGNES',who:'Ghjuvanni, le castanéiculteur',aw:['#6b4a2a','#e8d8b0'],lk:['#6b8a4a','#4a3a2a',3,'#5a3a20',1,2,0],it:[['castagne','🌰','Châtaignes grillées',2],['pulenda','🍞','Pulenda',4],['cremamarr','🍯','Crème de châtaigne',5]],
@@ -8424,15 +8424,15 @@ va54Gate();
 lights=(function(o){return function(){if(window.__va54off)return o();try{g.setTransform(DPR*S,0,0,DPR*S,DPR*scr.ox,DPR*scr.oy);const x0=-scr.ox/S-40,x1=(W-scr.ox)/S+40;g.save();g.beginPath();g.moveTo(x0,-1e5);for(let xx=x0;xx<=x1+20;xx+=20)g.lineTo(xx,T(xx)+5);g.lineTo(x1+20,-1e5);g.closePath();g.clip();try{o()}finally{g.restore()}}catch(e){try{o()}catch(e2){}}}})(lights);
 
 // ===== 3.54 (suite) : tableau de bord refait (console cuir, pédales en métal, compteur à aiguille, levier, icônes, pompe, panier, profil de route) =====
-function va54Console(){const x=dg,b=Zn.brake,gz=Zn.cruise||Zn.gas,X0=b.x-7,X1=gz.x+gz.w+7,Y0=b.y-7,Y1=HH+4,nt=Adark>.3;
- x.save();rr(x,X0,Y0,X1-X0,Y1-Y0,20);const gr=x.createLinearGradient(0,Y0,0,Y1);gr.addColorStop(0,'rgba(70,50,36,.82)');gr.addColorStop(1,'rgba(30,20,14,.9)');x.fillStyle=gr;x.fill();
+function va54Console(){const x=dg,b=Zn.brake,gz=Zn.gas,X0=b.x+b.w+6,X1=gz.x-6,Y0=b.y-7,Y1=HH+4,nt=Adark>.3;
+ x.save();rr(x,X0,Y0,X1-X0,Y1-Y0,20);const gr=x.createLinearGradient(0,Y0,0,Y1);gr.addColorStop(0,'rgba(70,50,36,.5)');gr.addColorStop(1,'rgba(30,20,14,.58)');x.fillStyle=gr;x.fill();
  // grain du cuir
  x.save();x.clip();x.globalAlpha=.07;x.fillStyle='#fff';for(let i=0;i<140;i++){const u=hh2(i*3.1),v2=hh2(i*7.7);x.fillRect(X0+u*(X1-X0),Y0+v2*(Y1-Y0),1.2,1.2)}x.restore();
  // liseré chromé en haut + couture
  x.strokeStyle='rgba(235,225,210,.55)';x.lineWidth=1.6;rr(x,X0,Y0,X1-X0,Y1-Y0,20);x.stroke();
  x.setLineDash([4,3]);x.strokeStyle='rgba(225,190,140,.45)';x.lineWidth=1;rr(x,X0+5,Y0+5,X1-X0-10,Y1-Y0-8,15);x.stroke();x.setLineDash([]);
  // rétroéclairage la nuit
- if(nt){const gl=x.createLinearGradient(0,Y0,0,Y0+30);gl.addColorStop(0,'rgba(255,150,60,.28)');gl.addColorStop(1,'rgba(255,150,60,0)');x.fillStyle=gl;rr(x,X0+2,Y0+2,X1-X0-4,30,18);x.fill()}
+ if(false&&nt){const gl=x.createLinearGradient(0,Y0,0,Y0+30);gl.addColorStop(0,'rgba(255,150,60,.28)');gl.addColorStop(1,'rgba(255,150,60,0)');x.fillStyle=gl;rr(x,X0+2,Y0+2,X1-X0-4,30,18);x.fill()}
  // gouttes sous la pluie
  try{if(rainNow()){x.fillStyle='rgba(200,225,255,.45)';for(let i=0;i<18;i++){const u=hh2(i*5.3+1),v2=hh2(i*9.1+2);const px=X0+12+u*(X1-X0-24),py=Y0+6+v2*(Y1-Y0-14);x.beginPath();x.ellipse(px,py,1.6,2.2,0,0,7);x.fill();x.fillStyle='rgba(255,255,255,.6)';x.fillRect(px-.6,py-1.2,.9,.9);x.fillStyle='rgba(200,225,255,.45)'}}}catch(e){}
  x.restore()}
@@ -9259,10 +9259,10 @@ try{cherokeeSide=(function(o){return function(cx,cy,hood){if(!(SV&&SV.cus&&SV.cu
 const VA90M={"cheval_g":[8,221,129],"cheval_p":[8,214,143],"goeland":[6,295,300],"hirondelle":[6,256,300],"aigle":[4,427,300],"mouflon":[6,329,182],"cerf":[6,339,211],"sanglier":[6,314,152],"renard":[6,297,139],"chevre":[6,315,188],"lievre":[6,334,186]},VA90I={};
 function va90Im(n){let i=VA90I[n];if(!i){i=new Image();i.src='img/sprites/va90/'+n+'.webp';VA90I[n]=i}return i.complete&&i.naturalWidth?i:null}
 // dessine la pose f de la bande n, centrée en cx, pied à by, largeur w (une pose)
-function va90F(x,n,f,cx,by,w,mid){const M=VA90M[n],im=va90Im(n);if(!M||!im)return false;const cw=im.naturalWidth/M[0],ch=im.naturalHeight,h=w*ch/cw,i=((f%M[0])+M[0])%M[0];x.drawImage(im,i*cw,0,cw,ch,cx-w/2,mid?by-h/2:by-h,w,h);return true}
+function va90F(x,n,f,cx,by,w,mid){const M=VA90M[n],im=va90Im(n);if(!M||!im)return false;const cw=im.naturalWidth/M[0],ch=im.naturalHeight,h=w*ch/cw,i=((f%M[0])+M[0])%M[0];const d=va402Dk();if(d>0){x.save();x.filter='brightness('+(1-d*.8).toFixed(2)+')'}x.drawImage(im,i*cw,0,cw,ch,cx-w/2,mid?by-h/2:by-h,w,h);if(d>0)x.restore();return true}
 // animaux : en mouvement ('w'), le cheval marche au pas, les bêtes sauvages courent
 const VA90A={cheval:['cheval_p',7,1.05],mouflon:['mouflon',11,1.15],cerf:['cerf',10,1.2],sanglier:['sanglier',12,1.1],renard:['renard',12,1.2],chevre:['chevre',11,1.1],lievre:['lievre',12,1.25]};
-try{va31Draw=(function(o){return function(x,id,t){try{const q=VA90A[id],T0=VA31T[id];if(q&&T0&&window.__anP==='w'&&!(VA25.dk>.2)&&!window.__va90off){const gal=id==='cheval'&&(window.__anG||chIdx()===9),n=gal?'cheval_g':q[0],w=(T0.x1-T0.x0)*q[2];if(va90F(x,n,Math.floor((t||0)*(gal?13:q[1])+(window.__anS||0)*3),(T0.x0+T0.x1)/2,T0.b+2,w))return true}}catch(e){}return o(x,id,t)}})(va31Draw)}catch(e){}
+try{va31Draw=(function(o){return function(x,id,t){try{const q=VA90A[id],T0=VA31T[id];if(q&&T0&&window.__anP==='w'&&!window.__va90off){const gal=id==='cheval'&&(window.__anG||chIdx()===9),n=gal?'cheval_g':q[0],w=(T0.x1-T0.x0)*q[2];if(va90F(x,n,Math.floor((t||0)*(gal?13:q[1])+(window.__anS||0)*3),(T0.x0+T0.x1)/2,T0.b+2,w))return true}}catch(e){}return o(x,id,t)}})(va31Draw)}catch(e){}
 // oiseaux du ciel : goélands, hirondelles, aigle en vol battu
 try{BD.push(['h',71,.26,.52,.6,.28],['h',73,.28,.545,.55,.28],['h',70,.24,.56,.5,.28],['g',31,.21,.5,.9,.14]);
  bird=(function(o){return function(t,x,y,s,tm){if(window.__va90off)return o(t,x,y,s,tm);const n=t==='h'?'hirondelle':t==='a'?'aigle':'goeland',fps=t==='h'?14:t==='a'?2.2:6,w=(t==='h'?24:t==='a'?58:40)*s;
@@ -9321,7 +9321,7 @@ try{Object.assign(VA90M,{"vache_m":[8,211,128],"mouton_m":[8,213,125],"ane_m":[8
  Object.assign(VA25_TXN,{0:'prairie',1:'sable',2:'piste',3:'rocaille',4:'rocaille',5:'sable',6:'prairie',7:'rocaille',8:'piste',9:'tourbe',10:'route',11:'prairie'});
  // animaux de ferme qui marchent
  Object.assign(VA90A,{vache:['vache_m',7,1.1],ane:['ane_m',7,1.1],chevre:['chevre_m',8,1.1]});
- sheep=(function(o){return function(x,y,s,bn,dk){try{if(bn>0&&!dk&&!(VA25.dk>.2)&&!window.__va90off&&va90Im('mouton_m')){if(va90F(g,'mouton_m',Math.floor(tm*8+x*.01),x,y+3*s,40*s))return}}catch(e){}return o(x,y,s,bn,dk)}})(sheep);
+ sheep=(function(o){return function(x,y,s,bn,dk){try{if(bn>0&&!dk&&!window.__va90off&&va90Im('mouton_m')){if(va90F(g,'mouton_m',Math.floor(tm*8+x*.01),x,y+3*s,40*s))return}}catch(e){}return o(x,y,s,bn,dk)}})(sheep);
  // Mila et Andrea qui marchent (8 poses)
  va36Draw=(function(o){return function(x,y,k,p){try{const ps=va36Pose(k,x,p);if(/^walk/.test(ps)&&!window.__va95off){const n=k?'mila_m':'andrea_m';if(va90Im(n)){const H=k?56:60,M=VA90M[n],w=H*M[1]/M[2];if(va90F(g,n,Math.floor(performance.now()/105),x,y,w))return true}}}catch(e){}return o(x,y,k,p)}})(va36Draw);
  // bâtiments du bord de route
@@ -9349,11 +9349,29 @@ try{const va401Ok=k=>{const px=k*75+hs(k+900)*40;return sceneAt(px)===1&&Z(px)[3
 try{VA25_L.forEach(L=>{for(let i=0;i<L.length;i++)if(/^maison/.test(L[i]))L[i]=i%2?'olivier':'chataignier'})}catch(e){}
 // cochons qui marchent et coq + poule qui se promènent (planches 8 poses)
 try{const va401F=(n,f,cx,by,w,fl)=>{if(!va90Im(n))return false;g.save();g.translate(cx,0);if(fl<0)g.scale(-1,1);const r=va90F(g,n,f,0,by,w);g.restore();return r};
- va46Pigs=(function(o){return function(x,y,tm,j,n){if(window.__va90off||!va90Im('cochon_m')||VA25.dk>.2)return o(x,y,tm,j,n);for(let i=0;i<n;i++){const ph=((tm*.07+i*.31+j*.17)%1+1)%1,d=(i+j)%2?1:-1,px=x+(i%2?1:-1)*(22+i*12)+Math.sin(tm*.35+i*2+j)*14;
+ va46Pigs=(function(o){return function(x,y,tm,j,n){if(window.__va90off||!va90Im('cochon_m'))return o(x,y,tm,j,n);for(let i=0;i<n;i++){const ph=((tm*.07+i*.31+j*.17)%1+1)%1,d=(i+j)%2?1:-1,px=x+(i%2?1:-1)*(22+i*12)+Math.sin(tm*.35+i*2+j)*14;
   if(ph<.45&&!va401F('cochon_m',0,px,y+2,30,d))return o(x,y,tm,j,n);if(ph>=.45)va401F('cochon_m',Math.floor(tm*7+i*3),px,y+2,30,Math.cos(tm*.35+i*2+j)>=0?1:-1)}}})(va46Pigs);
- va46Hens=(function(o){return function(x,y,tm,j){if(window.__va90off||!va90Im('poules_m')||VA25.dk>.2)return o(x,y,tm,j);const sw=Math.sin(tm*.3+j),d=Math.cos(tm*.3+j)>=0?1:-1;va401F('poules_m',Math.abs(Math.cos(tm*.3+j))>.15?Math.floor(tm*6+j):0,x-30+sw*16,y+2,34,d);try{va46An('poule_0',x+32+Math.sin(tm*.4+j)*4,y+1,9,1)}catch(e){}}})(va46Hens)}catch(e){}
+ va46Hens=(function(o){return function(x,y,tm,j){if(window.__va90off||!va90Im('poules_m'))return o(x,y,tm,j);const sw=Math.sin(tm*.3+j),d=Math.cos(tm*.3+j)>=0?1:-1;va401F('poules_m',Math.abs(Math.cos(tm*.3+j))>.15?Math.floor(tm*6+j):0,x-30+sw*16,y+2,34,d);try{va46An('poule_0',x+32+Math.sin(tm*.4+j)*4,y+1,9,1)}catch(e){}}})(va46Hens)}catch(e){}
+// ===== 4.02 : hôtel et camping en images, grotte peinte, tour de jour à la finale, animaux assombris la nuit =====
+const VA402={};function va402I(n,p){if(!VA402[n]){const i=new Image();i.src=p;VA402[n]=i}const i=VA402[n];return i.complete&&i.naturalWidth?i:null}
+function va402Dk(){try{return Math.max(0,Math.min(.75,(VA25&&VA25.dk)||0))}catch(e){return 0}}
+function va402Put(im,cx,by,w){const h=w*im.naturalHeight/im.naturalWidth,d=va402Dk();g.save();if(d>0)g.filter='brightness('+(1-d*.8).toFixed(2)+') saturate('+(1-d*.5).toFixed(2)+')';g.drawImage(im,cx-w/2,by-h,w,h);g.restore();return h}
+hotelDraw=(function(o){return function(m,tm,arr,tx,fx,y){const im=va402I('h','img/sprites/va402_hotel.webp');if(!im||window.__va402off)return o(m,tm,arr,tx,fx,y);const hx=m.x+140,h=va402Put(im,hx,y+4,250);
+g.fillStyle='#233a2a';g.font='900 13px "Arial Black",Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('HÔTEL',hx+2,y+4-h*.51);g.textBaseline='alphabetic';
+if(isDark()){g.fillStyle='rgba(255,210,120,.28)';for(const dx of[-.135,.135]){g.beginPath();g.arc(hx+dx*250,y+4-h*.33,16,0,7);g.fill()}}}})(hotelDraw);
+camp=(function(o){return function(m,tm){const im=va402I('c','img/sprites/va402_camping.webp');if(!im||window.__va402off||m.car||m.hotel||(night&&night.m===m))return o(m,tm);if(chIdx()===0)churchDraw(m.x+330,T(m.x+330));const y=m.y,cx=m.x+150,w=330,h=va402Put(im,cx,y+6,w);
+g.fillStyle='#233a2a';g.font='900 10px "Arial Black",Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('CAMPING',cx-w*.31,y+6-h*.66);g.textBaseline='alphabetic';
+if(isDark()){g.fillStyle='rgba(255,220,130,.5)';for(let i=0;i<10;i++){g.beginPath();g.arc(cx-w*.09+i*w*.039,y+6-h*.6+Math.sin(i/9*Math.PI)*h*.06,2.2,0,7);g.fill()}}}})(camp);
+caveBack=(function(o){return function(x0,x1,yb){o(x0,x1,yb);try{const G=cvVis(x0,x1),im=va402I('g','img/scenes/va88/grotte.jpg');if(!G||!im||window.__va402off)return;const top=cvTop(),ia=Math.max(x0-20,G.a+60),ib=Math.min(x1+20,G.b-60);if(ib<=ia)return;
+g.save();g.beginPath();g.moveTo(ia,yb+40);for(let x=ia;x<=ib;x+=16)g.lineTo(x,Math.max(top,cvCeil(x)-30));g.lineTo(ib,yb+40);g.closePath();g.clip();const hh=yb+40-top,ww=hh*im.naturalWidth/im.naturalHeight,off=(x0*.4)%ww;g.globalAlpha=.85;for(let x=x0-off-ww;x<x1+ww;x+=ww)g.drawImage(im,x,top,ww,hh);g.restore();
+const tm=performance.now()/1000;for(const q of G.cr){if(q.x<x0-60||q.x>x1+60||q.h<20)continue;crystal(q.x,T(q.x)-q.h,q.col,q.s,tm)}}catch(e){}}})(caveBack);
+fnTick=(function(o){return function(t){const im=va402I('t','img/scenes/va88/tour_j.jpg');if(!fn||fn.t<15||!im||window.__va402off)return o(t);const F=g.fill,FR=g.fillRect;let st=0;
+g.fillRect=function(x,y,w,h){if(st===0&&x===0&&y===0&&h>=420){st=1;const k=HH/420,Wd=W/k,s=Math.max(Wd/im.naturalWidth,420/im.naturalHeight);return g.drawImage(im,(Wd-im.naturalWidth*s)/2,(420-im.naturalHeight*s)*.75,im.naturalWidth*s,im.naturalHeight*s)}if(st===3&&y>300&&w>200){st=4;return}return FR.apply(g,arguments)};
+g.fill=function(){if(st===1||st===2){st++;return}return F.apply(g,arguments)};try{o(t)}finally{g.fill=F;g.fillRect=FR}}})(fnTick);
+try{const st=document.createElement('style');st.textContent='#dash.nt{filter:none!important}#dash{opacity:.85}';document.head.appendChild(st)}catch(e){}
+setTimeout(()=>{try{va402I('h','img/sprites/va402_hotel.webp');va402I('c','img/sprites/va402_camping.webp');va402I('g','img/scenes/va88/grotte.jpg');va402I('t','img/scenes/va88/tour_j.jpg')}catch(e){}},3000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.01',GAME_DATE='13/11/2026 à 13h18';
+const GAME_VER='4.02',GAME_DATE='13/11/2026 à 13h29';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
