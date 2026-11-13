@@ -4405,8 +4405,8 @@ r.push(['⬆️ Hauteur de suspension','gratuit · plus haut = passe mieux, mais
 r.push(['⚫ Taille des pneus','plus d’adhérence et de garde au sol',[[0,'31″',0],[1,'33″',15],[2,'35″',40]].map(q=>['tire',q[0],q[1],q[0]<=C.wMax?0:(q[0]===C.wMax+1?q[2]:-1),SV.up.wheel===q[0]])]);
 r.push(['🫧 Pression des pneus','gratuit · basse = le pneu s’écrase, plus d’adhérence, un peu moins vite',[[0,'Normale'],[1,'Basse']].map(q=>['psi',q[0],q[1],0,C.psi===q[0]])]);
 r.push(['🛞 Modèle de jantes','6 ❤ par modèle, ensuite gratuit',CUS_RIMM.map((n,i)=>['rimM',i,n,(i===0||o['rim'+i])?0:6,C.rimM===i])]);
-r.push(['🎨 Couleur des jantes','2 ❤ le changement',CUS_RIMC.map(q=>['rimC',q[1],q[0],q[1]===C.rimC?0:2,q[1]===C.rimC,'sw'])]);
-r.push(['🚙 Couleur de carrosserie','3 ❤ le changement',CUS_BODY.map(q=>['body',q[1],q[0],q[1]===C.body?0:3,q[1]===C.body,'sw'])]);
+r.push(['🎨 Couleur des jantes','Gratuit',CUS_RIMC.map(q=>['rimC',q[1],q[0],0,q[1]===C.rimC,'sw'])]);
+r.push(['🚙 Couleur de carrosserie','Gratuit',CUS_BODY.map(q=>['body',q[1],q[0],0,q[1]===C.body,'sw'])]);
 r.push(['💡 Phares','',[['blanc','Blancs',0],['jaune','Jaunes',o.head_y?0:4]].map(q=>['head',q[0],q[1],q[2],C.head===q[0]])]);
 r.push(['🔦 Rampe LED sur le toit','30 ❤ une fois, puis couleur au choix',[['off','Aucune',0]].concat([['blanc','Blanche'],['bleu','Bleue'],['jaune','Jaune']].map(q=>[q[0],q[1],o.led?0:30])).map(q=>['led',q[0],q[1],q[2],q[0]==='off'?!SV.one.led:(SV.one.led&&C.ledC===q[0])])]);
 r.push(['🧳 Sur le toit','',[['','Rien',0],['jerry','Bidons',o.roof_jerry?0:6],['tent','Tente de toit',o.roof_tent?0:12]].map(q=>['roof',q[0],q[1],q[2],C.roof===q[0]])]);
@@ -4421,8 +4421,8 @@ if(k==='susp'){SV.up.susp=+v;snd('click')}
 else if(k==='tire'){v=+v;if(v>C.wMax+1){cusMsg='Prends d’abord la taille au-dessous';cusRender();return}if(v>C.wMax){if(!cusPay(v===1?15:40)){cusRender();return}C.wMax=v}SV.up.wheel=v}
 else if(k==='psi'){C.psi=+v;snd('click')}
 else if(k==='rimM'){v=+v;if(v&&!o['rim'+v]){if(!cusPay(6)){cusRender();return}o['rim'+v]=1}C.rimM=v}
-else if(k==='rimC'){if(v!==C.rimC){if(!cusPay(2)){cusRender();return}C.rimC=v}}
-else if(k==='body'){if(v!==C.body){if(!cusPay(3)){cusRender();return}C.body=v}}
+else if(k==='rimC'){if(v!==C.rimC){C.rimC=v}}
+else if(k==='body'){if(v!==C.body){C.body=v}}
 else if(k==='head'){if(v==='jaune'&&!o.head_y){if(!cusPay(4)){cusRender();return}o.head_y=1}C.head=v}
 else if(k==='led'){if(v==='off')SV.one.led=0;else{if(!o.led){if(!cusPay(30)){cusRender();return}o.led=1}SV.one.led=1;C.ledC=v}}
 else if(k==='roof'){const kk='roof_'+v;if(v&&!o[kk]){if(!cusPay(v==='tent'?12:6)){cusRender();return}o[kk]=1}C.roof=v}
@@ -6061,7 +6061,7 @@ const AIDE=[
   ['🧺','Pique-nique','Aux aires de pique-nique, Mila propose de s’arrêter manger : la faim remonte.'],
   ['🔧','Pièces du garage','À l’atelier Corse 4x4 : blocage de différentiel (boue), pare-buffle (troncs), snorkel (gués), sabots (rocaille).'],
   ['🎨','Peinture Nostrale','Souvent à côté de Corse 4x4 : couleur de carrosserie, couleur des jantes et livrées rares (avec leur défi). Les jantes se peignent aussi chez Corse 4x4.'],
-  ['✨','Livrées rares','17 livrées au magasin Peinture Nostrale (30 ❤) ou gratuites avec un défi (boue, photos, troupeaux, animaux aidés, obstacles brisés, surpuissances, pique-niques, pièces du garage, nuit, chapitres atteints). Touche une livrée verrouillée pour voir son défi.'],
+  ['✨','Livrées rares','25 livrées au magasin Peinture Nostrale (30 ❤) ou gratuites avec un défi (boue, photos, troupeaux, animaux aidés, obstacles brisés, surpuissances, pique-niques, pièces du garage, nuit, chapitres atteints). Touche une livrée verrouillée pour voir son défi.'],
   ['💾','Sauvegarde','Dans le menu, « Sauvegarde de secours » garde ton voyage en lieu sûr.']]]];
 (function(){const st=document.createElement('style');st.textContent=`#aide{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(10,6,4,.72);padding:10px;box-sizing:border-box}
 #aide .aw{width:min(820px,96vw);max-height:calc(100vh - 20px);display:flex;flex-direction:column;background:#2b2018;color:#f6ead6;border-radius:18px;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 40px rgba(0,0,0,.5);box-sizing:border-box;overflow:hidden}
@@ -9744,8 +9744,50 @@ va29Body=(function(o){return function(tm){const k=SV.cus&&SV.cus.skin;if(!k||!VA
 // ===== 4.23 : plus de couleurs de carrosserie et de jantes =====
 CUS_BODY.push(['Rouge vif','#b3121c'],['Bleu Corse','#2a6fb0'],['Bleu ciel','#7fb2d8'],['Bleu pétrole','#1d4f5a'],['Turquoise','#1f9aa0'],['Vert jungle','#2e7a3a'],['Vert olive','#556b2f'],['Vert menthe','#8fc9a8'],['Gris anthracite','#3a3d42'],['Argent','#b8bcc2'],['Champagne','#cbb68a'],['Crème','#efe6cc'],['Chocolat','#4a2e1e'],['Cuivre','#b06a3a'],['Jaune moutarde','#c99a2e'],['Corail','#e86a50'],['Rose poudré','#d9a0a8'],['Prune','#5a2440']);
 CUS_RIMC.push(['Gris acier','#4a4e54'],['Chrome','#e4e8ee'],['Champagne','#cbb68a'],['Cuivre','#b06a3a'],['Bleu','#2a5fb0'],['Turquoise','#1f9aa0'],['Vert','#3a7a3a'],['Kaki','#6b6a3a'],['Jaune','#e8c22a'],['Orange','#e0701e'],['Rose','#e08aa0'],['Violet','#6a3a9a']);
+// ===== 4.24 : 8 livrées de plus (tigre, vache, graffiti, flammes, mosaïque corse, maquis en fleurs, cœurs, expédition polaire) =====
+SKINS.push(
+ ['tigre','Tigre','30 surpuissances',a=>a.boost||0,30],
+ ['vache','Vache','15 troupeaux klaxonnés',a=>a.herd||0,15],
+ ['graf','Graffiti','12 troncs ou éboulis brisés',a=>a.smash||0,12],
+ ['flam','Flammes','Arriver au chapitre 4',a=>(typeof level!=='undefined'?level:0),4],
+ ['mosa','Mosaïque corse','Prendre 10 photos souvenirs',a=>a.ph||0,10],
+ ['maquis','Maquis en fleurs','Faire 5 pique-niques',a=>a.pic||0,5],
+ ['coeur','Cœurs','Aider 15 animaux',a=>(SV.help||0),15],
+ ['polar','Expédition polaire','Rouler 20 minutes de nuit',a=>Math.floor((a.night||0)/60),20]);
+Object.assign(VA13_SKC,{tigre:'#1c1c1e',vache:'#1c1c1e',graf:'#2b2c30',flam:'#1c1c1e',mosa:'#1d4f9a',maquis:'#3e5e2e',coeur:'#d94a78',polar:'#e8761c'});
+Object.assign(VA421D,{
+ tigre(){const B=V4;g.fillStyle=B.vg(-34,11,[[0,'#f2a23a'],[.6,'#e07a1c'],[1,'#b85a12']]);g.fillRect(-64,-36,126,50);g.fillStyle=B.vg(2,11,[[0,'#f6ead0'],[1,'#e8d8b0']]);g.fillRect(-64,3,126,9);
+  g.fillStyle='#1a1410';for(let i=0;i<22;i++){const x=-62+i*5.8+hs(i)*2,top=-30+hs(i*3)*6,bot=4+hs(i*5)*5,w=1.2+hs(i*7)*1.4,lean=(hs(i*9)-.5)*4;g.beginPath();g.moveTo(x-w,top);g.quadraticCurveTo(x+lean-w*.4,(top+bot)/2,x-w*.2,bot);g.lineTo(x+w*.2,bot);g.quadraticCurveTo(x+lean+w,(top+bot)/2,x+w,top);g.closePath();g.fill();
+   if(hs(i*11)>.4){g.beginPath();g.moveTo(x+lean*.5,(top+bot)/2-2);g.lineTo(x+lean*.5+4,(top+bot)/2-4);g.lineTo(x+lean*.5+3.6,(top+bot)/2-2.6);g.closePath();g.fill()}}},
+ vache(){const B=V4;B.fill('#f7f5ef');g.fillStyle='#1c1a18';const S=[[-46,-8,7.5],[-24,-2,5.5],[-6,-10,6],[16,-3,6.5],[38,-9,6],[54,-2,4],[-58,-1,3.5],[28,2,3],[-34,-14,3.5]];for(const[x,y,r]of S){B.blob(x,y,r,9,x*7+y,.62);g.fill()}
+  g.fillStyle='#e9a6b0';g.fillRect(-64,7,126,5);g.fillStyle='rgba(255,255,255,.4)';g.fillRect(-64,7,126,.8)},
+ graf(){const B=V4;g.fillStyle=B.vg(-34,11,[[0,'#3a3c44'],[1,'#22242a']]);g.fillRect(-64,-36,126,50);
+  for(let i=0;i<14;i++){g.fillStyle=['#ff3e8a','#2ad1ff','#ffd23a','#7cff5a','#a66bff','#ff7a2a'][i%6];g.globalAlpha=.5;B.blob(-60+hs(i*2.7)*120,-18+hs(i*4.1)*22,3+hs(i)*5,8,i*5,.6);g.fill()}g.globalAlpha=1;
+  for(let i=0;i<40;i++){g.fillStyle=['#ff3e8a','#2ad1ff','#ffd23a','#fff'][i%4];g.beginPath();g.arc(-62+hs(i*3.3)*122,-20+hs(i*5.9)*26,.25+hs(i)*.5,0,7);g.fill()}
+  B.txt('MILA',-30,-8,9,'#ffd23a',{f:'"Marker Felt","Comic Sans MS",cursive',w:'900',r:-.12,st:'#ff3e8a',sw:1.4});B.txt('+',-6,-7,6,'#ffffff',{st:'#2ad1ff',sw:1});B.txt('ANDREA',20,-8,8,'#2ad1ff',{f:'"Marker Felt","Comic Sans MS",cursive',w:'900',r:.08,st:'#a66bff',sw:1.4});
+  g.strokeStyle='#7cff5a';g.lineWidth=.8;g.lineCap='round';g.beginPath();g.moveTo(40,2);g.bezierCurveTo(46,-6,52,6,58,-2);g.stroke();g.fillStyle='#ff3e8a';for(const[x,y]of[[-48,1],[48,-14]]){g.beginPath();g.moveTo(x,y+1.6);g.bezierCurveTo(x-3,y-.6,x-1.4,y-2.6,x,y-1);g.bezierCurveTo(x+1.4,y-2.6,x+3,y-.6,x,y+1.6);g.fill()}
+  for(let i=0;i<6;i++){g.strokeStyle='rgba(255,62,138,.55)';g.lineWidth=.4;const x=-40+i*14;g.beginPath();g.moveTo(x,-2);g.lineTo(x,2+hs(i)*4);g.stroke()}},
+ flam(){const B=V4;g.fillStyle=B.vg(-34,11,[[0,'#2a2a2e'],[1,'#121214']]);g.fillRect(-64,-36,126,50);
+  const L=(c,s,dy)=>{g.fillStyle=c;g.beginPath();g.moveTo(62,-16+dy);const n=6;for(let k=0;k<n;k++){const y0=-14+dy+k*4.2*s,len=(44+hs(k*3)*26)*s;g.quadraticCurveTo(30,y0-1,62-len,y0+1.2);g.quadraticCurveTo(62-len+10,y0+2.4,40,y0+3.4)}g.lineTo(62,10+dy);g.closePath();g.fill()};
+  L('#d42a12',1.05,-2);L('#f2701a',.9,-1);L('#ffd23a',.72,0);g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=.3;B.pin(-18,'#c9a24a',.4)},
+ mosa(){const B=V4;B.fill('#f6f3ea');const t=5.2;for(let y=-20;y<6;y+=t)for(let x=-64;x<62;x+=t){const cx=x+t/2,cy=y+t/2,odd=(Math.round(x/t)+Math.round(y/t))%2;g.fillStyle=odd?'#1d4f9a':'#f6f3ea';g.fillRect(x+.15,y+.15,t-.3,t-.3);
+   g.fillStyle=odd?'#f6f3ea':'#1d4f9a';g.beginPath();g.moveTo(cx,cy-1.8);g.lineTo(cx+1.8,cy);g.lineTo(cx,cy+1.8);g.lineTo(cx-1.8,cy);g.closePath();g.fill();g.fillStyle='#e8a33a';g.beginPath();g.arc(cx,cy,.45,0,7);g.fill()}
+  g.fillStyle='#1d4f9a';g.fillRect(-64,-21.5,126,1.4);g.fillRect(-64,5.6,126,1.4);g.fillStyle=B.vg(7,11,[[0,'#d8c9a6'],[1,'#b8a47a']]);g.fillRect(-64,7,126,5)},
+ maquis(){const B=V4;g.fillStyle=B.vg(-34,11,[[0,'#6f8f4a'],[1,'#3a5428']]);g.fillRect(-64,-36,126,50);
+  for(let i=0;i<34;i++){const x=-62+hs(i*1.7)*122,y=-10+hs(i*2.9)*20;g.strokeStyle='rgba(30,50,20,.6)';g.lineWidth=.4;g.beginPath();g.moveTo(x,12);g.quadraticCurveTo(x+(hs(i)-.5)*6,y+6,x+(hs(i*5)-.5)*4,y);g.stroke();g.fillStyle=i%2?'#4f7a3a':'#88a85a';g.beginPath();g.ellipse(x+1,y+3,1.6,.7,-.5,0,7);g.fill()}
+  for(let i=0;i<16;i++){const x=-58+hs(i*4.3)*116,y=-14+hs(i*6.1)*16,r=2+hs(i*7.7)*1.2;g.save();g.translate(x,y);g.fillStyle=i%3?'#f6f2fa':'#f0b0cc';for(let p=0;p<5;p++){g.rotate(1.2566);g.beginPath();g.ellipse(0,-r*.55,r*.48,r*.55,0,0,7);g.fill()}g.fillStyle='#f2c230';g.beginPath();g.arc(0,0,r*.28,0,7);g.fill();g.restore()}
+  for(let i=0;i<22;i++){const x=-60+hs(i*8.3)*120,y=-8+hs(i*9.1)*18;g.fillStyle='#f2c230';for(let k=0;k<5;k++){g.beginPath();g.arc(x+(k-2)*.7,y-Math.abs(k-2)*.4,.55,0,7);g.fill()}}
+  for(let i=0;i<14;i++){const x=-60+hs(i*5.5)*120,y=-12+hs(i*3.5)*18;g.fillStyle='#ffffff';g.beginPath();g.arc(x,y,.7,0,7);g.fill();g.fillStyle='#3a2a5a';g.beginPath();g.arc(x+1.6,y+.6,.6,0,7);g.fill()}},
+ coeur(){const B=V4;g.fillStyle=B.vg(-34,11,[[0,'#fbefe6'],[1,'#f3dccc']]);g.fillRect(-64,-36,126,50);
+  const H=(x,y,s,c)=>{g.fillStyle=c;g.beginPath();g.moveTo(x,y+s*.9);g.bezierCurveTo(x-s*1.4,y-s*.1,x-s*.7,y-s*1.2,x,y-s*.35);g.bezierCurveTo(x+s*.7,y-s*1.2,x+s*1.4,y-s*.1,x,y+s*.9);g.fill()};
+  for(let i=0;i<46;i++)H(-62+hs(i*2.1)*122,-16+hs(i*3.9)*20,1+hs(i*6.6)*2.2,['#e85a8a','#f29ab6','#d93a6a','#f6c0d0'][i%4]);
+  H(-2,-8,6.5,'#d93a6a');B.txt('M + A',-2,-8.6,3.4,'#ffffff');g.fillStyle='#d93a6a';g.fillRect(-64,6,126,6);g.fillStyle='#f29ab6';g.fillRect(-64,5.2,126,.8)},
+ polar(){const B=V4;B.fill('#f7f9fb');g.fillStyle='#e8761c';g.fillRect(-64,-6,126,7);g.fillStyle='#1f3a5a';g.fillRect(-64,1,126,1.2);g.fillRect(-64,-7.2,126,1.2);g.fillStyle=B.vg(3,11,[[0,'#d8e2ea'],[1,'#b8c6d2']]);g.fillRect(-64,2.2,126,10);
+  g.strokeStyle='rgba(120,160,200,.75)';g.lineWidth=.4;for(let i=0;i<16;i++){const x=-60+hs(i*3.7)*120,y=-20+hs(i*6.3)*12,r=1+hs(i)*1.4;for(let k=0;k<3;k++){const a=k*1.047;g.beginPath();g.moveTo(x-Math.cos(a)*r,y-Math.sin(a)*r);g.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);g.stroke()}}
+  B.txt('EXPÉDITION POLAIRE',2,-2.6,3.6,'#1f3a5a',{ls:.5});g.fillStyle='#1f3a5a';g.beginPath();g.moveTo(-50,-11);g.lineTo(-45,-18);g.lineTo(-42,-14);g.lineTo(-39,-17);g.lineTo(-34,-11);g.closePath();g.fill();g.fillStyle='#fff';g.beginPath();g.moveTo(-45,-18);g.lineTo(-43.6,-16);g.lineTo(-46.4,-16);g.fill()}
+});
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.23',GAME_DATE='14/11/2026 à 00h48';
+const GAME_VER='4.24',GAME_DATE='14/11/2026 à 00h51';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
