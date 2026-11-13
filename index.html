@@ -5115,9 +5115,10 @@ const sea=g.createLinearGradient(0,gy-20,0,420);sea.addColorStop(0,'#2c8cc0');se
 g.fillStyle='#9a9286';g.fillRect(0,gy,Wd*.42,420-gy);g.fillStyle='#b8b0a4';g.fillRect(0,gy-4,Wd*.42,8);g.fillStyle='#5a5248';for(let i=0;i<5;i++)g.fillRect(Wd*.06+i*Wd*.08,gy-14,5,10);
 // le navire : dep = il attend puis part ; sinon il arrive puis reste
 try{va34U()}catch(e){}
-const qx=Wd*.42;let sx=qx+10;if(dep&&T2>17)sx+=Math.pow(T2-17,2)*14;if(!dep&&T2<7)sx+=Math.pow(7-T2,2)*14;const sy=gy+6+Math.sin(tm*1.4)*1.5,L=Wd*.5;
+const qx=Wd*.42;let sx=qx+10;if(dep&&T2>17)sx+=Math.pow(T2-17,2)*14;if(!dep&&T2<7)sx+=Math.pow(7-T2,2)*14;const sy=gy-6+Math.sin(tm*1.4)*1.5,L=Wd*.5;g.save();g.beginPath();g.rect(-50,-50,Wd+100,gy+52);g.clip();
 g.fillStyle='#e9eef2';g.beginPath();g.moveTo(sx,sy-36);g.lineTo(sx+L,sy-36);g.lineTo(sx+L-24,sy+16);g.lineTo(sx+20,sy+16);g.closePath();g.fill();g.fillStyle='#1f5a8a';g.fillRect(sx+16,sy+2,L-44,9);g.fillStyle='#f4f6f8';g.fillRect(sx+L*.42,sy-82,L*.4,46);g.fillStyle='#2a3e52';for(let i=0;i<6;i++)g.fillRect(sx+L*.45+i*L*.06,sy-74,L*.04,10);g.fillStyle='#d8352b';g.fillRect(sx+L*.7,sy-104,18,24);
 g.fillStyle='#1f5a8a';g.font='800 12px Arial';g.textAlign='center';g.fillText(nm,sx+L*.3,sy-16);
+g.restore();
 // rampe
 const rampOn=dep?T2<15.5:T2>8.5;if(rampOn&&sx<qx+20){g.fillStyle='#6a6f76';g.beginPath();g.moveTo(qx-36,gy);g.lineTo(sx+6,sy-34);g.lineTo(sx+30,sy-34);g.lineTo(qx-10,gy);g.fill()}
 // le Cherokee : il monte (départ) ou descend (arrivée)
@@ -9232,8 +9233,25 @@ try{const F='img/fonds/va87_',D=(k,n,hz,fill)=>{VA23_IMG[k]=F+n+'.jpg';VA25_P[k]
  D(6,'stf_j',.56,'#16a8bd');E(6,'stf_s',.56,'#228b9a');
  E(11,'fau_s',.6,'#1799aa');E(0,'sari_s',.58,'#179aaf');
  E(1,'roc_s',.7,'#f1aa78');N(1,'roc_n',.7,'#6063b1');E(5,'foce_s',.71,'#808134');N(7,'gal_n',.69,'#496d6a')}catch(e){}
+// ===== 3.88 : décors de cinématiques à route plate (gabarit commun) + chenilles dans les cinématiques =====
+// rt = hauteur du bord haut de la route dans l'image (mesurée) ; la voiture et les personnages se posent dessus
+const VA88={veto:['veto',.638],coas:['coas',.638],dogf:['dogf',.646],spy:['spy',.648],plat:['nox1',.648],piste:['plat',.648],pin:['pin',.648],usine:['usine',.678],prison:['prison',.69],
+ va88biv:['biv',.701],va88brig:['brig',.688],va88etang:['etang',.701],va88ospn:['ospn',.7],va88matin:['matin',.694],va88ours:['ours',.707,'rgba(70,30,60,.38)']},VA88_IM={};
+try{va34Img=(function(o){return function(n){const q=VA88[n];if(!q||window.__va88off)return o(n);let im=VA88_IM[n];if(!im){im=new Image();im.src='img/scenes/va88/'+q[0]+'.jpg';im.__va88=q[1];im.__dk=q[2];VA88_IM[n]=im;try{VA34.im[n]=im}catch(e){}}return im.complete&&im.naturalWidth?im:null}})(va34Img);
+ va34Bg=(function(o){return function(r,im,Wd,fy,fl){if(!im||!im.__va88)return o(r,im,Wd,fy,fl);const iw=im.naturalWidth,ih=im.naturalHeight,c=im.__va88+.035,tg=291;
+  let h=Math.max(Wd*ih/iw,420,tg/c,(420-tg)/(1-c));const w=h*iw/ih;let y=tg-c*h;y=Math.min(0,Math.max(420-h,y));
+  if(fl){r.save();r.translate(Wd,0);r.scale(-1,1)}r.drawImage(im,(Wd-w)/2,y,w,h);if(fl)r.restore();if(im.__dk){r.fillStyle=im.__dk;r.fillRect(0,0,Wd,420)}}})(va34Bg);
+ try{va28Draw=(function(o){return function(n,cx,by,len,hz,flip){let k=1;try{if(VA34.u)va34U();if(VA34.act||window.__v34on)k=1.4}catch(e){}return o(n,cx,by,len*k,hz,flip)}})(va28Draw)}catch(e){}
+ for(const n in VA88)VA34P[n]={s:1.3,px:.5,dy:0,car:{s:1.5,dy:0}};
+ try{for(const n of['bonif','teresa'])VA34P[n]=Object.assign({},VA34P[n]||{s:1,px:.5,dy:0},{car:{s:1.45,dy:0}})}catch(e){}
+ for(const q of[['camp1','va88brig'],['camp2','va88etang'],['camp3','va88ospn'],['matin','va88matin'],['ours','va88ours']])try{va34Hook(q[0],q[1])}catch(e){}
+}catch(e){}
+// chenilles : le Cherokee des cinématiques dessinait toujours ses roues
+try{cherokeeSide=(function(o){return function(cx,cy,hood){if(!(SV&&SV.cus&&SV.cus.trk))return o(cx,cy,hood);const ow=va25Sp;
+ va25Sp=function(n,x,by,H,hz,fl){if(n!=='v_roue')return ow.apply(this,arguments);const rad=H*.85,yc=by-rad;try{g.save();g.translate(x,yc);g.scale(rad/R,rad/R);va23Track(0,0,(performance.now()/180)%6.28)}catch(e){}finally{g.restore()}return true};
+ try{return o(cx,cy,hood)}finally{va25Sp=ow}}})(cherokeeSide)}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.87',GAME_DATE='13/11/2026 à 09h42';
+const GAME_VER='3.88',GAME_DATE='13/11/2026 à 10h27';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
