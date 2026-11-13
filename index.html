@@ -9518,8 +9518,43 @@ const t=document.getElementById('va37t');if(t){t.style.textShadow='0 1px 4px #00
 try{const st=document.createElement('style');st.textContent='#mver{position:fixed!important;right:12px;bottom:8px;left:auto!important;width:auto!important;max-width:48vw;font-size:10.5px!important;line-height:1.3;text-align:right;margin:0!important;opacity:.85;text-shadow:0 1px 3px #000;z-index:5}#va37t{display:none!important}';document.head.appendChild(st);
 const b=document.getElementById('va37b');if(b){const bar=b.parentNode;bar.style.width='min(70vw,520px)';bar.style.height='18px';bar.style.borderRadius='10px';bar.style.background='rgba(20,15,10,.45)';bar.style.boxShadow='0 0 0 2px rgba(255,255,255,.75),0 4px 14px rgba(0,0,0,.55)';bar.style.backdropFilter='blur(3px)';
 b.style.background='linear-gradient(180deg,#ffe58a,#f2c230 55%,#d99a18)';b.style.borderRadius='10px';b.style.boxShadow='inset 0 2px 0 rgba(255,255,255,.55)'}}catch(e){}
+// ===== 4.16 : scène de l'ours refaite de nuit (fond, ours et pin de l'utilisateur ; l'ours ne se voit que dans les phares) =====
+Object.assign(VA410S,{ours:5});
+function va416Bg(Wd,gy){const im=va410Img('img/scenes/va88/ours_nuit.jpg');g.fillStyle='#050a18';g.fillRect(0,0,Wd,420);if(!im)return;const iw=im.naturalWidth,ih=im.naturalHeight;let s=Math.max(Wd/iw,420/ih);let y0=gy+6-.705*ih*s;if(y0>0){s=(gy+6)/(.705*ih);y0=0}if(y0+ih*s<420)s=Math.max(s,(420-(gy+6))/(ih*.295));y0=gy+6-.705*ih*s;g.drawImage(im,(Wd-iw*s)/2,y0,iw*s,ih*s)}
+try{CS.ours.draw=function(Wd,gy,T2,tm){const S=window.__va416=window.__va416||{};if(T2<.2)for(const k in S)delete S[k];
+va416Bg(Wd,gy);
+// le pin derrière lequel le Cherokee recule
+const pin=va410Img('img/sprites/va410/pin_nuit.webp'),px=Wd*.1;if(pin){const h=300,w=h*pin.naturalWidth/pin.naturalHeight;g.drawImage(pin,px-w/2,gy+8-h,w,h)}
+// le Cherokee : arrive, s'arrête, recule contre l'arbre (choc à 11,2 s)
+let cx;if(T2<4.5)cx=-120+sm(cl(T2/4.5))*(Wd*.42+120);else if(T2<8.8)cx=Wd*.42;else if(T2<11.2)cx=Wd*.42-sm(cl((T2-8.8)/2.4))*(Wd*.42-px-70);else cx=px+70;
+let shake=T2>11.2&&T2<11.8?Math.sin(T2*90)*4*(11.8-T2):0;cx+=shake;
+const hi=T2>19.3&&T2<23.4,fx=cx+80,fy=gy-20,L=hi?Wd*1.1:Wd*.62,sp=hi?95:55;
+// l'ours
+let bx=Wd*.86,f=0,ba=1;if(T2<5){bx=Wd*.95;f=0}else if(T2<8){bx=Wd*.95-(T2-5)/3*(Wd*.2);f=Math.floor(T2*3)%2?0:1}else if(T2<16.6){bx=Wd*.75;f=T2<9.5?1:2}else if(T2<19.3){bx=Wd*.75-(T2-16.6)/2.7*(Wd*.12);f=T2<18?2:3}else if(T2<21.5){bx=Wd*.63;f=3}else if(T2<26){bx=Wd*.63+(T2-21.5)/4.5*(Wd*.5);f=4}else ba=0;
+const beam=()=>{g.beginPath();g.moveTo(fx,fy-4);g.lineTo(fx+L,fy-sp);g.lineTo(fx+L,fy+sp*.75);g.lineTo(fx,fy+4);g.closePath()};
+if(ba){g.save();g.globalAlpha=.1;va410F('ours',f,bx,gy+12,175,f===4);g.restore();g.save();beam();g.clip();va410F('ours',f,bx,gy+12,175,f===4);g.restore()}
+grp(cx,gy,1.25,()=>{try{cherokeeSide(cx,gy+4,0)}catch(e){}});
+// nuit très sombre
+g.fillStyle='rgba(2,4,14,.62)';g.fillRect(0,0,Wd,420);
+// faisceau des phares (plus brillant en plein phares)
+g.save();g.globalCompositeOperation='lighter';const bg2=g.createLinearGradient(fx,0,fx+L,0);bg2.addColorStop(0,hi?'rgba(255,245,200,.55)':'rgba(255,240,190,.35)');bg2.addColorStop(1,'rgba(255,240,190,0)');g.fillStyle=bg2;beam();g.fill();g.restore();
+if(ba){g.save();beam();g.clip();g.globalAlpha=.55;va410F('ours',f,bx,gy+12,175,f===4);g.restore()}
+// yeux qui brillent dans le noir
+if(ba&&f<2){const EYE=[[.1,.78],[.1,.43],[.16,.47],[.32,.06]][f],bw=175*360/411,ex=bx-bw/2+EYE[0]*bw-3,ey=gy+12-175+EYE[1]*175;g.save();g.globalCompositeOperation='lighter';const r=4+Math.sin(tm*6)*.6;for(const dx of[0,7]){const e=g.createRadialGradient(ex+dx,ey,0,ex+dx,ey,r*3);e.addColorStop(0,'rgba(220,255,120,.95)');e.addColorStop(1,'rgba(220,255,120,0)');g.fillStyle=e;g.fillRect(ex+dx-r*3,ey-r*3,r*6,r*6)}g.restore()}
+// la voiture par-dessus, phares allumés
+g.save();g.globalCompositeOperation='lighter';for(const r of[14,6]){const e=g.createRadialGradient(fx,fy,0,fx,fy,r);e.addColorStop(0,'rgba(255,250,220,1)');e.addColorStop(1,'rgba(255,250,220,0)');g.fillStyle=e;g.fillRect(fx-r,fy-r,r*2,r*2)}const rl=g.createRadialGradient(cx-78,gy-24,0,cx-78,gy-24,T2>8.8&&T2<11.2?26:10);rl.addColorStop(0,'rgba(255,60,40,.9)');rl.addColorStop(1,'rgba(255,60,40,0)');g.fillStyle=rl;g.fillRect(cx-110,gy-56,64,64);g.restore();
+// choc contre l'arbre : éclats de verre
+if(T2>11.2&&T2<13){const u=T2-11.2;g.fillStyle='rgba(200,230,255,.8)';for(let i=0;i<14;i++){const a=hh2(i)*3.14,d=u*60*(.5+hh2(i+9));g.fillRect(cx-70-Math.cos(a)*d,gy-40+Math.sin(a)*d*.4+u*u*40,2,2)}}
+// le chien saute par la vitre et s'enfuit
+if(T2>13.4&&T2<16.5){const u=(T2-13.4)/3.1,dx=cx-60-u*(Wd*.3),dy=gy-30+Math.min(30,u*120)-Math.sin(u*9)*6*(u>.3?1:0);grp(dx,gy,1.5,()=>{try{dogDraw(dx,dy+2,-1,'trot',tm)}catch(e){}})}
+// sons
+if(T2>9.6&&!S.r1){S.r1=1;try{snd('roar')}catch(e){}}if(T2>11.2&&!S.c){S.c=1;try{snd('crash')}catch(e){}}if(T2>17.5&&!S.r2){S.r2=1;try{snd('roar')}catch(e){}}if(T2>19.3&&!S.h){S.h=1;try{snd('horn')}catch(e){}}
+// matin
+if(T2>47.5){g.fillStyle='rgba(255,200,150,'+Math.min(.35,(T2-47.5)*.12)+')';g.fillRect(0,0,Wd,420)}
+if(T2>46&&T2<48.5){g.fillStyle='rgba(0,0,0,'+Math.min(1,(T2-46)/1.2)*(1-cl((T2-47.8)/.7))+')';g.fillRect(0,0,Wd,420)}};CS.ours.va54=0}catch(e){}
+setTimeout(()=>{['img/sprites/va410/ours.webp','img/sprites/va410/pin_nuit.webp','img/scenes/va88/ours_nuit.jpg'].forEach(va410Img)},3300);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.15',GAME_DATE='13/11/2026 à 15h47';
+const GAME_VER='4.16',GAME_DATE='13/11/2026 à 16h46';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
