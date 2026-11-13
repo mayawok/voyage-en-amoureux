@@ -4179,7 +4179,7 @@ for(const q of[15,30,45])if(fb.t>=q&&fb.cp<q)fb.cp=q;
 if(fb.inv<=0){for(let i=0;i<FB_N;i++){const o=fbObs(i),ox=o.x-fb.x;if(ox<SX-80||ox>SX+50)continue;const sx2=SX;if(sx2+30>ox&&sx2-34<ox+o.w&&(fb.y-12<o.top||fb.y+12>o.bot)){fb.lives--;fb.inv=1.6;fb.flash=.4;snd('thud');vib(60);fb.vy=fb.y<o.top+20?160:-200;if(fb.lives<=0){fb.lives=3;fb.t=fb.cp;fb.x=FB_V*fb.cp;fb.y=200;fb.vy=0;fb.inv=2.2;fb.msg='Coque endommagée ! On reprend au dernier point de contrôle.';fb.msgT=2.6}break}}}
 if(fb.t>=FB_T){fb.end=1;snd('chime');setTimeout(()=>{fadeTo(()=>{fb=null;openCine('drums')})},1200)}}
 if(fb.flash>0)fb.flash-=dt;if(fb.msgT>0)fb.msgT-=dt;
-const dep=cl(fb.t/FB_T);const gr=g.createLinearGradient(0,0,0,420);gr.addColorStop(0,`rgb(${Math.round(40-30*dep)},${Math.round(150-100*dep)},${Math.round(190-120*dep)})`);gr.addColorStop(1,`rgb(${Math.round(10-6*dep)},${Math.round(60-45*dep)},${Math.round(90-65*dep)})`);g.fillStyle=gr;g.fillRect(0,0,Wd,420);
+const dep=cl(fb.t/FB_T);const gr=g.createLinearGradient(0,0,0,420);gr.addColorStop(0,`rgb(${Math.round(40-30*dep)},${Math.round(150-100*dep)},${Math.round(190-120*dep)})`);gr.addColorStop(1,`rgb(${Math.round(10-6*dep)},${Math.round(60-45*dep)},${Math.round(90-65*dep)})`);g.fillStyle=gr;g.fillRect(0,0,Wd,420);try{va91Bands(g,'sousmarin',230,fb.x*.15,-50,Wd+50,1-.55*dep)}catch(e){}
 g.fillStyle='rgba(255,255,255,.18)';g.fillRect(0,40,Wd,3);
 g.save();g.globalCompositeOperation='lighter';for(let i=0;i<5;i++){const x=((i*260-fb.x*.2)%(Wd+300)+Wd+300)%(Wd+300)-150;g.fillStyle='rgba(160,220,255,'+(.06*(1-dep))+')';g.beginPath();g.moveTo(x,40);g.lineTo(x+40,40);g.lineTo(x+140,420);g.lineTo(x+60,420);g.fill()}g.restore();
 for(let i=0;i<12;i++){const x=((i*170-fb.x*.5)%(Wd+200)+Wd+200)%(Wd+200)-100,y=120+hh2(i)*220+Math.sin(tm+i)*8;g.fillStyle='rgba(255,200,120,.5)';g.beginPath();g.ellipse(x,y,8,4,0,0,7);g.fill();g.beginPath();g.moveTo(x+7,y);g.lineTo(x+13,y-4);g.lineTo(x+13,y+4);g.fill()}
@@ -9188,12 +9188,14 @@ function va85Open(){const D=DF?DF():{};const easy=SV.diff===0,hard=SV.diff===2;
   if(Math.random()<dt*9)M.spray.push({x:240+Math.random()*30,y:M.y+6,vx:-80-Math.random()*60,vy:-60-Math.random()*60,l:1});for(const s of M.spray){s.x+=s.vx*dt;s.y+=s.vy*dt;s.vy+=200*dt;s.l-=dt*1.6}M.spray=M.spray.filter(s=>s.l>0);
   if(M.dist>=M.L){M.res=M.got>=3?'ok':'bof';M.ui()}},
  draw(x,tm){const off=M.dist;x.save();x.beginPath();x.rect(0,0,800,450);x.clip();
+  if(!(typeof va91Bands==='function'&&va91Bands(x,'bateau',140,off*.18,-20,820))){
   const sk=x.createLinearGradient(0,0,0,140);sk.addColorStop(0,'#5d9bd6');sk.addColorStop(1,'#cfe6f5');x.fillStyle=sk;x.fillRect(0,0,800,140);
   for(let i=0;i<4;i++){const cx=((i*260-off*.05+tm*12)%1100+1100)%1100-150;x.fillStyle='rgba(255,255,255,.75)';x.beginPath();x.ellipse(cx,40+i*14,60,10,0,0,7);x.ellipse(cx+40,34+i*14,40,9,0,0,7);x.fill()}
   // falaises blanches et ville haute au loin
   const ct=X=>96+Math.sin(X*.004)*10+Math.sin(X*.017)*4;x.fillStyle='#f3ecdc';x.beginPath();x.moveTo(0,150);for(let X=0;X<=800;X+=10)x.lineTo(X,ct(X+off*.18));x.lineTo(800,150);x.fill();
   x.strokeStyle='rgba(150,140,120,.4)';x.lineWidth=1;for(let k=0;k<4;k++){x.beginPath();for(let X=0;X<=800;X+=16){const y=ct(X+off*.18)+10+k*11+Math.sin((X+off*.18)*.03+k)*2;X?x.lineTo(X,y):x.moveTo(X,y)}x.stroke()}
   for(let i=0;i<14;i++){const X=((i*90-off*.18)%1260+1260)%1260-200;if(X<-60||X>820)continue;const y=ct(X+off*.18),h=12+(i*7)%10;x.fillStyle=['#f1dcc0','#e9c9a4','#f6e7cf'][i%3];x.fillRect(X,y-h,40,h+1);x.fillStyle='#b5654a';x.fillRect(X-1,y-h-2,42,2);x.fillStyle='rgba(60,50,60,.5)';x.fillRect(X+8,y-h+4,3,4);x.fillRect(X+24,y-h+4,3,4)}
+  }
   // la mer des Bouches, agitée par le mistral
   const se=x.createLinearGradient(0,140,0,450);se.addColorStop(0,'#2f8fb5');se.addColorStop(1,'#0f4e78');x.fillStyle=se;x.fillRect(0,140,800,310);
   for(let i=0;i<70;i++){const X=((i*113-off*.9-tm*40)%900+900)%900-50,Y=150+(i*53)%295;x.fillStyle='rgba(255,255,255,'+(.1+.12*(i%3))+')';x.fillRect(X,Y,18+(i%4)*8,1.6)}
@@ -9275,8 +9277,28 @@ try{birds=(function(o){return function(ta,dayF,tm){o(ta,dayF,tm);if(window.__va9
 let va90LT=-1;try{birds=(function(o){return function(ta,dayF,tm){if(tm===va90LT)return;va90LT=tm;return o(ta,dayF,tm)}})(birds);
  va23Bg=(function(o){return function(ta,dayF,tm,sx,sy){const r=o.apply(this,arguments);try{if(!window.__va90off)birds(ta,dayF,tm)}catch(e){}return r}})(va23Bg)}catch(e){}
 setTimeout(()=>{try{for(const n in VA90M)if(n!=='avions')va90Im(n);for(let i=0;i<3;i++)va90Im('avion'+i)}catch(e){}},6000);
+// ===== 3.91 : fonds peints des mini-jeux (images de l'utilisateur dans img/scenes/va91/) =====
+const VA91I={},VA91_HZ=.57;// la ligne d'horizon (bas du paysage) est à 57 % de la hauteur de chaque image
+function va91Im(n){let i=VA91I[n];if(!i){i=new Image();i.src='img/scenes/va91/'+n+'.jpg';VA91I[n]=i}return i.complete&&i.naturalWidth?i:null}
+// paysage répété en largeur entre x0 et x1, horizon de l'image posé sur la ligne hz, défilement sc
+function va91Bands(x,n,hz,sc,x0,x1,al){const im=va91Im(n);if(!im||window.__va91off)return false;const h=hz/VA91_HZ,w=h*im.naturalWidth/im.naturalHeight;let s=-(((sc||0)%w)+w)%w+Math.floor(x0/w)*w;
+ x.save();if(al!=null&&al<1)x.globalAlpha=Math.max(.15,al);let k=Math.round(s/w);for(let X=s;X<x1;X+=w,k++){if(k&1){x.save();x.translate(X+w,0);x.scale(-1,1);x.drawImage(im,0,0,w,h);x.restore()}else x.drawImage(im,X,0,w,h)}x.restore();return true}
+// touristes : place et village peints à la place du décor dessiné
+try{tourBG=(function(o){return function(x,tm){o(x,tm);try{va91Bands(x,'touristes',262,0,-400,1200)}catch(e){}}})(tourBG)}catch(e){}
+// pont : la gorge peinte au-dessus des falaises (les falaises et la rivière du jeu restent)
+try{brBG=(function(o){return function(x,tm,XL,XR,Y){o(x,tm,XL,XR,Y);try{if(va91Im('pont')){x.save();x.beginPath();x.rect(-400,-200,1600,Y+196);x.clip();va91Bands(x,'pont',Y,0,-400,1200);x.restore()}}catch(e){}}})(brBG)}catch(e){}
+// poursuite à cheval : crêtes du Coscione peintes au-dessus du plateau
+try{coscBG=(function(o){return function(Wd,gy,tm,px){o(Wd,gy,tm,px);try{if(va91Im('cheval')){g.save();g.beginPath();g.rect(-50,-50,Wd+100,gy-14+50);g.clip();va91Bands(g,'cheval',gy-12,(px||0)*.06,-50,Wd+50);g.restore()}}catch(e){}}})(coscBG)}catch(e){}
+// remorque et fioles : le grand fond uni du début est remplacé par l'image
+function va91Wrap(n){try{if(!MGX||MGX.__va91)return;MGX.__va91=1;const od=MGX.draw;if(!od)return;MGX.draw=function(x,tm){const of=x.fillRect;let done=0;x.fillRect=function(a,b,c,d){const r=of.call(this,a,b,c,d);if(!done&&a===-400&&b===-200&&c===1600&&d===900){done=1;try{va91Bands(x,n,n==='fioles'?250:258,0,-400,1200)}catch(e){}}return r};try{return od.call(this,x,tm)}finally{x.fillRect=of}}}catch(e){}}
+try{trlOpen=(function(o){return function(){const r=o.apply(this,arguments);va91Wrap('remorque');return r}})(trlOpen)}catch(e){}
+try{tubeOpen=(function(o){return function(){const r=o.apply(this,arguments);va91Wrap('fioles');return r}})(tubeOpen)}catch(e){}
+// enclos, plantes, bouchon : l'image derrière le plateau de jeu
+const VA91_PZ={farm:'enclos',plant:'plantes',rh:'bouchon'};
+try{pzOpen=(function(o){return function(k){const r=o.apply(this,arguments);try{const v=gid('pzv'),n=VA91_PZ[k];if(v&&n&&!window.__va91off){va91Im(n);v.style.background="linear-gradient(rgba(10,8,4,.35),rgba(10,8,4,.45)),url('img/scenes/va91/"+n+".jpg') center/cover no-repeat"}}catch(e){}return r}})(pzOpen)}catch(e){}
+setTimeout(()=>{try{for(const n of['pont','enclos','plantes','bouchon','remorque','cheval','touristes','bateau','sousmarin','fioles'])va91Im(n)}catch(e){}},9000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.90',GAME_DATE='13/11/2026 à 11h29';
+const GAME_VER='3.91',GAME_DATE='13/11/2026 à 11h35';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
