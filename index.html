@@ -3793,7 +3793,7 @@ if(ci===5&&CHX('presse')===undefined&&SV.ev&&SV.ev[evK('chase')]&&sayT<=0&&!stop
 
 // ===== v81 : cinématiques du scénario =====
 var cs=null,csT0=0,csParts=[];
-function csBox(T2,L,Wd){let cur=null;for(const q of L)if(T2>=q[0])cur=q;if(!cur)return;const a2=Math.min(1,(T2-cur[0])/.5),WH={m:'MILA',a:'ANDREA',x:'MATHIS',l:'LUCIA',p:'LE PÊCHEUR',c:'LA CAPITAINE',v:'LA VÉTÉRINAIRE',d:'L’AUTOMOBILISTE',f:'L’AGRICULTEUR',k:'MARCHETTI',q:'UNE VOIX AU TÉLÉPHONE',h:'LE CONDUCTEUR',n:''},CO={k:'#9fb4e8',q:'#d9d9d9',h:'#c9c9c9',m:'#e7b8f0',a:'#a8d0ff',l:'#ffd0a0',p:'#c8e09a',x:'#c8e09a',c:'#ffb27a',v:'#b8e6d2',d:'#f0d080'};const wh=WH[cur[1]]||'',col=CO[cur[1]]||'#fff';const maxW=Math.min(600,Wd-80);g.font=(cur[1]==='n'?'italic 600 ':'700 ')+'16px Georgia,serif';const words=cur[2].split(' '),lines=[];let ln='';for(const w2 of words){const tt=ln?ln+' '+w2:w2;if(g.measureText(tt).width>maxW&&ln){lines.push(ln);ln=w2}else ln=tt}lines.push(ln);
+function csBox(T2,L,Wd){let cur=null;for(const q of L)if(T2>=q[0])cur=q;if(!cur)return;const a2=Math.min(1,(T2-cur[0])/.5),WH={m:'MILA',a:'ANDREA',x:'MATHIS',l:'LUCIA',p:'LE PÊCHEUR',c:'LA CAPITAINE',v:'LA VÉTÉRINAIRE',d:'L’AUTOMOBILISTE',f:'L’AGRICULTEUR',k:'MARCHETTI',j:'MARCHETTI (AU TÉLÉPHONE)',q:'UNE VOIX AU TÉLÉPHONE',h:'LE CONDUCTEUR',n:''},CO={k:'#9fb4e8',j:'#9fb4e8',q:'#d9d9d9',h:'#c9c9c9',m:'#e7b8f0',a:'#a8d0ff',l:'#ffd0a0',p:'#c8e09a',x:'#c8e09a',c:'#ffb27a',v:'#b8e6d2',d:'#f0d080'};const wh=WH[cur[1]]||'',col=CO[cur[1]]||'#fff';const maxW=Math.min(600,Wd-80);g.font=(cur[1]==='n'?'italic 600 ':'700 ')+'16px Georgia,serif';const words=cur[2].split(' '),lines=[];let ln='';for(const w2 of words){const tt=ln?ln+' '+w2:w2;if(g.measureText(tt).width>maxW&&ln){lines.push(ln);ln=w2}else ln=tt}lines.push(ln);
 const bh=22+lines.length*21+(wh?15:0),by=420-bh-10;g.globalAlpha=a2;g.fillStyle='rgba(10,12,16,.68)';rr(g,Wd/2-maxW/2-18,by,maxW+36,bh,14);g.fill();g.textAlign='center';g.textBaseline='top';let yy=by+11;if(wh){g.font='800 11px Arial';g.fillStyle=col;g.fillText(wh,Wd/2,yy);yy+=15}g.font=(cur[1]==='n'?'italic 600 ':'700 ')+'16px Georgia,serif';g.fillStyle='#fff';for(const l of lines){g.fillText(l,Wd/2,yy);yy+=21}g.globalAlpha=1}
 function grp(ox,gy,SC,fn){g.save();g.translate(ox,gy);g.scale(SC,SC);g.translate(-ox,-gy);try{fn()}catch(e){}g.restore()}
 const CS={
@@ -8962,7 +8962,7 @@ function va74Pines(Wd,y,n,c,h0){for(let i=0;i<n;i++){const x=-40+i*((Wd+80)/(n-1
 function va74Phone(x,y,tm){g.fillStyle='rgba(150,200,255,.22)';g.beginPath();g.arc(x,y,13+Math.sin(tm*3)*1.5,0,7);g.fill();g.fillStyle='#bfe0ff';g.fillRect(x-1.6,y-3,3.2,6)}
 function va74Mc(x,gy,pose,fl){let ok=false;grp(x,gy,1.9,()=>{try{ok=va38Fig(pose,x,gy+4,fl)}catch(e){}});return ok}
 // ch3 : Marchetti au téléphone, derrière la gendarmerie
-CS.camp1={mus:'tense',L:()=>[[1.5,'n','Le soir même, derrière la gendarmerie. Une seule fenêtre est encore allumée.'],[6.5,'k','C’est moi. La scientifique et son mécano… Ils posent trop de questions.'],[12,'k','Non, j’ai rien pris. Ni la photo, ni la plainte.'],[16.5,'q','« Surveille-les. Et qu’ils restent loin de la rivière. »'],[21.5,'k','Compris.']],end:25,
+CS.camp1={mus:'tense',L:()=>[[1.5,'n','Le soir même, derrière la gendarmerie. Une seule fenêtre est encore allumée.'],[6.5,'j','C’est moi. La scientifique et son mécano… Ils posent trop de questions.'],[12,'j','Non, j’ai rien pris. Ni la photo, ni la plainte.'],[16.5,'q','« Surveille-les. Et qu’ils restent loin de la rivière. »'],[21.5,'j','Compris.']],end:25,
  draw:(Wd,gy,T2,tm)=>{va74Night(Wd,gy,tm,'#0a1028','#1d2a52');g.fillStyle='#f1eed8';g.beginPath();g.arc(Wd*.84,62,17,0,7);g.fill();g.fillStyle='#0a1028';g.beginPath();g.arc(Wd*.84+7,58,15,0,7);g.fill();
   va74Pines(Wd,232,13,'#121a2e',58);
   // la brigade : façade crépie, volets, plaque, fenêtre allumée
@@ -8977,7 +8977,7 @@ CS.camp1={mus:'tense',L:()=>[[1.5,'n','Le soir même, derrière la gendarmerie. 
   const mx=Wd*.5+Math.sin(Math.max(0,T2-12)*.8)*10;va74Mc(mx,gy,T2>16&&T2<21.5?'mc_nerv':'mc_stand',T2>12&&Math.cos(Math.max(0,T2-12)*.8)<0?-1:1);if(T2>5)va74Phone(mx+9,gy-86,tm);
   try{wxOver(g,Wd,420,tm)}catch(e){}}};
 // ch6 : après le contrôle raté, Marchetti rage au bord de l'étang
-CS.camp2={mus:'tense',L:()=>[[1.5,'n','Au bord de l’étang, la voiture de gendarmerie n’a pas bougé.'],[6,'k','Une vidéo. Ce gamin me filmait depuis le début !'],[10.5,'n','Il frappe le toit de la voiture du plat de la main. Un héron s’envole.'],[15,'k','Allô. Non. Je les ai pas. Ils sont repartis avec tout.'],[20,'q','« Tu deviens un problème, Marchetti. »'],[24.5,'n','La ligne coupe. Marchetti reste seul, le téléphone à la main.']],end:28.5,
+CS.camp2={mus:'tense',L:()=>[[1.5,'n','Au bord de l’étang, la voiture de gendarmerie n’a pas bougé.'],[6,'k','Une vidéo. Ce gamin me filmait depuis le début !'],[10.5,'n','Il frappe le toit de la voiture du plat de la main. Un héron s’envole.'],[15,'j','Allô. Non. Je les ai pas. Ils sont repartis avec tout.'],[20,'q','« Tu deviens un problème, Marchetti. »'],[24.5,'n','La ligne coupe. Marchetti reste seul, le téléphone à la main.']],end:28.5,
  draw:(Wd,gy,T2,tm)=>{const sk=g.createLinearGradient(0,0,0,gy);sk.addColorStop(0,'#3b3f78');sk.addColorStop(.6,'#c7786a');sk.addColorStop(1,'#ffc88a');g.fillStyle=sk;g.fillRect(-70,0,Wd+140,420);
   const sx=Wd*.26,sy=206;const sg=g.createRadialGradient(sx,sy,3,sx,sy,120);sg.addColorStop(0,'rgba(255,226,160,.9)');sg.addColorStop(1,'rgba(255,190,120,0)');g.fillStyle=sg;g.fillRect(sx-120,sy-120,240,240);g.fillStyle='#ffdf9a';g.beginPath();g.arc(sx,sy,16,0,7);g.fill();
   g.fillStyle='#5b4a6e';g.beginPath();g.moveTo(-70,222);for(let x=-70;x<=Wd+70;x+=18)g.lineTo(x,204+Math.sin(x*.01+2)*10+Math.sin(x*.03)*4);g.lineTo(Wd+70,222);g.fill();
@@ -9372,6 +9372,6 @@ try{const st=document.createElement('style');st.textContent='#dash.nt{filter:non
 setTimeout(()=>{try{va402I('h','img/sprites/va402_hotel.webp');va402I('c','img/sprites/va402_camping.webp');va402I('g','img/scenes/va88/grotte.jpg');va402I('t','img/scenes/va88/tour_j.jpg')}catch(e){}},3000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.04',GAME_DATE='13/11/2026 à 13h33';
+const GAME_VER='4.05',GAME_DATE='13/11/2026 à 13h34';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
