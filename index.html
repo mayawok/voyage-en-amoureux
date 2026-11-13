@@ -8418,7 +8418,7 @@ function va54Pre(){try{for(const n in VA25_SP)if(/^(p|dg|vt|lu|mc|g|f|an)_/.test
 function va54Rdy(){try{for(const n in VA25_SP)if(/^(p|dg|vt|lu|mc|g|f)_/.test(n)){const i=VA25.im[n];if(!i||!i.naturalWidth)return false}for(const n in VA34_IMG){const i=VA34.im[n];if(!i||!(i.complete&&i.naturalWidth))return false}return true}catch(e){return true}}
 setTimeout(va54Pre,800);
 openCine=(function(o){return function(k){va54Pre();va54.w0=performance.now();return o(k)}})(openCine);
-function va54Gate(){for(const k of Object.keys(CS)){const d=CS[k];if(!d||!d.draw||d.va54)continue;d.va54=1;const od=d.draw;d.draw=function(Wd,gy,T2,tm){if(cs&&cs.k===k&&performance.now()-va54.w0<3500&&!va54Rdy()){cs.t=0;g.fillStyle='#000';g.fillRect(-50,-50,Wd+100,700);return}return od.apply(this,arguments)}}}
+function va54Gate(){for(const k of Object.keys(CS)){const d=CS[k];if(!d||!d.draw||d.va54)continue;d.va54=1;const od=d.draw;d.draw=function(Wd,gy,T2,tm){if(cs&&cs.k===k&&performance.now()-va54.w0<7000&&!va54Rdy()){cs.t=0;g.fillStyle='#000';g.fillRect(-50,-50,Wd+100,700);return}return od.apply(this,arguments)}}}
 va54Gate();
 // halo : découpé au-dessus du sol (il éclaire juste la surface)
 lights=(function(o){return function(){if(window.__va54off)return o();try{g.setTransform(DPR*S,0,0,DPR*S,DPR*scr.ox,DPR*scr.oy);const x0=-scr.ox/S-40,x1=(W-scr.ox)/S+40;g.save();g.beginPath();g.moveTo(x0,-1e5);for(let xx=x0;xx<=x1+20;xx+=20)g.lineTo(xx,T(xx)+5);g.lineTo(x1+20,-1e5);g.closePath();g.clip();try{o()}finally{g.restore()}}catch(e){try{o()}catch(e2){}}}})(lights);
@@ -9370,8 +9370,26 @@ g.fillRect=function(x,y,w,h){if(st===0&&x===0&&y===0&&h>=420){st=1;const k=HH/42
 g.fill=function(){if(st===1||st===2){st++;return}return F.apply(g,arguments)};try{o(t)}finally{g.fill=F;g.fillRect=FR}}})(fnTick);
 try{const st=document.createElement('style');st.textContent='#dash.nt{filter:none!important}#dash{opacity:.85}';document.head.appendChild(st)}catch(e){}
 setTimeout(()=>{try{va402I('h','img/sprites/va402_hotel.webp');va402I('c','img/sprites/va402_camping.webp');va402I('g','img/scenes/va88/grotte.jpg');va402I('t','img/scenes/va88/tour_j.jpg')}catch(e){}},3000);
+// ===== 4.06 : cinématiques : attendre aussi les nouveaux décors peints (3.88) avant de commencer =====
+va54Pre=(function(o){return function(){o();try{if(!window.__va88off)for(const n in VA88)va34Img(n)}catch(e){}}})(va54Pre);
+openCine=(function(o){return function(k){try{va54Gate()}catch(e){}return o(k)}})(openCine);
+va54Rdy=(function(o){return function(){if(!o())return false;try{if(!window.__va88off)for(const n in VA88){const i=VA88_IM[n];if(!i||!(i.complete&&(i.naturalWidth||i.__va406e)))return false}}catch(e){}return true}})(va54Rdy);
+try{setTimeout(()=>{try{for(const n in VA88_IM){const i=VA88_IM[n];if(i)i.addEventListener('error',()=>{i.__va406e=1})}}catch(e){}},900)}catch(e){}
+// ===== 4.06b : camionnette Noxacorp et voiture de gendarmerie en images dans les cinématiques =====
+noxVan=(function(o){return function(x,y,s,tm,mv,door){try{if(!window.__va406off&&va25Cv('v_master',0,0)){try{va34U()}catch(e){}g.save();g.translate(x,y);g.scale(s,s);g.fillStyle='rgba(0,0,0,.22)';g.beginPath();g.ellipse(0,2,62,5,0,0,7);g.fill();
+const by=mv?Math.sin(tm*18)*.6:0;g.translate(0,by);va28Draw('v_master',0,3,124);
+g.fillStyle='#2e7a3a';g.fillRect(-58,-25,104,4);g.fillStyle='#2e9a4a';g.beginPath();g.moveTo(-46,-36);g.quadraticCurveTo(-46,-50,-32,-50);g.quadraticCurveTo(-32,-36,-46,-36);g.fill();g.fillStyle='#2e7a3a';g.font='900 10px Arial,sans-serif';g.textAlign='left';g.textBaseline='middle';g.fillText('NOXACORP',-28,-42);g.textBaseline='alphabetic';
+if(door){g.fillStyle='#1a1e22';g.fillRect(-60,-50,8,42)}g.restore();return}}catch(e){}return o(x,y,s,tm,mv,door)}})(noxVan);
+gendCar=(function(o){return function(x,y,tm){try{if(!window.__va406off&&va25Cv('v_gend',0,0)){try{va34U()}catch(e){}g.save();g.translate(x,y);g.fillStyle='rgba(0,0,0,.22)';g.beginPath();g.ellipse(0,2,58,4,0,0,7);g.fill();va28Draw('v_gend',0,3,124);
+g.restore();return}}catch(e){}return o(x,y,tm)}})(gendCar);
+// ===== 4.06c : câlin de Mila et Andrea en images (planche de l'utilisateur, img/sprites/va406_hug1-4) =====
+const VA406H={};function va406Hug(n){let i=VA406H[n];if(!i){i=new Image();i.src='img/sprites/va406_hug'+n+'.webp';VA406H[n]=i}return i.complete&&i.naturalWidth?i:null}
+function va406HugDraw(n,x,gy,sc,H){const im=va406Hug(n);if(!im)return false;grp(x,gy,sc,()=>{const h=H||64,w=h*im.naturalWidth/im.naturalHeight;g.save();g.fillStyle='rgba(0,0,0,.18)';g.beginPath();g.ellipse(x,gy+4,w*.42,3,0,0,7);g.fill();g.drawImage(im,x-w/2,gy+4-h,w,h);g.restore()});return true}
+setTimeout(()=>{for(let n=1;n<=4;n++)va406Hug(n)},2500);
+try{const od=CS.pardon.draw;CS.pardon.draw=function(Wd,gy,T2,tm){window.__va406p=T2>=42.8&&!window.__va406off?1:0;window.__va406d=0;window.__va406W=Wd;try{return od.apply(this,arguments)}finally{window.__va406p=0}}}catch(e){}
+va69P=(function(o){return function(x,gy,k,f,pose,dy){if(window.__va406p&&va406Hug(3)){if(!window.__va406d){window.__va406d=1;va406HugDraw(3,window.__va406W*.492,gy,1.9,64)}return}return o(x,gy,k,f,pose,dy)}})(va69P);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.05',GAME_DATE='13/11/2026 à 13h34';
+const GAME_VER='4.06',GAME_DATE='13/11/2026 à 13h38';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
