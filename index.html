@@ -9302,8 +9302,13 @@ try{Object.assign(VA90M,{"mila_galop":[8,220,180],"qh_galop":[8,220,139]});
  eqDraw=(function(o){return function(x,y,s,ph,col,rider,st){if(st||window.__va90off||!(rider||col==='#7a4220'||!col))return o.apply(this,arguments);const n=rider?'mila_galop':'qh_galop';if(!va90Im(n))return o.apply(this,arguments);
   try{const f=Math.floor((((ph||0)%6.2832)+6.2832)%6.2832/6.2832*8);g.save();g.translate(x,y);g.scale(s,s);va90F(g,n,f,2,7,86);g.restore();return}catch(e){}return o.apply(this,arguments)}})(eqDraw);
  setTimeout(()=>{try{va90Im('mila_galop');va90Im('qh_galop')}catch(e){}},7000)}catch(e){}
+// ===== 3.94 : quarter horse à l'arrêt en images (poses calmes qui changent toutes les ~3 s) =====
+try{Object.assign(VA90M,{"qh_stand":[6,280,230],"qh_pas":[8,212,138]});
+ eqDraw=(function(o){return function(x,y,s,ph,col,rider,st){if(!st||rider||window.__va90off||!(col==='#7a4220'||!col)||!va90Im('qh_stand'))return o.apply(this,arguments);
+  try{const Q=[0,0,1,0,2,2,0,3,0,5,0,4],f=Q[Math.floor(performance.now()/3000)%Q.length];g.save();g.translate(x,y);g.scale(s,s);va90F(g,'qh_stand',f,2,7,80);g.restore();return}catch(e){}return o.apply(this,arguments)}})(eqDraw);
+ setTimeout(()=>{try{va90Im('qh_stand');va90Im('qh_pas')}catch(e){}},7500)}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.93',GAME_DATE='13/11/2026 à 12h09';
+const GAME_VER='3.94',GAME_DATE='13/11/2026 à 12h16';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
