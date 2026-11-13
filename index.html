@@ -9487,8 +9487,27 @@ subD=(function(o){return function(x,y,s,tm,lit){if(window.__va410arm&&va409I('so
 const VA410_T=[['arrivee',0,0,.12,()=>SV.ouvL===level],['tortue',0,.15,.6],['bain',1,.33,.8],['sabot',3,.9,.99],['marche',6,.22,.6,()=>!(SV.csd&&SV.csd.lucia)],['veille',10,.8,.95]];
 mgTick=(function(o){return function(dt){o(dt);try{if(!started||window.__va410off||!va74Free())return;SV.va410=SV.va410||{};const ci=chIdx(),p=chP();for(const q of VA410_T){if(SV.va410[q[0]+level]||q[1]!==ci||p<q[2]||p>q[3])continue;if(q[4]&&!q[4]())continue;SV.va410[q[0]+level]=1;try{albAdd&&0}catch(e){}openCine(q[0]);saveTrip();break}}catch(e){}}})(mgTick);
 setTimeout(()=>{for(const n in VA410S)va410Img('img/sprites/va410/'+n+'.webp');try{[0,1,6].forEach(k=>va410Img(va410Src(k)));va410Img(VA27.N[3].src);va410Img('img/scenes/va88/ferry.webp')}catch(e){}},3000);
+// ===== 4.11 : balades et moments tendres (planches de l'utilisateur : balade 8 poses, tendre 6, rocher 4) =====
+Object.assign(VA410S,{balade:8,tendre:6,rocher:4});
+// [chapitre, type, pose finale, répliques] ; type 'b' = ils arrivent main dans la main puis pose tendre ; 'r' = assis sur un rocher face à la vue
+const VA411=[[2,'b',0,[[1,'n','Une pause au bord de la rivière du Fium’orbu.'],[5.5,'a','Viens, on marche un peu. Juste nous deux.'],[9.5,'m','Ça fait du bien… On oublie tout le reste.']]],
+[3,'r',0,[[1,'n','Un rocher de granit rose face aux aiguilles de Bavella.'],[4.5,'a','Regarde ça, ma chérie. On dirait des dents de géant.'],[8.5,'m','Attends, une photo… et un bisou.'],[12.5,'a','Une gorgée d’eau ? Le chien veut la sienne aussi.']]],
+[5,'b',3,[[1,'n','Les roseaux de Foce bougent dans le vent.'],[5.5,'m','Tu sais quoi ? Je suis heureuse. Là, maintenant.'],[9.5,'a','Moi aussi. Même avec Marchetti sur le dos.']]],
+[7,'b',4,[[1,'n','Une place de village en Gallura. Un accordéon joue quelque part.'],[5.5,'a','Mademoiselle, vous dansez ?'],[9,'m','Ici ? Devant tout le monde ? … D’accord !']]],
+[8,'b',2,[[1,'n','Au bord du lac de l’Ospedale, la forêt se reflète dans l’eau.'],[5.5,'m','On a presque fini, tu crois ?'],[9.5,'a','Je crois, oui. Et après, on rentre ensemble.']]],
+[9,'b',5,[[1,'n','Sur le plateau du Coscione, des chevaux en liberté.'],[5.5,'m','Regarde, là-bas ! Un poulain !'],[9.5,'a','Il est aussi têtu que toi, je parie.']]],
+[11,'b',1,[[1,'n','Fautea. La mer, tout près.'],[5.5,'m','On est revenus au début du voyage.'],[9.5,'a','Pas tout à fait… Viens.']]]];
+CS.balade={mus:'love',L:()=>{const q=window.__va411q||VA411[0];return q[3]},end:15,
+draw:(Wd,gy,T2,tm)=>{const q=window.__va411q||VA411[0],ci=q[0];let P={};try{P=VA25_P[ci]||{}}catch(e){}va410Fond(va410Src(ci),P.hz||.8,Wd,gy,P.fill||'#8cc8ea');va410Ground(Wd,gy,'#c9b48a','#97805a');
+if(q[1]==='r'){const f=T2<4?0:T2<8?1:T2<12?2:3;va410F('rocher',f,Wd*.5,gy+26,175)}
+else{if(T2<5){const x=-60+(T2/5)*(Wd*.5+60);va410F('balade',Math.floor(T2*7)%8,x,gy+10,150)}else va410F('tendre',q[2],Wd*.5,gy+10,158)}
+try{wxOver(g,Wd,420,tm)}catch(e){}}};
+try{DK_LBL.balade='Balade à deux (selon le chapitre)'}catch(e){}
+openCine=(function(o){return function(k){if(k==='balade'&&!window.__va411q){const ci=chIdx();window.__va411q=VA411.find(q=>q[0]===ci)||VA411[0]}return o(k)}})(openCine);
+mgTick=(function(o){return function(dt){o(dt);try{if(!started||window.__va410off||!va74Free())return;SV.va410=SV.va410||{};const ci=chIdx(),p=chP(),q=VA411.find(q=>q[0]===ci);if(!q||SV.va410['bal'+level]||p<.5||p>.85)return;SV.va410['bal'+level]=1;window.__va411q=q;openCine('balade');saveTrip()}catch(e){}}})(mgTick);
+setTimeout(()=>{for(const n of['balade','tendre','rocher'])va410Img('img/sprites/va410/'+n+'.webp')},3200);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.10',GAME_DATE='13/11/2026 à 14h57';
+const GAME_VER='4.11',GAME_DATE='13/11/2026 à 15h33';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
