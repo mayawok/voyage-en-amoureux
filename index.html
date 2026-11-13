@@ -9252,7 +9252,7 @@ const VA88S=new Image();VA88S.src='img/scenes/va88/ferry.webp';
 function va88Ship(sx,sy,L){if(!VA88S.complete||!VA88S.naturalWidth||window.__va88off)return false;const w=L*1.22,h=w*VA88S.naturalHeight/VA88S.naturalWidth;g.drawImage(VA88S,sx-L*.06,sy+20-h,w,h);return true}
 // chenilles : le Cherokee des cinématiques dessinait toujours ses roues
 try{cherokeeSide=(function(o){return function(cx,cy,hood){if(!(SV&&SV.cus&&SV.cus.trk))return o(cx,cy,hood);const ow=va25Sp;
- va25Sp=function(n,x,by,H,hz,fl){if(n!=='v_roue')return ow.apply(this,arguments);const rad=H*.85,yc=by-rad;try{g.save();g.translate(x,yc);g.scale(rad/R,rad/R);va23Track(0,0,(performance.now()/180)%6.28)}catch(e){}finally{g.restore()}return true};
+ va25Sp=function(n,x,by,H,hz,fl){if(n!=='v_roue')return ow.apply(this,arguments);const rad=H*.62,yc=by-H*.72;try{g.save();g.translate(x,yc);g.scale(rad/R,rad/R);va23Track(0,0,(performance.now()/180)%6.28)}catch(e){}finally{g.restore()}return true};
  try{return o(cx,cy,hood)}finally{va25Sp=ow}}})(cherokeeSide)}catch(e){}
 // ===== 3.90 : animations peintes (animaux qui courent, chevaux, oiseaux en vol) et avions dans le ciel =====
 // planches de l'utilisateur (ChatGPT), découpées en bandes de poses dans img/sprites/va90/ : [nombre de poses, largeur d'une pose, hauteur]
@@ -9372,6 +9372,6 @@ try{const st=document.createElement('style');st.textContent='#dash.nt{filter:non
 setTimeout(()=>{try{va402I('h','img/sprites/va402_hotel.webp');va402I('c','img/sprites/va402_camping.webp');va402I('g','img/scenes/va88/grotte.jpg');va402I('t','img/scenes/va88/tour_j.jpg')}catch(e){}},3000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.02',GAME_DATE='13/11/2026 à 13h29';
+const GAME_VER='4.03',GAME_DATE='13/11/2026 à 13h32';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
