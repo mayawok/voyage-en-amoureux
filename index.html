@@ -9509,8 +9509,13 @@ try{DK_LBL.balade='Balade à deux (selon le chapitre)'}catch(e){}
 openCine=(function(o){return function(k){if(k==='balade'&&!window.__va411q){const ci=chIdx();window.__va411q=VA411.find(q=>q[0]===ci)||VA411[0]}return o(k)}})(openCine);
 mgTick=(function(o){return function(dt){o(dt);try{if(!started||window.__va410off||!va74Free())return;SV.va410=SV.va410||{};const ci=chIdx(),p=chP(),q=VA411.find(q=>q[0]===ci);if(!q||SV.va410['bal'+level]||p<.5||p>.85)return;SV.va410['bal'+level]=1;window.__va411q=q;openCine('balade');saveTrip()}catch(e){}}})(mgTick);
 setTimeout(()=>{for(const n of['balade','tendre','rocher'])va410Img('img/sprites/va410/'+n+'.webp');try{for(const k in VA25_TX)va410Img(VA25_TX[k])}catch(e){}},3200);
+// ===== 4.13 : écran de chargement = image d'accueil, barre en bas =====
+try{const L=document.getElementById('va37l');if(L){L.style.background='#10202c url('+VA21_IMG+') center/cover no-repeat';L.style.justifyContent='flex-end';L.style.paddingBottom='2.5vh';
+const k=[...L.children];if(k[0])k[0].style.display='none';if(k[1])k[1].style.display='none';
+const bar=k[2];if(bar){bar.style.width='min(60vw,420px)';bar.style.height='10px';bar.style.borderRadius='5px';bar.style.background='rgba(0,0,0,.35)';bar.style.boxShadow='0 0 0 1px rgba(255,255,255,.35),0 2px 10px rgba(0,0,0,.5)'}
+const t=document.getElementById('va37t');if(t){t.style.textShadow='0 1px 4px #000';t.style.opacity='.9'}}}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.12',GAME_DATE='13/11/2026 à 15h42';
+const GAME_VER='4.13',GAME_DATE='13/11/2026 à 15h44';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
