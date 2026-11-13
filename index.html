@@ -9252,8 +9252,31 @@ function va88Ship(sx,sy,L){if(!VA88S.complete||!VA88S.naturalWidth||window.__va8
 try{cherokeeSide=(function(o){return function(cx,cy,hood){if(!(SV&&SV.cus&&SV.cus.trk))return o(cx,cy,hood);const ow=va25Sp;
  va25Sp=function(n,x,by,H,hz,fl){if(n!=='v_roue')return ow.apply(this,arguments);const rad=H*.85,yc=by-rad;try{g.save();g.translate(x,yc);g.scale(rad/R,rad/R);va23Track(0,0,(performance.now()/180)%6.28)}catch(e){}finally{g.restore()}return true};
  try{return o(cx,cy,hood)}finally{va25Sp=ow}}})(cherokeeSide)}catch(e){}
+// ===== 3.90 : animations peintes (animaux qui courent, chevaux, oiseaux en vol) et avions dans le ciel =====
+// planches de l'utilisateur (ChatGPT), découpées en bandes de poses dans img/sprites/va90/ : [nombre de poses, largeur d'une pose, hauteur]
+const VA90M={"cheval_g":[8,221,129],"cheval_p":[8,214,143],"goeland":[6,295,300],"hirondelle":[6,256,300],"aigle":[4,427,300],"mouflon":[6,329,182],"cerf":[6,339,211],"sanglier":[6,314,152],"renard":[6,297,139],"chevre":[6,315,188],"lievre":[6,334,186]},VA90I={};
+function va90Im(n){let i=VA90I[n];if(!i){i=new Image();i.src='img/sprites/va90/'+n+'.webp';VA90I[n]=i}return i.complete&&i.naturalWidth?i:null}
+// dessine la pose f de la bande n, centrée en cx, pied à by, largeur w (une pose)
+function va90F(x,n,f,cx,by,w,mid){const M=VA90M[n],im=va90Im(n);if(!M||!im)return false;const cw=im.naturalWidth/M[0],ch=im.naturalHeight,h=w*ch/cw,i=((f%M[0])+M[0])%M[0];x.drawImage(im,i*cw,0,cw,ch,cx-w/2,mid?by-h/2:by-h,w,h);return true}
+// animaux : en mouvement ('w'), le cheval marche au pas, les bêtes sauvages courent
+const VA90A={cheval:['cheval_p',7,1.05],mouflon:['mouflon',11,1.15],cerf:['cerf',10,1.2],sanglier:['sanglier',12,1.1],renard:['renard',12,1.2],chevre:['chevre',11,1.1],lievre:['lievre',12,1.25]};
+try{va31Draw=(function(o){return function(x,id,t){try{const q=VA90A[id],T0=VA31T[id];if(q&&T0&&window.__anP==='w'&&!(VA25.dk>.2)&&!window.__va90off){const gal=id==='cheval'&&window.__anG,n=gal?'cheval_g':q[0],w=(T0.x1-T0.x0)*q[2];if(va90F(x,n,Math.floor((t||0)*(gal?13:q[1])+(window.__anS||0)*3),(T0.x0+T0.x1)/2,T0.b+2,w))return true}}catch(e){}return o(x,id,t)}})(va31Draw)}catch(e){}
+// oiseaux du ciel : goélands, hirondelles, aigle en vol battu
+try{BD.push(['h',71,.26,.52,.6,.28],['h',73,.28,.545,.55,.28],['h',70,.24,.56,.5,.28],['g',31,.21,.5,.9,.14]);
+ bird=(function(o){return function(t,x,y,s,tm){if(window.__va90off)return o(t,x,y,s,tm);const n=t==='h'?'hirondelle':t==='a'?'aigle':'goeland',fps=t==='h'?14:t==='a'?2.2:6,w=(t==='h'?24:t==='a'?58:40)*s;
+  if(va90F(g,n,Math.floor(tm*fps+x*.013),x,y,w,1))return;return o(t,x,y,s,tm)}})(bird)}catch(e){}
+// avions : un avion de ligne très haut, un petit avion de tourisme, et le bombardier d'eau près de la mer
+const VA90P=[[0,95,.07,.055,0,0],[2,140,.15,.05,.4,0],[1,120,.2,.055,.7,1]];
+try{birds=(function(o){return function(ta,dayF,tm){o(ta,dayF,tm);if(window.__va90off||dayF<.4)return;try{const ci=chIdx(),sea=[0,1,4,6,10,11].includes(ci);
+ for(const p of VA90P){if(p[5]&&!sea)continue;const im=va90Im('avion'+p[0]);if(!im)continue;const per=p[1],u=((tm+p[4]*per)%per)/per,span=W+400,x=-200+u*span*2.2;if(x>W+200)continue;
+  const w=W*p[3]*(p[0]===0?.9:1.4),h=w*im.naturalHeight/im.naturalWidth,y=HH*p[2]+Math.sin(tm*.5+p[4]*7)*4;g.save();g.globalAlpha=p[0]===0?.85:1;g.drawImage(im,x-w/2,y-h/2,w,h);
+  if(p[0]===0){g.globalAlpha=.35;g.strokeStyle='#fff';g.lineWidth=2;g.beginPath();g.moveTo(x-w*.45,y);g.lineTo(x-w*.45-W*.25,y+2);g.stroke()}g.restore()}}catch(e){}}})(birds)}catch(e){}
+// le ciel peint ne passait plus par birds() : on l'appelle après le fond peint (une fois par image)
+let va90LT=-1;try{birds=(function(o){return function(ta,dayF,tm){if(tm===va90LT)return;va90LT=tm;return o(ta,dayF,tm)}})(birds);
+ va23Bg=(function(o){return function(ta,dayF,tm,sx,sy){const r=o.apply(this,arguments);try{if(!window.__va90off)birds(ta,dayF,tm)}catch(e){}return r}})(va23Bg)}catch(e){}
+setTimeout(()=>{try{for(const n in VA90M)if(n!=='avions')va90Im(n);for(let i=0;i<3;i++)va90Im('avion'+i)}catch(e){}},6000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.89',GAME_DATE='13/11/2026 à 10h52';
+const GAME_VER='3.90',GAME_DATE='13/11/2026 à 11h29';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
