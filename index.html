@@ -6061,7 +6061,7 @@ const AIDE=[
   ['🧺','Pique-nique','Aux aires de pique-nique, Mila propose de s’arrêter manger : la faim remonte.'],
   ['🔧','Pièces du garage','À l’atelier Corse 4x4 : blocage de différentiel (boue), pare-buffle (troncs), snorkel (gués), sabots (rocaille).'],
   ['🎨','Peinture Nostrale','Souvent à côté de Corse 4x4 : couleur de carrosserie, couleur des jantes et livrées rares (avec leur défi). Les jantes se peignent aussi chez Corse 4x4.'],
-  ['✨','Livrées rares','17 livrées au magasin Peinture Nostrale (50 ❤) ou gratuites avec un défi (boue, photos, troupeaux, animaux aidés, obstacles brisés, surpuissances, pique-niques, pièces du garage, nuit, chapitres atteints). Touche une livrée verrouillée pour voir son défi.'],
+  ['✨','Livrées rares','17 livrées au magasin Peinture Nostrale (30 ❤) ou gratuites avec un défi (boue, photos, troupeaux, animaux aidés, obstacles brisés, surpuissances, pique-niques, pièces du garage, nuit, chapitres atteints). Touche une livrée verrouillée pour voir son défi.'],
   ['💾','Sauvegarde','Dans le menu, « Sauvegarde de secours » garde ton voyage en lieu sûr.']]]];
 (function(){const st=document.createElement('style');st.textContent=`#aide{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(10,6,4,.72);padding:10px;box-sizing:border-box}
 #aide .aw{width:min(820px,96vw);max-height:calc(100vh - 20px);display:flex;flex-direction:column;background:#2b2018;color:#f6ead6;border-radius:18px;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 40px rgba(0,0,0,.5);box-sizing:border-box;overflow:hidden}
@@ -6873,10 +6873,10 @@ function skinDraw(tm){const k=SV.cus&&SV.cus.skin;if(!k||!skinOK(k))return;g.sav
   g.fillStyle='#f6e8b0';g.beginPath();g.arc(40,-22,4,0,7);g.fill();g.fillStyle='#2a1f5a';g.beginPath();g.arc(41.6,-23,3.4,0,7);g.fill()}
  skShade();g.restore()}
 // ---------- atelier ----------
-cusRows=(function(o){return function(){const r=o();try{const C=SV.cus;C.own=C.own||{};r.push(['✨ Livrées rares','50 ❤ chacune, ou gratuite en réussissant son défi (touche une livrée verrouillée pour voir le défi)',[['','Aucune',0]].concat(SKINS.map(s=>[s[0],s[1],skinOK(s[0])?0:50])).map(q=>['skin',q[0],q[1],q[2],(C.skin||'')===q[0]])])}catch(e){}return r}})(cusRows);
+cusRows=(function(o){return function(){const r=o();try{const C=SV.cus;C.own=C.own||{};r.push(['✨ Livrées rares','30 ❤ chacune, ou gratuite en réussissant son défi (touche une livrée verrouillée pour voir le défi)',[['','Aucune',0]].concat(SKINS.map(s=>[s[0],s[1],skinOK(s[0])?0:30])).map(q=>['skin',q[0],q[1],q[2],(C.skin||'')===q[0]])])}catch(e){}return r}})(cusRows);
 var skArm='';
 cusPick=(function(o){return function(k,v){if(k!=='skin')return o(k,v);const C=SV.cus;C.own=C.own||{};cusMsg='';
- if(v&&!skinOK(v)){const s=SKINS.find(q=>q[0]===v);const pr=Math.min(s[4],s[3](achO()));if(skArm!==v){skArm=v;cusMsg='Défi : '+s[2]+' ('+pr+'/'+s[4]+') · retouche = achat';snd('click');try{cusRender()}catch(e){}return}if(!cusPay(50)){try{cusRender()}catch(e){}return}C.own['sk_'+v]=1}
+ if(v&&!skinOK(v)){const s=SKINS.find(q=>q[0]===v);const pr=Math.min(s[4],s[3](achO()));if(skArm!==v){skArm=v;cusMsg='Défi : '+s[2]+' ('+pr+'/'+s[4]+') · retouche = achat';snd('click');try{cusRender()}catch(e){}return}if(!cusPay(30)){try{cusRender()}catch(e){}return}C.own['sk_'+v]=1}
  skArm='';C.skin=v;snd('click');try{cusRender()}catch(e){}saveTrip()}})(cusPick);
 // ---------- dessin sur le Cherokee (juste après la peinture, avant vitres et détails) ----------
 // (appelé depuis truck() : voir l'insertion « skinDraw »)
@@ -7033,11 +7033,11 @@ openShop=(function(o){return function(){if(cusMode!=='paint')cusMode='gar';o.app
 {const x0=gid('cusx');if(x0)x0.addEventListener('click',()=>{cusMode='gar'})}
 cusRows=(function(o){return function(){const r=o();try{const isB=q=>q[0].indexOf('Couleur de carrosserie')>=0,isR=q=>q[0].indexOf('Couleur des jantes')>=0,isS=q=>q[0].indexOf('Livrées rares')>=0;
  if(cusMode==='paint')return r.filter(q=>isB(q)||isR(q));return r.filter(q=>!isB(q)&&!isS(q))}catch(e){return r}}})(cusRows);
-cusRender=(function(o){return function(){o();try{if(cusMode!=='paint')return;const C=SV.cus,A=achO(),box=gid('cusr');let h='<div class="row"><b>✨ Livrées rares<i>50 ❤ chacune, ou gratuite quand le défi est réussi</i></b><button class="ch'+(!C.skin?' on':'')+'" data-k="skin" data-v="">Aucune livrée</button></div>';
- for(const s of SKINS){const ok=skinOK(s[0]),pr=Math.min(s[4],s[3](A)),on=C.skin===s[0];h+='<div class="row skr"><b>'+s[1]+(ok?' <span style="color:#7be0a0">✓</span>':'')+'<i>Défi : '+s[2]+' · '+pr+'/'+s[4]+'</i></b><div class="skp"><span style="width:'+Math.round(pr/s[4]*100)+'%"></span></div>'+(on?'<button class="ch on" data-k="skin" data-v="'+s[0]+'">Choisie ✓</button>':ok?'<button class="ch" data-k="skin" data-v="'+s[0]+'">Choisir</button>':'<button class="ch" data-k="skinbuy" data-v="'+s[0]+'">Acheter · 50 ❤</button>')+'</div>'}
+cusRender=(function(o){return function(){o();try{if(cusMode!=='paint')return;const C=SV.cus,A=achO(),box=gid('cusr');let h='<div class="row"><b>✨ Livrées rares<i>30 ❤ chacune, ou gratuite quand le défi est réussi</i></b><button class="ch'+(!C.skin?' on':'')+'" data-k="skin" data-v="">Aucune livrée</button></div>';
+ for(const s of SKINS){const ok=skinOK(s[0]),pr=Math.min(s[4],s[3](A)),on=C.skin===s[0];h+='<div class="row skr"><b>'+s[1]+(ok?' <span style="color:#7be0a0">✓</span>':'')+'<i>Défi : '+s[2]+' · '+pr+'/'+s[4]+'</i></b><div class="skp"><span style="width:'+Math.round(pr/s[4]*100)+'%"></span></div>'+(on?'<button class="ch on" data-k="skin" data-v="'+s[0]+'">Choisie ✓</button>':ok?'<button class="ch" data-k="skin" data-v="'+s[0]+'">Choisir</button>':'<button class="ch" data-k="skinbuy" data-v="'+s[0]+'">Acheter · 30 ❤</button>')+'</div>'}
  box.insertAdjacentHTML('beforeend',h)}catch(e){}}})(cusRender);
 (function(){const st=document.createElement('style');st.textContent=`#cus .skr .skp{height:6px;border-radius:3px;background:rgba(255,255,255,.12);margin:4px 0 6px;overflow:hidden}#cus .skr .skp span{display:block;height:100%;background:linear-gradient(90deg,#f2a33a,#7be0a0)}`;document.head.appendChild(st)})();
-cusPick=(function(o){return function(k,v){if(k==='skinbuy'){const C=SV.cus;C.own=C.own||{};cusMsg='';if(!cusPay(50)){try{cusRender()}catch(e){}return}C.own['sk_'+v]=1;C.skin=v;try{cusRender()}catch(e){}saveTrip();return}return o(k,v)}})(cusPick);
+cusPick=(function(o){return function(k,v){if(k==='skinbuy'){const C=SV.cus;C.own=C.own||{};cusMsg='';if(!cusPay(30)){try{cusRender()}catch(e){}return}C.own['sk_'+v]=1;C.skin=v;try{cusRender()}catch(e){}saveTrip();return}return o(k,v)}})(cusPick);
 // mise à jour des étiquettes et de l'ancienne bulle de lavage
 mgTick=(function(o){return function(dt){o(dt);try{const wb=gid('washb'),pb=gid('paintb');const off=!started||night||crashed||PLT()||cs||paused;
  // lavage
@@ -9743,6 +9743,6 @@ va29Body=(function(o){return function(tm){const k=SV.cus&&SV.cus.skin;if(!k||!VA
  window.__va29on=0;const P=va29Get(CCv&&CCv.m);if(!P)return false;window.__va29on=1;g.drawImage(P.full,-62.5,-33,122,44.3);va30Rack();g.drawImage(L,-62.5,-33,122,44.3);g.drawImage(P.rest,-62.5,-33,122,44.3);return true}})(va29Body);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.21',GAME_DATE='14/11/2026 à 00h45';
+const GAME_VER='4.22',GAME_DATE='14/11/2026 à 00h47';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
