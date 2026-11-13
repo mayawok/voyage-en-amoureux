@@ -9222,8 +9222,11 @@ function va85Tick(){try{if(chIdx()!==10||SV.va85===level||SV.va85a===level||!inG
  SV.va85a=level;cardQ.push({t:'Maud, la plongeuse',L:[['v','<b>Maud :</b> « Vous voulez voir la crique ? Mon bateau est au port. Mais avec ce mistral, il me faut quelqu’un pour guetter les rochers. »'],['m','Andrea garde le chien. Moi, je viens.'],['a','Fais attention, ma chérie.']],cb:()=>{try{va85Open()}catch(e){}}})}catch(e){}}
 loop=(function(o){return function(t){const r=o.apply(this,arguments);try{if(t-va85T>1000){va85T=t;va85Tick()}}catch(e){}return r}})(loop);
 try{VA9_G.push(['⛵','Le bateau de Maud',()=>va85Open()])}catch(e){}
+// ===== 3.86 : fonds peints de Bonifacio (jour, soir, nuit) =====
+try{VA23_IMG[10]='img/fonds/va86_bonif_j.jpg';VA25_P[10]={hz:.655,F:.5,fill:'#1d9ec4',dune:0};
+ VA27.E[10]={src:'img/fonds/va86_bonif_s.jpg',hz:.655,fill:'#1f8fa8'};VA27.N[10]={src:'img/fonds/va86_bonif_n.jpg',hz:.655,fill:'#0f5a86'}}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.85',GAME_DATE='13/11/2026 à 08h37';
+const GAME_VER='3.86',GAME_DATE='13/11/2026 à 08h45';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
