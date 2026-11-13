@@ -8330,14 +8330,14 @@ CS.bivouac={mus:'love',L:()=>[[2,'n','Le feu craque doucement. Plus personne n�
   for(const t0 of[8,16.5]){const u=(T2-t0)/1.1;if(u>0&&u<1){const x=Wd*(.25+.4*(t0>10?.5:0))+u*220,y=40+u*90;const gr=g.createLinearGradient(x,y,x-90,y-36);gr.addColorStop(0,'rgba(255,255,255,'+(1-u)+')');gr.addColorStop(1,'rgba(255,255,255,0)');g.strokeStyle=gr;g.lineWidth=2;g.beginPath();g.moveTo(x,y);g.lineTo(x-90,y-36);g.stroke()}}
   bgMount(g,gy-60,'#101a30',70,1.2,36);bgMount(g,gy-24,'#0c1424',46,2.5,30);for(let i=0;i<14;i++)bgPine(g,i*Wd/13+hh2(i+9)*18,gy-4,44+hh2(i+2)*26,'#0a1420','#0d1a28');
   const gr2=g.createLinearGradient(0,gy-8,0,420);gr2.addColorStop(0,'#1c2a22');gr2.addColorStop(1,'#0e1712');g.fillStyle=gr2;g.fillRect(0,gy-6,Wd,430-gy);
-  const fx=Wd*.5,fy=gy+34,fl=Math.sin(tm*9)*.5+Math.sin(tm*14)*.3;
+  const v34=!!window.__v34on,fx=v34?Wd*.47:Wd*.5,fy=gy+34,fl=Math.sin(tm*9)*.5+Math.sin(tm*14)*.3;
   g.save();g.translate(fx,fy);g.scale(1.45,1.45);g.translate(-fx,-fy);
-  let gl=g.createRadialGradient(fx,fy-10,4,fx,fy-10,260);gl.addColorStop(0,'rgba(255,170,70,.5)');gl.addColorStop(.4,'rgba(255,120,40,.16)');gl.addColorStop(1,'rgba(255,120,40,0)');g.fillStyle=gl;g.fillRect(fx-270,fy-270,540,300);
+  if(!v34){let gl=g.createRadialGradient(fx,fy-10,4,fx,fy-10,260);gl.addColorStop(0,'rgba(255,170,70,.5)');gl.addColorStop(.4,'rgba(255,120,40,.16)');gl.addColorStop(1,'rgba(255,120,40,0)');g.fillStyle=gl;g.fillRect(fx-270,fy-270,540,300);}
   try{person(fx-86,fy+4,1,{pose:'sit'});person(fx-44,fy+10,0,{pose:'sit',f:1});dogDraw(fx-62,fy+16,1,'lie',tm,0)}catch(e){}
-  g.fillStyle='#4a2f1a';g.save();g.translate(fx,fy);g.rotate(.4);g.fillRect(-26,-3,52,7);g.rotate(-.8);g.fillRect(-26,-3,52,7);g.restore();
+  if(!v34){g.fillStyle='#4a2f1a';g.save();g.translate(fx,fy);g.rotate(.4);g.fillRect(-26,-3,52,7);g.rotate(-.8);g.fillRect(-26,-3,52,7);g.restore();
   for(const[w2,hh,col]of[[16,34,'rgba(255,120,30,.9)'],[11,26,'rgba(255,190,70,.95)'],[6,17,'rgba(255,245,190,1)']]){g.fillStyle=col;g.beginPath();g.moveTo(fx-w2,fy-2);g.quadraticCurveTo(fx-w2*.6+fl*3,fy-hh*.6,fx+fl*4,fy-hh);g.quadraticCurveTo(fx+w2*.6+fl*3,fy-hh*.5,fx+w2,fy-2);g.closePath();g.fill()}
   for(let i=0;i<14;i++){const u=((tm*.4+i*.19)%1),sx=fx+Math.sin(i*3+tm)*10+u*8,sy=fy-20-u*90;g.fillStyle='rgba(255,'+(150+i*6)+',60,'+(.8*(1-u))+')';g.fillRect(sx,sy,1.6,1.6)}
-  g.restore();try{wxOver(g,Wd,420,tm)}catch(e){}}};
+  }g.restore();try{wxOver(g,Wd,420,tm)}catch(e){}}};
 arrive=(function(o){return function(m0){const r=o(m0);try{if(va75Biv()&&!cs&&!va9P&&!dkP&&inGame){SV.va50b=1;SV.va75b[chIdx()]=1;fadeTo(()=>openCine('bivouac'))}}catch(e){}return r}})(arrive);
 // --- 10. flash-back en sépia (Bretagne) après le choix d'Andrea
 CS.flash={mus:'sad',L:()=>[[2,'n','Un souvenir, quelque part en Bretagne.'],[7,'a','On était bien, là-bas, tous les deux.'],[13,'m','On est toujours bien. C’est juste que ça va vite.'],[19,'n','Les chevaux broutent. La maison est tranquille. Le Cherokee n’a pas encore démarré.']],end:25,
@@ -9329,6 +9329,6 @@ try{Object.assign(VA90M,{"vache_m":[8,211,128],"mouton_m":[8,213,125],"ane_m":[8
  setTimeout(()=>{try{for(const n in {"vache_m":[8,211,128],"mouton_m":[8,213,125],"ane_m":[8,211,144],"cochon_m":[8,212,101],"poules_m":[8,212,116],"chevre_m":[8,212,135],"mila_m":[8,206,300],"andrea_m":[8,197,300]})va90Im(n)}catch(e){}},8000)}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.95',GAME_DATE='13/11/2026 à 12h58';
+const GAME_VER='3.96',GAME_DATE='13/11/2026 à 13h00';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
