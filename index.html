@@ -901,7 +901,7 @@ g.fillStyle='rgba(255,255,255,.07)';g.beginPath();g.moveTo(-20,-19);g.lineTo(-12
 g.fillStyle='#14181c';g.fillRect(-30,-30,6,12);if(va29B)g=va29g;
 const kind=(level-1)%2;
 if(!night&&!work&&!(kind===0&&((stalled&&pumpP>0)||(flatW>=0&&flatP>0)))){const rn6=window.__dogS==='rain';g.save();g.beginPath();g.rect(va29B?-6.5:-4.4,-30,va29B?18:25,va29B?14:11);g.clip();head(kind,rn6?-1:1.2,rn6?-23.4:-24,.95,1);g.restore();
-if(!rn6){g.strokeStyle='#f1d3b8';g.lineWidth=3;g.lineCap='round';g.beginPath();g.moveTo(-2,-17);g.lineTo(11+Math.sin(tm*2),-17.5);g.stroke();g.lineCap='butt'}}
+if(!rn6){const hx=10+Math.sin(tm*2)*.6;g.lineCap='round';g.lineJoin='round';g.fillStyle='#3a5a9a';g.beginPath();g.moveTo(-3.5,-19.6);g.quadraticCurveTo(-1,-20.6,1.8,-19.4);g.lineTo(1.6,-15.6);g.quadraticCurveTo(-1,-15,-3.5,-15.8);g.closePath();g.fill();g.fillStyle='#e9c09c';g.strokeStyle='rgba(120,70,40,.55)';g.lineWidth=.45;g.beginPath();g.moveTo(1.4,-19);g.quadraticCurveTo(6,-19.4,hx,-18.6);g.lineTo(hx,-16.2);g.quadraticCurveTo(6,-15.5,1.4,-16);g.closePath();g.fill();g.stroke();g.fillStyle='rgba(255,240,225,.35)';g.fillRect(2.5,-18.8,5.5,.7);g.fillStyle='#e9c09c';g.beginPath();g.ellipse(hx+1.1,-17,1.9,1.6,.25,0,7);g.fill();g.stroke();g.strokeStyle='rgba(120,70,40,.5)';g.lineWidth=.35;g.beginPath();g.moveTo(hx+1.8,-17.9);g.lineTo(hx+2.4,-15.6);g.moveTo(hx+.9,-17.8);g.lineTo(hx+1.4,-15.5);g.stroke();g.lineCap='butt';g.lineJoin='miter'}}
 if(window.__dogS==='rain'){try{va6Glass(tm)}catch(e){}}
 if(va29B)g=VA29_N;g.fillStyle='#14181c';g.fillRect(-7.6,-30.2,3,12.2);
 g.strokeStyle=CCv.dd;g.lineWidth=1.1;g.beginPath();g.moveTo(-27,-19);g.lineTo(-27,3);g.moveTo(-6,-19);g.lineTo(-6,3);g.moveTo(26,-17);g.lineTo(25,3);g.moveTo(-51,-18);g.lineTo(-51,3);g.stroke();
@@ -9329,6 +9329,6 @@ try{Object.assign(VA90M,{"vache_m":[8,211,128],"mouton_m":[8,213,125],"ane_m":[8
  setTimeout(()=>{try{for(const n in {"vache_m":[8,211,128],"mouton_m":[8,213,125],"ane_m":[8,211,144],"cochon_m":[8,212,101],"poules_m":[8,212,116],"chevre_m":[8,212,135],"mila_m":[8,206,300],"andrea_m":[8,197,300]})va90Im(n)}catch(e){}},8000)}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.97',GAME_DATE='13/11/2026 à 13h04';
+const GAME_VER='3.98',GAME_DATE='13/11/2026 à 13h07';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
