@@ -9225,8 +9225,15 @@ try{VA9_G.push(['⛵','Le bateau de Maud',()=>va85Open()])}catch(e){}
 // ===== 3.86 : fonds peints de Bonifacio (jour, soir, nuit) =====
 try{VA23_IMG[10]='img/fonds/va86_bonif_j.jpg';VA25_P[10]={hz:.655,F:.5,fill:'#1d9ec4',dune:0};
  VA27.E[10]={src:'img/fonds/va86_bonif_s.jpg',hz:.655,fill:'#1f8fa8'};VA27.N[10]={src:'img/fonds/va86_bonif_n.jpg',hz:.655,fill:'#0f5a86'}}catch(e){}
+// ===== 3.87 : nouveaux fonds peints (Coscione, Ospedale, Saint-Florent, soirs et nuits manquants) =====
+try{const F='img/fonds/va87_',D=(k,n,hz,fill)=>{VA23_IMG[k]=F+n+'.jpg';VA25_P[k]=Object.assign({},VA25_P[k]||{F:.5},{hz,fill,dune:0})},E=(k,n,hz,fill)=>{VA27.E[k]={src:F+n+'.jpg',hz,fill}},N=(k,n,hz,fill)=>{VA27.N[k]={src:F+n+'.jpg',hz,fill}};
+ D(9,'cosc_j',.65,'#81ab48');E(9,'cosc_s',.65,'#728933');N(9,'cosc_n',.65,'#296b62');try{VA27.PL=Object.assign({},VA27.PL,{src:F+'cosc_j.jpg',hz:.65,fill:'#81ab48'})}catch(e){}
+ D(8,'osp_j',.66,'#88b241');N(8,'osp_n',.66,'#215d60');
+ D(6,'stf_j',.56,'#16a8bd');E(6,'stf_s',.56,'#228b9a');
+ E(11,'fau_s',.6,'#1799aa');E(0,'sari_s',.58,'#179aaf');
+ E(1,'roc_s',.7,'#f1aa78');N(1,'roc_n',.7,'#6063b1');E(5,'foce_s',.71,'#808134');N(7,'gal_n',.69,'#496d6a')}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.86',GAME_DATE='13/11/2026 à 08h45';
+const GAME_VER='3.87',GAME_DATE='13/11/2026 à 09h42';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
