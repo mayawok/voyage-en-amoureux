@@ -9606,8 +9606,14 @@ const oF=va410F;if(T2>23.8)va410F=function(n,f,cx,by,h,fl){if(n!=='ours')return 
 try{D1.apply(this,arguments)}finally{va410F=oF;g.restore()}
 if(hal){g.save();g.globalCompositeOperation='lighter';g.globalAlpha=.08*hal;g.translate(Math.sin(tm*2.3)*6,0);g.fillStyle='rgba(120,255,140,1)';g.fillRect(0,0,Wd,420);g.restore();
 const vg=g.createRadialGradient(Wd/2,210,120,Wd/2,210,Wd*.7);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(20,0,30,'+(.55*hal*(.8+.2*Math.sin(tm*3)))+')');g.fillStyle=vg;g.fillRect(0,0,Wd,420)}};CS.ours.va54=0}catch(e){console.error(e)}
+// ===== 4.20 : fin de la scène de l'ours au petit matin sur la forêt et le pin de jour =====
+try{const DO=CS.ours.draw;CS.ours.draw=function(Wd,gy,T2,tm){if(T2<49.3)return DO.apply(this,arguments);
+va418Bg('img/scenes/va88/ours_jour.jpg',.716,Wd,gy);const pin=va410Img('img/sprites/va410/pin_jour.webp'),px=Wd*.1;if(pin){const h=300,w=h*pin.naturalWidth/pin.naturalHeight;g.drawImage(pin,px-w/2,gy+8-h,w,h)}
+grp(px+70,gy,1.25,()=>{try{cherokeeSide(px+70,gy+4,0)}catch(e){}});try{wxOver(g,Wd,420,tm)}catch(e){}
+if(T2<50){g.fillStyle='rgba(0,0,0,'+(1-cl((T2-49.3)/.7))+')';g.fillRect(0,0,Wd,420)}};CS.ours.va54=0}catch(e){console.error(e)}
+setTimeout(()=>{['img/scenes/va88/ours_jour.jpg','img/sprites/va410/pin_jour.webp'].forEach(va410Img)},3500);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.19',GAME_DATE='13/11/2026 à 17h05';
+const GAME_VER='4.20',GAME_DATE='13/11/2026 à 17h12';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
