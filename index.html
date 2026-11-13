@@ -9161,8 +9161,21 @@ const VA83_V={0:.65,1:.4,2:.6,3:.35,4:.5,5:.5,6:.65,7:.4,8:.3,9:.1,10:.55,11:.5}
 sceneSeg=(function(o){return function(x){const q=o(x);if(!q)return q;try{const ci=chIdx(),k=VA83_V[ci];if(k===undefined||k>=1)return q;
  const f=(q.s+q.len/2)/MAP_L;for(const s of(CHP().stops||[]))if(Math.abs(s.f-f)<.05)return q;
  if(hs(q.j*7+ci*131+3)<k)return q;return {j:q.j,s:q.s,ty:0,len:0,mk:false}}catch(e){return q}}})(sceneSeg);
+// ===== 3.84 : le chien a un rôle dans chaque lieu =====
+// [chapitre, début, fin, répliques] ; une fois par chapitre (SV.va84)
+const VA84=[[0,.3,.7,[['a','Le chien s’est figé, le nez dans le ciste.'],['m','Une tortue ! Il l’a trouvée avant moi. Elle bouge à peine…'],['a','Bon chien. Tu touches pas, hein.']]],
+ [3,.4,.75,[['a','Regarde le chien : il fixe la crête, les oreilles dressées.'],['m','Des mouflons ! Trois, là-haut. Il les a vus avant nous.']]],
+ [5,.3,.6,[['a','Le chien veut pas boire à l’étang. Il renifle et il recule.'],['m','Lui, il sait. Je prélève l’eau, ici. Tout de suite.']]],
+ [7,.45,.8,[['a','Le chien boit au ruisseau. Il refuse plus l’eau, ici.'],['m','En Sardaigne, l’eau est propre. Il nous le dit à sa façon.']]],
+ [9,.2,.5,[['a','Le chien court à côté des chevaux. Il se prend pour l’un d’eux.'],['m','Et il les ramène loin des pozzines du bas. Malin.']]],
+ [10,.62,.9,[['a','Le chien renifle les photos de Maud. Il grogne.'],['m','Il reconnaît l’odeur des bidons de Roccapina. C’est les mêmes.']]],
+ [11,.35,.85,[['a','Le chien file vers les buissons… il a trouvé une tortue.'],['m','Elle marche bien, elle. Elle va mieux, Andrea. Ça a servi.']]]];
+let va84T=0;
+function va84Tick(){try{if(!inGame||cs||cardOpen||paused||MGX||hl||pz||stopReq||night||sayT>0||talkQ.length||cardQ.length)return;const ci=chIdx(),f=chP();SV.va84=SV.va84||{};
+ for(const d of VA84){if(d[0]!==ci||f<d[1]||f>d[2]||SV.va84[level])continue;if(ci===10&&!va76Npc(10,'Maud'))return;SV.va84[level]=1;try{snd('bark')}catch(e){}for(const l of d[3])talkQ.push(l);saveTrip();return}}catch(e){}}
+loop=(function(o){return function(t){const r=o.apply(this,arguments);try{if(t-va84T>1100){va84T=t;va84Tick()}}catch(e){}return r}})(loop);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.83',GAME_DATE='13/11/2026 à 08h32';
+const GAME_VER='3.84',GAME_DATE='13/11/2026 à 08h34';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
