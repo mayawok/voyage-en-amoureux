@@ -9252,7 +9252,7 @@ const VA88S=new Image();VA88S.src='img/scenes/va88/ferry.webp';
 function va88Ship(sx,sy,L){if(!VA88S.complete||!VA88S.naturalWidth||window.__va88off)return false;const w=L*1.22,h=w*VA88S.naturalHeight/VA88S.naturalWidth;g.drawImage(VA88S,sx-L*.06,sy+20-h,w,h);return true}
 // chenilles : le Cherokee des cinématiques dessinait toujours ses roues
 try{cherokeeSide=(function(o){return function(cx,cy,hood){if(!(SV&&SV.cus&&SV.cus.trk))return o(cx,cy,hood);const ow=va25Sp;
- va25Sp=function(n,x,by,H,hz,fl){if(n!=='v_roue')return ow.apply(this,arguments);const rad=H*.62,yc=by-H*.72;try{g.save();g.translate(x,yc);g.scale(rad/R,rad/R);va23Track(0,0,(performance.now()/180)%6.28)}catch(e){}finally{g.restore()}return true};
+ va25Sp=function(n,x,by,H,hz,fl){if(n!=='v_roue')return ow.apply(this,arguments);const rad=H*.55,yc=by-H*.82;try{g.save();g.translate(x,yc);g.scale(rad/R,rad/R);va23Track(0,0,0)}catch(e){}finally{g.restore()}return true};
  try{return o(cx,cy,hood)}finally{va25Sp=ow}}})(cherokeeSide)}catch(e){}
 // ===== 3.90 : animations peintes (animaux qui courent, chevaux, oiseaux en vol) et avions dans le ciel =====
 // planches de l'utilisateur (ChatGPT), découpées en bandes de poses dans img/sprites/va90/ : [nombre de poses, largeur d'une pose, hauteur]
@@ -9390,6 +9390,6 @@ try{const od=CS.pardon.draw;CS.pardon.draw=function(Wd,gy,T2,tm){window.__va406p
 va69P=(function(o){return function(x,gy,k,f,pose,dy){if(window.__va406p&&va406Hug(3)){if(!window.__va406d){window.__va406d=1;va406HugDraw(3,window.__va406W*.492,gy,1.9,64)}return}return o(x,gy,k,f,pose,dy)}})(va69P);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.06',GAME_DATE='13/11/2026 à 13h38';
+const GAME_VER='4.07',GAME_DATE='13/11/2026 à 13h39';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
