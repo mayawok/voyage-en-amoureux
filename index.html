@@ -9174,8 +9174,56 @@ let va84T=0;
 function va84Tick(){try{if(!inGame||cs||cardOpen||paused||MGX||hl||pz||stopReq||night||sayT>0||talkQ.length||cardQ.length)return;const ci=chIdx(),f=chP();SV.va84=SV.va84||{};
  for(const d of VA84){if(d[0]!==ci||f<d[1]||f>d[2]||SV.va84[level])continue;if(ci===10&&!va76Npc(10,'Maud'))return;SV.va84[level]=1;try{snd('bark')}catch(e){}for(const l of d[3])talkQ.push(l);saveTrip();return}}catch(e){}}
 loop=(function(o){return function(t){const r=o.apply(this,arguments);try{if(t-va84T>1100){va84T=t;va84Tick()}}catch(e){}return r}})(loop);
+// ===== 3.85 : mini-jeu de Bonifacio : guider le bateau de Maud jusqu'aux bidons =====
+function va85Open(){const D=DF?DF():{};const easy=SV.diff===0,hard=SV.diff===2;
+ const M={k:'va85boat',y:250,ty:250,vy:0,dist:0,L:hard?5200:4400,sp:easy?150:175,hit:0,inv:0,got:0,R:[],B:[],t:0,end:0,res:null,spray:[],
+ start(){let x=700;for(let i=0;i<22;i++){x+=200+Math.random()*120;const top=Math.random()<.5;M.R.push({x,y:top?150+Math.random()*80:300+Math.random()*90,r:22+Math.random()*16,top})}
+  for(let i=0;i<5;i++){const x=900+i*(M.L-1100)/4;let y=200+Math.random()*130;M.B.push({x,y,got:0})}M.ui()},
+ ui(){mgxUI(M.res?'<button class="mb go" id="va85go" style="position:absolute;left:50%;transform:translateX(-50%);bottom:7%;font-size:18px;padding:12px 26px">Continuer ▶</button>':'<div class="tr" style="position:absolute;left:3%;bottom:4%;font-weight:800;font-size:14px">Touche l’écran pour diriger le bateau. Passe sur les bouées, évite les rochers.</div>');if(M.res)mgxBtn('va85go',()=>mgxClose(M.got>=3))},
+ down(x,y){M.ty=Math.max(140,Math.min(410,y));M.hold=1},move(x,y){if(M.hold)M.ty=Math.max(140,Math.min(410,y))},up(){M.hold=0},
+ tick(dt){M.t+=dt;if(M.res)return;const sp=M.sp*(M.inv>0?.55:1);M.dist+=sp*dt;M.vy+=(M.ty-M.y)*6*dt;M.vy*=Math.pow(.04,dt);M.y+=M.vy*dt;M.inv=Math.max(0,M.inv-dt);
+  const bx=M.dist+200;for(const r of M.R){const dx=r.x-bx,dy=r.y-M.y;if(M.inv<=0&&dx*dx+dy*dy<(r.r+20)*(r.r+20)){M.hit++;M.inv=1.4;M.vy+=(M.y<r.y?-1:1)*260;try{snd('thud')}catch(e){}vib&&vib(30)}}
+  for(const b of M.B){if(!b.got&&Math.abs(b.x-bx)<30&&Math.abs(b.y-M.y)<34){b.got=1;M.got++;try{snd('ding')}catch(e){}}}
+  if(Math.random()<dt*9)M.spray.push({x:240+Math.random()*30,y:M.y+6,vx:-80-Math.random()*60,vy:-60-Math.random()*60,l:1});for(const s of M.spray){s.x+=s.vx*dt;s.y+=s.vy*dt;s.vy+=200*dt;s.l-=dt*1.6}M.spray=M.spray.filter(s=>s.l>0);
+  if(M.dist>=M.L){M.res=M.got>=3?'ok':'bof';M.ui()}},
+ draw(x,tm){const off=M.dist;x.save();x.beginPath();x.rect(0,0,800,450);x.clip();
+  const sk=x.createLinearGradient(0,0,0,140);sk.addColorStop(0,'#5d9bd6');sk.addColorStop(1,'#cfe6f5');x.fillStyle=sk;x.fillRect(0,0,800,140);
+  for(let i=0;i<4;i++){const cx=((i*260-off*.05+tm*12)%1100+1100)%1100-150;x.fillStyle='rgba(255,255,255,.75)';x.beginPath();x.ellipse(cx,40+i*14,60,10,0,0,7);x.ellipse(cx+40,34+i*14,40,9,0,0,7);x.fill()}
+  // falaises blanches et ville haute au loin
+  const ct=X=>96+Math.sin(X*.004)*10+Math.sin(X*.017)*4;x.fillStyle='#f3ecdc';x.beginPath();x.moveTo(0,150);for(let X=0;X<=800;X+=10)x.lineTo(X,ct(X+off*.18));x.lineTo(800,150);x.fill();
+  x.strokeStyle='rgba(150,140,120,.4)';x.lineWidth=1;for(let k=0;k<4;k++){x.beginPath();for(let X=0;X<=800;X+=16){const y=ct(X+off*.18)+10+k*11+Math.sin((X+off*.18)*.03+k)*2;X?x.lineTo(X,y):x.moveTo(X,y)}x.stroke()}
+  for(let i=0;i<14;i++){const X=((i*90-off*.18)%1260+1260)%1260-200;if(X<-60||X>820)continue;const y=ct(X+off*.18),h=12+(i*7)%10;x.fillStyle=['#f1dcc0','#e9c9a4','#f6e7cf'][i%3];x.fillRect(X,y-h,40,h+1);x.fillStyle='#b5654a';x.fillRect(X-1,y-h-2,42,2);x.fillStyle='rgba(60,50,60,.5)';x.fillRect(X+8,y-h+4,3,4);x.fillRect(X+24,y-h+4,3,4)}
+  // la mer des Bouches, agitée par le mistral
+  const se=x.createLinearGradient(0,140,0,450);se.addColorStop(0,'#2f8fb5');se.addColorStop(1,'#0f4e78');x.fillStyle=se;x.fillRect(0,140,800,310);
+  for(let i=0;i<70;i++){const X=((i*113-off*.9-tm*40)%900+900)%900-50,Y=150+(i*53)%295;x.fillStyle='rgba(255,255,255,'+(.1+.12*(i%3))+')';x.fillRect(X,Y,18+(i%4)*8,1.6)}
+  // bouées des bidons (photos de Maud)
+  for(const b of M.B){const X=b.x-off;if(X<-40||X>840)continue;const bob=Math.sin(tm*3+b.x)*3;if(b.got){x.fillStyle='rgba(255,255,255,.5)';x.beginPath();x.arc(X,b.y+bob,14+((tm*30)%10),0,7);x.fill();continue}
+   x.fillStyle='rgba(0,0,0,.25)';x.beginPath();x.ellipse(X,b.y+12,16,4,0,0,7);x.fill();x.fillStyle='#ff8a1f';x.beginPath();x.arc(X,b.y+bob,11,0,7);x.fill();x.fillStyle='#fff';x.fillRect(X-11,b.y+bob-2,22,4);x.fillStyle='#333';x.fillRect(X-1,b.y+bob-26,2,16);x.fillStyle='#ffd23a';x.beginPath();x.moveTo(X+1,b.y+bob-26);x.lineTo(X+13,b.y+bob-21);x.lineTo(X+1,b.y+bob-16);x.fill()}
+  // rochers
+  for(const r of M.R){const X=r.x-off;if(X<-60||X>860)continue;x.fillStyle='rgba(255,255,255,.55)';x.beginPath();x.ellipse(X,r.y+r.r*.45,r.r*1.25,r.r*.35+Math.sin(tm*4+r.x)*2,0,0,7);x.fill();
+   x.fillStyle='#8a8578';x.beginPath();x.moveTo(X-r.r,r.y+r.r*.4);x.quadraticCurveTo(X-r.r*.8,r.y-r.r*.9,X,r.y-r.r);x.quadraticCurveTo(X+r.r*.9,r.y-r.r*.7,X+r.r,r.y+r.r*.4);x.fill();x.fillStyle='#b4ae9f';x.beginPath();x.moveTo(X-r.r*.5,r.y-r.r*.5);x.quadraticCurveTo(X,r.y-r.r*1.05,X+r.r*.4,r.y-r.r*.6);x.lineTo(X,r.y-r.r*.2);x.fill()}
+  // le bateau de Maud (Mila et Maud à bord)
+  const by=M.y+Math.sin(tm*5)*3,tilt=Math.max(-.25,Math.min(.25,M.vy/600)),bl=M.inv>0&&Math.floor(M.t*10)%2;x.save();x.translate(230,by);x.rotate(tilt);x.scale(1.35,1.35);if(bl)x.globalAlpha=.55;
+  x.fillStyle='rgba(255,255,255,.6)';x.beginPath();x.ellipse(-50,14,40,5,0,0,7);x.fill();
+  x.fillStyle='#f4f4f0';x.beginPath();x.moveTo(-46,0);x.lineTo(46,0);x.quadraticCurveTo(58,0,62,-8);x.lineTo(50,14);x.lineTo(-40,14);x.closePath();x.fill();x.fillStyle='#1f6f8a';x.fillRect(-44,6,92,4);
+  x.fillStyle='#d9d9d2';rr(x,-14,-22,30,22,4);x.fill();x.fillStyle='#8fc6e0';x.fillRect(-10,-18,22,9);
+  x.fillStyle='#3a2a1a';x.beginPath();x.arc(-28,-12,6,0,7);x.fill();x.fillStyle='#e9c7a6';x.beginPath();x.arc(-28,-11,5,0,7);x.fill();x.fillStyle='#6b3a24';x.beginPath();x.arc(-28,-14,5.5,Math.PI,0);x.fill();x.fillStyle='#e07a3f';x.fillRect(-33,-6,10,8);
+  x.fillStyle='#e9c7a6';x.beginPath();x.arc(28,-13,5,0,7);x.fill();x.fillStyle='#c98a3a';x.beginPath();x.arc(28,-16,5.5,Math.PI,0);x.fill();x.fillStyle='#1a1a22';x.fillRect(23,-8,10,9);
+  x.restore();x.globalAlpha=1;for(const s of M.spray){x.fillStyle='rgba(255,255,255,'+s.l*.8+')';x.fillRect(s.x,s.y,2.5,2.5)}
+  // progression et bidons trouvés
+  x.fillStyle='rgba(0,0,0,.35)';rr(x,560,14,226,40,10);x.fill();x.fillStyle='#fff';x.font='800 14px Arial';x.textAlign='left';x.fillText('Bidons repérés : '+M.got+' / 5',574,32);x.fillStyle='rgba(255,255,255,.3)';x.fillRect(574,40,198,6);x.fillStyle='#ffd23a';x.fillRect(574,40,198*Math.min(1,M.dist/M.L),6);
+  if(M.res){x.fillStyle='rgba(0,0,0,.55)';x.fillRect(0,0,800,450);x.fillStyle='#fff';x.textAlign='center';x.font='800 28px Georgia,serif';x.fillText(M.res==='ok'?'La crique est repérée !':'On y est… mais il manque des bidons',400,180);x.font='600 17px Arial';x.fillText(M.got+' bouée'+(M.got>1?'s':'')+' sur 5 · '+M.hit+' choc'+(M.hit>1?'s':'')+' contre les rochers (aucun dégât)',400,216);x.textAlign='left'}
+  try{wxOver(x,800,450,tm)}catch(e){}x.restore()},
+ after(win){SV.va85=level;SV.hearts+=win?M.got:1;try{note(win?'Crique des bidons repérée : +'+M.got+' cœurs':'Maud y retournera seule : +1 cœur',3)}catch(e){}
+  talkQ.push(win?['m','Cinq bidons, peut-être plus. Maud a tout photographié. Les gendarmes, les bons, vont les remonter.']:['m','On en a vu quelques-uns. Maud y retournera avec les gendarmes.']);talkQ.push(['a','Et moi, j’ai plus jamais envie de faire du bateau avec ce mistral.'])}};
+ mgxOpen(M)}
+let va85T=0;
+function va85Tick(){try{if(chIdx()!==10||SV.va85===level||SV.va85a===level||!inGame||cs||cardOpen||paused||MGX||hl||pz||stopReq||night||sayT>0||talkQ.length||cardQ.length)return;if(!va76Npc(10,'Maud')||chP()<.6||chP()>.93)return;
+ SV.va85a=level;cardQ.push({t:'Maud, la plongeuse',L:[['v','<b>Maud :</b> « Vous voulez voir la crique ? Mon bateau est au port. Mais avec ce mistral, il me faut quelqu’un pour guetter les rochers. »'],['m','Andrea garde le chien. Moi, je viens.'],['a','Fais attention, ma chérie.']],cb:()=>{try{va85Open()}catch(e){}}})}catch(e){}}
+loop=(function(o){return function(t){const r=o.apply(this,arguments);try{if(t-va85T>1000){va85T=t;va85Tick()}}catch(e){}return r}})(loop);
+try{VA9_G.push(['⛵','Le bateau de Maud',()=>va85Open()])}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='3.84',GAME_DATE='13/11/2026 à 08h34';
+const GAME_VER='3.85',GAME_DATE='13/11/2026 à 08h37';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
