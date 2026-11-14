@@ -10010,8 +10010,19 @@ const VA433_CORE=new Set(['day','day2','eve','night','title']),va433U={};
 va14Load=(function(o){return function(k){try{if(!VA433_CORE.has(k)&&!(typeof MUS!=='undefined'&&MUS&&MUS.mode===k))return}catch(e){}return o(k)}})(va14Load);
 setInterval(function(){try{if(typeof MUS==='undefined'||!MUS)return;const now=performance.now();if(MUS.mode)va433U[MUS.mode]=now;if(va14Cur&&va14Cur.k)va433U[va14Cur.k]=now;
 for(const k in va14B){if(VA433_CORE.has(k)||!va14B[k])continue;if(now-(va433U[k]||now)>150000){delete va14B[k];va14L[k]=0;va433U[k]=0}else if(!va433U[k])va433U[k]=now}}catch(e){}},10000);
+// ===== 4.34 : playlist de conduite (morceaux qui changent toutes les ~2 min, couleur selon le lieu) =====
+Object.assign(VA14_MF,{'route-mer1':'musique/route-mer1.mp3','route-mer2':'musique/route-mer2.mp3','route-mont1':'musique/route-mont1.mp3'});
+// pour ajouter un morceau : le déposer dans musique/, l'ajouter à VA14_MF et à une liste ci-dessous (les noms absents de VA14_MF sont ignorés)
+const VA434_P={mer:['route-mer1','day','route-mer2','day2','route-mer3'],mont:['route-mont1','day','route-mont2','day2'],camp:['day','route-camp','route-mer2','day2'],sarde:['route-sarde','day2','route-mer1','day'],eve:['eve','route-soir'],night:['night','route-nuit2']};
+const VA434_C=['mer','mer','mont','mont','camp','camp','camp','sarde','mont','mont','mer','mer'],VA434_DUR=125000,va434={c:'',i:0,t0:0};
+function va434Pool(r){const c=(r==='day'||r==='day2')?(VA434_C[chIdx()]||'camp'):r;return [c,(VA434_P[c]||[r]).filter(k=>VA14_MF[k])]}
+musScene=(function(o){return function(){const r=o();try{if(r!=='day'&&r!=='day2'&&r!=='eve'&&r!=='night')return r;const q=va434Pool(r),c=q[0],P=q[1];if(!P.length)return r;const now=performance.now();
+if(va434.c!==c){va434.c=c;va434.i=Math.floor(Math.random()*P.length);va434.t0=now}else if(now-va434.t0>VA434_DUR){va434.i=(va434.i+1)%P.length;va434.t0=now}return P[va434.i%P.length]}catch(e){return r}}})(musScene);
+// le morceau en cours et le suivant restent chargés ; les autres morceaux « route-… » suivent la règle de la 4.33 (chargés à la demande, libérés après 2 min 30)
+setInterval(function(){try{if(!va434.c)return;const P=(VA434_P[va434.c]||[]).filter(k=>VA14_MF[k]);if(!P.length)return;const cur=P[va434.i%P.length],nx=P[(va434.i+1)%P.length],near=performance.now()-va434.t0>VA434_DUR-30000;
+for(const k in VA14_MF){if(!/^route-/.test(k))continue;if(k===cur||(near&&k===nx)){VA433_CORE.add(k);if(near&&k===nx)try{va14Load(k)}catch(e){}}else VA433_CORE.delete(k)}}catch(e){}},5000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.33',GAME_DATE='14/11/2026 à 14h41';
+const GAME_VER='4.34',GAME_DATE='14/11/2026 à 14h47';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
