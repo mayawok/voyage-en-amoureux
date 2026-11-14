@@ -6035,7 +6035,7 @@ const AIDE=[
   ['⛽','Essence','La jauge à côté du levier. Quand elle devient rouge, trouve une station.']]],
  ['En haut de l’écran',[
   ['⚙️','Le menu','Reprendre, son, plein écran, difficulté, sauvegarde de secours et cette aide.'],
-  ['📓','Le carnet de Mila','Trois onglets : Le voyage (la carte et « Jouer ce chapitre »), L’enquête (le tableau où Mila épingle ses indices) et Souvenirs (album, photos, animaux). Un point rouge = quelque chose de nouveau.'],
+  ['📓','Le carnet de Mila','Sept onglets sur le côté gauche : Le voyage (la carte et « Jouer ce chapitre »), L’enquête (le tableau où Mila épingle ses indices), Documents, Souvenirs (bilan et album), Photos, Aidés et Croisés (les animaux). Un point rouge = quelque chose de nouveau.'],
   ['🐎','Les pozzines du Coscione','Au chapitre 10, un panneau annonce les pozzines : traverse-les au pas (moins de 28 km/h). Si la tourbière reste intacte : +3 cœurs.'],
   ['❤','Les cœurs','La monnaie du voyage : magasins, atelier, dépanneuse. On en gagne en aidant et en réussissant les missions.'],
   ['🍞','La faim','La barre à côté des cœurs. Mange chez les commerçants avant qu’elle soit vide.'],
@@ -9095,15 +9095,15 @@ function va76Draw(cv){const x=cv.getContext('2d'),W=cv.width,H=cv.height,V=va76V
  if(!nb){x.fillStyle='rgba(60,35,15,.7)';x.font='italic 700 24px Georgia,serif';x.textAlign='center';x.textBaseline='middle';x.fillText('Le tableau est encore vide. Roule, observe, et Mila épinglera ses indices.',W/2,H/2)}
  return nb}
 function va76Enq(C){gid('nbtt').textContent='Le tableau d’enquête';const D2=(SV.docs||[]).map(id=>DOCS.find(d=>d.id===id)).filter(Boolean);
- C.innerHTML='<canvas id="va76c" width="1000" height="580" style="width:100%;border-radius:10px;display:block"></canvas>'+(D2.length?'<h4 style="margin:12px 0 6px;font:800 15px Arial;color:#7b3fa0">Documents ('+D2.length+')</h4><div style="display:flex;flex-wrap:wrap;gap:8px">'+D2.map(d=>'<button class="b nbdoc" data-doc="'+d.id+'" style="min-height:46px;padding:8px 14px;flex:1 1 44%;text-align:left;font-size:14px">'+d.ic+' '+d.t+'</button>').join('')+'</div>':'');
+ C.innerHTML='<canvas id="va76c" width="1000" height="580" style="width:100%;border-radius:10px;display:block"></canvas>'+(D2.length&&0?'<h4 style="margin:12px 0 6px;font:800 15px Arial;color:#7b3fa0">Documents ('+D2.length+')</h4><div style="display:flex;flex-wrap:wrap;gap:8px">'+D2.map(d=>'<button class="b nbdoc" data-doc="'+d.id+'" style="min-height:46px;padding:8px 14px;flex:1 1 44%;text-align:left;font-size:14px">'+d.ic+' '+d.t+'</button>').join('')+'</div>':'');
  try{va76Draw(gid('va76c'))}catch(e){}C.scrollTop=0;C.querySelectorAll('.nbdoc').forEach(el=>el.onclick=()=>docShow(DOCS.find(d=>d.id===el.dataset.doc),1))}
-try{NBT.length=0;NBT.push(['jr','🗺️','Le voyage','#cfe0f6'],['enq','🔎','L’enquête','#f3d9c8'],['alb','📸','Souvenirs','#fde2c8'])}catch(e){}
-nbRender=(function(o){return function(){const C=gid('nbc');try{if(!['jr','enq','alb'].includes(nbTab))nbTab='jr'}catch(e){}
- if(nbTab==='jr'){o();return}
+try{NBT.length=0;NBT.push(['jr','🗺️','Le voyage','#cfe0f6'],['enq','🔎','L’enquête','#f3d9c8'],['doc','📄','Documents','#e8e2f6'],['alb','💞','Souvenirs','#fde2c8'],['ph','📷','Photos','#f7c6d4'],['hl','💚','Aidés','#c9e8c0'],['rd','🐾','Croisés','#f6e1a8'])}catch(e){}/* 4.39 : 7 onglets */
+nbRender=(function(o){return function(){const C=gid('nbc');try{if(!['jr','enq','alb','doc','ph','hl','rd'].includes(nbTab))nbTab='jr'}catch(e){}
+ if(nbTab==='jr'||nbTab==='doc'||nbTab==='ph'||nbTab==='hl'||nbTab==='rd'){o();return}
  if(nbTab==='enq'){o();try{va76Enq(C)}catch(e){}return}
  // Souvenirs : petite bande de bilan, puis album, photos d'animaux, animaux aidés, animaux croisés (les anciens onglets, à la suite)
  const box=document.createElement('div');let ok=true;
- try{for(const q of[['alb','Album du voyage'],['ph','Photos d’animaux'],['hl','Animaux aidés'],['rd','Croisés sur la route']]){nbTab=q[0];o();const s=document.createElement('div');s.innerHTML='<h4 style="margin:16px 0 4px;font:800 16px Arial;color:#7b3fa0">'+q[1]+'</h4>';while(C.firstChild)s.appendChild(C.firstChild);box.appendChild(s)}}catch(e){ok=false}
+ try{for(const q of[['alb','Album du voyage']]){nbTab=q[0];o();const s=document.createElement('div');s.innerHTML='<h4 style="margin:16px 0 4px;font:800 16px Arial;color:#7b3fa0">'+q[1]+'</h4>';while(C.firstChild)s.appendChild(C.firstChild);box.appendChild(s)}}catch(e){ok=false}
  nbTab='alb';if(!ok){o();return}
  let band='';try{const ph=SV.ph||[],hlp=SV.hlp||{},nH=Object.values(hlp).reduce((a2,b2)=>a2+b2,0),sq=(v2,l)=>'<div style="flex:1;background:#fff8ea;border-radius:12px;padding:8px 6px;text-align:center"><b style="display:block;font:800 20px Arial;color:#7b3fa0">'+v2+'</b><span style="font:600 12px Arial;color:#6a5a4a">'+l+'</span></div>';
   band='<div style="display:flex;gap:8px;margin:2px 0 4px">'+sq(nH,'animaux aidés')+sq(ph.length+' / '+Object.keys(OBALL).length,'espèces en photo')+sq(SV.hearts+' ❤','cœurs')+sq((dist()/1000).toFixed(0)+' km','en Cherokee')+'</div>'}catch(e){}
@@ -10059,8 +10059,10 @@ setTimeout(()=>{try{if(VA437_ON)va437Img();va406Hug(3)}catch(e){}},4000);
 /* pendant la nuit : la moitié du temps pour la nuit noire (jusqu'à 5 h), l'autre moitié pour l'aube (5 h → 7 h) ; ciel, fonds et voile du matin suivent la même heure */
 function va438H(){const n=night;if(!n)return SV.clk||8;const p=cl((n.t-n.t0)/NIGHT);if(n.t<n.t0)return n.h0;const hm=Math.max(n.h0,29);return p<=.5?n.h0+(hm-n.h0)*(p/.5):hm+(31-hm)*((p-.5)/.5)}
 hourNow=(function(o){return function(){if(night&&!window.__va438off)try{return va438H()}catch(e){}return o()}})(hourNow);
+// ===== 4.39 : carnet en 7 onglets répartis sur toute la hauteur du côté gauche =====
+(function(){const st=document.createElement('style');st.textContent='#nbtabs.nbtabs{justify-content:space-between;padding:8px 0 10px;gap:4px;width:64px}#nbtabs.nbtabs button{flex:1 1 0;height:auto;min-height:34px;max-height:70px;font-size:18px;display:flex;flex-direction:column;align-items:center;justify-content:center}#nbtabs.nbtabs small{font-size:8.5px}';document.head.appendChild(st)})();
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.38',GAME_DATE='14/11/2026 à 23h59';
+const GAME_VER='4.39',GAME_DATE='15/11/2026 à 00h01';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
