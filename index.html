@@ -5660,7 +5660,7 @@ let vx=Wd*.2+Math.min(1,T2/5)*(Wd*.27);noxVan(vx,gy+2,1.3,tm,T2<5,T2>24);
 if(T2>4.5&&T2<7){g.fillStyle='rgba(200,180,140,'+(.6*(7-T2)/2.5)+')';for(let i=0;i<6;i++){g.beginPath();g.arc(vx-70+i*14,gy-10-i*4,10+i*4,0,7);g.fill()}}
 grp(Wd*.5,gy,1.3,()=>{if(T2>7){npcFig(Wd*.66,gy,['#6a8f4a','#3a4a6a',3,'#5a3a20',1,0,0],T2>9&&T2<13,tm);npcFig(Wd*.7,gy,['#c8502a','#4a3a2a',1,'#3a2a1a',0,2,1],0,tm)}
 // conducteur : mains en l'air puis menotté
-if(T2>21.5){const dx=T2<25?Wd*.6:Wd*.51;npcFig(dx,gy,['#e8e8e4','#3a3a3a',0,'#2a2a2a',0,0,0],0,tm);g.strokeStyle='#e8e8e4';g.lineWidth=3;g.beginPath();g.moveTo(dx+4,gy-36);g.lineTo(dx+8,gy-50);g.moveTo(dx-4,gy-36);g.lineTo(dx-8,gy-50);g.stroke()}
+if(T2>21.5){const dx=T2<25?Wd*.6:Wd*.51;if(!(typeof va431Fig==='function'&&va431Fig('noxa',7,dx,gy,1))){npcFig(dx,gy,['#e8e8e4','#3a3a3a',0,'#2a2a2a',0,0,0],0,tm);g.strokeStyle='#e8e8e4';g.lineWidth=3;g.beginPath();g.moveTo(dx+4,gy-36);g.lineTo(dx+8,gy-50);g.moveTo(dx-4,gy-36);g.lineTo(dx-8,gy-50);g.stroke()}}
 // Lucia
 if(T2>18){const lx=T2<21?Wd*.15+(T2-18)/3*(Wd*.25):Wd*.4;npcFig(lx,gy,['#24407a','#1a2a4a',1,'#3a2a1a',0,0,1],0,tm)}});
 if(T2>16.5){const gx=Math.min(Wd*.12,-120+(T2-16.5)*200);gendCar(gx,gy+2,tm)}
@@ -9954,8 +9954,49 @@ openEnd=(function(o){return function(i){try{if(i===9&&SV.arrL!==level&&CS.lacCal
  try{saveTrip()}catch(e){}openCine('lacCall');return}}catch(e){window.__va430in=0}return o.apply(this,arguments)}})(openEnd);
 // b) Le chrono du rallye ne s'affiche plus par-dessus les cinématiques, les mini-jeux, les cartes et la fin de chapitre.
 setInterval(function(){try{const r=gid('va49r');if(!r)return;const hide=!!(cs||MGX||pz||hl||es||cardOpen||document.body.classList.contains('cine'));r.style.visibility=hide?'hidden':''}catch(e){}},200);
+// ===== 4.31 : planches de l'utilisateur (panneaux, cailloux, plantes, objets, PNJ) en images, img/sprites/va431 =====
+const VA431_DIM={"agri_0":[178,370],"agri_1":[211,365],"agri_2":[228,364],"agri_3":[231,367],"agri_4":[230,367],"agri_5":[169,371],"agri_6":[190,372],"agri_7":[221,373],"agri_8":[236,280],"agri_9":[204,378],"agrif_0":[177,409],"agrif_1":[241,405],"agrif_2":[249,403],"agrif_3":[222,412],"agrif_4":[248,410],"agrif_5":[163,419],"agrif_6":[202,419],"agrif_7":[210,419],"agrif_8":[229,328],"agrif_9":[200,418],"apic_0":[143,413],"apic_1":[266,407],"apic_2":[262,409],"apic_3":[212,411],"apic_4":[291,411],"apic_5":[251,418],"apic_6":[246,422],"apic_7":[214,419],"apic_8":[317,330],"apic_9":[208,423],"berger_0":[173,411],"berger_1":[262,408],"berger_2":[263,408],"berger_3":[241,415],"berger_4":[294,410],"berger_5":[164,420],"berger_6":[227,422],"berger_7":[224,422],"berger_8":[246,325],"berger_9":[205,422],"noxa_0":[134,405],"noxa_1":[250,399],"noxa_2":[248,399],"noxa_3":[176,405],"noxa_4":[320,400],"noxa_5":[342,413],"noxa_6":[314,401],"noxa_7":[208,421],"noxa_8":[275,315],"noxa_9":[167,422],"obj_0":[377,327],"obj_1":[241,347],"obj_2":[232,321],"obj_3":[357,275],"obj_4":[390,240],"obj_5":[384,203],"obj_6":[389,185],"obj_7":[382,255],"obj_8":[381,219],"obj_9":[319,268],"pan_0":[327,301],"pan_1":[279,336],"pan_2":[274,347],"pan_3":[294,281],"pan_4":[359,284],"pan_5":[336,310],"pan_6":[312,302],"pan_7":[436,211],"pan_8":[304,237],"pan_9":[288,301],"roc_0":[125,72],"roc_1":[258,163],"roc_2":[437,289],"roc_3":[382,172],"roc_4":[481,187],"roc_5":[368,204],"roc_6":[383,210],"roc_7":[292,212],"roc_8":[406,162],"roc_9":[408,216],"touf_0":[151,411],"touf_1":[240,404],"touf_2":[240,404],"touf_3":[217,416],"touf_4":[210,412],"touf_5":[247,418],"touf_6":[224,418],"touf_7":[203,419],"touf_8":[225,417],"touf_9":[149,426],"touh_0":[201,419],"touh_1":[260,409],"touh_2":[269,410],"touh_3":[208,417],"touh_4":[239,417],"touh_5":[270,426],"touh_6":[239,424],"touh_7":[212,421],"touh_8":[211,427],"touh_9":[180,426],"veg_0":[366,346],"veg_1":[359,273],"veg_2":[370,276],"veg_3":[344,349],"veg_4":[357,347],"veg_5":[376,315],"veg_6":[367,315],"veg_7":[338,343],"veg_8":[344,358],"veg_9":[389,264]};
+(function(){for(const k in VA431_DIM)VA25_SP['q_'+k]={src:'img/sprites/va431/'+k+'.webp',w:VA431_DIM[k][0],h:VA431_DIM[k][1]}})();
+function va431Ok(n){try{return !window.__va431off&&!!va25Cv('q_'+n,VA25.dk,0)}catch(e){return false}}
+function va431Sp(n,x,by,H,fl){if(!va431Ok(n))return false;try{return va25Sp('q_'+n,x,by,H,0,!!fl)}catch(e){return false}}
+function va431Sh(x,y,w){g.fillStyle='rgba(30,24,10,.17)';g.beginPath();g.ellipse(x,y,w,3,0,0,7);g.fill()}
+// préchargement doux (après 6 s, une image toutes les 120 ms), pour que rien n'apparaisse en retard
+setTimeout(function(){const L=Object.keys(VA431_DIM).sort((a,b)=>/^(agri|noxa|tou|berg|apic)/.test(a)?-1:1);let i=0;const f=()=>{if(i>=L.length)return;try{va25Img('q_'+L[i++])}catch(e){}setTimeout(f,120)};f()},6000);
+// --- personnages : hauteur calée sur la pose debout de chaque planche
+function va431Fig(kd,p,x,y,fl){const n=kd+'_'+p;if(!va431Ok(n)||!VA431_DIM[kd+'_0'])return false;try{va34U()}catch(e){}let t=false;try{t=va34T(g)}catch(e){}let ok=false;
+try{const H=VA431_DIM[n][1]*62/VA431_DIM[kd+'_0'][1];g.save();g.translate(x,y);if(fl)g.scale(-1,1);g.fillStyle='rgba(0,0,0,.16)';g.beginPath();g.ellipse(0,.5,H*.2,2,0,0,7);g.fill();ok=va25Sp('q_'+n,0,0,H,0,false);g.restore()}catch(e){}finally{if(t){g.restore();VA34.dp=0}}return ok}
+const VA431_IDLE={agri:[5,0],agrif:[5,0],berger:[5,0],touf:[4,8],touh:[4,8],apic:[3,4],noxa:[3,0]};
+function va431Pose(kd,wv,tm,sd){tm=tm||0;if(wv)return Math.floor(tm*.8+sd)%2?(kd==='touh'?5:3):6;const q=Math.floor(tm/4+sd)%5,I=VA431_IDLE[kd]||[0,0];return q===2?I[0]:q===4?I[1]:0}
+const VA431_K={};
+(function(){const R=[[/apiculteur/i,'apic'],[/apicultrice|cueilleuse|marchande/i,'agrif'],[/berger|ancien/i,'berger'],[/forestier|bûcheron|vigneron|anguilles|garde/i,'agri'],[/randonneuse|grimpeuse/i,'touf'],[/randonneur|photographe|ornithologue/i,'touh']];
+try{for(const ch of NPCD)for(const d of ch){if(!d||!d.lk||!d.n)continue;for(const r of R)if(r[0].test(d.n)){VA431_K[d.lk.join(',')]=r[1];break}}}catch(e){}
+// touristes qui font signe, agriculteurs du Coscione, la personne qui demande de l'aide
+const A=[[['#e86a5a','#2f4f7a',1,'#e3c27a',0,3,1],'touf'],[['#4a8fd0','#5a4a3a',0,'#3a2a1a',1,3,0],'touh'],[['#f2c230','#3a6a4a',1,'#a85a2a',0,0,1],'touf'],
+[['#6a8f4a','#3a4a6a',3,'#5a3a20',1,0,0],'agri'],[['#c8502a','#4a3a2a',1,'#3a2a1a',0,2,1],'agrif'],[['#4f6b3a','#3d3a33',1,'#3b2a1d',1,0,0],'agri'],[['#e8a33a','#5a4a3a',0,'#8a5a2a',0,4,1],'agrif']];for(const a of A)VA431_K[a[0].join(',')]=a[1]})();
+npcFig=(function(o){return function(x,y,k,wv,tm){try{const kd=k&&VA431_K[k.join(',')];if(kd){const sd=Math.abs(Math.round(x*.37))%7,fl=(typeof cs!=='undefined'&&cs)?x>400:(typeof c!=='undefined'&&c&&c.x<x);
+// la touriste en jaune regarde de l'autre côté pour ne pas faire de jumelles
+if(va431Fig(kd,va431Pose(kd,wv,tm,sd),x,y,(kd==='touf'&&k[0]==='#f2c230')?!fl:fl))return}}catch(e){}return o(x,y,k,wv,tm)}})(npcFig);
+// hommes en combinaison de Noxacorp : pulvérisateur, ou bidon porté / posé
+hazman=(function(o){return function(x,y,tm,a1){if(va431Fig('noxa',a1?4:(Math.floor((tm||0)/3+x*.01)%2?8:3),x,y,0))return;o(x,y,tm,a1)}})(hazman);
+// --- décors de la route
+const va431Hay=hayD;hayD=function(x,y,tm,j){if(va431Ok('obj_3')){va431Sh(x,y+1,26);va431Sp('obj_3',x-13,y+1,21,0);va431Sp('obj_3',x+13,y+1,18,1);try{va46Hens(x,y,tm||0,j||0)}catch(e){}return}return va431Hay(x,y,tm,j)};
+const va431Hive=hiveD;hiveD=function(x,y,tm,j){if(!va431Ok('obj_5'))return va431Hive(x,y,tm,j);va431Sh(x,y+1,22);va431Sp('obj_5',x,y+1,22,0);g.fillStyle='#222';tm=tm||0;for(let i=0;i<5;i++){g.beginPath();g.arc(x-20+((i*13+tm*30)%44),y-28+Math.sin(tm*6+i)*4,1,0,7);g.fill()}};
+const va431Sign=signD;signD=function(x,y,tm,j){if(va431Sp('pan_1',x,y+2,46,0))return;return va431Sign(x,y,tm,j)};
+const va431Olive=oliveD;oliveD=function(x,y,tm,j){if(va431Ok('veg_4')){va431Sh(x,y+1,14);va431Sp('veg_4',x,y+2,40,hs(x)>.5);return}return va431Olive(x,y,tm,j)};
+const va431Fon=fountain;fountain=function(cx,y,tm){if(va431Ok('obj_0')){va431Sh(cx,y,20);va431Sp('obj_0',cx,y+1,36,0);return}return va431Fon(cx,y,tm)};
+// plantes, cailloux et petits objets au bord de la route (selon le lieu et l'altitude)
+function va431Pick(b,k){const i=chIdx(),cst=[0,1,4,6,10,11].includes(i),fr=[2,3,8].includes(i),pa=[2,5,7,9].includes(i);let P;
+if(b===0){P=[['veg_0',32],['veg_0',32],['veg_1',22],['veg_1',22],['veg_6',22],['veg_7',22],['roc_0',10],['roc_1',16],['roc_6',12],['roc_8',10]];if(cst)P.push(['veg_5',28],['veg_5',28],['veg_2',18]);if(fr)P.push(['veg_9',18],['roc_5',16],['obj_4',22]);if(pa)P.push(['obj_6',16],['obj_7',26],['obj_8',22]);if(i===6)P.push(['obj_9',22],['obj_8',22]);if(k%9===0)P.push(['pan_3',22],['obj_2',30],['pan_9',30])}
+else if(b===1){P=[['roc_1',18],['roc_2',28],['roc_8',12],['veg_3',52],['veg_3',52],['veg_1',22],['veg_7',22],['roc_3',18],['pan_8',26]];if(fr)P.push(['roc_9',22],['obj_4',22]);if(pa)P.push(['obj_7',26],['obj_8',22])}
+else{P=[['veg_8',58],['veg_8',58],['veg_3',52],['veg_9',18],['roc_9',22],['roc_5',16],['roc_2',28],['pan_8',26],['obj_4',22]]}
+return P[Math.floor(hs(k*3.1+i)*P.length)]}
+va43Dec=(function(o){return function(px,y,b,k){try{if(hs(k+431)<.6){const p=va431Pick(b,k);if(p&&va431Ok(p[0])){const H=p[1]*(.85+hs(k+5)*.3),d=VA431_DIM[p[0]],w=H*d[0]/d[1];va431Sh(px,y+2,w*.32);return va431Sp(p[0],px,y+3,H,/^(veg|roc)/.test(p[0])&&hs(k+9)>.5)}}}catch(e){}return o(px,y,b,k)}})(va43Dec);
+// troncs et éboulis sur la piste
+drawObs=(function(o){return function(x0,x1){const hid=[];try{for(const q of obs){if(q.done||q.x>x1||q.x+500<x0||(q.type!=='log'&&q.type!=='rock'))continue;const n=q.type==='log'?'roc_4':(hs(q.x*.013)>.5?'roc_2':'roc_3');if(va431Ok(n)){q.done=1;hid.push([q,n])}}}catch(e){}
+try{o(x0,x1)}finally{for(const h of hid)h[0].done=0}
+for(const [q,n] of hid){try{const lg=q.type==='log',cx=q.x+(lg?35:30),y=T(cx),H=lg?33:(n==='roc_2'?50:36),d=VA431_DIM[n],w=H*d[0]/d[1];va431Sh(cx,y+2,w*.42);va431Sp(n,cx,y+4,H,hs(q.x)>.5);const h=OW[q.type][1];if(q.p>0){g.fillStyle='rgba(0,0,0,.4)';g.fillRect(q.x,y-h-24,60,7);g.fillStyle='#4caf50';g.fillRect(q.x,y-h-24,60*q.p,7)}}catch(e){}}}})(drawObs);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.30',GAME_DATE='14/11/2026 à 11h49';
+const GAME_VER='4.31',GAME_DATE='14/11/2026 à 14h19';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
