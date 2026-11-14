@@ -3444,7 +3444,7 @@ for(let L=1;L<level;L++){const E=SP[L-1]||[];for(const e of E){SV.ev[e.k+L]=1;if
 const N=NPCD[L-1]||[];N.forEach((n,i)=>{if(n.sto)SV.npc[L+':'+i]=1})}
 let k=Object.keys(SV.smp).length;for(let i=0;i<Math.min(ci,10);i++){const sp=CHAP[i].totem[0];if(SV.smp[sp])continue;delete SV.smpP[sp];SV.smp[sp]=(k===0?'Molécule de synthèse inconnue détectée.':'Traces de N-12 détectées.')+' Comportement : '+CHG[k%CHG.length]+'.';k++}
 if(ci>BUR_CH&&(SV.burS||0)<3)SV.burS=3;try{SV.para=SV.para||{};for(let i=0;i<Math.min(ci,10);i++){SV.para[i]=1;if(!SV.docs.includes('para'+i))SV.docs.push('para'+i)}}catch(e){}if(ci>HEL_CH){SV.helS=3;SV.inv=SV.inv||{};SV.inv.trousse=1}if(SV.mutC===undefined||SV.mutC<ci-1)SV.mutC=ci-1;
-if(ci>9&&!SV.arrL)SV.arrL=10;if(ci>10)SV.gaz=1;if(!SV.docs.includes('mail'))SV.docs.push('mail');const lv0=level;level=lv0-1;try{for(const d of DOCS){try{if(!SV.docs.includes(d.id)&&d.w())SV.docs.push(d.id)}catch(e){}}}finally{level=lv0}}
+if(ci>10&&!SV.arrL)SV.arrL=11;if(ci>10){SV.gaz=1;SV.va441=1};if(!SV.docs.includes('mail'))SV.docs.push('mail');const lv0=level;level=lv0-1;try{for(const d of DOCS){try{if(!SV.docs.includes(d.id)&&d.w())SV.docs.push(d.id)}catch(e){}}}finally{level=lv0}}
 
 // ===== v69 : panne dans la neige, Andrea blessé, le Puma de Mathis =====
 var hel=null,helT0=0,helXc={},helSnd=0;const HEL_CH=3;
@@ -9949,8 +9949,8 @@ try{CS.nox3.draw=(function(o){return function(Wd,gy,T2,tm){const cb=coscBG;coscB
 // a) L'appel de Lucia (arrestation de Marchetti, usine fermée, prison : CS.lacCall) ne se déclenche plus avant la fin du chapitre 10
 //    (« On s'arrête au bord de l'eau ? ») : il se joue quand on passe la ligne d'arrivée, juste avant l'écran de fin du chapitre.
 va3ArrTick=function(){};
-openEnd=(function(o){return function(i){try{if(i===9&&SV.arrL!==level&&CS.lacCall&&!window.__va430in&&!(window.dkPlaying)){SV.arrL=level;SV.froid=0;window.__va430in=1;const oe=CS.lacCall.onEnd;
- CS.lacCall.onEnd=function(){CS.lacCall.onEnd=oe;window.__va430in=0;try{oe&&oe.apply(this,arguments)}catch(e){}try{blackNow()}catch(e){}o(i)};
+openEnd=(function(o){return function(i){try{if(i===10&&(!SV.arrL||SV.arrL===level)&&!SV.va441&&CS.lacCall&&!window.__va430in&&!(window.dkPlaying)){SV.arrL=level;SV.froid=0;window.__va430in=1;const oe=CS.lacCall.onEnd;
+ CS.lacCall.onEnd=function(){CS.lacCall.onEnd=oe;window.__va430in=0;try{oe&&oe.apply(this,arguments)}catch(e){}try{blackNow()}catch(e){}/* 4.41 : grande finale des animaux puis la Gazette, avant l'écran de fin du ch11 */if(typeof va441Fin==='function')va441Fin(()=>o(i));else o(i)};
  try{saveTrip()}catch(e){}openCine('lacCall');return}}catch(e){window.__va430in=0}return o.apply(this,arguments)}})(openEnd);
 // b) Le chrono du rallye ne s'affiche plus par-dessus les cinématiques, les mini-jeux, les cartes et la fin de chapitre.
 setInterval(function(){try{const r=gid('va49r');if(!r)return;const hide=!!(cs||MGX||pz||hl||es||cardOpen||document.body.classList.contains('cine'));r.style.visibility=hide?'hidden':''}catch(e){}},200);
@@ -10077,8 +10077,27 @@ function va440Fire(x,gy,tm,Wd){g.save();
   g.beginPath();g.moveTo(x-w,gy-4);g.quadraticCurveTo(x-w*.8+Math.sin(tm*6+k)*3,gy-4-h*.5,x+Math.sin(tm*5+k*2)*4,gy-4-h);g.quadraticCurveTo(x+w*.8+Math.sin(tm*6.5+k)*3,gy-4-h*.5,x+w,gy-4);g.closePath();g.fill()}
  for(let k=0;k<10;k++){const u=(tm*.7+k/10)%1;g.fillStyle='rgba(255,'+Math.round(200-120*u)+',80,'+(1-u)+')';g.fillRect(x+Math.sin(k*3.1+tm*2)*14*u+Math.sin(k)*6,gy-20-u*70,2,2)}
  g.globalCompositeOperation='source-over';g.restore()}
+// ===== 4.41 : la fin de l'enquête devient la grande finale du ch11 (appel de Lucia, usine, prison, animaux, Gazette) ; le ch12 est pour Mila et Andrea =====
+var va441cb=null;
+function va441Fin(cb){try{va441cb=cb;SV.va441=1;saveTrip();openFinale();fn.t=15;gid('bzx').textContent='Continuer ▶'}catch(e){va441cb=null;cb()}}
+closeFinale=(function(o){return function(){if(!va441cb)return o();const cb=va441cb;va441cb=null;gid('bzx').style.display='none';gid('bzs').style.display='none';try{blackNow()}catch(e){}fn=null;try{document.body.classList.remove('cine')}catch(e){}
+ SV.gaz=1;try{docAfter=()=>{try{cb()}catch(e){}};docShow(ARTICLE,0)}catch(e){cb()}}})(closeFinale);
+/* au matin de Fautea, plus de seconde finale : directement la plage et la demande */
+openFinale=(function(o){return function(){if(SV.va441&&chIdx()===CHAP.length-1&&!va441cb){try{startOutro()}catch(e){o()}return}return o()}})(openFinale);
+/* la Gazette n'est plus lue au kiosque du port : elle conclut la finale */
+va68GazTick=function(){};
+try{CEND[9]=[['m','Noxacorp pris la main dans le sac… et Lucia a tout vu.'],['a','Maintenant, c’est à elle de jouer. Nous, on souffle.'],['n','Mila referme son carnet d’enquête. Le chien pose sa tête sur ses genoux.']];
+ CEND[10]=[['m','Marchetti arrêté, l’usine fermée… On a réussi, Andrea.'],['a','Demain, Fautea. Rien que nous deux.'],['n','Andrea ne dort pas. Il répète une phrase tout bas, face à la mer.']];
+ JRN_T[9]=[['m','Le Coscione, au galop derrière la camionnette… J’en tremble encore.'],['a','Et Lucia qui débarque juste à temps.']];
+ JRN_T[10]=[['m','Marchetti arrêté, l’usine fermée… J’arrive toujours pas à y croire.'],['a','Moi si. T’as jamais lâché.']];
+ NB_J[9]='Le Coscione : les chevaux libres, les pozzines. Noxacorp pris sur le fait. Lucia a tout en main.';
+ NB_J[10]='Bonifacio, la ville au bord du vide. Et l’appel de Lucia : c’est fini. J’ai pleuré de joie. Andrea regarde ses chaussures depuis ce matin…'}catch(e){}
+/* décor de l'appel de Lucia : Bonifacio au soir quand on y est (au lieu des pozzines du Coscione) */
+va68PozBack=(function(o){return function(Wd,gy,T2,tm){try{if(chIdx()===10&&VA27.E&&VA27.E[10]&&va410Fond(VA27.E[10].src,VA27.E[10].hz||.65,Wd,gy-30,VA27.E[10].fill)){va410Ground(Wd,gy-30,'#b89a6e','#9a7c52','sec');return}}catch(e){}return o(Wd,gy,T2,tm)}})(va68PozBack);
+/* répliques de l'appel adaptées quand il a lieu à Bonifacio */
+try{const oL=CS.lacCall.L;CS.lacCall.L=function(){const L=oL.apply(this,arguments);try{if(chIdx()===10){for(const l of L){if(/^Plateau du Coscione/.test(l[2]))l[2]='Bonifacio, en haut des falaises. Le soleil descend sur les Bouches.';if(/on est là-haut, sur le plateau/.test(l[2]))l[2]='Lucia ? … Oui, on est à Bonifacio, au bord des falaises.'}}}catch(e){}return L}}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.40',GAME_DATE='15/11/2026 à 00h02';
+const GAME_VER='4.41',GAME_DATE='15/11/2026 à 00h09';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
