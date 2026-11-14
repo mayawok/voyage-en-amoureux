@@ -10096,8 +10096,28 @@ try{CEND[9]=[['m','Noxacorp pris la main dans le sac… et Lucia a tout vu.'],['
 va68PozBack=(function(o){return function(Wd,gy,T2,tm){try{if(chIdx()===10&&VA27.E&&VA27.E[10]&&va410Fond(VA27.E[10].src,VA27.E[10].hz||.65,Wd,gy-30,VA27.E[10].fill)){va410Ground(Wd,gy-30,'#b89a6e','#9a7c52','sec');return}}catch(e){}return o(Wd,gy,T2,tm)}})(va68PozBack);
 /* répliques de l'appel adaptées quand il a lieu à Bonifacio */
 try{const oL=CS.lacCall.L;CS.lacCall.L=function(){const L=oL.apply(this,arguments);try{if(chIdx()===10){for(const l of L){if(/^Plateau du Coscione/.test(l[2]))l[2]='Bonifacio, en haut des falaises. Le soleil descend sur les Bouches.';if(/on est là-haut, sur le plateau/.test(l[2]))l[2]='Lucia ? … Oui, on est à Bonifacio, au bord des falaises.'}}}catch(e){}return L}}catch(e){}
+// ===== 4.42 : moins de fenêtres : les récompenses et résultats deviennent un bandeau discret, les explications des bulles =====
+var VA442_B=[/^Sauvetage réussi/,/^\S*\s*Mission accomplie/,/^Sortis du bouchon/,/^Une source cachée/,/^Une cache sous la pierre/,/Le chien est retrouvé/,/^Échantillon prélevé/,/Une preuve de plus/,/Un indice grâce aux touristes/,/Résultats du labo/,/Mail du labo/];
+var VA442_T=[/Mila explique/,/Le point de vue/];
+var va442Q=[],va442H=null,va442T=0;
+function va442Txt(x){return String(x||'').replace(/<[^>]*>/g,'').replace(/^[^A-Za-zÀ-ÿ«"0-9]+/,'').trim()}
+function va442Push(t,d){va442Q.push([va442Txt(t),va442Txt(d)]);if(va442Q.length>3)va442Q.shift()}
+function va442Show(){if(!va442H){va442H=document.createElement('div');va442H.id='va442b';document.body.appendChild(va442H);const st=document.createElement('style');st.textContent='#va442b{position:fixed;left:50%;top:92px;transform:translateX(-50%) translateY(-6px);z-index:9;max-width:min(560px,62vw);background:rgba(28,22,18,.82);color:#fff;border:1.5px solid rgba(232,178,90,.55);border-radius:12px;padding:5px 14px;font:600 13px/1.3 "Avenir Next",Arial,sans-serif;text-align:center;pointer-events:none;opacity:0;transition:opacity .4s,transform .4s}#va442b.on{opacity:1;transform:translateX(-50%) translateY(0)}#va442b b{color:#ffd65a;font-weight:800}';document.head.appendChild(st)}return va442H}
+setInterval(()=>{try{const busy=cs||MGX||hl||pz||fn||ot||es||cardOpen||(typeof va5G!=='undefined'&&va5G)||!inGame||(gid('menu')&&gid('menu').style.display==='flex')||(window.va436T>0);const h=va442Show();
+ if(va442T>0){va442T-=.25;if(va442T<=0||busy){h.classList.remove('on');va442T=0}return}
+ if(busy||!va442Q.length)return;const q=va442Q.shift();let d=q[1];if(d.length>110)d=d.slice(0,107).replace(/\s+\S*$/,'')+'…';h.innerHTML='<b>'+q[0]+'</b>'+(d?' · '+d:'');h.classList.add('on');va442T=4.8;try{snd('ding')}catch(e){}}catch(e){}},250);
+function va442Conv(q){try{if(!q||typeof q.t!=='string'||q.btn||window.__va442off)return false;const t=q.t,L=q.L||[];
+ const isB=VA442_B.some(r=>r.test(t)),isT=!isB&&VA442_T.some(r=>r.test(t));if(!isB&&!isT)return false;
+ const talk=[];let det='';for(const l of L){if(!Array.isArray(l))continue;const w=va442Txt(l[1]);if(l[0]==='m'||l[0]==='a'){if(talk.length<2)talk.push([l[0],w])}else if(!det)det=w;else if(/❤|cœur/.test(w))det+=' · '+w}
+ if(isB)va442Push(t,det||(talk[0]?talk[0][1]:''));else if(det)talk.unshift(['m',det]);
+ for(const l of (isB?talk.slice(0,1):talk.slice(0,3)))talkQ.push(l);
+ if(q.cb)setTimeout(()=>{try{q.cb()}catch(e){}},30);try{nbNew()}catch(e){}return true}catch(e){return false}}
+cardQ.push=(function(o){return function(...a){const k=a.filter(q=>!va442Conv(q));return k.length?o.apply(this,k):this.length}})(cardQ.push);
+cardQ.unshift=(function(o){return function(...a){const k=a.filter(q=>!va442Conv(q));return k.length?o.apply(this,k):this.length}})(cardQ.unshift);
+/* documents d'analyse et découvertes : rangés dans le carnet avec un point rouge, sans ouvrir de fenêtre */
+docShow=(function(o){return function(d,fromNb){try{if(d&&!fromNb&&!docAfter&&!window.__va442off&&(/^para/.test(d.id||'')||/Nouvelle découverte|Rapport de laboratoire/.test(d.k||''))){va442Push('Carnet de Mila',(d.t||'')+' : rangé dans le carnet');nbNew();try{saveTrip()}catch(e){}return}}catch(e){}return o(d,fromNb)}})(docShow);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.41',GAME_DATE='15/11/2026 à 00h09';
+const GAME_VER='4.42',GAME_DATE='15/11/2026 à 00h11';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
