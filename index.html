@@ -10017,12 +10017,16 @@ const VA434_P={mer:['route-mer1','day','route-mer2','day2','route-mer3'],mont:['
 const VA434_C=['mer','mer','mont','mont','camp','camp','camp','sarde','mont','mont','mer','mer'],VA434_DUR=125000,va434={c:'',i:0,t0:0};
 function va434Pool(r){const c=(r==='day'||r==='day2')?(VA434_C[chIdx()]||'camp'):r;return [c,(VA434_P[c]||[r]).filter(k=>VA14_MF[k])]}
 musScene=(function(o){return function(){const r=o();try{if(r!=='day'&&r!=='day2'&&r!=='eve'&&r!=='night')return r;const q=va434Pool(r),c=q[0],P=q[1];if(!P.length)return r;const now=performance.now();
-if(va434.c!==c){va434.c=c;va434.i=Math.floor(Math.random()*P.length);va434.t0=now}else if(now-va434.t0>VA434_DUR){va434.i=(va434.i+1)%P.length;va434.t0=now}return P[va434.i%P.length]}catch(e){return r}}})(musScene);
+if(va434.c!==c){va434.c=c;va434.i=Math.floor(Math.random()*P.length);va434.t0=now}else if(now-va434.t0>va435Lim(P[va434.i%P.length])){va434.i=(va434.i+1)%P.length;va434.t0=now}return P[va434.i%P.length]}catch(e){return r}}})(musScene);
 // le morceau en cours et le suivant restent chargés ; les autres morceaux « route-… » suivent la règle de la 4.33 (chargés à la demande, libérés après 2 min 30)
-setInterval(function(){try{if(!va434.c)return;const P=(VA434_P[va434.c]||[]).filter(k=>VA14_MF[k]);if(!P.length)return;const cur=P[va434.i%P.length],nx=P[(va434.i+1)%P.length],near=performance.now()-va434.t0>VA434_DUR-30000;
+setInterval(function(){try{if(!va434.c)return;const P=(VA434_P[va434.c]||[]).filter(k=>VA14_MF[k]);if(!P.length)return;const cur=P[va434.i%P.length],nx=P[(va434.i+1)%P.length],near=performance.now()-va434.t0>va435Lim(cur)-30000;
 for(const k in VA14_MF){if(!/^route-/.test(k))continue;if(k===cur||(near&&k===nx)){VA433_CORE.add(k);if(near&&k===nx)try{va14Load(k)}catch(e){}}else VA433_CORE.delete(k)}}catch(e){}},5000);
+// ===== 4.35 : 5 morceaux de conduite de plus (montagne, campagne, Sardaigne, fin d'après-midi, nuit) =====
+Object.assign(VA14_MF,{'route-mont2':'musique/route-mont2.mp3','route-camp':'musique/route-camp.mp3','route-sarde':'musique/route-sarde.mp3','route-soir':'musique/route-soir.mp3','route-nuit2':'musique/route-nuit2.mp3'});
+// un morceau plus long que 2 min (route-camp : 2 min 30) est joué en entier avant de passer au suivant
+function va435Lim(k){try{const b=va14B[k];if(b&&b.duration*1000-4000>VA434_DUR)return b.duration*1000-4000}catch(e){}return VA434_DUR}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.34',GAME_DATE='14/11/2026 à 14h47';
+const GAME_VER='4.35',GAME_DATE='14/11/2026 à 23h17';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
