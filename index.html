@@ -10000,8 +10000,18 @@ va43Dec=(function(o){return function(px,y,b,k){try{if(hs(k+431)<.6){const p=va43
 drawObs=(function(o){return function(x0,x1){const hid=[];try{for(const q of obs){if(q.done||q.x>x1||q.x+500<x0||(q.type!=='log'&&q.type!=='rock'))continue;const n=q.type==='log'?'roc_4':(hs(q.x*.013)>.5?'roc_2':'roc_3');if(va431Ok(n)){q.done=1;hid.push([q,n])}}}catch(e){}
 try{o(x0,x1)}finally{for(const h of hid)h[0].done=0}
 for(const [q,n] of hid){try{const lg=q.type==='log',cx=q.x+(lg?35:30),y=T(cx),H=lg?33:(n==='roc_2'?50:36),d=VA431_DIM[n],w=H*d[0]/d[1];va431Sh(cx,y+2,w*.42);va431Sp(n,cx,y+4,H,hs(q.x)>.5);const h=OW[q.type][1];if(q.p>0){g.fillStyle='rgba(0,0,0,.4)';g.fillRect(q.x,y-h-24,60,7);g.fillStyle='#4caf50';g.fillRect(q.x,y-h-24,60*q.p,7)}}catch(e){}}}})(drawObs);
+// ===== 4.33 : nouvelles musiques ElevenLabs (nuit, tension, amour, poursuite à cheval, poursuite, mini-jeux) =====
+Object.assign(VA14_MF,{night:'musique/night.mp3',tense:'musique/tense.mp3',love:'musique/love.mp3',epic:'musique/epic.mp3',chase:'musique/chase.mp3',chase2:'musique/chase2.mp3',mini:'musique/mini.mp3'});
+// deux versions de la poursuite : une sur deux selon le chapitre
+musScene=(function(o){return function(){const r=o();try{if(r==='chase'&&chIdx()%2)return 'chase2'}catch(e){}return r}})(musScene);
+// mémoire de l'iPhone : un morceau décodé prend ~20 Mo. Seuls les morceaux de conduite et du menu sont chargés d'avance ;
+// les autres sont chargés quand leur scène commence, puis libérés 2 min 30 après la dernière écoute.
+const VA433_CORE=new Set(['day','day2','eve','night','title']),va433U={};
+va14Load=(function(o){return function(k){try{if(!VA433_CORE.has(k)&&!(typeof MUS!=='undefined'&&MUS&&MUS.mode===k))return}catch(e){}return o(k)}})(va14Load);
+setInterval(function(){try{if(typeof MUS==='undefined'||!MUS)return;const now=performance.now();if(MUS.mode)va433U[MUS.mode]=now;if(va14Cur&&va14Cur.k)va433U[va14Cur.k]=now;
+for(const k in va14B){if(VA433_CORE.has(k)||!va14B[k])continue;if(now-(va433U[k]||now)>150000){delete va14B[k];va14L[k]=0;va433U[k]=0}else if(!va433U[k])va433U[k]=now}}catch(e){}},10000);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.32',GAME_DATE='14/11/2026 à 14h31';
+const GAME_VER='4.33',GAME_DATE='14/11/2026 à 14h41';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
