@@ -1204,7 +1204,7 @@ for(let x=x0;x<x1;x+=10){const z=Z(x+5),col=laneCol(z,0,ALT(x+5),x+5);if(col!==c
 if(cur){g.strokeStyle=cur;g.stroke()}if(rk.length){g.fillStyle='#6f6c68';g.beginPath();for(const x of rk){const y=T(x+5)+1,r=3+(x%7)/3;g.moveTo(x+5+r,y);g.arc(x+5,y,r,0,7)}g.fill()}}
 if(PLT())pozz(x0,x1);const j0=Math.max(1,Math.floor((x0-700)/2000));for(let j=j0;j<j0+3;j++){const sx=600+j*2000-100;if(sx>x0&&sx<x1)sign(sx)}
 if(!PLT())parkedV(x0,x1);pizza(x0,x1,tm);bonusSheep(x0,x1,tm);rails(x0,x1);scenery(x0,x1,false,tm);for(const m of camps)if(m.b>x0&&m.a<x1)camp(m,tm);if(!PLT()){for(const m of stns)if(m.b>x0&&m.a<x1)station(m,tm);for(const m of gars)if(m.b>x0&&m.a<x1)garageDraw(m,tm)}for(const m of obsP)if(m.x>x0-80&&m.x<x1+80)obsPtDraw(m,tm);for(const m of shp)if(m.b>x0&&m.a<x1)shopDraw(m,tm);injDraw(x0,x1,tm);drawObs(x0,x1);try{spBack();decoDraw(x0,x1);trackDraw(x0,x1);portDraw(x0,x1);try{ferDraw(x0,x1)}catch(e){}try{caveMid(x0,x1)}catch(e){}try{bdDraw(x0,x1)}catch(e){}farmDraw(x0,x1);plantNpcDraw(x0,x1);jamDraw(x0,x1);farmJamTick()}catch(e){}
-tunnelDraw(x0,x1,ta);heartsDraw(x0,x1,tm);trafDraw();runDraw(tm);finishDraw();try{dustDraw()}catch(e){}truck();try{mudDraw();fordDraw(x0,x1);deepDraw(x0,x1);slipDraw(x0,x1);friendDraw()}catch(e){}try{caveFront(x0,x1)}catch(e){}smkDraw(tm);dogWalk(tm);dropDraw();towDraw();if(winch)cable();fixer(tm);refuelAnim(tm);scenery(x0,x1,true,tm);helpDraw(tm);npcDraw(tm);try{shopkDraw(tm)}catch(e){}hardDraw(x0,x1);if(chs)polCar(chs.px,chs.ph<4);workers();horn();
+tunnelDraw(x0,x1,ta);heartsDraw(x0,x1,tm);trafDraw();runDraw(tm);finishDraw();try{dustDraw()}catch(e){}va427Truck();try{mudDraw();fordDraw(x0,x1);deepDraw(x0,x1);slipDraw(x0,x1);friendDraw()}catch(e){}try{caveFront(x0,x1)}catch(e){}smkDraw(tm);dogWalk(tm);dropDraw();towDraw();if(winch)cable();fixer(tm);refuelAnim(tm);scenery(x0,x1,true,tm);helpDraw(tm);npcDraw(tm);try{shopkDraw(tm)}catch(e){}hardDraw(x0,x1);if(chs)polCar(chs.px,chs.ph<4);workers();horn();
 {const wm=night?warmH(night.h0)*(1-cl(night.t/3)):warmH(hr);g.setTransform(DPR,0,0,DPR,0,0);
 if(wm>.01){g.globalCompositeOperation='multiply';g.fillStyle='rgb(255,'+Math.round(255-79*wm*.85)+','+Math.round(255-133*wm*.85)+')';g.fillRect(0,0,W,HH);g.globalCompositeOperation='source-over'}
 darkDraw(dayF)}
@@ -9836,8 +9836,26 @@ setTimeout(function(){va426Pre();setInterval(va426Pre,6000)},3000);
   el.textContent='Nouvelle version '+nv+' prête : toucher pour l’installer';el.style.display='block'}catch(e){}};
  navigator.serviceWorker.addEventListener('message',function(ev){try{if(ev.data&&ev.data.t==='va-maj'&&ev.data.v&&ev.data.v!==GAME_VER){nv=ev.data.v;show()}}catch(e){}});
  setInterval(show,1000)}catch(e){}})();
+// ===== 4.27 : accessoires avec la tente de toit, vraie nuit avant l'ours =====
+// a) Depuis la 4.25, avec la tente de toit, le dessin s'arrêtait après la tente : pare-buffle, snorkel, roue de secours,
+//    treuil, marchepieds… n'étaient plus dessinés. On dessine tous les autres accessoires (tente retirée le temps du dessin), puis la tente.
+cusAcc=(function(o){return function(tm){const C=SV.cus||{};if(C.roof!=='tent')return o(tm);C.roof='';try{o(tm)}catch(e){}finally{C.roof='tent'}try{va425Tent(tm)}catch(e){}}})(cusAcc);
+// b) Forêt de l'Ospedale (ch9) : avant la scène de l'ours, le soleil se couche vraiment (horloge du jeu accélérée jusqu'à 21 h 36 :
+//    lumière du soir, fond peint du soir puis de la nuit, phares) ; l'ours ne vient qu'une fois la nuit tombée. Pendant ce temps,
+//    pas de « Dormir ici » (sinon on se réveillait le matin et le soleil se recouchait). Après l'ours, c'est le petit matin (6 h 30).
+var va427={on:0};
+oursWorld=(function(o){return function(rdt){try{if(chIdx()===8&&!(SV.csd&&SV.csd.ours)&&!oursPre&&!night&&inGame&&started&&!cs&&!crashed){const f=chP(),h=SV.clk||8;
+ if(f>=.36&&h<21.6){if(!va427.on){va427.on=1;if(h<19){sayT=0;say('Le soleil se couche déjà. On va finir la forêt de nuit, ma chérie.',3.6,0)}}
+  if(!paused&&!cardOpen&&!hl&&!pz&&introT<=0)SV.clk=Math.min(21.6,h+(rdt||0)*.55);return}}}catch(e){}return o(rdt)}})(oursWorld);
+slpUI=(function(o){return function(){o();try{if(va427.on&&chIdx()===8&&!(SV.csd&&SV.csd.ours)&&!night){const b=gid('slpb');if(b)b.style.display='none'}}catch(e){}}})(slpUI);
+try{CS.ours.onEnd=(function(o){return function(){try{SV.clk=6.5;SV.dayN=(SV.dayN||0)+1;va427.on=0}catch(e){}return o&&o.apply(this,arguments)}})(CS.ours.onEnd)}catch(e){}
+// c) Le Cherokee roule sur la voie (au milieu du goudron, à hauteur de la ligne blanche) et plus sur le bord haut de la route :
+//    dessin descendu de VA427_DY (6) en conduite, phares avec lui ; la physique et les cinématiques ne changent pas.
+var VA427_DY=6;
+function va427Truck(){const cc=c,dy=VA427_DY||0;cc.y+=dy;try{truck()}finally{cc.y-=dy}}
+lights=(function(o){return function(){const cc=c,dy=VA427_DY||0;cc.y+=dy;try{return o.apply(this,arguments)}finally{cc.y-=dy}}})(lights);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.26',GAME_DATE='14/11/2026 à 01h11';
+const GAME_VER='4.27',GAME_DATE='14/11/2026 à 01h41';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
