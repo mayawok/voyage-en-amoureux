@@ -849,7 +849,7 @@ const z=Z(px);if(z[3]==='rock')inRock=true;
 const gf=.5*Math.min(z[0],z[1])+.25*(z[0]+z[1]),mu=1.15*gf*(gf>.5?1-.15*wI:1)*(1+.04*SV.up.wheel)*(BF.grip>0?1.1:1)*(SV.cus&&SV.cus.psi?1.08:1)*(SV.cus&&SV.cus.trk?1.15:1);
 const share=i?(awd?.5:0):(awd?.5:1),Fd=ENGP(low)*(SV.sabo?.55:1)*(low?1000:520)*(boostT>0?1.8:1)*(flatW>=0?.45:1)*(st.hb?.2:1)*va57M(),vmax=ENGV()*(low?190:480)*(boostT>0?1.25:1)*(flatW>=0?.5:1)*(SV.cus&&SV.cus.psi?.94:1);
 let Ft=-.06*vt;
-if(gasOn&&!neu)Ft+=share*Fd*Math.min(1.5,Math.max(0,va7F(vt,vmax)));
+if(gasOn&&!neu)Ft+=share*Fd*Math.min(1.5,Math.max(0,va7F(vt,vmax,low)));
 if(st.brake){if(vt>12)Ft-=330*Math.min(1,vt/40);else if(!neu)Ft-=.62*(share||.2)*Fd*Math.max(0,1+vt/(vmax*.5))}
 if(!gasOn&&!st.brake&&!winch&&!neu&&Math.abs(vt)<10)Ft=-vt*25;
 if(st.hb&&i===0)Ft=-vt*80;
@@ -10025,8 +10025,32 @@ for(const k in VA14_MF){if(!/^route-/.test(k))continue;if(k===cur||(near&&k===nx
 Object.assign(VA14_MF,{'route-mont2':'musique/route-mont2.mp3','route-camp':'musique/route-camp.mp3','route-sarde':'musique/route-sarde.mp3','route-soir':'musique/route-soir.mp3','route-nuit2':'musique/route-nuit2.mp3'});
 // un morceau plus long que 2 min (route-camp : 2 min 30) est joué en entier avant de passer au suivant
 function va435Lim(k){try{const b=va14B[k];if(b&&b.duration*1000-4000>VA434_DUR)return b.duration*1000-4000}catch(e){}return VA434_DUR}
+// ===== 4.36 : Bonifacio sans décor dans la mer, moteur débridé (100 km/h), routes plus longues, résultat du rallye à l'écran =====
+va25Far=(function(o){return function(){if(chIdx()===10)return;return o()}})(va25Far);
+var VA436={pl:.27,top:1100,fade:100};
+va7F=(function(o){return function(vt,vm,low){if(low||window.__va436off)return o(vt,vm);const s=vm/480,u=vt/Math.max(.01,s),A=VA436;
+ return Math.max(0,1-u/480,A.pl*Math.min(1,Math.max(0,(A.top-u)/A.fade)))}})(va7F);
+(function(){const N={0:[[0,'r'],[.1,'d'],[.3,'k'],[.38,'d'],[.5,'r'],[.72,'d'],[.84,'k'],[.9,'r']],
+ 1:[[0,'r'],[.08,'d'],[.25,'k'],[.37,'d'],[.5,'r'],[.72,'k'],[.82,'d'],[.92,'r']],
+ 2:[[0,'r'],[.08,'d'],[.28,'k'],[.4,'d'],[.55,'r'],[.75,'d'],[.86,'k'],[.93,'r']],
+ 3:[[0,'r'],[.07,'d'],[.2,'k'],[.4,'d'],[.48,'r'],[.66,'k'],[.82,'d'],[.92,'r']],
+ 4:[[0,'r'],[.12,'d'],[.28,'k'],[.38,'r'],[.6,'d'],[.76,'k'],[.85,'r']],
+ 5:[[0,'r'],[.1,'d'],[.3,'k'],[.4,'d'],[.55,'r'],[.77,'d'],[.9,'r']],
+ 6:[[0,'r'],[.1,'d'],[.28,'k'],[.36,'d'],[.44,'r'],[.66,'d'],[.85,'k'],[.92,'r']],
+ 7:[[0,'r'],[.15,'d'],[.38,'k'],[.5,'d'],[.72,'r']],
+ 8:[[0,'r'],[.08,'d'],[.25,'k'],[.4,'d'],[.5,'r'],[.7,'k'],[.82,'d'],[.93,'r']],
+ 9:[[0,'r'],[.08,'d'],[.3,'k'],[.42,'d'],[.6,'k'],[.72,'d'],[.8,'r']],
+ 10:[[0,'r'],[.15,'d'],[.33,'k'],[.42,'d'],[.55,'r'],[.78,'d'],[.92,'r']]};
+ try{for(const k in N)LAY[k]=N[k]}catch(e){}})();
+var va436H=null,va436T=0;
+cardQ.push=(function(o){return function(...a){try{const q=a[0];if(a.length===1&&q&&typeof q.t==='string'&&/^Rallye · chapitre/.test(q.t)){const L=q.L||[];const t=(L[0]&&L[0][1]||'').replace(/^Temps : /,''),b=(L[1]&&L[1][1]||'').replace(/^Meilleurs temps : /,'');va436Show(t,b);return cardQ.length}}catch(e){}return o.apply(this,a)}})(cardQ.push);
+function va436Show(t,b){if(!va436H){va436H=document.createElement('div');va436H.id='va436r';document.body.appendChild(va436H);const st=document.createElement('style');st.textContent='#va436r{position:fixed;left:50%;transform:translateX(-50%);top:96px;z-index:9;background:rgba(24,20,16,.88);color:#fff;border:1.5px solid rgba(232,178,90,.7);border-radius:14px;padding:6px 16px;font:700 14px "Avenir Next",Arial,sans-serif;text-align:center;pointer-events:none;transition:opacity .5s}#va436r b{color:#ffd65a;font-size:18px;font-weight:900}#va436r small{display:block;opacity:.8;font-size:11px;margin-top:2px}';document.head.appendChild(st)}
+ const rec=/record/.test(t),h=/\+3 cœurs/.test(t),tt=t.replace(/ · nouveau record !/,'').replace(/ · \+3 cœurs/,'');
+ va436H.innerHTML='ARRIVÉE · <b>'+tt+'</b>'+(rec?' · record !':'')+(h?' · <span style="color:#ff8fa3">+3 cœurs</span>':'')+(b?'<small>Meilleurs temps : '+b+'</small>':'');va436H.style.opacity='1';va436H.style.display='block';va436T=7;
+ try{say(rec?'Quel pilote ! Même le chien a fermé les yeux.':'Pas mal du tout. On peut faire mieux, non ?',3,0)}catch(e){}}
+setInterval(()=>{try{if(!va436H||va436T<=0)return;va436T-=.25;if(va436T<=0){va436H.style.opacity='0';setTimeout(()=>{if(va436T<=0)va436H.style.display='none'},600)}}catch(e){}},250);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.35',GAME_DATE='14/11/2026 à 23h17';
+const GAME_VER='4.36',GAME_DATE='14/11/2026 à 23h53';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
