@@ -8149,7 +8149,7 @@ const VA48_T={
  trl:['La remorque',['Roule en douceur, ralentis dans les bosses.','Ne fais rien tomber et ne panique pas les bêtes.','Pas de treuil ici.'],'Récompense : +3 cœurs'],
  bridge:['Le pont',['Touche un point d’ancrage, puis un point de la grille : une poutre.','Les triangles rendent le pont solide.','Puis lance le test.'],'Récompense : +3 cœurs'],
  tour:['Les touristes',['Ils parlent une autre langue.','Choisis la bonne réponse.','Une bonne réponse fait plaisir à tout le monde.'],'Récompense : +2 cœurs'],
- horse:['La poursuite à cheval',['Touche l’écran pour sauter.','Branche basse : reste au sol, ne saute pas !','Cinq faux pas et la camionnette s’échappe.'],'Récompense : la suite de l’histoire'],
+ horse:['La poursuite à cheval',['Touche l’écran pour sauter.','Évite les obstacles, et attention au rocher qui dévale !','Cinq faux pas et la camionnette s’échappe.'],'Récompense : la suite de l’histoire'],
  sub:['Le sous-marin',['Touche l’écran pour remonter.','Passe entre les rochers.','Trois boucliers : sois prudent.'],'Récompense : la suite de l’histoire'],
  help:['Aider un animal',['Suis les étapes indiquées à l’écran.','Sans brusquer l’animal.','Mila et Andrea s’occupent du reste.'],'Récompense : 2 à 3 cœurs'],
  smp:['Le prélèvement',['Suis les étapes indiquées à l’écran.','Gestes doux, gants enfilés.','Les résultats arrivent par le labo.'],'Récompense : +3 cœurs']};
@@ -9907,7 +9907,7 @@ va402Dk=(function(o){return function(){try{if(cs&&cs.k&&!VA428_NK[cs.k])return 0
 //    - deux branches basses : il ne faut PAS sauter (Mila passe dessous ; en sautant elle s'y cogne) ;
 //    - un rocher qui dévale la pente et arrive juste après une réception de saut (très dur à éviter : il faut ressauter aussitôt).
 //    Faux pas permis : 5 au lieu de 4 (le caillou en coûte un).
-function va428Horse(H){const q=DF(),EZ=q.tb<0,HD=q.tb>0;H.maxH=5;const T={stone:null,stoneDone:0,br:[],brT:[15,31],boul:null,boulDone:0,ouch:0,msg:'',msgT:0,lastHy:0};H.__va428=T;
+function va428Horse(H){const q=DF(),EZ=q.tb<0,HD=q.tb>0;H.maxH=5;const T={stone:null,stoneDone:0,br:[],brT:[],boul:null,boulDone:0,ouch:0,msg:'',msgT:0,lastHy:0};H.__va428=T;
  const say2=(m,d)=>{T.msg=m;T.msgT=d||1.6};
  const hitMe=(dD,st)=>{H.hits++;H.D+=dD;H.stum=st;H.flash=.45;try{snd('thud');vib(70)}catch(e){}};
  const clearNear=(wx,r)=>{H.ob=H.ob.filter(o=>Math.abs(o.wx-wx)>r);if(H.nx<wx+r)H.nx=wx+r};
@@ -9947,6 +9947,6 @@ try{CS.nox2.draw=(function(o){return function(Wd,gy,T2,tm){const cb=coscBG;coscB
 try{CS.nox3.draw=(function(o){return function(Wd,gy,T2,tm){const cb=coscBG;coscBG=function(){cb.apply(this,arguments);try{va34U()}catch(e){}};try{return o(Wd,gy,T2,tm)}finally{coscBG=cb}}})(CS.nox3.draw)}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.28',GAME_DATE='14/11/2026 à 11h07';
+const GAME_VER='4.29',GAME_DATE='14/11/2026 à 11h27';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
