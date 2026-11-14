@@ -5579,7 +5579,7 @@ g.fillStyle='#f1d3b8';g.beginPath();g.arc(6,-62,5,0,7);g.fill();g.fillStyle='#8a
 g.restore();g.lineCap='butt'}
 function rockD(x,y,w,h,c1){g.fillStyle=c1||'#8d8a85';g.beginPath();g.moveTo(x-w/2,y);g.lineTo(x-w*.4,y-h*.7);g.lineTo(x-w*.1,y-h);g.lineTo(x+w*.3,y-h*.85);g.lineTo(x+w/2,y-h*.3);g.lineTo(x+w/2,y);g.closePath();g.fill();g.fillStyle='rgba(255,255,255,.18)';g.beginPath();g.moveTo(x-w*.35,y-h*.65);g.lineTo(x-w*.1,y-h*.95);g.lineTo(x+w*.05,y-h*.6);g.fill();g.fillStyle='rgba(0,0,0,.15)';g.fillRect(x-w/2,y-3,w,3)}
 // --- cinématique 1 : la scène sur le plateau, l'accident, Mila monte à cheval
-CS.nox1={mus:'tense',L:()=>[[1.5,'n','Plateau du Coscione. Derrière la crête, une camionnette blanche est garée au bord d’une pozzine.'],[6,'m','Andrea… le logo vert sur la portière. C’est Noxacorp !'],[9.5,'n','Deux hommes en combinaison maintiennent un jeune mouflon. L’un d’eux prépare une seringue.'],[14,'a','Ils vont pas toucher à cette bête. Accroche-toi !'],[17.5,'n','Les hommes lâchent le mouflon et sautent dans la camionnette, qui démarre en trombe.'],[20.5,'m','Attention, le mouflon !'],[22,'n','Crissement de pneus… BAM ! Le Cherokee percute un rocher.'],[25.5,'a','Ça fume… le radiateur est percé. Ils vont s’échapper !'],[29,'m','Pas question !'],[31.5,'n','Un cheval du plateau broute près de la piste. Mila saute sur son dos.'],[35.5,'m','Allez, mon beau… rattrape-les !']],end:39,
+CS.nox1={mus:'tense',L:()=>[[1.5,'n','Plateau du Coscione. Derrière la crête, une camionnette blanche est garée au bord d’une pozzine.'],[6,'m','Andrea… le logo vert sur la portière. C’est Noxacorp !'],[9.5,'n','Deux hommes en combinaison maintiennent un jeune mouflon. L’un d’eux prépare une seringue.'],[14,'a','Ils vont pas toucher à cette bête. Accroche-toi !'],[17.5,'n','Les hommes lâchent le mouflon et sautent dans la camionnette, qui démarre en trombe.'],[20.5,'m','Attention, le mouflon !'],[22,'n','Andrea donne un coup de volant pour éviter le mouflon… BAM ! Le Cherokee percute un rocher.'],[25.5,'a','Ça fume… le radiateur est percé. Ils vont s’échapper !'],[29,'m','Pas question !'],[31.5,'n','Un cheval du plateau broute près de la piste. Mila saute sur son dos.'],[35.5,'m','Allez, mon beau… rattrape-les !']],end:39,
 onEnd:()=>{try{horseOpen()}catch(e){}},
 draw:(Wd,gy,T2,tm)=>{coscBG(Wd,gy,tm,0);const shake=T2>22&&T2<23.2?Math.sin(T2*90)*4*(23.2-T2):0;g.save();g.translate(shake,0);
 // rocher de l'accident
@@ -5618,7 +5618,7 @@ if(H.x+900>=H.nx){const ty=['rock','wall','log','water','bush'][Math.floor(Math.
 for(const o of H.ob){const sx=170+(o.wx-H.x);if(!o.hit&&sx+o.w*.4>148&&sx-o.w*.4<198&&H.hy<(o.ty==='water'?6:o.h-8)){o.hit=1;H.hits++;H.D+=18;H.stum=.75;H.flash=.4;snd('thud');vib(60)}}
 H.ob=H.ob.filter(o=>o.wx-H.x>-400);
 if(H.hy<=0&&Math.random()<dt*20)H.dust.push({x:150,y:372,vx:-80-Math.random()*60,vy:-20-Math.random()*30,t:0});for(const d of H.dust){d.t+=dt;d.x+=d.vx*dt;d.y+=d.vy*dt;d.vy+=80*dt}H.dust=H.dust.filter(d=>d.t<.8);
-if(H.D<=0){H.D=0;H.res='win';snd('chime');vib(40);H.ui()}else if(H.D>=130||H.hits>=4){H.res='lose';snd('click');H.ui()}},
+if(H.D<=0){H.D=0;H.res='win';snd('chime');vib(40);H.ui()}else if(H.D>=130||H.hits>=(H.maxH||4)){H.res='lose';snd('click');H.ui()}},
 draw(x,tm){onCtx(x,()=>{const Wd=800,gy=300;g.save();g.translate(-300,0);coscBG(1400,gy,tm,H.x);g.restore();
 // route au loin et camionnette
 g.fillStyle='#c8b58a';g.fillRect(-300,gy-2,Wd+600,7);g.fillStyle='rgba(255,255,255,.5)';for(let i=0;i<14;i++){const X=((i*70-H.x*.6)%Wd+Wd)%Wd;g.fillRect(X,gy+1,22,1.2)}
@@ -5645,29 +5645,29 @@ else{g.fillStyle='#3f6a2a';g.beginPath();g.arc(sx-12,y-12,14,0,7);g.arc(sx+10,y-
 g.fillStyle='rgba(190,170,120,.5)';for(const d of H.dust){g.beginPath();g.arc(d.x,d.y,3+d.t*10,0,7);g.globalAlpha=1-d.t/.8;g.fill()}g.globalAlpha=1;
 const ph=H.hy>0?1.2:tm*(H.spd/50);if(H.flash>0&&Math.floor(tm*20)%2)g.globalAlpha=.4;eqDraw(175,374-H.hy,1.55,ph,'#7a4220',1);g.globalAlpha=1;
 // jauge
-const pr=1-Math.min(1,H.D/100);g.fillStyle='rgba(0,0,0,.35)';rr(g,250,84,300,12,6);g.fill();g.fillStyle='#e0a54a';rr(g,250,84,300*pr,12,6);g.fill();g.fillStyle='#223';g.font='800 13px Arial';g.textAlign='left';g.fillText('Distance : '+Math.round(H.D*3)+' m',250,114);g.textAlign='right';g.fillText('Faux pas : '+H.hits+' / 4',550,114);
+const pr=1-Math.min(1,H.D/100);g.fillStyle='rgba(0,0,0,.35)';rr(g,250,84,300,12,6);g.fill();g.fillStyle='#e0a54a';rr(g,250,84,300*pr,12,6);g.fill();g.fillStyle='#223';g.font='800 13px Arial';g.textAlign='left';g.fillText('Distance : '+Math.round(H.D*3)+' m',250,114);g.textAlign='right';g.fillText('Faux pas : '+H.hits+' / '+(H.maxH||4),550,114);
 if(H.t<3.5&&!H.res){g.fillStyle='rgba(20,16,12,.7)';rr(g,280,180,240,36,12);g.fill();g.fillStyle='#fff';g.font='800 16px Arial';g.textAlign='center';g.fillText('Touche pour sauter !',400,203)}});
 }};
 H.after=win=>{SV.noxWin=win?1:0;blackNow();try{openCine(win?'nox2':'nox3')}catch(e){}setTimeout(()=>{gid('fade').style.opacity='0'},400)};
 mgxOpen(H)}
 // --- cinématique 2 : bloqués par les agriculteurs, arrestation
 function gendCar(x,y,tm){g.save();g.translate(x,y);g.fillStyle='rgba(0,0,0,.2)';g.beginPath();g.ellipse(0,2,50,4,0,0,7);g.fill();g.fillStyle='#24407a';g.beginPath();g.moveTo(-50,-8);g.lineTo(-48,-24);g.lineTo(-26,-26);g.lineTo(-14,-40);g.lineTo(22,-40);g.lineTo(34,-26);g.lineTo(50,-22);g.lineTo(52,-8);g.closePath();g.fill();g.fillStyle='#fff';g.fillRect(-48,-20,100,4);g.font='800 7px Arial';g.fillStyle='#24407a';g.textAlign='center';g.fillText('GENDARMERIE',2,-16.5);g.fillStyle='#1c242b';g.fillRect(-10,-37,14,10);g.fillRect(8,-37,14,10);const bl=Math.floor(tm*6)%2;g.fillStyle=bl?'#3a8aff':'#1a3a7a';g.fillRect(-2,-46,6,6);g.fillStyle=bl?'#1a3a7a':'#3a8aff';g.fillRect(6,-46,6,6);if(bl){g.fillStyle='rgba(80,150,255,.25)';g.beginPath();g.arc(2,-44,26,0,7);g.fill()}for(const wx of[-30,32]){g.fillStyle='#151311';g.beginPath();g.arc(wx,-6,9,0,7);g.fill();g.fillStyle='#a8adb2';g.beginPath();g.arc(wx,-6,4,0,7);g.fill()}g.restore()}
-CS.nox2={mus:'tense',L:()=>[[1.5,'n','Au détour de la piste, un tracteur et sa remorque de paille barrent le passage.'],[5.5,'n','La camionnette pile dans un nuage de poussière. Deux agriculteurs descendent, fourche à la main.'],[10,'f','« On ne passe pas ! On vous a vus faire, depuis le champ. »'],[14,'m','Merci ! Ils faisaient des tests sur un jeune mouflon…'],[17.5,'n','Une voiture de gendarmerie arrive, gyrophare allumé. Lucia en descend.'],[21.5,'l','« Gendarmerie. Les mains sur le capot, s’il vous plaît. »'],[25.5,'n','Le conducteur est menotté. Dans la camionnette : des seringues, des flacons de N-12, des carnets de mesures.'],[31,'m','Pris sur le fait. Cette fois, ils pourront pas nier.'],[34.5,'a','Le Cherokee boite un peu, mais j’ai rebouché le radiateur. Et toi… tu fais du cheval, maintenant ?'],[39.5,'m','C’est lui qui a fait tout le travail. Je le ramène à son troupeau.']],end:44,
+CS.nox2={mus:'tense',L:()=>[[1.5,'n','Au détour de la piste, un tracteur et sa remorque de paille barrent le passage.'],[5.5,'n','La camionnette pile dans un nuage de poussière. Deux agriculteurs descendent, fourche à la main.'],[10,'f','« On ne passe pas ! On vous a vus faire, depuis le champ. »'],[14,'m','Merci ! Ils faisaient des tests sur un jeune mouflon…'],[17.5,'n','Une voiture de gendarmerie arrive, gyrophare allumé. Lucia en descend.'],[21.5,'l','« Gendarmerie. Les mains sur le capot, s’il vous plaît. »'],[25.5,'n','Le conducteur est menotté. Dans la camionnette : des seringues, des flacons de N-12, des carnets de mesures.'],[31,'m','Pris sur le fait. Cette fois, ils pourront pas nier.'],[34.5,'a','Le Cherokee boite un peu, mais j’ai rebouché le radiateur. Et toi, ma chérie… t’as rien perdu à cheval. T’étais impressionnante.'],[39.5,'m','C’est lui qui a fait tout le travail. Je le ramène à son troupeau.']],end:44,
 onEnd:()=>{SV.noxL=level;SV.hearts+=5;try{albAdd('cs_nox2')}catch(e){}cardQ.push({t:'🧪 Une preuve de plus',L:[['n','Les flacons saisis dans la camionnette contiennent du N-12. Lucia les envoie au laboratoire de la gendarmerie.'],['m','Une preuve de plus pour le rapport. +5 ❤']]});saveTrip()},
 draw:(Wd,gy,T2,tm)=>{coscBG(Wd,gy,tm,0);g.fillStyle='#c8b58a';g.fillRect(0,gy-2,Wd,10);
 tractorDraw(Wd*.78,gy+2,1.5,-1,tm,true,T2<3);
-let vx=Wd*.2+Math.min(1,T2/5)*(Wd*.38);noxVan(vx,gy+2,1.3,tm,T2<5,T2>24);
+let vx=Wd*.2+Math.min(1,T2/5)*(Wd*.27);noxVan(vx,gy+2,1.3,tm,T2<5,T2>24);
 if(T2>4.5&&T2<7){g.fillStyle='rgba(200,180,140,'+(.6*(7-T2)/2.5)+')';for(let i=0;i<6;i++){g.beginPath();g.arc(vx-70+i*14,gy-10-i*4,10+i*4,0,7);g.fill()}}
 grp(Wd*.5,gy,1.3,()=>{if(T2>7){npcFig(Wd*.66,gy,['#6a8f4a','#3a4a6a',3,'#5a3a20',1,0,0],T2>9&&T2<13,tm);npcFig(Wd*.7,gy,['#c8502a','#4a3a2a',1,'#3a2a1a',0,2,1],0,tm)}
 // conducteur : mains en l'air puis menotté
-if(T2>21.5){const dx=T2<25?Wd*.62:Wd*.55;npcFig(dx,gy,['#e8e8e4','#3a3a3a',0,'#2a2a2a',0,0,0],0,tm);g.strokeStyle='#e8e8e4';g.lineWidth=3;g.beginPath();g.moveTo(dx+4,gy-36);g.lineTo(dx+8,gy-50);g.moveTo(dx-4,gy-36);g.lineTo(dx-8,gy-50);g.stroke()}
+if(T2>21.5){const dx=T2<25?Wd*.6:Wd*.51;npcFig(dx,gy,['#e8e8e4','#3a3a3a',0,'#2a2a2a',0,0,0],0,tm);g.strokeStyle='#e8e8e4';g.lineWidth=3;g.beginPath();g.moveTo(dx+4,gy-36);g.lineTo(dx+8,gy-50);g.moveTo(dx-4,gy-36);g.lineTo(dx-8,gy-50);g.stroke()}
 // Lucia
-if(T2>18){const lx=T2<21?Wd*.3+(T2-18)/3*(Wd*.22):Wd*.52;npcFig(lx,gy,['#24407a','#1a2a4a',1,'#3a2a1a',0,0,1],0,tm)}});
+if(T2>18){const lx=T2<21?Wd*.15+(T2-18)/3*(Wd*.25):Wd*.4;npcFig(lx,gy,['#24407a','#1a2a4a',1,'#3a2a1a',0,0,1],0,tm)}});
 if(T2>16.5){const gx=Math.min(Wd*.12,-120+(T2-16.5)*200);gendCar(gx,gy+2,tm)}
 // Mila à cheval arrive, puis met pied à terre
-const ex=T2<12?-160+T2/12*(Wd*.42+160):Wd*.42;g.save();g.translate(ex,gy+2);eqDraw(0,0,1.6,T2<12?T2*7:0,'#7a4220',T2<13,T2>=12);g.restore();if(T2>=13)grp(Wd*.46,gy,1.3,()=>{person(Wd*.46,gy,1,{f:1,a1:T2>14&&T2<17?2.4:.3})});
+const ex=T2<12?-160+T2/12*(Wd*.27+160):Wd*.27;g.save();g.translate(ex,gy+2);eqDraw(0,0,1.6,T2<12?T2*7:0,'#7a4220',T2<13,T2>=12);g.restore();if(T2>=13)grp(Wd*.31,gy,1.3,()=>{person(Wd*.31,gy,1,{f:1,a1:T2>14&&T2<17?2.4:.3})});
 // Andrea arrive à pied
-if(T2>33){const ax=Math.min(Wd*.36,-60+(T2-33)*120);grp(ax,gy,1.3,()=>{person(ax,gy-(ax<Wd*.36?Math.abs(Math.sin(T2*10))*2:0),0,{f:1,a1:T2>37?2.4:.2})})}}};
+if(T2>33){const ax=Math.min(Wd*.21,-60+(T2-33)*120);grp(ax,gy,1.3,()=>{person(ax,gy-(ax<Wd*.21?Math.abs(Math.sin(T2*10))*2:0),0,{f:1,a1:T2>37?2.4:.2})})}}};
 CS.nox3={mus:'worry',L:()=>[[1.5,'n','La camionnette prend trop d’avance et disparaît derrière la crête, dans un nuage de poussière.'],[6,'m','Non… ils nous ont échappé.'],[9.5,'m','Mais j’ai eu le temps de relever leur plaque. Et le mouflon est libre.'],[14,'a','Le Cherokee repart : j’ai rebouché le radiateur avec ce que j’avais. Ça tiendra jusqu’au village.'],[19,'m','On donnera la plaque à Lucia. Ils se cacheront pas longtemps.']],end:23,
 onEnd:()=>{SV.noxL=level;saveTrip()},
 draw:(Wd,gy,T2,tm)=>{coscBG(Wd,gy,tm,0);g.fillStyle='#c8b58a';g.fillRect(0,gy-2,Wd,10);const vx=Wd*.75+T2*90;if(vx<Wd+200)noxVan(vx,gy+2,.9,tm,1,0);g.fillStyle='rgba(200,180,140,.4)';for(let i=0;i<6;i++){g.beginPath();g.arc(Math.min(Wd,vx)-80-i*30,gy-10-i*5,10+i*5,0,7);g.fill()}
@@ -7927,7 +7927,7 @@ function va34Rp(r,L,sv){for(let i=0;i<L.length;i++){if(i>0||sv)r.save();for(cons
 function va34U(){if(VA34.u){const r=VA34.u,L=g&&g.__L;VA34.u=null;g=r;if(L)va34Rp(r,L,0)}}
 for(const nm of['grp']){const o=window[nm];if(typeof o==='function')window[nm]=function(){va34U();const t=VA34.P&&VA34.P.grp&&va34T(g);try{return o.apply(this,arguments)}finally{if(t){g.restore();VA34.dp=0}}}}
 for(const nm of['head','person','dogDraw','npcFig','prisonerFig','artA']){const o=window[nm];if(typeof o==='function')window[nm]=function(){va34U();const t=va34T(g);try{return o.apply(this,arguments)}finally{if(t){g.restore();VA34.dp=0}}}}
-cherokeeSide=(function(o){return function(cx,cy,hood){try{const P=va29Get(CCv&&CCv.m);if(P&&va25Cv('v_roue',0,0)){const sc=1.06,wy=cy-12;g.save();g.translate(cx+2,wy-22*sc);g.scale(sc,sc);window.__va29on=1;g.drawImage(P.full,-62.5,-33,122,44.3);try{va30Rack()}catch(e){}g.restore();for(const wx of[-38,40])va25Sp('v_roue',cx+wx,wy+17*sc,34*sc,0);return}}catch(e){}return o(cx,cy,hood)}})(cherokeeSide);
+cherokeeSide=(function(o){return function(cx,cy,hood){try{const P=va29Get(CCv&&CCv.m);if(P&&va25Cv('v_roue',0,0)){const sc=1.06,wy=cy-12,LF=(typeof va428Lift==='function'?va428Lift():0)*sc;try{if(typeof va428Sus==='function')va428Sus(cx,wy,sc,LF)}catch(e){}g.save();g.translate(cx+2,wy-22*sc-LF);g.scale(sc,sc);window.__va29on=1;g.drawImage(P.full,-62.5,-33,122,44.3);try{va30Rack()}catch(e){}g.restore();for(const wx of[-38,40])va25Sp('v_roue',cx+wx,wy+17*sc,34*sc,0);return}}catch(e){}return o(cx,cy,hood)}})(cherokeeSide);
 for(const nm of['cherokeeSide','noxVan']){const o=window[nm];if(typeof o==='function')window[nm]=function(){if(!VA34.u)return o.apply(this,arguments);const n=g,L=n&&n.__L;g=VA34.u;g.save();if(L)va34Rp(g,L,0);const t=va34T(g,1);try{return o.apply(this,arguments)}finally{if(t){g.restore();VA34.dp=0}if(L)for(let i=1;i<L.length;i++)g.restore();g.restore();g=n}}}
 function va34Slice(cx,ty,sc,Wd){const im=VA34.cur;if(!im)return;const iw=im.naturalWidth,ih=im.naturalHeight,s=Math.max(Wd/iw,420/ih),w=iw*s,h=ih*s,x0=(Wd-w)/2,y0=-(h-420)*.8;const fx=.28,fy=.53,fw=.54,fh=.4;g.save();g.translate(cx,ty);g.scale(1/sc,1/sc);g.translate(-cx,-ty);g.drawImage(im,iw*fx,ih*fy,iw*fw,ih*fh,x0+w*fx,y0+h*fy,w*fw,h*fh);g.restore()}
 function va34Bg(r,im,Wd,fy,fl){const iw=im.naturalWidth,ih=im.naturalHeight,s=Math.max(Wd/iw,420/ih),w=iw*s,h=ih*s;if(fl){r.save();r.translate(Wd,0);r.scale(-1,1)}r.drawImage(im,(Wd-w)/2,-(h-420)*(fy==null?.8:fy),w,h);if(fl)r.restore()}
@@ -8149,7 +8149,7 @@ const VA48_T={
  trl:['La remorque',['Roule en douceur, ralentis dans les bosses.','Ne fais rien tomber et ne panique pas les bêtes.','Pas de treuil ici.'],'Récompense : +3 cœurs'],
  bridge:['Le pont',['Touche un point d’ancrage, puis un point de la grille : une poutre.','Les triangles rendent le pont solide.','Puis lance le test.'],'Récompense : +3 cœurs'],
  tour:['Les touristes',['Ils parlent une autre langue.','Choisis la bonne réponse.','Une bonne réponse fait plaisir à tout le monde.'],'Récompense : +2 cœurs'],
- horse:['La poursuite à cheval',['Touche l’écran pour sauter.','Évite les obstacles.','Quatre faux pas et la camionnette s’échappe.'],'Récompense : la suite de l’histoire'],
+ horse:['La poursuite à cheval',['Touche l’écran pour sauter.','Branche basse : reste au sol, ne saute pas !','Cinq faux pas et la camionnette s’échappe.'],'Récompense : la suite de l’histoire'],
  sub:['Le sous-marin',['Touche l’écran pour remonter.','Passe entre les rochers.','Trois boucliers : sois prudent.'],'Récompense : la suite de l’histoire'],
  help:['Aider un animal',['Suis les étapes indiquées à l’écran.','Sans brusquer l’animal.','Mila et Andrea s’occupent du reste.'],'Récompense : 2 à 3 cœurs'],
  smp:['Le prélèvement',['Suis les étapes indiquées à l’écran.','Gestes doux, gants enfilés.','Les résultats arrivent par le labo.'],'Récompense : +3 cœurs']};
@@ -9854,8 +9854,99 @@ try{CS.ours.onEnd=(function(o){return function(){try{SV.clk=6.5;SV.dayN=(SV.dayN
 var VA427_DY=6;
 function va427Truck(){const cc=c,dy=VA427_DY||0;cc.y+=dy;try{truck()}finally{cc.y-=dy}}
 lights=(function(o){return function(){const cc=c,dy=VA427_DY||0;cc.y+=dy;try{return o.apply(this,arguments)}finally{cc.y-=dy}}})(lights);
+// ===== 4.28 : le Coscione (mouflon, rocher, cheval visibles ; écart du Cherokee), suspensions en cinématique, pièges de la poursuite =====
+// a) Suspensions du Cherokee dans les cinématiques : amortisseur + ressort rouge par roue (comme en conduite), caisse rehaussée
+//    selon la rehausse de l'atelier (2,6 par cran, comme WL en conduite). Appelé par cherokeeSide (bloc 3.29).
+function va428Lift(){try{return 2.6*((SV.up&&SV.up.susp)||0)}catch(e){return 0}}
+function va428Sus(cx,wy,sc,LF){const trk=!!(SV.cus&&SV.cus.trk),hub=trk?wy-10.9*sc:wy,top=wy-22*sc-LF+2*sc;g.save();g.lineCap='round';
+ for(const wx of[-38,40]){const x=cx+wx,L=hub-top;if(L<3)continue;g.strokeStyle='#2c2c2c';g.lineWidth=4.2*sc;g.beginPath();g.moveTo(x+(wx<0?4:-4)*sc,top);g.lineTo(x,hub);g.stroke();
+  g.strokeStyle='#8a8f96';g.lineWidth=1.6*sc;g.beginPath();g.moveTo(x+(wx<0?3.4:-3.4)*sc,top+L*.15);g.lineTo(x+(wx<0?1.4:-1.4)*sc,top+L*.6);g.stroke();
+  g.strokeStyle='#c8382c';g.lineWidth=2*sc;g.beginPath();const n=7;for(let j=0;j<=n;j++){const y=top+1+(L-3)*j/n,xo=(j%2?5:-5)*sc;if(j===0)g.moveTo(x+xo,y);else g.lineTo(x+xo,y)}g.stroke();
+  g.strokeStyle='rgba(255,180,170,.55)';g.lineWidth=.8*sc;g.beginPath();for(let j=0;j<=n;j++){const y=top+(L-3)*j/n,xo=(j%2?4:-4)*sc;if(j===0)g.moveTo(x+xo,y);else g.lineTo(x+xo,y)}g.stroke()}
+ g.restore()}
+// b) « Le Coscione » (CS.nox1) redessinée. Avant, le cheval, le rocher, le mouflon et Mila étaient dessinés pendant que le décor peint
+//    tenait encore le dessin de côté (faux contexte du bloc 3.34) : ils n'apparaissaient pas. Maintenant tout est dessiné, avec de la
+//    profondeur sur la piste (loin = bord du haut, près = bas de l'écran) : le mouflon s'échappe et traverse la piste devant le Cherokee,
+//    Andrea donne un coup de volant vers le bord, évite le mouflon et percute le rocher ; Mila court vers le cheval, monte et part au galop.
+function va428E(u){u=Math.max(0,Math.min(1,u));return u*u*(3-2*u)}
+CS.nox1.draw=function(Wd,gy,T2,tm){coscBG(Wd,gy,tm,0);try{va34U()}catch(e){}
+ const shake=T2>22&&T2<23.4?Math.sin(T2*90)*4*(23.4-T2):0;g.save();g.translate(shake,0);
+ const Y=d=>gy+d,K=d=>1+d/330,L=[];
+ // rocher sur le bas-côté du fond
+ const rx=Wd*.57,rd=2;L.push([rd-1,()=>{const k=K(rd);g.fillStyle='rgba(40,30,20,.25)';g.beginPath();g.ellipse(rx+6,Y(rd)+3,58*k,7,0,0,7);g.fill();let ok=false;try{ok=va25Sp('rochers',rx+8,Y(rd)+6,74*k,0)}catch(e){}if(!ok){rockD(rx,Y(rd)+3,96*k,66*k,'#86817a');rockD(rx+36*k,Y(rd)+4,46*k,30*k,'#77726b')}}]);
+ // camionnette et hommes en combinaison (au fond)
+ let vx=Wd*.84;if(T2>18.5)vx+=Math.pow(T2-18.5,2)*40;if(vx<Wd+220)L.push([0,()=>noxVan(vx,Y(0)+2,1.25,tm,T2>18.5,T2<18)]);
+ if(T2<17.8)L.push([3,()=>{grp(Wd*.69,Y(3),1,()=>hazman(Wd*.69,Y(3),tm,T2>9.5));grp(Wd*.775,Y(3),1,()=>hazman(Wd*.775,Y(3),tm,0))}]);
+ // mouflon : tenu entre les deux hommes, puis s'échappe, longe la piste et la traverse devant le Cherokee
+ {let mx=Wd*.73,md=6,dir=1,run=0;if(T2>17.5){run=1;dir=-1;if(T2<20.2){const u=(T2-17.5)/2.7;mx=Wd*.73-(Wd*.27)*u;md=6}else if(T2<21.8){const u=(T2-20.2)/1.6;mx=Wd*.46-(Wd*.05)*u;md=6+va428E(u)*96}else{const u=(T2-21.8)/1.6;mx=Wd*.41-(Wd*.5)*u;md=102+u*8}}
+  if(mx>-80)L.push([md,()=>{const k=K(md),hop=run?Math.abs(Math.sin(T2*10))*5:0;g.save();g.translate(mx,Y(md)-4-hop);g.scale(.78*k*dir*-1,.78*k);const op=window.__anP;window.__anP=run?'w':op;try{artA(g,'mouflon',tm)}catch(e){}window.__anP=op;g.restore()}])}
+ // le Cherokee : arrive sur la voie du bas, coup de volant vers le bord du fond pour éviter le mouflon, percute le rocher
+ let cx=-220,cd=50,ca=0;if(T2>14){cx=-220+(Wd*.33+220)*(1-Math.pow(1-Math.min(1,(T2-14)/6.5),2))}
+ if(T2>=20.5){const u=Math.min(1,(T2-20.5)/1.5);cx=Wd*.33+((rx-132)-Wd*.33)*va428E(u);cd=50-44*va428E(u);ca=-.13*Math.sin(Math.min(1,u*1.15)*Math.PI)}if(T2>=22){cx=rx-132;cd=6;ca=.035}
+ L.push([cd,()=>{const k=K(cd),cy=Y(cd);
+  if(T2>20.4&&T2<23){g.strokeStyle='rgba(50,36,22,.55)';g.lineWidth=3*k;g.beginPath();for(let i=0;i<=12;i++){const tt=20.5+i/12*(Math.min(T2,22)-20.5),u=Math.min(1,(tt-20.5)/1.5),xx=Wd*.33+((rx-132)-Wd*.33)*va428E(u)-50,yy=Y(50-44*va428E(u))+2;if(i===0)g.moveTo(xx,yy);else g.lineTo(xx,yy)}g.stroke();g.fillStyle='rgba(205,185,145,.5)';for(let i=0;i<5;i++){g.beginPath();g.arc(cx-95-i*16,cy-6-i*3,6+i*3,0,7);g.fill()}}
+  g.save();g.translate(cx,cy);g.rotate(ca);g.translate(-cx,-cy);grp(cx,cy,1.35*k,()=>{try{cherokeeSide(cx,cy)}catch(e){}});g.restore();
+  if(T2>22){for(let i=0;i<7;i++){const q=((T2-22)*.5+i/7)%1;g.fillStyle='rgba(235,235,235,'+(.65*(1-q))+')';g.beginPath();g.arc(cx+78+Math.sin(i+T2)*8+q*20,cy-52-q*90,8+q*16,0,7);g.fill()}}
+  if(T2>21.8&&T2<22.7){const a=1-(T2-21.8)/.9,ix=rx-46,iy=cy-30;const rg=g.createRadialGradient(ix,iy,2,ix,iy,60);rg.addColorStop(0,'rgba(255,250,225,'+(.9*a)+')');rg.addColorStop(1,'rgba(255,230,170,0)');g.fillStyle=rg;g.beginPath();g.arc(ix,iy,60,0,7);g.fill();g.strokeStyle='rgba(255,245,210,'+a+')';g.lineWidth=3;g.beginPath();for(let i=0;i<9;i++){const an=i/9*6.283+.3,r0=14,r1=34+(i%2)*18;g.moveTo(ix+Math.cos(an)*r0,iy+Math.sin(an)*r0);g.lineTo(ix+Math.cos(an)*r1,iy+Math.sin(an)*r1)}g.stroke();g.fillStyle='rgba(120,110,100,'+a+')';for(let i=0;i<8;i++){const q=(T2-21.8)*1.6,an=i*.8;g.beginPath();g.arc(ix+Math.cos(an)*(10+q*90),iy-q*40+Math.sin(an)*20+q*q*120,2.6,0,7);g.fill()}}}]);
+ // le cheval du plateau broute au bord du fond, Mila court vers lui, monte, et part au galop sur la piste
+ {const hx0=Wd*.2;let hxx=hx0,hd=-4,ph=Math.sin(T2)*.15,rid=T2>=31.8,gall=T2>=31.8;if(gall){const u=T2-31.8;hxx=hx0+Math.pow(u,2)*70+u*30;hd=-4+Math.min(1,u/1.2)*40;ph=T2*7}
+  if(hxx<Wd+160)L.push([hd,()=>{const k=K(hd);g.save();g.translate(hxx,Y(hd)-6);eqDraw(0,0,1.45*k,ph,'#7a4220',rid,!gall);g.restore()}])}
+ // Andrea et Mila descendent
+ if(T2>25)L.push([cd+12,()=>{const d=cd+12,ax=cx-70;grp(ax,Y(d),1.35*K(d),()=>person(ax,Y(d),0,{f:-1,a1:T2<29?2.6:.4,a2:T2<29?2.2:.2}))}]);
+ if(T2>26.6&&T2<31.8){const u=Math.min(1,(T2-27.2)/4.4),d=(cd+14)+(-2-(cd+14))*Math.max(0,u),mlx=T2<27.2?cx-30:cx-30+(Wd*.2+10-(cx-30))*u;L.push([d,()=>grp(mlx,Y(d),1.35*K(d),()=>person(mlx,Y(d)-(T2>27.2?Math.abs(Math.sin(T2*12))*3:0),1,{f:-1,a1:1.2+Math.sin(T2*12)*.6,a2:-Math.sin(T2*12)*.6}))])}
+ L.sort((a,b)=>a[0]-b[0]);for(const it of L){try{it[1]()}catch(e){}}
+ try{wxOver(g,Wd,gy+140,tm)}catch(e){}
+ g.restore()};
+try{CS.nox1.__v34=0;va34Hook('nox1','plat')}catch(e){}
+// d) Animaux en images dans les cinématiques de jour : plus assombris quand l'heure du voyage est au soir ou la nuit
+//    (le mouflon devenait noir au milieu de « Le Coscione »). Les scènes de nuit gardent l'assombrissement.
+const VA428_NK={ours:1,camp3:1,sabot:1,veille:1,bivouac:1,bats:1,spy:1};
+va402Dk=(function(o){return function(){try{if(cs&&cs.k&&!VA428_NK[cs.k])return 0}catch(e){}return o.apply(this,arguments)}})(va402Dk);
+// e) Poursuite à cheval plus piégeuse (bloc 4.28). En plus des obstacles habituels :
+//    - un caillou lancé depuis la camionnette touche Mila (inévitable, une fois) ;
+//    - deux branches basses : il ne faut PAS sauter (Mila passe dessous ; en sautant elle s'y cogne) ;
+//    - un rocher qui dévale la pente et arrive juste après une réception de saut (très dur à éviter : il faut ressauter aussitôt).
+//    Faux pas permis : 5 au lieu de 4 (le caillou en coûte un).
+function va428Horse(H){const q=DF(),EZ=q.tb<0,HD=q.tb>0;H.maxH=5;const T={stone:null,stoneDone:0,br:[],brT:[15,31],boul:null,boulDone:0,ouch:0,msg:'',msgT:0,lastHy:0};H.__va428=T;
+ const say2=(m,d)=>{T.msg=m;T.msgT=d||1.6};
+ const hitMe=(dD,st)=>{H.hits++;H.D+=dD;H.stum=st;H.flash=.45;try{snd('thud');vib(70)}catch(e){}};
+ const clearNear=(wx,r)=>{H.ob=H.ob.filter(o=>Math.abs(o.wx-wx)>r);if(H.nx<wx+r)H.nx=wx+r};
+ const ot=H.tick;H.tick=function(dt){ot.call(H,dt);if(!(dt>0)||H.res)return;const t=H.t;if(T.msgT>0)T.msgT-=dt;if(T.ouch>0)T.ouch-=dt;
+  // caillou de la camionnette
+  if(!T.stoneDone&&!T.stone&&t>=9.5){T.stone={u:0,x0:230+H.D*5,y0:262};say2('Ils me lancent des cailloux !',1.6)}
+  if(T.stone){T.stone.u+=dt/.85;if(T.stone.u>=1){T.stone=null;T.stoneDone=1;T.ouch=1.5;hitMe(8,.4)}}
+  // branches basses
+  while(T.brT.length&&t>=T.brT[0]){T.brT.shift();const wx=H.x+980;T.br.push({wx,hit:0,told:0});clearNear(wx,260)}
+  for(const b of T.br){const sx=170+(b.wx-H.x);if(!b.hit&&sx>110&&sx<235&&H.hy>9){b.hit=1;hitMe(16,.7)}}
+  T.br=T.br.filter(b=>b.wx-H.x>-400);
+  // rocher qui dévale, juste après une réception
+  const landed=T.lastHy>0&&H.hy<=0;T.lastHy=H.hy;
+  if(!T.boulDone&&!T.boul&&t>=(EZ?26:23)&&landed){const win=EZ?.6:HD?.38:.46,v=230,rel=H.spd+v,sx=172+rel*win;T.boul={wx:H.x+(sx-170),v,rot:0,hit:0,y:0};clearNear(T.boul.wx,200)}
+  if(T.boul){const b=T.boul;b.wx-=b.v*dt;b.rot-=dt*(b.v+H.spd)/26;const sx=170+(b.wx-H.x);if(!b.hit&&sx>140&&sx<206&&H.hy<30){b.hit=1;hitMe(18,.75)}if(sx<-120){T.boul=null;T.boulDone=1}}};
+ const od=H.draw;H.draw=function(x,tm){od.call(H,x,tm);onCtx(x,()=>{try{
+  // branches : arbre penché depuis le haut, branche feuillue à hauteur de tête
+  for(const b of T.br){const sx=170+(b.wx-H.x);if(sx<-200||sx>1000)continue;g.save();g.translate(0,30);
+   g.fillStyle='#5a3a1e';g.beginPath();g.moveTo(sx+70,150);g.quadraticCurveTo(sx+40,200,sx-60,236);g.lineTo(sx-60,246);g.quadraticCurveTo(sx+50,212,sx+86,150);g.closePath();g.fill();
+   g.strokeStyle='#4a2e16';g.lineWidth=3;g.beginPath();g.moveTo(sx+10,222);g.lineTo(sx-10,250);g.moveTo(sx-30,236);g.lineTo(sx-44,256);g.stroke();
+   for(let i=0;i<9;i++){const lx=sx-62+i*16+Math.sin(i*2.1)*6,ly=236+Math.cos(i*1.7)*10;g.fillStyle=i%2?'#4f7a2a':'#3e6a24';g.beginPath();g.ellipse(lx,ly,13,8,i*.6,0,7);g.fill()}
+   if(sx>200&&sx<760&&!b.hit){const k=.5+.5*Math.sin(tm*9);g.font='900 15px Arial';g.textAlign='center';g.lineWidth=4;g.strokeStyle='rgba(40,20,5,.85)';g.strokeText('NE SAUTE PAS',sx,150-k*3);g.fillStyle='rgba(255,190,60,'+(.75+.25*k)+')';g.fillText('NE SAUTE PAS',sx,150-k*3)}
+   g.restore()}
+  // rocher qui dévale (pas de flèche : il faut réagir vite)
+  if(T.boul){const b=T.boul,sx=170+(b.wx-H.x),y=376-16;g.save();g.fillStyle='rgba(40,25,10,.35)';g.beginPath();g.ellipse(sx+3,378,24,5,0,0,7);g.fill();g.translate(sx,y);g.rotate(b.rot);
+   const rg=g.createRadialGradient(-6,-6,2,0,0,20);rg.addColorStop(0,'#b5aea4');rg.addColorStop(1,'#6e6860');g.fillStyle=rg;g.beginPath();for(let i=0;i<9;i++){const an=i/9*6.283,r=16+((i*7)%5);g.lineTo(Math.cos(an)*r,Math.sin(an)*r)}g.closePath();g.fill();g.strokeStyle='rgba(50,40,30,.5)';g.lineWidth=1.5;g.stroke();g.strokeStyle='rgba(60,50,40,.55)';g.beginPath();g.moveTo(-8,-4);g.lineTo(4,2);g.moveTo(2,-10);g.lineTo(6,-2);g.stroke();g.restore();
+   g.fillStyle='rgba(190,170,120,.45)';for(let i=0;i<3;i++){g.beginPath();g.arc(sx+22+i*12,372-i*3,4+i*2,0,7);g.fill()}}
+  // caillou lancé
+  if(T.stone){const st=T.stone,u=st.u,x1=182,y1=374-H.hy-108,xx=st.x0+(x1-st.x0)*u,yy=st.y0+(y1-st.y0)*u-Math.sin(u*Math.PI)*70;g.save();g.translate(xx,yy);g.rotate(u*14);g.fillStyle='#8a8378';g.beginPath();g.moveTo(-6,-3);g.lineTo(-1,-7);g.lineTo(6,-4);g.lineTo(7,3);g.lineTo(0,7);g.lineTo(-6,4);g.closePath();g.fill();g.restore()}
+  if(T.ouch>0){const a=Math.min(1,T.ouch*2);g.fillStyle='rgba(255,255,255,'+a+')';g.strokeStyle='rgba(120,30,20,'+a+')';g.lineWidth=2;g.beginPath();g.ellipse(232,374-H.hy-128,30,15,0,0,7);g.fill();g.stroke();g.fillStyle='rgba(150,30,20,'+a+')';g.font='900 15px Arial';g.textAlign='center';g.fillText('Aïe !',232,374-H.hy-123)}
+  if(T.msgT>0){const a=Math.min(1,T.msgT*2);g.fillStyle='rgba(20,16,12,'+(.72*a)+')';rr(g,250,140,300,30,12);g.fill();g.fillStyle='rgba(255,255,255,'+a+')';g.font='800 14px Arial';g.textAlign='center';g.fillText(T.msg,400,160)}
+ }catch(e){}})}}
+mgxOpen=(function(o){return function(def){try{if(def&&def.k==='horse'&&!def.__va428on)va428Horse(def),def.__va428on=1}catch(e){}return o.apply(this,arguments)}})(mgxOpen);
+// c) Les deux autres scènes du Coscione : même problème de faux contexte (remorque de paille et tracteur invisibles) ; la camionnette
+//    s'arrête maintenant devant la remorque au lieu d'entrer dans le tracteur.
+try{CS.nox2.draw=(function(o){return function(Wd,gy,T2,tm){const cb=coscBG;coscBG=function(){cb.apply(this,arguments);try{va34U()}catch(e){}};try{return o(Wd,gy,T2,tm)}finally{coscBG=cb}}})(CS.nox2.draw)}catch(e){}
+try{CS.nox3.draw=(function(o){return function(Wd,gy,T2,tm){const cb=coscBG;coscBG=function(){cb.apply(this,arguments);try{va34U()}catch(e){}};try{return o(Wd,gy,T2,tm)}finally{coscBG=cb}}})(CS.nox3.draw)}catch(e){}
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.27',GAME_DATE='14/11/2026 à 01h41';
+const GAME_VER='4.28',GAME_DATE='14/11/2026 à 11h07';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
