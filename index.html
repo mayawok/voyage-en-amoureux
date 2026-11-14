@@ -10116,8 +10116,39 @@ cardQ.push=(function(o){return function(...a){const k=a.filter(q=>!va442Conv(q))
 cardQ.unshift=(function(o){return function(...a){const k=a.filter(q=>!va442Conv(q));return k.length?o.apply(this,k):this.length}})(cardQ.unshift);
 /* documents d'analyse et découvertes : rangés dans le carnet avec un point rouge, sans ouvrir de fenêtre */
 docShow=(function(o){return function(d,fromNb){try{if(d&&!fromNb&&!docAfter&&!window.__va442off&&(/^para/.test(d.id||'')||/Nouvelle découverte|Rapport de laboratoire/.test(d.k||''))){va442Push('Carnet de Mila',(d.t||'')+' : rangé dans le carnet');nbNew();try{saveTrip()}catch(e){}return}}catch(e){}return o(d,fromNb)}})(docShow);
+// ===== 4.43 : carte peinte de la Corse dans le carnet (onglet « Le voyage ») =====
+// Image de l'utilisateur (vue du ciel) recadrée dans img/divers/carte_corse.jpg (600x1091). CO_PI = position de chaque lieu (CO_P) sur l'image,
+// en pixels d'un aperçu 683x1024 : abscisse recadrée de 40 à 590, ordonnée de 0 à 1000. Ancienne carte en teintes d'altitude gardée en secours (image pas chargée ou window.__va443off).
+const CO_PI={"fautea":[467,741],"favone":[487,707],"solenz":[497,659],"sari":[488,672],"pv":[428,802],"figari":[385,850],"rocca":[240,848],"coas":[252,832],"sartene":[265,785],"arriv":[330,745],"zonza":[395,705],"bav":[420,660],"zicavo":[350,640],"ajac":[172,622],"sagone":[155,516],"piana":[150,450],"porto":[160,428],"evisa":[205,440],"corte":[360,410],"ponte":[400,330],"foce":[318,195],"bastia":[492,190],"teghime":[455,205],"stf":[352,173],"vizza":[330,510],"bonif":[322,908],"sard":[360,955],"osp":[415,765],"pina":[448,764],"cosc":[320,598]};
+var va443Img=null;
+function va443Get(){if(!va443Img){va443Img=new Image();va443Img.onload=()=>{try{if(nbTab==='jr'&&gid('cmapc'))coDraw(gid('cmapc'),coSel,1)}catch(e){}};va443Img.src='img/divers/carte_corse.jpg'}return va443Img}
+coDraw=(function(o){return function(cv,sel,prog){
+ const im=window.__va443off?null:va443Get();if(!im||!im.complete||!im.naturalWidth)return o(cv,sel,prog);
+ const dpr=Math.min(2,devicePixelRatio||1),W2=cv.clientWidth,H2=cv.clientHeight;if(!W2||!H2)return;if(cv.width!==Math.round(W2*dpr)){cv.width=Math.round(W2*dpr);cv.height=Math.round(H2*dpr)}
+ const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);
+ const P=k=>{const q=CO_PI[k];return[(q[0]-40)/550*W2,q[1]/1000*H2]};
+ x.drawImage(im,0,0,W2,H2);
+ // léger voile en haut pour lire le titre
+ {const gr=x.createLinearGradient(0,0,0,46);gr.addColorStop(0,'rgba(10,30,60,.5)');gr.addColorStop(1,'rgba(10,30,60,0)');x.fillStyle=gr;x.fillRect(0,0,W2,46)}
+ x.save();x.shadowColor='rgba(0,20,50,.8)';x.shadowBlur=4;x.fillStyle='#fff';x.font='italic 700 14px Georgia,serif';x.textAlign='left';x.fillText('Corse',8,19);x.restore();
+ {const cx=W2-16,cy=22;x.save();x.shadowColor='rgba(0,20,50,.7)';x.shadowBlur=3;x.fillStyle='rgba(255,255,255,.92)';x.beginPath();x.moveTo(cx,cy-11);x.lineTo(cx+3.5,cy);x.lineTo(cx,cy+11);x.lineTo(cx-3.5,cy);x.closePath();x.fill();x.restore();x.fillStyle='#d9452b';x.beginPath();x.moveTo(cx,cy-11);x.lineTo(cx+3.5,cy);x.lineTo(cx-3.5,cy);x.fill();x.fillStyle='#fff';x.font='bold 8px Arial';x.textAlign='center';x.fillText('N',cx,cy-13)}
+ // points des chapitres
+ const cur=chIdx(),ends=['sari','coas','arriv','bav','piana','foce','stf','sard','osp','cosc','bonif','fautea'];
+ CO_R.forEach((r,i)=>{const q=P(ends[i]);const col=i<cur?'#3aa86a':i===cur?'#f28c28':'rgba(255,255,255,.85)';x.save();x.shadowColor='rgba(0,0,0,.45)';x.shadowBlur=4;x.fillStyle=col;x.strokeStyle='rgba(0,0,0,.45)';x.lineWidth=1;x.beginPath();x.arc(q[0],q[1],6,0,7);x.fill();x.stroke();x.restore();x.fillStyle=i<=cur?'#fff':'#5a4a3a';x.font='bold 7.5px Arial';x.textAlign='center';x.textBaseline='middle';x.fillText(''+(i+1),q[0],q[1]+.5);x.textBaseline='alphabetic'});
+ if(sel==null)return;
+ // tracé du chapitre choisi
+ const R=CO_R[sel],pts=R[2].map(P);let tot=0;const seg=[];for(let i=1;i<pts.length;i++){const d=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);seg.push(d);tot+=d}
+ const upto=tot*prog,line=()=>{x.beginPath();x.moveTo(pts[0][0],pts[0][1]);let acc=0;for(let i=1;i<pts.length;i++){const d=seg[i-1];if(acc+d<=upto){x.lineTo(pts[i][0],pts[i][1])}else{const u=(upto-acc)/d;x.lineTo(pts[i-1][0]+(pts[i][0]-pts[i-1][0])*u,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*u);break}acc+=d}};
+ x.lineJoin='round';x.lineCap='round';x.strokeStyle='rgba(255,255,255,.92)';x.lineWidth=5;line();x.stroke();x.strokeStyle='#d9452b';x.lineWidth=2.6;x.setLineDash([6,4]);line();x.stroke();x.setLineDash([]);
+ const head=(()=>{let acc=0;for(let i=1;i<pts.length;i++){const d=seg[i-1];if(acc+d>=upto){const u=(upto-acc)/d;return[pts[i-1][0]+(pts[i][0]-pts[i-1][0])*u,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*u]}acc+=d}return pts[pts.length-1]})();
+ if(prog<1){x.fillStyle='#7a1f2a';x.strokeStyle='#fff';x.lineWidth=1;x.beginPath();x.roundRect(head[0]-5,head[1]-3,10,6,2);x.fill();x.stroke()}
+ const s0=pts[0];x.fillStyle='#2f9a5a';x.strokeStyle='#fff';x.lineWidth=1.6;x.beginPath();x.arc(s0[0],s0[1],5,0,7);x.fill();x.stroke();
+ if(prog>=1){const e=pts[pts.length-1];x.save();x.translate(e[0],e[1]);x.fillStyle='rgba(0,0,0,.3)';x.beginPath();x.ellipse(0,1,5,2,0,0,7);x.fill();x.fillStyle='#d9452b';x.beginPath();x.moveTo(0,0);x.bezierCurveTo(-8,-10,-8,-20,0,-20);x.bezierCurveTo(8,-20,8,-10,0,0);x.fill();x.strokeStyle='#fff';x.lineWidth=1.2;x.stroke();x.fillStyle='#fff';x.font='bold 8px Arial';x.textAlign='center';x.fillText(''+(sel+1),0,-11);x.restore()}
+}})(coDraw);
+(function(){const st=document.createElement('style');st.textContent='#cmapc{aspect-ratio:.55!important}';document.head.appendChild(st);setTimeout(va443Get,4000)})();
+
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.42',GAME_DATE='15/11/2026 à 00h11';
+const GAME_VER='4.43',GAME_DATE='15/11/2026 à 00h15';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
