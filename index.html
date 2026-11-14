@@ -4484,7 +4484,7 @@ if(k==='matcha'){SV.food=Math.min(1,(SV.food??1)+.1);BF.awake=Math.max(BF.awake|
 startWinch=(function(o){return function(){try{if((deep&&deep.stuck&&deepAt(c.x))||frd){if(sayT<=0)say(frd?'Pas de treuil : Tonio va nous sortir de là.':'On est trop enlisés pour le treuil… J’appelle Tonio.',2.8,0);snd('click');return}}catch(e){}return o()}})(startWinch);
 function plkNight(){try{if(!night||cs||chIdx()!==CHAP.length-1)return;SV.csd=SV.csd||{};if(SV.csd.plk||night.t<2.5||paused)return;openCine('plk')}catch(e){}}
 // ===== v94 : usine Noxacorp détaillée pour la fin =====
-function noxaScene(Wd,gy,T2,tm){const sk=g.createLinearGradient(0,0,0,300);sk.addColorStop(0,'#6f7c88');sk.addColorStop(1,'#c9ccc2');g.fillStyle=sk;g.fillRect(0,0,Wd,420);
+function noxaScene(Wd,gy,T2,tm){g.textBaseline='alphabetic';const sk=g.createLinearGradient(0,0,0,300);sk.addColorStop(0,'#6f7c88');sk.addColorStop(1,'#c9ccc2');g.fillStyle=sk;g.fillRect(0,0,Wd,420);
 g.fillStyle='#8a9488';g.beginPath();g.moveTo(0,240);for(let x=0;x<=Wd;x+=30)g.lineTo(x,214-18*Math.sin(x*.006+1)-8*Math.sin(x*.02));g.lineTo(Wd,260);g.lineTo(0,260);g.fill();
 g.fillStyle='#7d8a6a';g.fillRect(0,255,Wd,170);g.fillStyle='#6b6862';g.fillRect(0,gy-8,Wd,20);
 const fx=Wd*.22,fw=Wd*.6,base=gy-8,smk=T2<4?1:Math.max(0,1-(T2-4)/1.5);
@@ -4518,8 +4518,8 @@ if(T2>5.4){g.save();g.translate(gx0+70,gy-30);g.rotate(-.08);g.fillStyle='#f2c23
 const vx=Wd*.82;g.fillStyle='#1f3b73';g.fillRect(vx,gy-40,90,30);g.fillRect(vx+70,gy-50,24,14);g.fillStyle='#fff';g.fillRect(vx,gy-26,90,4);const on=Math.floor(tm*5)%2;g.fillStyle=on?'#3f8cff':'#1d3fa0';g.fillRect(vx+30,gy-46,22,6);for(const wx of[vx+18,vx+72]){g.fillStyle='#111';g.beginPath();g.arc(wx,gy-8,9,0,7);g.fill()}
 g.save();g.globalCompositeOperation='lighter';g.fillStyle=on?'rgba(80,140,255,.18)':'rgba(80,140,255,.06)';g.beginPath();g.arc(vx+41,gy-46,70,0,7);g.fill();g.restore();
 try{g.save();g.translate(vx-24,gy);g.scale(1.4,1.4);npcFig(0,0,['#1f3b73','#1f3b73',1,'#2a1a10',0,0,0],0,tm);g.restore();g.save();g.translate(gx0+150,gy);g.scale(1.4,1.4);npcFig(0,0,['#1f3b73','#1f3b73',1,'#2a1a10',0,0,1],T2>5&&T2<7,tm);g.restore()}catch(e){}
-if(T2>4.4){if(!fn.hp){fn.hp=1;hapt(60)}const sc2=Math.min(1,(T2-4.4)*4);g.save();g.translate(bx+bw*.33,base-26);g.rotate(-.12);g.scale(sc2*.85,sc2*.85);g.fillStyle='#d83a3a';rr(g,-110,-26,220,52,8);g.fill();g.fillStyle='#fff';g.font='900 34px Arial';g.textAlign='center';g.fillText('FERMÉ',0,12);g.restore()}
-const cap=cl((T2-.5)/1);g.globalAlpha=cap;g.fillStyle='rgba(20,16,12,.5)';rr(g,Wd/2-300,16,600,48,14);g.fill();g.fillStyle='#fff';g.font='800 19px Georgia,serif';g.textAlign='center';g.fillText('Grâce aux preuves de Mila, l’usine Noxacorp ferme ses portes.',Wd/2,47);g.globalAlpha=1}
+if(T2>4.4){if(!fn.hp){fn.hp=1;hapt(60)}const sc2=Math.min(1,(T2-4.4)*4);g.save();g.translate(bx+bw*.33,base-26);g.rotate(-.12);g.scale(sc2*.85,sc2*.85);g.fillStyle='#d83a3a';rr(g,-110,-26,220,52,8);g.fill();g.fillStyle='#fff';g.font='900 34px Arial';g.textAlign='center';g.textBaseline='middle';g.fillText('FERMÉ',0,1);g.textBaseline='alphabetic';g.restore()}
+const cap=cl((T2-.5)/1);g.globalAlpha=cap;g.fillStyle='rgba(20,16,12,.5)';rr(g,Wd/2-300,16,600,48,14);g.fill();g.fillStyle='#fff';g.font='800 19px Georgia,serif';g.textAlign='center';g.textBaseline='middle';g.fillText('Grâce aux preuves de Mila, l’usine Noxacorp ferme ses portes.',Wd/2,40);g.textBaseline='alphabetic';g.globalAlpha=1}
 function prisonerFig(sc,tm){npcFig(0,0,['#e8892b','#e8892b',0,'#3a2a1a',1,0,0],0,tm);g.save();g.scale(1.45,1.45);g.fillStyle='rgba(25,25,25,.85)';for(let y=-27;y<-14;y+=3)g.fillRect(-5.5,y,11,1.3);for(let y=-14;y<-1;y+=3){g.fillRect(-4,y,3.6,1.3);g.fillRect(.4,y,3.6,1.3)}g.fillStyle='#222';g.font='bold 3px Arial';g.textAlign='center';g.restore()}
 
 // ===== v95 : rejouabilité — graine de voyage + petites surprises différentes à chaque partie =====
@@ -7820,7 +7820,7 @@ function va27G(id,o){if(!o)return null;const r=va27I[id];if(r!==undefined)return
 function va27Draw(im,P,al,ta){const hh=P.F*HH/P.hz,sc=hh/im.naturalHeight,tw=im.naturalWidth*sc,oy=-cl((ta-80)/220)*HH*.05;let ox=-((cam.x*(P.fs||.035)))%tw;if(ox>0)ox-=tw;
 g.globalAlpha=al;for(let x=ox;x<W;x+=tw)g.drawImage(im,x,oy,tw+1,hh);if(P.haze)va43Haze(hh,oy,al,im);g.fillStyle=P.fill;g.fillRect(0,hh+oy-1,W,HH-hh-oy+1);g.globalAlpha=1}
 va23Bg=function(ta,dayF,tm,sx,sy){const k=chIdx(),pl=PLT(),P=VA25_P[k];if(!P)return 0;
-const dP=pl?VA27.PL:P,dim=pl?va27G('PL',VA27.PL):va23Get(k),eo=pl?null:VA27.E[k],no=pl?null:VA27.N[k],ei=va27G('E'+k,eo),ni=va27G('N'+k,no);
+const dP=pl?VA27.PL:P,dim=pl?va27G('PL',VA27.PL):va23Get(k),eo=(pl&&k!==9)?null:VA27.E[k],no=(pl&&k!==9)?null:VA27.N[k],ei=va27G('E'+k,eo),ni=va27G('N'+k,no);
 if(!dim||!dim.naturalWidth)return 0;VA25.dk=Math.round(cl(1-dayF)*3);
 g.setTransform(DPR,0,0,DPR,0,0);
 const dA=sm(cl(dayF*1.3)),eA=ei?cl(1-Math.abs(dayF-.62)/.35):0,nA=ni?1-sm(cl(dayF/.4)):0;
@@ -9945,8 +9945,17 @@ mgxOpen=(function(o){return function(def){try{if(def&&def.k==='horse'&&!def.__va
 //    s'arrête maintenant devant la remorque au lieu d'entrer dans le tracteur.
 try{CS.nox2.draw=(function(o){return function(Wd,gy,T2,tm){const cb=coscBG;coscBG=function(){cb.apply(this,arguments);try{va34U()}catch(e){}};try{return o(Wd,gy,T2,tm)}finally{coscBG=cb}}})(CS.nox2.draw)}catch(e){}
 try{CS.nox3.draw=(function(o){return function(Wd,gy,T2,tm){const cb=coscBG;coscBG=function(){cb.apply(this,arguments);try{va34U()}catch(e){}};try{return o(Wd,gy,T2,tm)}finally{coscBG=cb}}})(CS.nox3.draw)}catch(e){}
+// ===== 4.30 : appel de Lucia à la ligne d'arrivée du Coscione, chrono du rallye caché, soir du plateau peint =====
+// a) L'appel de Lucia (arrestation de Marchetti, usine fermée, prison : CS.lacCall) ne se déclenche plus avant la fin du chapitre 10
+//    (« On s'arrête au bord de l'eau ? ») : il se joue quand on passe la ligne d'arrivée, juste avant l'écran de fin du chapitre.
+va3ArrTick=function(){};
+openEnd=(function(o){return function(i){try{if(i===9&&SV.arrL!==level&&CS.lacCall&&!window.__va430in&&!(window.dkPlaying)){SV.arrL=level;SV.froid=0;window.__va430in=1;const oe=CS.lacCall.onEnd;
+ CS.lacCall.onEnd=function(){CS.lacCall.onEnd=oe;window.__va430in=0;try{oe&&oe.apply(this,arguments)}catch(e){}try{blackNow()}catch(e){}o(i)};
+ try{saveTrip()}catch(e){}openCine('lacCall');return}}catch(e){window.__va430in=0}return o.apply(this,arguments)}})(openEnd);
+// b) Le chrono du rallye ne s'affiche plus par-dessus les cinématiques, les mini-jeux, les cartes et la fin de chapitre.
+setInterval(function(){try{const r=gid('va49r');if(!r)return;const hide=!!(cs||MGX||pz||hl||es||cardOpen||document.body.classList.contains('cine'));r.style.visibility=hide?'hidden':''}catch(e){}},200);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.29',GAME_DATE='14/11/2026 à 11h27';
+const GAME_VER='4.30',GAME_DATE='14/11/2026 à 11h49';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
