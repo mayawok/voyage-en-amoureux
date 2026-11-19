@@ -6551,7 +6551,7 @@ function ferZone(){try{if(fv)return true;const G=ferG.lv===level?ferG:ferGeo();r
 var ferDefer=[],ferOutT=0;
 traf.push=(function(o){return function(...a){const keep=[];for(const f of a){try{const G=ferGeo();if(G&&G.on){const gag=f.dir<0&&f.x>G.Q1-150&&c.x<G.Q2+150&&SV.ferGag!==level;const near=(f.x>G.a-700&&f.x<G.b+700)||ferZone();if(near&&!gag)continue}}catch(e){}keep.push(f)}return keep.length?o.apply(this,keep):this.length}})(traf.push);
 parkOK=(function(o){return function(px){try{const G=ferG.lv===level?ferG:ferGeo();if(G&&G.on&&px>G.a-500&&px<G.b+500)return false}catch(e){}return o(px)}})(parkOK);
-for(const nm of['openCine','openHelp','pzOpen','mgxOpen']){const o=window[nm];if(typeof o!=='function')continue;window[nm]=function(...a){try{const k=a[0];const chain=cs||MGX||hl||pz;if(!chain&&ferZone()&&!(typeof k==='string'&&/^(sar|port|sub)$|^(sar|port)/.test(k))){const key=nm+':'+(typeof k==='string'?k:(k&&k.t)||'');if(!ferDefer.some(q=>q.key===key)){const fn=()=>window[nm](...a);fn.key=key;ferDefer.push(fn)}try{stopReq=null;paused=false;st.hb=0}catch(e){}return}}catch(e){}return o.apply(this,a)}}
+for(const nm of['openCine','openHelp','pzOpen','mgxOpen']){const o=window[nm];if(typeof o!=='function')continue;window[nm]=function(...a){try{const k=a[0];const chain=cs||MGX||hl||pz;if(!chain&&ferZone()&&!(typeof k==='string'&&/^(sar|port|sub|drums)$|^(sar|port)/.test(k))){const key=nm+':'+(typeof k==='string'?k:(k&&k.t)||'');if(!ferDefer.some(q=>q.key===key)){const fn=()=>window[nm](...a);fn.key=key;ferDefer.push(fn)}try{stopReq=null;paused=false;st.hb=0}catch(e){}return}}catch(e){}return o.apply(this,a)}}
 mgTick=(function(o){return function(dt){o(dt);try{
  if(ferZone()){for(const q of obsP)if(!q.haz&&Math.abs(q.x-c.x)<2600)q.gone=1;for(let i=obsP.length-1;i>=0;i--)if(obsP[i].gone)obsP.splice(i,1)}
  if(!ferDefer.length)return;if(ferZone()||paused||cs||MGX||hl||pz||cardOpen||night){ferOutT=0;return}ferOutT+=dt;if(ferOutT<6)return;ferOutT=-4;const f=ferDefer.shift();f()}catch(e){}}})(mgTick);
@@ -10147,8 +10147,13 @@ coDraw=(function(o){return function(cv,sel,prog){
 }})(coDraw);
 (function(){const st=document.createElement('style');st.textContent='#cmapc{aspect-ratio:.55!important}';document.head.appendChild(st);setTimeout(va443Get,4000)})();
 
+// ===== 4.44 : correction du blocage « écran figé » après la plongée du sous-marin (et toute carte devenue bandeau en 4.42) =====
+// Depuis la 4.42 les cartes « Mail du labo », « Sauvetage réussi », etc. ne s'ouvrent plus : or le jeu avait été mis en pause (paused=true) juste avant
+// et c'est la fermeture de la carte (closeCard) qui le relançait. Maintenant, si une carte convertie laisse le jeu en pause sans rien d'ouvert, on le relance comme closeCard.
+va442Conv=(function(o){return function(q){const r=o(q);if(r){setTimeout(()=>{try{if(paused&&inGame&&!cardOpen&&!cardQ.length&&!cs&&!MGX&&!hl&&!pz&&!fb&&!fn&&!ot&&!es&&!(typeof va5G!=='undefined'&&va5G)&&!(gid('menu')&&gid('menu').style.display==='flex'))closeCard()}catch(e){}},150)}return r}})(va442Conv);
+
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.43',GAME_DATE='15/11/2026 à 00h15';
+const GAME_VER='4.44',GAME_DATE='19/11/2026 à 11h55';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
