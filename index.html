@@ -10152,8 +10152,13 @@ coDraw=(function(o){return function(cv,sel,prog){
 // et c'est la fermeture de la carte (closeCard) qui le relançait. Maintenant, si une carte convertie laisse le jeu en pause sans rien d'ouvert, on le relance comme closeCard.
 va442Conv=(function(o){return function(q){const r=o(q);if(r){setTimeout(()=>{try{if(paused&&inGame&&!cardOpen&&!cardQ.length&&!cs&&!MGX&&!hl&&!pz&&!fb&&!fn&&!ot&&!es&&!(typeof va5G!=='undefined'&&va5G)&&!(gid('menu')&&gid('menu').style.display==='flex'))closeCard()}catch(e){}},150)}return r}})(va442Conv);
 
+// ===== 4.45 : la source passe toujours avant l'ours (ch9) =====
+// La scène de la source (25-47 %) pouvait être ratée (route occupée) : l'ours et la nuit forcée venaient alors sans elle.
+// Maintenant : fenêtre de la source élargie (25-95 %) et, tant qu'elle n'a pas eu lieu, ni nuit forcée ni ours.
+try{for(const q of VA410_T){if(q[0]==='source')q[3]=.95}}catch(e){}
+oursWorld=(function(o){return function(rdt){try{if(chIdx()===8&&!(SV.csd&&SV.csd.ours)&&!oursPre&&!(SV.va410&&SV.va410['source'+level])&&!window.__va445off)return}catch(e){}return o(rdt)}})(oursWorld);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.44',GAME_DATE='19/11/2026 à 11h55';
+const GAME_VER='4.45',GAME_DATE='25/11/2026 à 20h55';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
