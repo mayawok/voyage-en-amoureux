@@ -1578,7 +1578,7 @@ function zhit(x,y){const k=Zn.key;if(k&&Math.hypot(x-k.cx,y-k.cy)<=k.r+10)return
 for(const n of['winch','lamp','wiper'])if(UN(n)&&(n!=='wiper'||rainNow())&&inz(Zn[n],x,y,4))return n;
 if(inz(Zn.brake,x,y,4))return'brake';if(inz(Zn.gas,x,y,4))return'gas';if(inz(Zn.lev,x,y,2))return'lev';return''}
 function levPick2(x){const z=Zn.lev,dx=x-(z.x+z.w/2),t=z.R*.41;setGear(dx<-t?0:dx<0?1:dx<t?2:3)}
-document.addEventListener('pointerdown',ev=>{if(paused||!inGame)return;const z=zhit(ev.clientX,ev.clientY);if(!z)return;ev.preventDefault();ev.stopPropagation();ptr.set(ev.pointerId,z);
+document.addEventListener('pointerdown',ev=>{if(paused||!inGame||va447Scene())return;const z=zhit(ev.clientX,ev.clientY);if(!z)return;ev.preventDefault();ev.stopPropagation();ptr.set(ev.pointerId,z);
 if(z==='gas'){st.gas=1;if(ign)started=true;{const nw=performance.now();if(nw-(window.__gT||0)<330&&UN('boost')){startBoost();window.__gT=0}else window.__gT=nw}}else if(z==='brake')st.brake=1;
 else if(z==='hb')st.hb=st.hb?0:1;else if(z==='key')toggleKey();else if(z==='winch')startWinch();else if(z==='boost')startBoost();else if(z==='lev')levPick2(ev.clientX);
 else if(z==='lamp'){lampOn=!lampOn;snd('click')}else if(z==='wiper'){wipOn=!wipOn;snd('click')}},true);
@@ -1614,7 +1614,7 @@ if(!dogGo()){if(night||!dogNeed)dp.style.display='none';else if(!dogGo())dp.styl
 if(!dogNeed){if(ign&&sp>20){dogT-=dt;if(dogT<=0){dogNeed=1;dogHintT=0;say('Le chien s’agite. On s’arrête le promener ?',4,0)}}dp.style.display='none';return}
 dp.textContent='🐕 Le chien veut se dégourdir les pattes : coupe le contact 🔑';dp.style.display='block';
 dogHintT+=dt;if(dogHintT>70&&sayT<=0){dogHintT=0;say('Le pauvre chien attend.',3,0)}
-if(st.hb&&!ign&&sp<12&&!work&&!stalled){dogAnim={t:0,x0:c.x};st.gas=0}}
+if(!ign&&sp<12&&!work&&!stalled){dogAnim={t:0,x0:c.x};st.gas=0}}
 function dogDraw(x,y,f,mode,tm,leg){g.save();g.translate(x,y);g.scale(f*1.15,1.15);
 const tr=mode==='trot'?Math.sin(tm*22):0;g.fillStyle='#b98a4c';
 if(mode==='pee'){g.save();g.translate(-8,-9);g.rotate(-.9);g.fillRect(-1.5,0,3,9);g.restore();g.fillRect(-3,-9,3,9);g.fillRect(5,-9,3,9)}
@@ -2187,7 +2187,7 @@ fact:'Une abeille épuisée peut repartir avec une goutte d’eau sucrée. Jamai
 function helpTick(dt){try{pzWorld(dt)}catch(e){}try{storyChoicesTick(dt);bdWorld(dt);try{funWorld(dt)}catch(e){}cineWorld(dt);chxConseq(dt)}catch(e){}try{plantWorld(dt)}catch(e){}try{if(!hel){const b=gid('helx');if(b&&b.style.display!=='none')b.style.display='none'}if(!bur){const b=gid('burx');if(b&&b.style.display!=='none')b.style.display='none'}}catch(e){}try{const me=gid('mis'),te=gid('tut');if(te.style.display!=='none'){const r=me.style.display==='block'?me.getBoundingClientRect():null,tr=te.getBoundingClientRect();const top=(r&&tr.right>r.left-4)?Math.round(r.bottom+8):UI.t+72;if(te.style.top!==top+'px')te.style.top=top+'px'}}catch(e){}try{urgentShop()}catch(e){}try{paraWorld(dt)}catch(e){}try{helWorld(dt)}catch(e){}try{slipTick(dt);friendTick(dt)}catch(e){}try{parTick(dt)}catch(e){}try{callWorld(dt)}catch(e){}try{ferryWorld(dt)}catch(e){}try{burWorld(dt)}catch(e){}const run=started&&!night&&!crashed&&!paused&&introT<=0&&!cardOpen;if(SV.hpL!==level){SV.hpL=level;SV.hpI=0;hev=null}
 sampleTick(dt,run);const pe=helpPlan()[SV.hpI||0];if(!run||!pe)return;const k2=pe.k;
 if(!hev&&chP()>=pe.f&&!mev&&!inj&&!work&&sayT<=0){let x=c.x+1000,n=0;while((rockW(x)>0||wetRange(x-150,x+150)||bridgeAt(x)>=0||Z(x)[3]!=='dry'||sceneAt(x)||sceneAt(x+150)||nearC(x)||stns.some(q=>Math.abs(q.x+110-x)<500)||obs.some(o=>Math.abs(o.x-x)<250)||shp.some(q=>Math.abs(q.x+100-x)<400)||obsP.some(q=>Math.abs(q.x-x)<300)||occ(x))&&n++<60)x+=90;if(x>MAP_L-1600){SV.hpI=(SV.hpI||0)+1}else{hev={k:k2,x}}}
-if(hev){const d=c.x-hev.x,dp=gid('dogp');if(Math.abs(d)<320&&!dogAnim){dp.textContent='💚 '+HELP[hev.k].t+' : arrête-toi (coupe le contact 🔑) pour aider';dp.style.display='block'}else if(!dogNeed&&!dogAnim&&!mev&&!sev&&dp.textContent.indexOf('💚')===0)dp.style.display='none';if(Math.abs(d)<280&&st.hb&&Math.hypot(v.x,v.y)<30&&!hl){dp.style.display='none';openHelp(hev.k)}else if(d>600){SV.hpI=(SV.hpI||0)+1;hev=null;const dp=gid('dogp');if(dp.textContent.indexOf('💚')===0)dp.style.display='none'}}}
+if(hev){const d=c.x-hev.x,dp=gid('dogp');if(Math.abs(d)<320&&!dogAnim){dp.textContent='💚 '+HELP[hev.k].t+' : arrête-toi (coupe le contact 🔑) pour aider';dp.style.display='block'}else if(!dogNeed&&!dogAnim&&!mev&&!sev&&dp.textContent.indexOf('💚')===0)dp.style.display='none';if(Math.abs(d)<340&&(st.hb||!ign)&&Math.hypot(v.x,v.y)<30&&!hl){dp.style.display='none';openHelp(hev.k)}else if(d>600){SV.hpI=(SV.hpI||0)+1;hev=null;const dp=gid('dogp');if(dp.textContent.indexOf('💚')===0)dp.style.display='none'}}}
 function helpDraw(tm){if(!hev)return;const H=HELP[hev.k],x=hev.x,y=T(x),pu=1+Math.sin(tm*4)*.08;
 const gl=g.createRadialGradient(x,y-30,4,x,y-30,80);gl.addColorStop(0,'rgba(120,255,160,.45)');gl.addColorStop(1,'rgba(120,255,160,0)');g.fillStyle=gl;g.beginPath();g.arc(x,y-30,80*pu,0,7);g.fill();
 g.fillStyle='#5a3c1e';g.fillRect(x+46,y-62,4,62);g.fillStyle='#fff';g.strokeStyle='#2e7d32';g.lineWidth=3;g.beginPath();g.arc(x+48,y-74,15,0,7);g.fill();g.stroke();heart(x+48,y-74,7,1);
@@ -2351,7 +2351,7 @@ drw:(x,k,cx,cy)=>{const s2=k*1.6;x.fillStyle=CCv.m;x.fillRect(cx-160*s2,cy-70*s2
 if(hl&&hl.pi<1){x.fillStyle='rgba(220,230,240,.55)';x.beginPath();x.arc(cx,cy,46*s2,0,7);x.fill()}if(hl&&hl.end){const gl=x.createRadialGradient(cx,cy,10,cx,cy,140*s2);gl.addColorStop(0,'rgba(255,250,210,.95)');gl.addColorStop(1,'rgba(255,250,210,0)');x.fillStyle=gl;x.beginPath();x.arc(cx,cy,140*s2,0,7);x.fill()}else if(hl&&hl.pi>=2){x.fillStyle='#fff7d0';x.beginPath();x.arc(cx,cy-3*s2,12*s2,0,7);x.fill()}}}});
 function mechTick(dt){const run=started&&!night&&!crashed&&!paused&&introT<=0&&!cardOpen;if(SV.mpL!==level){SV.mpL=level;SV.mpD=0;mev=null}const k2=MPLAN[chIdx()];
 if(run&&k2&&!SV.mpD){if(!mev&&chP()>=.36&&!hev&&sayT<=0&&!work&&!stopReq&&rockW(c.x)<.02&&!hardNear(c.x)){mev={k:k2,t:0};stopReq={x:c.x+420};say(HELP[k2].see,4,0);snd('click')}
-if(mev){mev.t+=dt;const dp=gid('dogp');if(!dogAnim&&!dogNeed){dp.textContent='🔧 Andrea veut regarder le moteur : arrête-toi (coupe le contact 🔑)';dp.style.display='block'}if(st.hb&&Math.hypot(v.x,v.y)<25&&!hl&&!stalled&&flatW<0&&!work){dp.style.display='none';openHelp(mev.k)}else if(mev.t>150){SV.mpD=1;mev=null;dp.style.display='none'}}}
+if(mev){mev.t+=dt;const dp=gid('dogp');if(!dogAnim&&!dogNeed){dp.textContent='🔧 Andrea veut regarder le moteur : arrête-toi (coupe le contact 🔑)';dp.style.display='block'}if((st.hb||!ign)&&Math.hypot(v.x,v.y)<25&&!hl&&!stalled&&flatW<0&&!work){dp.style.display='none';openHelp(mev.k)}else if(mev.t>150){SV.mpD=1;mev=null;dp.style.display='none'}}}
 if(run&&SV.ppL!==level&&chP()>=.66&&!hl&&!hev&&!mev&&sayT<=0&&!pp){if(!stopReq&&rockW(c.x)<.02&&!hardNear(c.x)){SV.ppL=level;ppStall()}}}
 // --- trouve la pièce
 function mtl(x,x0,y0,x1,y1,c1,c2,c3){const g2=x.createLinearGradient(x0,y0,x1,y1);g2.addColorStop(0,c1);g2.addColorStop(.5,c2||c1);g2.addColorStop(1,c3||c1);return g2}
@@ -2415,7 +2415,7 @@ function labTick(dt){if(!started||paused||introT>0||!dt)return;SV.smpP=SV.smpP||
 if(end&&chIdx()===0&&!Object.keys(SV.smp||{}).length&&!Object.keys(P).length)smpDone('tortue',1)}
 function sampleTick(dt,run){if(SV.spL!==level){SV.spL=level;SV.spD=0;sev=null}if(!run||SV.spD)return;const sp=CHP().totem[0];if((SV.smp||{})[sp]){SV.spD=1;return}
 if(!sev&&chP()>=.44&&!hev&&!mev&&sayT<=0&&!work&&!stopReq&&rockW(c.x)<.02&&!hardNear(c.x)){sev={t:0};stopReq={x:c.x+420};say('Il me faut un échantillon pour l’enquête : '+(ENC[sp]?ENC[sp][0]:sp)+'. On s’arrête ?',4,1)}
-if(sev){sev.t+=dt;const dp=gid('dogp');if(!dogAnim&&!dogNeed&&!mev){dp.textContent='🧪 Mila veut prélever un échantillon : arrête-toi (coupe le contact 🔑)';dp.style.display='block'}if(st.hb&&Math.hypot(v.x,v.y)<25&&!hl&&!stalled&&flatW<0&&!work){dp.style.display='none';HELP['s_'+sp]=smpDef(sp);openHelp('s_'+sp)}else if(sev.t>150){SV.spD=1;sev=null;dp.style.display='none'}}}
+if(sev){sev.t+=dt;const dp=gid('dogp');if(!dogAnim&&!dogNeed&&!mev){dp.textContent='🧪 Mila veut prélever un échantillon : arrête-toi (coupe le contact 🔑)';dp.style.display='block'}if((st.hb||!ign)&&Math.hypot(v.x,v.y)<25&&!hl&&!stalled&&flatW<0&&!work){dp.style.display='none';HELP['s_'+sp]=smpDef(sp);openHelp('s_'+sp)}else if(sev.t>150){SV.spD=1;sev=null;dp.style.display='none'}}}
 const INV=[[['m','L’Institut m’a confié une mission : comprendre la mystérieuse maladie qui touche les animaux corses.'],['a','Tu as vu l’immense chantier au-dessus de Fautea ? Le complexe Bellavista : hôtel, golf, projecteurs toute la nuit…'],['m','Bruit, lumière, eau pompée dans la rivière… C’est ma première piste.']],
 [['m','Le labo a trouvé une molécule de synthèse chez les tortues. Ils l’appellent « N-12 ».'],['a','Le golf de Bellavista est arrosé jour et nuit… avec quoi, à ton avis ?'],['m','Leur directeur m’a rappelée. Il m’invite à prélever ce que je veux : « On n’a rien à cacher. »'],['a','Soit il est innocent… soit il est très sûr de lui.']],
 [['m','Les analyses du golf sont arrivées : pas une trace de N-12. Bellavista est innocent.'],['a','Alors on repart de zéro ?'],['m','Non. Les cerfs évitent une vallée bien précise. Je veux aller voir ce qui s’y passe… avec l’appareil photo.']],
@@ -8269,7 +8269,7 @@ var va49Tm=null,va49Cb=null;
 function va49Map(sel,cb){if(typeof coDraw!=='function'||va49Tm||sel>=CHAP.length||sel<0){cb();return}va49Cb=cb;const m=gid('va49m'),cv=gid('va49mc');m.style.display='block';try{gid('va49mt').textContent='Chapitre '+(sel+1)+' · '+CO_R[sel][0]+' → '+CO_R[sel][1]}catch(e){gid('va49mt').textContent='Chapitre '+(sel+1)}const t0=performance.now();let n=0;
  va49Tm=setInterval(()=>{const p=Math.min(1,(performance.now()-t0)/4800),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;try{coDraw(cv,sel,Math.min(.999,e))}catch(er){}if(p>=1||++n>400)va49MEnd()},33)}
 function va49MEnd(){if(va49Tm){clearInterval(va49Tm);va49Tm=null}gid('va49m').style.display='none';const f=va49Cb;va49Cb=null;if(f)try{f()}catch(e){console.error(e)}}
-va5Close=(function(o){return function(){const i=va5G?va5G.i:null;if(dkP||i==null||va9P)return o();va49Map(i+1,()=>o())}})(va5Close);
+va5Close=(function(o){return function(){const i=va5G?va5G.i:null;if(dkP||i==null||va9P)return o();va49Map(i+1,()=>{if(va5G)o()})}})(va5Close);
 // --- 5. la pluie rend la piste glissante ; papillons de nuit dans les phares
 Z=(function(o){return function(x){const r=o(x);try{if((wxk==='rain'||wxk==='storm')&&wI>.4&&(SV.diff!==0)){const t=r[3];if(t==='dry'||t==='slip'){const k=t==='dry'?.88:.85;va49Rain=1;return[r[0]*k,r[1]*k,t==='dry'?'Piste mouillée':r[2],t]}}}catch(e){}return r}})(Z);
 // --- 6. réactions des passagers aux bosses et aux accélérations
@@ -8382,7 +8382,7 @@ function va52Off(){if(va52.stop||va52.on){if(va52.stop)st.brake=0;st.gas=0}va52.
 function va52Toggle(){if(va52.on){va52Off();snd('click');return}if(!ign||!started){try{say('Il faut d’abord mettre le contact.',2.5,0)}catch(e){}return}va52.on=1;va52.stop=0;va52.lo=0;va52.x0=c.x;va52.ign={};
  // ce qui est déjà sous les roues ou juste devant n'arrête pas
  for(const o of obs)if(o.x>c.x-80&&o.x<c.x+120)va52.ign['o'+o.x]=1;for(const L of[stns,gars,shp])for(const p of L)if(Math.abs(p.x+110-c.x)<220)va52.ign['p'+p.x]=1;snd('click')}
-document.addEventListener('pointerdown',ev=>{try{if(paused||!inGame)return;const z=zhit(ev.clientX,ev.clientY);if(z==='cruise'){ev.preventDefault();va52Toggle()}else if((z==='gas'||z==='brake')&&va52.on)va52Off()}catch(e){}},true);
+document.addEventListener('pointerdown',ev=>{try{if(paused||!inGame||va447Scene())return;const z=zhit(ev.clientX,ev.clientY);if(z==='cruise'){ev.preventDefault();va52Toggle()}else if((z==='gas'||z==='brake')&&va52.on)va52Off()}catch(e){}},true);
 addEventListener('keydown',e=>{if(e.key==='c'||e.key==='C'){if(!paused&&inGame)va52Toggle()}else if((e.key==='ArrowLeft'||e.key==='ArrowRight')&&va52.on)va52Off()});
 function va52Next(){const X=c.x,ty=Z(X)[3];
  for(const o of obs)if(!o.done&&o.x>X+40&&o.x<X+330&&!va52.ign['o'+o.x])return'obstacle';
@@ -10167,10 +10167,33 @@ try{CS.ours.onEnd=(function(o){return function(){try{if(SV.va410&&SV.va410.trace
 var va446Q=[],va446F=0;
 function va446Busy(){try{return !!((cs)||MGX||pz||hl||fb||es||fn||ot||bz||(typeof va5G!=='undefined'&&va5G)||chQ||pp||obv||bt||(typeof bur!=='undefined'&&bur)||(typeof hel!=='undefined'&&hel)||cardOpen||docOpenF)}catch(e){return false}}
 function va446Wrap(n){const o=window[n];if(typeof o!=='function')return;window[n]=function(){try{if(!window.__va446off&&!(typeof va9P!=='undefined'&&va9P)&&!(typeof dkP!=='undefined'&&dkP)&&va446Busy()){const a=[...arguments];if(!(n==='openCine'&&cs&&cs.k===a[0])&&!va446Q.some(q=>q[0]===n&&q[1][0]===a[0]))va446Q.push([n,a]);return}}catch(e){}return o.apply(this,arguments)}}
-['openCine','mgxOpen','pzOpen','openHelp','fbStart','ppOpen','openBoat','choice','openBur','openHeli'].forEach(va446Wrap);
+['openCine','mgxOpen','pzOpen','openHelp','fbStart','ppOpen','choice','openBur','openHeli'].forEach(va446Wrap);
 loop=(function(o){return function(t){const r=o(t);try{if(va446Q.length){if(va446Busy()||(typeof night!=='undefined'&&night&&0)){va446F=0}else{va446F+=1;if(va446F>20){va446F=0;const q=va446Q.shift();try{window[q[0]].apply(null,q[1])}catch(e){console.error('file 4.46 '+e.message)}}}}}catch(e){}return r}})(loop);
+// ===== 4.47 : corrections trouvées par le pilote automatique =====
+// 1) Les commandes de conduite (pédales…) écoutaient l'écran en priorité dès que le jeu n'était pas en pause : si une cinématique
+//    restait affichée sans pause, le bouton « Continuer » (en bas à droite, sur la pédale) ne répondait plus. Plus rien n'est pris
+//    par les commandes tant qu'une scène est à l'écran.
+function va447Scene(){try{return !!(cs||es||fn||ot||bz||bt||MGX||pz||hl||fb||(typeof va5G!=='undefined'&&va5G)||chQ||cardOpen||docOpenF||(typeof va49Tm!=='undefined'&&va49Tm))}catch(e){return false}}
+// 2) « Reprendre la route » touché deux fois : la carte animée relançait le jeu une seconde fois à sa fin, par-dessus la scène suivante.
+va5Close=(function(o){return function(){try{if(typeof va49Tm!=='undefined'&&va49Tm)return}catch(e){}return o.apply(this,arguments)}})(va5Close);
+// 3) Rattrapage avant l'écran de fin : les scènes importantes de l'histoire qui n'ont pas eu lieu pendant le chapitre
+//    (fenêtre trop courte, route jamais calme…) sont jouées juste avant la fin du chapitre, dans l'ordre.
+var va447R=null;
+function va447Missing(i){const L=[],lv=level;try{SV.csd=SV.csd||{};SV.ev=SV.ev||{};SV.va410=SV.va410||{};
+ if(i===1&&!SV.bag1)L.push(['card',BAG1,()=>{SV.bag1=1}]);
+ if(i===2&&SV.ev.gend&&!SV.csd.camp1&&CS.camp1)L.push(['cine','camp1']);
+ if(i===3&&!SV.va410['sabot'+lv]&&CS.sabot)L.push(['cine','sabot',()=>{SV.va410['sabot'+lv]=1}]);
+ if(i===4&&SV.froid&&!SV.csd.pardon&&CS.pardon)L.push(['cine','pardon']);
+ if(i===5&&SV.ev.chase&&!SV.csd.camp2&&CS.camp2)L.push(['cine','camp2']);
+ if(i===7&&!SV.bag2)L.push(['card',BAG2,()=>{SV.bag2=1}]);
+ if(i===8){if(!SV.csd.ours&&CS.ours){if(!SV.va410['source'+lv]&&CS.source)L.push(['cine','source',()=>{SV.va410['source'+lv]=1}]);L.push(['cine','ours'])}if(!SV.csd.camp3&&CS.camp3)L.push(['cine','camp3'])}
+ if(i===10&&!SV.va410['veille'+lv]&&CS.veille)L.push(['cine','veille',()=>{SV.va410['veille'+lv]=1}]);
+}catch(e){}return L}
+const BAG1={t:'La boîte à gants',L:[['n','Mila descend photographier le lion de Roccapina. Andrea reste seul dans le Cherokee.'],['n','Il sort un petit écrin de sa poche, le regarde longtemps… puis le glisse au fond de la boîte à gants, sous les cartes routières.'],['a','(tout bas) Pas encore. Pas ici.'],['n','Le chien l’observe, la tête penchée.'],['a','Toi, tu dis rien.']]},BAG2={t:'La carte de Sardaigne',L:[['m','Elle est où, la carte de Sardaigne ? Dans la boîte à gants ?'],['n','Mila tend la main vers la boîte à gants.'],['a','NON ! … Enfin, non. Elle est dans la portière. De ton côté.'],['m','… T’as crié.'],['a','J’ai pas crié.'],['m','Si. T’as crié. Y a quoi, dans cette boîte à gants ?'],['a','Des fusibles. Très fragiles.'],['n','Mila le regarde longtemps. Puis elle sourit, et déplie sa carte.']]};
+openEnd=(function(o){return function(i){try{if(!va447R&&!window.__va447off&&!(typeof dkP!=='undefined'&&dkP)&&!(typeof va9P!=='undefined'&&va9P)){const L=va447Missing(i);if(L.length){va447R={i,L,o,w:0,self:this};try{cardQ.length=0;talkQ.length=0;stopReq=null}catch(e){}paused=true;st.gas=0;return}}}catch(e){va447R=null}return o.apply(this,arguments)}})(openEnd);
+loop=(function(o){return function(t){const r=o(t);try{const R=va447R;if(R){if(va447Scene()||va446Q.length||(typeof oursPre!=='undefined'&&oursPre)){R.w=0}else{paused=true;st.gas=0;R.w++;if(R.w>24){R.w=0;const q=R.L.shift();if(!q){va447R=null;try{blackNow()}catch(e){}R.o.call(R.self,R.i)}else{try{if(q[2])q[2]();if(q[0]==='cine')openCine(q[1]);else openCard(q[1]);saveTrip()}catch(e){console.error('rattrapage '+e.message)}}}}}}catch(e){}return r}})(loop);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.46',GAME_DATE='25/11/2026 à 22h46';
+const GAME_VER='4.47',GAME_DATE='26/11/2026 à 00h00';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>

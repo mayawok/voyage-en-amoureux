@@ -5,6 +5,7 @@ const L=(ev,d)=>{let ch=-1,pr=-1;try{ch=chIdx()+1;pr=+chP().toFixed(3)}catch(e){
 B.L=L;
 const vis=el=>{if(!el)return false;const s=getComputedStyle(el);if(s.display==='none'||s.visibility==='hidden'||+s.opacity===0)return false;const r=el.getBoundingClientRect();if(r.width<2||r.height<2)return false;let p=el;while(p&&p!==document.body){const q=getComputedStyle(p);if(q.display==='none'||q.visibility==='hidden')return false;p=p.parentElement}return true};
 B.vis=vis;
+const topOK=el=>{try{const r=el.getBoundingClientRect();const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return !h||h===el||el.contains(h)||h.contains(el)}catch(e){return true}};B.topOK=topOK;
 const press=(el,why)=>{if(!el)return;const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;const o={bubbles:true,cancelable:true,clientX:x,clientY:y,pointerId:1,isPrimary:true,pointerType:'touch'};
  try{el.dispatchEvent(new PointerEvent('pointerdown',o))}catch(e){}try{el.dispatchEvent(new PointerEvent('pointerup',o))}catch(e){}try{el.click()}catch(e){}if(why)L('clic',why)};
 B.press=press;
@@ -13,13 +14,13 @@ const G=n=>{try{return eval(n)}catch(e){return undefined}};
 const every=(k,s)=>{if((B.last[k]||-1e9)+s<=B.t){B.last[k]=B.t;return true}return false};
 // boutons de progression connus
 const PROG=['mgo','cdGo','dcx','csx','esx','bzx','burx','helx','va5go','ppx','hlx','obx','btx','va48t','va13w','va63c'];
-const SKIP_IDS=new Set(['menu','msnd','mnew','mvol','mfs','mdk','mmg','nbb','snd','mhelp','va426u','va48sk','va48rt','dkbk']);
+const SKIP_IDS=new Set(['menub','nbk','menu','msnd','mnew','mvol','mfs','mdk','mmg','nbb','snd','mhelp','va426u','va48sk','va48rt','dkbk']);
 function visibleButtons(){const out=[];for(const b of document.querySelectorAll('button,[role=button],.b')){if(!vis(b))continue;out.push(b)}return out}
 B.visibleButtons=()=>visibleButtons().map(b=>(b.id||b.className||b.tagName)+':'+(b.textContent||'').trim().slice(0,30));
 // --- hooks de journal
 function hook(name,fn){const o=window[name];if(typeof o!=='function')return;window[name]=function(){try{fn.apply(this,arguments)}catch(e){}return o.apply(this,arguments)};}
 const H0=()=>{
- hook('openCine',k=>L('cine',k));hook('openCard',cd=>L('carte',cd&&cd.t));hook('choice',(k,t)=>L('choix',k+' · '+t));
+ {const o=window.openCine;window.openCine=function(k){const r=o.apply(this,arguments);try{if(cs&&cs.k===k)L('cine',k);else L('cineAttente',k)}catch(e){}return r}}hook('openCard',cd=>L('carte',cd&&cd.t));hook('choice',(k,t)=>L('choix',k+' · '+t));
  hook('mgxOpen',d=>L('minijeu',d&&d.k));hook('pzOpen',k=>L('minijeu','pz-'+k));hook('openHelp',k=>L('aide',k));hook('fbStart',()=>L('minijeu','sous-marin'));
  hook('openEnd',i=>L('finChapitre',i));hook('va5Open',i=>L('garage',i));hook('docShow',d=>L('doc',d&&d.t));hook('ferStart',()=>L('bac','départ'));
  hook('openBoat',b=>L('bateau',b?'retour':'aller'));hook('openFinale',()=>L('finale','animaux'));hook('startOutro',()=>L('finale','demande'));
@@ -50,7 +51,7 @@ window.__bot=(step)=>{const dt=step/1000;B.t+=dt;
  const fb=G('fb');if(fb&&!G('va48').fr&&!fb.go){B.fbT=(B.fbT||0)+dt;if(B.fbT>8){L('minijeuForce','sous-marin');fb.go=1;fb.t=G('FB_T');B.fbT=0}}
  const pp=G('pp');if(pp&&!pp.done&&every('pp',2)){const el=document.querySelector('[data-id="'+pp.tg+'"]');if(el){L('pieces','trouvée');try{ppPick(el)}catch(e){}}}
  // 6) boutons de progression visibles
- for(const id of PROG){const e=document.getElementById(id);if(!vis(e))continue;
+ for(const id of PROG){const e=document.getElementById(id);if(!vis(e)||!topOK(e))continue;
   if(id==='cdGo'&&getComputedStyle(e).visibility==='hidden')continue;
   if(id==='csx'){const c2=G('cs');if(c2&&c2.t<c2.end-.3)continue}
   if(every('b_'+id,id==='cdGo'?1.2:1.0)){press(e,id==='cdGo'?null:id)}}
@@ -59,35 +60,39 @@ window.__bot=(step)=>{const dt=step/1000;B.t+=dt;
  const started=G('started'),paused=G('paused');
  if(!G('inGame')||paused||G('cs')||G('es')||G('fn')||G('ot')||G('bz')||G('va5G')){stuckCheck(md,dt);return}
  const st=G('st'),c=G('c'),v=G('v');
- if(G('crashed')){if(every('crash',2)){L('accident','rescue');press(document.getElementById('again'))}stuckCheck(md,dt);return}
+ if(G('crashed')||G('tow')){const ag=document.getElementById('again');if(G('crashed')&&!G('tow')&&vis(ag)&&every('crash',6)){L('accident','dépanneuse');press(ag)}B.sigT=0;B.crT=(B.crT||0)+dt;if(B.crT>60&&every('crlong',60))L('BLOQUE','accident/dépanneuse depuis plus de 60 s');return}B.crT=0;
  // nuit : dormir
  const night=G('night');if(night){stuckCheck(md,dt);return}
  try{const slp=document.getElementById('slpb');const h=hourNow()%24;if(vis(slp)&&(h>=21.5||h<5)&&every('slp',3)){L('dormir',h.toFixed(1));press(slp)}}catch(e){}
- if(!G('ign')&&G('fuel')>0&&every('key',2)){try{toggleKey()}catch(e){}}
+ if(!G('ign')&&G('fuel')>0&&B.t-(B.keyOffT||-99)>3&&every('key',2)){try{toggleKey()}catch(e){}}
  if(G('fuel')<.15){B.cheat.fuel++;window.fuel=.8;try{fuel=.8}catch(e){};L('triche','essence')}
  // mini-panneaux (déblayer, pompe, roue)
  const mg=G('mg'),mgEl=G('mgEl');
  if(mg&&mgEl&&vis(mgEl)){if(mg.k==='clear'){if(every('clr',.12))tapAt(mgEl,10,10)}else if(mg.k==='wheel'){const MG_B=G('MG_B');const ph=(mg.t%MG_B)/MG_B;if(mg.sw<=0&&(ph>=.75)&&every('whl',.3))tapAt(mgEl,10,10)}else{if(mg.busy<=0&&every('pmp',.3))tapAt(mgEl,10,10)}}
  let gas=1,brake=0;
- const sr=G('stopReq');if(sr&&typeof sr.x==='number'){const d=sr.x-c.x;if(d<2200){gas=0;brake=1}}
+ const sr=G('stopReq');if(sr&&typeof sr.x==='number'){const d=sr.x-c.x;if(d<120&&Math.hypot(v.x,v.y)<40){gas=0;brake=1}}
+ // consignes « arrête-toi (coupe le contact) » : panne, prélèvement, chien…
+ const dp=document.getElementById('dogp');if(vis(dp)&&/arr[êe]te-toi|coupe le contact/i.test(dp.textContent)){gas=0;brake=1;if(Math.hypot(v.x,v.y)<20&&G('ign')&&every('cut',2)){L('arret',dp.textContent.slice(0,60));toggleKey()}B.keyOffT=B.t}
+ // bulles du monde (Aider, Dégager…)
+ for(const tb of document.querySelectorAll('.tb')){if(vis(tb)&&every('tb_'+(tb.textContent||'').slice(0,12),4)){gas=0;brake=1;L('bulle',(tb.textContent||'').trim().slice(0,30));press(tb)}}
  const o=G('nextObs')(500);
  if(o){const d=o.x-(c.x+58);if(o.type==='sheep'||o.type==='van'){if(d<420&&every('horn',1)){L('obstacle',o.type);actPress()}}
-  else{let sm=false;try{sm=G('canSmash')(o)}catch(e){}if(!sm){if(d<180){gas=0;brake=1;if(G('canWork')(o)&&!G('work')&&every('work',1)){L('obstacle',o.type);actPress()}}}}}
+  else{let sm=false;try{sm=G('canSmash')(o)}catch(e){}if(!sm){if(d<180){const cw=G('canWork')(o);if(cw){gas=0;brake=1;if(!G('work')&&every('work',1)){L('obstacle',o.type);actPress()}}}}}}
  if(G('work')){gas=0;brake=0}
  if(G('flatW')>=0){gas=0;brake=1;if(Math.hypot(v.x,v.y)<25&&every('flat',.4)){actPress()}}
  if(G('stalled'))gas=0;
  // passage difficile : 4L puis treuil
  const spd=Math.hypot(v.x,v.y);
- if(gas&&spd<15){slowT+=dt}else if(spd>60){slowT=Math.max(0,slowT-dt*2)}
+ if(gas&&spd<30){slowT+=dt}else if(spd>60){slowT=Math.max(0,slowT-dt*2)}
  if(slowT>2.5&&st.gear!==3){setGear(3);B.gearT=B.t;L('vitesse','4L')}
  if(slowT>5&&B.t-winchT>8){winchT=B.t;L('treuil','essai');try{startWinch()}catch(e){}}
  if(st.gear===3&&B.t-B.gearT>12&&spd>80&&slowT<.5){setGear(1);L('vitesse','4H')}
  if(st.gear===0||st.gear===2){setGear(1)}
- st.gas=gas;st.brake=brake;st.hb=G('work')?1:0;
+ st.gas=gas;st.brake=brake;
  stuckCheck(md,dt)};
 function snap(){const o={};try{const c=G('c'),v=G('v');Object.assign(o,{x:Math.round(c.x),vx:Math.round(v.x),lv:G('level'),paused:G('paused'),modal:modal(),stopReq:G('stopReq')?JSON.stringify(G('stopReq')).slice(0,80):null,ign:G('ign'),fuel:+G('fuel').toFixed(2),gear:G('st').gear,gas:G('st').gas,brake:G('st').brake,hb:G('st').hb,z:G('Z')(c.x)[2],hour:+(hourNow()%24).toFixed(1),cardQ:G('cardQ').length,talkQ:G('talkQ').length,btn:B.visibleButtons().slice(0,8)})}catch(e){o.err=e.message}return o}
 B.snap=snap;
-function stuckCheck(md,dt){let sig;try{const c=G('c');const cs=G('cs');const sc=['cs','bz','fn','ot','es','hl','fb'].map(k=>{const o=G(k);return o&&typeof o.t==='number'?Math.floor(o.t/3):''}).join(',');sig=[G('level'),Math.round(c.x/80),md,sc,G('cardQ').length].join('|');const cs2=G('cs');if(cs2&&cs2.t>cs2.end+20&&every('csl',30)){L('BLOQUE','cinématique '+cs2.k+' dépasse sa fin ('+cs2.t.toFixed(0)+'/'+cs2.end+' s)');}}catch(e){sig='?'}
+function stuckCheck(md,dt){let sig;try{const c=G('c');const cs=G('cs');const sc=['cs','bz','fn','ot','es','hl','fb'].map(k=>{const o=G(k);return o&&typeof o.t==='number'?Math.floor(o.t/3):''}).join(',');sig=[G('level'),Math.round(c.x/80),md,sc,G('cardQ').length].join('|');const cs2=G('cs');if(cs2&&cs2.t>cs2.end+20&&every('csl',30)){L('BLOQUE','cinématique '+cs2.k+' dépasse sa fin ('+cs2.t.toFixed(0)+'/'+cs2.end+' s) '+JSON.stringify({done:cs2.done,fade:gid('fade').style.opacity,csx:gid('csx').style.display,card:G('cardOpen'),bt:!!G('bt'),ba:!!G('btAfter'),paused:G('paused'),q:(G('va446Q')||[]).map(q=>q[0]+':'+q[1][0]),btn:B.visibleButtons()}));}}catch(e){sig='?'}
  if(sig!==B.sig){B.sig=sig;B.sigT=0;return}B.sigT+=dt;
  if(B.sigT>40){B.sigT=0;B.stuckN++;const s=snap();L('BLOQUE',s);B.onStuck&&B.onStuck(s);unstick(s)}}
 function unstick(s){
@@ -95,6 +100,6 @@ function unstick(s){
  if(G('paused')&&!G('cardOpen')&&!G('cs')&&!G('MGX')&&!G('pz')&&!G('hl')&&!G('fb')&&!G('es')&&!G('fn')&&!G('ot')&&!G('bz')&&!G('va5G')&&!G('chQ')&&!G('obv')&&!G('bt')&&!G('pp')&&!G('docOpenF')&&!G('fv')&&!G('bur')&&!G('hel')&&!G('night')){L('FIGE','pause sans rien à l’écran');try{paused=false}catch(e){}return}
  if(G('obv')&&every('obvx',1)){L('force','photo fermée');try{obClose?obClose():0}catch(e){}}
  if(bs.length){L('essaiBouton',bs.map(b=>b.id||b.textContent.trim().slice(0,20)).join(' / '));press(bs[0]);return}
- if(!G('paused')&&G('started')){const c=G('c');B.cheat.tp++;L('teleport',Math.round(c.x));c.x+=500;try{settleCar()}catch(e){}}
+ if(!G('paused')&&G('started')&&!G('crashed')&&!G('tow')){const c=G('c');B.cheat.tp++;L('teleport',Math.round(c.x));c.x+=500;try{settleCar()}catch(e){}}
 }
 })();
