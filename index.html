@@ -10157,8 +10157,20 @@ va442Conv=(function(o){return function(q){const r=o(q);if(r){setTimeout(()=>{try
 // Maintenant : fenêtre de la source élargie (25-95 %) et, tant qu'elle n'a pas eu lieu, ni nuit forcée ni ours.
 try{for(const q of VA410_T){if(q[0]==='source')q[3]=.95}}catch(e){}
 oursWorld=(function(o){return function(rdt){try{if(chIdx()===8&&!(SV.csd&&SV.csd.ours)&&!oursPre&&!(SV.va410&&SV.va410['source'+level])&&!window.__va445off)return}catch(e){}return o(rdt)}})(oursWorld);
+// ===== 4.46 : traces de sanglier toujours après l'ours ; plus jamais deux scènes l'une sur l'autre =====
+// 1) La scène des traces n'était jouée que si elle n'avait jamais été vue (SV.va410.traces, sans numéro de chapitre) :
+//    en rejouant le chapitre 9, l'ours passait mais pas les traces. Maintenant elle suit toujours l'ours.
+try{CS.ours.onEnd=(function(o){return function(){try{if(SV.va410&&SV.va410.traces&&!window.__va446off)SV.va410.traces=0}catch(e){}return o.apply(this,arguments)}})(CS.ours.onEnd)}catch(e){}
+// 2) Une scène (cinématique, mini-jeu, aide aux animaux, choix…) pouvait s'ouvrir PAR-DESSUS une autre : par exemple le pont cassé
+//    (ouvert 350 ms après l'arrêt) sur la cinématique de la tortue, puis le bouton « Continuer » ne répondait plus.
+//    Maintenant, si une autre scène est déjà à l'écran, l'ouverture attend qu'elle soit fermée (file va446Q).
+var va446Q=[],va446F=0;
+function va446Busy(){try{return !!((cs)||MGX||pz||hl||fb||es||fn||ot||bz||(typeof va5G!=='undefined'&&va5G)||chQ||pp||obv||bt||(typeof bur!=='undefined'&&bur)||(typeof hel!=='undefined'&&hel)||cardOpen||docOpenF)}catch(e){return false}}
+function va446Wrap(n){const o=window[n];if(typeof o!=='function')return;window[n]=function(){try{if(!window.__va446off&&!(typeof va9P!=='undefined'&&va9P)&&!(typeof dkP!=='undefined'&&dkP)&&va446Busy()){const a=[...arguments];if(!(n==='openCine'&&cs&&cs.k===a[0])&&!va446Q.some(q=>q[0]===n&&q[1][0]===a[0]))va446Q.push([n,a]);return}}catch(e){}return o.apply(this,arguments)}}
+['openCine','mgxOpen','pzOpen','openHelp','fbStart','ppOpen','openBoat','choice','openBur','openHeli'].forEach(va446Wrap);
+loop=(function(o){return function(t){const r=o(t);try{if(va446Q.length){if(va446Busy()||(typeof night!=='undefined'&&night&&0)){va446F=0}else{va446F+=1;if(va446F>20){va446F=0;const q=va446Q.shift();try{window[q[0]].apply(null,q[1])}catch(e){console.error('file 4.46 '+e.message)}}}}}catch(e){}return r}})(loop);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.45',GAME_DATE='25/11/2026 à 20h55';
+const GAME_VER='4.46',GAME_DATE='25/11/2026 à 22h46';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>
