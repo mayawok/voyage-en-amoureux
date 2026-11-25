@@ -10,12 +10,12 @@ const t0=Date.now();let lastCh=-1,shots=0,lastLog=0;
 for(let m=0;m<mins*2;m++){await run(30,33);
  const s=await p.evaluate(()=>({t:__B.t,ch:chIdx()+1,p:+chP().toFixed(3),lv:level,x:Math.round(c.x),md:__B.modal(),stuck:__B.stuckN,n:__B.log.length,ver:GAME_VER}));
  const nl=await p.evaluate(n=>__B.log.slice(n),lastLog);lastLog=s.n;
- for(const e of nl){if(['BLOQUE','FIGE','ERREUR','teleport','essaiBouton'].includes(e.ev)){if(shots<40){shots++;await p.screenshot({path:out+'/'+String(shots).padStart(2,'0')+'_'+e.ev+'_ch'+e.ch+'.png'})}}}
+ for(const e of nl){if(['BLOQUE','FIGE','ERREUR','teleport','essaiBouton','accidentDetail'].includes(e.ev)){if(shots<40){shots++;await p.screenshot({path:out+'/'+String(shots).padStart(2,'0')+'_'+e.ev+'_ch'+e.ch+'.png'})}}}
  if(m%4===0||s.ch!==lastCh)console.log(`[${Math.round((Date.now()-t0)/1000)}s réel] t=${Math.round(s.t)} ch${s.ch} ${(s.p*100).toFixed(1)}% x=${s.x} ${s.md} bloc=${s.stuck} err=${errs.length}`);
  if(s.ch!==lastCh){lastCh=s.ch;await p.screenshot({path:out+'/ch'+s.ch+'_debut.png'})}
- fs.writeFileSync(out+'/log.json',JSON.stringify(await p.evaluate(()=>__B.log)));
+ fs.writeFileSync(out+'/log.json',JSON.stringify(await p.evaluate(()=>__B.log)));fs.writeFileSync(out+'/errs.json',JSON.stringify(errs));{const cs=await p.evaluate(()=>__B.crashSnap||null);if(cs&&!fs.existsSync(out+'/crash.json'))fs.writeFileSync(out+'/crash.json',cs)}
  if(s.ch>=chEnd)break;
  if(await p.evaluate(()=>!!window.__B.done))break;}
-fs.writeFileSync(out+'/errs.json',JSON.stringify(errs));
+fs.writeFileSync(out+'/errs.json',JSON.stringify(errs));{const cs=await p.evaluate(()=>__B.crashSnap||null);if(cs&&!fs.existsSync(out+'/crash.json'))fs.writeFileSync(out+'/crash.json',cs)}
 console.log('triches',JSON.stringify(await p.evaluate(()=>__B.cheat)));
 };

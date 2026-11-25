@@ -58,9 +58,10 @@ window.__bot=(step)=>{const dt=step/1000;B.t+=dt;
  // 7) conduite
  if(!B.drive)return;
  const started=G('started'),paused=G('paused');
- if(!G('inGame')||paused||G('cs')||G('es')||G('fn')||G('ot')||G('bz')||G('va5G')){stuckCheck(md,dt);return}
+ if(!G('inGame')||paused||G('bt')||G('cs')||G('es')||G('fn')||G('ot')||G('bz')||G('va5G')){stuckCheck(md,dt);return}
  const st=G('st'),c=G('c'),v=G('v');
- if(G('crashed')||G('tow')){const ag=document.getElementById('again');if(G('crashed')&&!G('tow')&&vis(ag)&&every('crash',6)){L('accident','dépanneuse');press(ag)}B.sigT=0;B.crT=(B.crT||0)+dt;if(B.crT>60&&every('crlong',60))L('BLOQUE','accident/dépanneuse depuis plus de 60 s');return}B.crT=0;
+ if(!G('crashed'))B.crN=0;B.hist=B.hist||[];try{if(every('hist',.25)){B.hist.push([Math.round(G('c').x),Math.round(G('v').x),Math.round(G('v').y),+G('a').toFixed(2),+(G('w')||0).toFixed(2),G('st').gear,G('st').gas,G('Z')(G('c').x)[2]]);if(B.hist.length>40)B.hist.shift()}}catch(e){}
+ if(G('crashed')||G('tow')){if(G('crashed')&&!B.crN){B.crN=1;try{B.crashSnap=JSON.stringify({SV:G('SV'),x:G('c').x,y:G('c').y,vx:G('v').x,vy:G('v').y,a:G('a'),gear:G('st').gear,up:G('SV').up,flatW:G('flatW'),broken:G('broken'),night:!!G('night'),hour:hourNow(),win:!!winch,hist:B.hist||[]})}catch(e){}L('accidentDetail',{x:Math.round(G('c').x),a:+G('a').toFixed(2),flat:flatW,hist:(B.hist||[]).slice(-12)})}const ag=document.getElementById('again');if(G('crashed')&&!G('tow')&&vis(ag)&&every('crash',6)){L('accident','dépanneuse');press(ag)}B.sigT=0;B.crT=(B.crT||0)+dt;if(B.crT>60&&every('crlong',60))L('BLOQUE','accident/dépanneuse depuis plus de 60 s');return}B.crT=0;
  // nuit : dormir
  const night=G('night');if(night){stuckCheck(md,dt);return}
  try{const slp=document.getElementById('slpb');const h=hourNow()%24;if(vis(slp)&&(h>=21.5||h<5)&&every('slp',3)){L('dormir',h.toFixed(1));press(slp)}}catch(e){}
@@ -84,6 +85,7 @@ window.__bot=(step)=>{const dt=step/1000;B.t+=dt;
  // passage difficile : 4L puis treuil
  const spd=Math.hypot(v.x,v.y);
  if(gas&&spd<30){slowT+=dt}else if(spd>60){slowT=Math.max(0,slowT-dt*2)}
+ try{const hs=G('hardAhead')();if(hs>=0&&!G('winch')){if(st.gear!==3){setGear(3);B.gearT=B.t}if(G('playT')>=G('wReadyAt')){if(every('hw',2)){L('treuil','passage difficile');startWinch()}}else{gas=0;brake=1}}}catch(e){}
  if(slowT>2.5&&st.gear!==3){setGear(3);B.gearT=B.t;L('vitesse','4L')}
  if(slowT>5&&B.t-winchT>8){winchT=B.t;L('treuil','essai');try{startWinch()}catch(e){}}
  if(st.gear===3&&B.t-B.gearT>12&&spd>80&&slowT<.5){setGear(1);L('vitesse','4H')}
