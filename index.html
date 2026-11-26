@@ -10203,8 +10203,14 @@ try{va446Wrap('ferStart')}catch(e){}
 //    partie du relief du précédent : marches de 70 à 100 de haut, sauts et retournements (vu au ch5 après le ch4). Elles sont
 //    maintenant vidées à chaque changement de chapitre (comme au lancement du jeu).
 laySync=(function(o){return function(){const ch=LAYlv!==level;const r=o.apply(this,arguments);if(ch&&!window.__va447off){try{ztC={}}catch(e){}try{slipC={};deepC={}}catch(e){}for(const C of ['farmXc','portXc','jamXc','stfXc','plantXc'])try{const o2=window[C]||eval(C);for(const k in o2)delete o2[k]}catch(e){}try{npcLv=-1;spLv=-1}catch(e){}try{for(const k in hardOKc)delete hardOKc[k]}catch(e){}try{fordOKc={}}catch(e){}try{for(const k in tunOKc)delete tunOKc[k]}catch(e){}try{brOKc={}}catch(e){}}return r}})(laySync);
+// 8) Après un talus à treuiller, la descente était très raide (jusqu'à 45°) : à l'accélérateur, le Cherokee s'envolait et se retournait
+//    au même endroit, encore et encore après la dépanneuse. Descente plus douce (sur 420 au lieu de 280).
+hardY=function(x){const s=hardS(x);if(s<0)return 0;const up=sm(cl((x-s-70)/90)),dn=sm(cl((x-s-250)/(window.__va447off?280:420)));return hardH()*(up-dn)};
+// 9) Contact coupé à l'arrêt sans frein à main (depuis la 4.47 les aides s'ouvrent aussi dans ce cas) : la voiture pouvait reculer
+//    toute seule dans une pente pendant la promenade du chien ou une aide. Contact coupé et presque arrêté = frein à main serré.
+loop=(function(o){return function(t){try{if(!window.__va447off&&inGame&&!ign&&!st.hb&&!st.gas&&Math.hypot(v.x,v.y)<14)st.hb=1}catch(e){}return o(t)}})(loop);
 function nightRep(){let r=level%3;try{if(r===0&&!((dmg||0)>.2||temp>75||(SV.hotD===level)))r=1+((SV.dayN||0)%2)}catch(e){}return r}
 // ===== 2.00 : version affichée dans le menu =====
-const GAME_VER='4.48',GAME_DATE='26/11/2026 à 00h29';
+const GAME_VER='4.49',GAME_DATE='26/11/2026 à 13h33';
 (function(){try{const card=document.querySelector('#menu .card');if(!card)return;const p=document.createElement('div');p.id='mver';p.style.cssText='font:700 11px Arial,sans-serif;opacity:.6;margin-top:6px;text-align:center';p.textContent='Version '+GAME_VER+' · '+GAME_DATE;card.appendChild(p)}catch(e){}})();
 </script></body></html>

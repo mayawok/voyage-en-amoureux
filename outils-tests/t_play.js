@@ -12,7 +12,7 @@ for(let m=0;m<mins*2;m++){await run(30,33);
  const nl=await p.evaluate(n=>__B.log.slice(n),lastLog);lastLog=s.n;
  for(const e of nl){if(['BLOQUE','FIGE','ERREUR','teleport','essaiBouton','accidentDetail'].includes(e.ev)){if(shots<40){shots++;await p.screenshot({path:out+'/'+String(shots).padStart(2,'0')+'_'+e.ev+'_ch'+e.ch+'.png'})}}}
  if(m%4===0||s.ch!==lastCh)console.log(`[${Math.round((Date.now()-t0)/1000)}s réel] t=${Math.round(s.t)} ch${s.ch} ${(s.p*100).toFixed(1)}% x=${s.x} ${s.md} bloc=${s.stuck} err=${errs.length}`);
- if(s.ch!==lastCh){lastCh=s.ch;await p.screenshot({path:out+'/ch'+s.ch+'_debut.png'})}
+ await p.screenshot({path:out+'/last.png'});if(s.ch!==lastCh){lastCh=s.ch;await p.screenshot({path:out+'/ch'+s.ch+'_debut.png'})}
  fs.writeFileSync(out+'/log.json',JSON.stringify(await p.evaluate(()=>__B.log)));fs.writeFileSync(out+'/errs.json',JSON.stringify(errs));{const cs=await p.evaluate(()=>__B.crashSnap||null);if(cs&&!fs.existsSync(out+'/crash.json'))fs.writeFileSync(out+'/crash.json',cs)}
  if(s.ch>=chEnd)break;
  if(await p.evaluate(()=>!!window.__B.done))break;}

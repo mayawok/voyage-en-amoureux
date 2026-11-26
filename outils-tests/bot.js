@@ -48,7 +48,7 @@ window.__bot=(step)=>{const dt=step/1000;B.t+=dt;
  // 5) mini-jeux : on joue un peu puis on « gagne » proprement par leur fin
  const mgx=G('MGX');if(mgx&&!G('va48').fr){B.mg=B.mg||{k:mgx.k,t:0};if(B.mg.k!==mgx.k)B.mg={k:mgx.k,t:0};B.mg.t+=dt;if(B.mg.t>8&&every('mgxw',3)){L('minijeuForce',mgx.k);try{mgxClose(true)}catch(e){L('ERREUR','mgxClose '+e.message)}}}
  const pz=G('pz');if(pz&&!G('va48').fr){B.pzT=(B.pzT||0)+dt;if(B.pzT>8&&every('pzw',3)){L('minijeuForce','pz-'+pz.k);try{pzClose(1)}catch(e){L('ERREUR','pzClose '+e.message)}B.pzT=0}}else B.pzT=0;
- const fb=G('fb');if(fb&&!G('va48').fr&&!fb.go){B.fbT=(B.fbT||0)+dt;if(B.fbT>8){L('minijeuForce','sous-marin');fb.go=1;fb.t=G('FB_T');B.fbT=0}}
+ const fb=G('fb');if(fb&&!G('va48').fr&&!fb.end){B.fbT=(B.fbT||0)+dt;if(B.fbT>10&&every('fbw',5)){L('minijeuForce','sous-marin');fb.go=1;fb.lives=Math.max(fb.lives,1);fb.t=G('FB_T')}}else B.fbT=0;
  const pp=G('pp');if(pp&&!pp.done&&every('pp',2)){const el=document.querySelector('[data-id="'+pp.tg+'"]');if(el){L('pieces','trouvée');try{ppPick(el)}catch(e){}}}
  // 6) boutons de progression visibles
  for(const id of PROG){const e=document.getElementById(id);if(!vis(e)||!topOK(e))continue;
@@ -80,6 +80,7 @@ window.__bot=(step)=>{const dt=step/1000;B.t+=dt;
  if(o){const d=o.x-(c.x+58);if(o.type==='sheep'||o.type==='van'){if(d<420&&every('horn',1)){L('obstacle',o.type);actPress()}}
   else{let sm=false;try{sm=G('canSmash')(o)}catch(e){}if(!sm){if(d<180){const cw=G('canWork')(o);if(cw){gas=0;brake=1;if(!G('work')&&every('work',1)){L('obstacle',o.type);actPress()}}}}}}
  if(G('work')){gas=0;brake=0}
+ try{const T_=G('T');const dy=T_(c.x+160)-T_(c.x+40);if(dy>45&&Math.hypot(v.x,v.y)>120){gas=0}}catch(e){}
  if(G('flatW')>=0){gas=0;brake=1;if(Math.hypot(v.x,v.y)<25&&every('flat',.4)){actPress()}}
  if(G('stalled'))gas=0;
  // passage difficile : 4L puis treuil
